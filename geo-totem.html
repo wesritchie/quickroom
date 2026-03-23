@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tree House Geo Totem</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg-primary: #0f1923;
+    --bg-secondary: #162029;
+    --bg-card: #1a2733;
+    --bg-card-hover: #1f3040;
+    --border-subtle: rgba(255,255,255,0.06);
+    --border-active: rgba(245,158,11,0.4);
+    --text-primary: #e8edf2;
+    --text-secondary: #8899a8;
+    --text-muted: #5a6b7a;
+    --accent-green: #34d399;
+    --accent-orange: #f59e0b;
+    --accent-blue: #3b82f6;
+    --accent-red: #ef4444;
+    --accent-purple: #a78bfa;
+    --accent-teal: #2dd4bf;
+    --dracut: #f59e0b;
+    --pepperell: #34d399;
+    --groton: #3b82f6;
+    --sidebar-width: 200px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-subtle);
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    z-index: 100;
+  }
+  .sidebar-title {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--accent-green);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .sidebar-subtitle {
+    font-size: 11px; color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+  .sidebar-section-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--accent-orange);
+    text-transform: uppercase;
+    margin-bottom: 10px; margin-top: 20px;
+  }
+  .sidebar-section-label:first-of-type { margin-top: 0; }
+  .nav-item {
+    padding: 8px 10px; font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer; border-radius: 6px;
+    margin-bottom: 2px; transition: all 0.15s;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
+  .nav-item.active { color: var(--accent-green); background: rgba(52,211,153,0.08); }
+  .sidebar-spacer { flex: 1; }
+  .sidebar-footer { font-size: 10px; color: var(--text-muted); }
+  .main {
+    margin-left: var(--sidebar-width);
+    flex: 1; padding: 24px 32px 40px;
+    min-height: 100vh;
+  }
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(52,211,153,0.1);
+    border: 1px solid rgba(52,211,153,0.2);
+    padding: 5px 14px; border-radius: 20px;
+    font-size: 12px; color: var(--accent-green);
+    margin-bottom: 16px;
+  }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 500; margin-bottom: 16px; margin-top: 28px; color: var(--accent-green); }
+  p { font-size: 14px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 12px; }
+  .section-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; margin-top: 24px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.15s;
+  }
+  .card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-active);
+  }
+  .card-title {
+    font-size: 15px; font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .card-subtitle {
+    font-size: 12px; color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .metric-value {
+    font-size: 32px; font-weight: 700;
+    color: var(--accent-green);
+    margin-bottom: 4px;
+  }
+  .metric-unit { font-size: 12px; color: var(--text-muted); }
+  .bar {
+    height: 8px;
+    background: var(--border-subtle);
+    border-radius: 4px;
+    margin: 12px 0;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 4px;
+    animation: grow 0.6s ease-out;
+  }
+  @keyframes grow { from { width: 0; } }
+  .status {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px;
+  }
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent-green);
+  }
+  .status.offline .status-dot { background: var(--text-muted); }
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .comparison-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .comparison-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+  .comparison-value { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .comparison-change {
+    font-size: 12px; font-weight: 600;
+    color: var(--accent-green);
+  }
+  .comparison-change.negative { color: var(--accent-red); }
+  .color-city-dracut { color: var(--dracut); }
+  .color-city-pepperell { color: var(--pepperell); }
+  .color-city-groton { color: var(--groton); }
+  .chart-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .chart-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: var(--text-primary); }
+  canvas { max-height: 300px; }
+  .footer-text {
+    font-size: 12px; color: var(--text-muted);
+    text-align: center;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-title">GEO TOTEM</div>
+      <div class="sidebar-subtitle">Tree House Network</div>
+      
+      <div class="sidebar-section-label">Navigation</div>
+      <div class="nav-item active">Overview</div>
+      <div class="nav-item">Dracut</div>
+      <div class="nav-item">Pepperell</div>
+      <div class="nav-item">Groton</div>
+      <div class="nav-item">Analytics</div>
+      <div class="nav-item">Settings</div>
+    </div>
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-footer">v1.0 • Tree House</div>
+  </div>
+
+  <div class="main">
+    <div class="live-badge">
+      <span class="live-dot"></span>
+      <span>Live Network • All Systems Nominal</span>
+    </div>
+
+    <h1>Geo Totem Network Dashboard</h1>
+    <p>Real-time monitoring of Tree House distributed network across three facilities.</p>
+
+    <h2>Network Status</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Total Nodes</div>
+        <div class="card-subtitle">Active Network</div>
+        <div class="metric-value">342</div>
+        <div class="metric-unit">devices online</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Data Throughput</div>
+        <div class="card-subtitle">Current</div>
+        <div class="metric-value">2.4</div>
+        <div class="metric-unit">GB/s</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">System Health</div>
+        <div class="card-subtitle">Overall</div>
+        <div class="metric-value">99.8%</div>
+        <div class="metric-unit">uptime</div>
+      </div>
+    </div>
+
+    <h2>Location Performance</h2>
+    <div class="comparison-grid">
+      <div class="comparison-item">
+        <div class="comparison-label">Dracut</div>
+        <div class="comparison-value color-city-dracut">156</div>
+        <div class="comparison-change">nodes</div>
+      </div>
+      <div class="comparison-item">
+        <div class="comparison-label">Pepperell</div>
+        <div class="comparison-value color-city-pepperell">98</div>
+        <div class="comparison-change">nodes</div>
+      </div>
+      <div class="comparison-item">
+        <div class="comparison-label">Groton</div>
+        <div class="comparison-value color-city-groton">88</div>
+        <div class="comparison-change">nodes</div>
+      </div>
+    </div>
+
+    <h2>Historical Trend</h2>
+    <div class="chart-container">
+      <div class="chart-title">Network Load (Last 24 Hours)</div>
+      <canvas id="loadChart"></canvas>
+    </div>
+
+    <h2>Facility Details</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title color-city-dracut">Dracut Facility</div>
+        <div class="card-subtitle">Tree House HQ</div>
+        <p>Primary distribution hub with redundant systems and backup power.</p>
+        <div class="bar">
+          <div class="bar-fill" style="width:92%; background: var(--dracut);"></div>
+        </div>
+        <div class="status">
+          <span class="status-dot"></span>
+          <span>Operational - 156 nodes</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title color-city-pepperell">Pepperell Facility</div>
+        <div class="card-subtitle">Secondary Hub</div>
+        <p>Secondary distribution with enhanced monitoring and failover capability.</p>
+        <div class="bar">
+          <div class="bar-fill" style="width:87%; background: var(--pepperell);"></div>
+        </div>
+        <div class="status">
+          <span class="status-dot"></span>
+          <span>Operational - 98 nodes</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title color-city-groton">Groton Facility</div>
+        <div class="card-subtitle">Tertiary Hub</div>
+        <p>Tertiary facility providing edge processing and local caching services.</p>
+        <div class="bar">
+          <div class="bar-fill" style="width:79%; background: var(--groton);"></div>
+        </div>
+        <div class="status">
+          <span class="status-dot"></span>
+          <span>Operational - 88 nodes</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>Performance Metrics</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Latency</div>
+        <div class="metric-value">4.2</div>
+        <div class="metric-unit">milliseconds average</div>
+        <p style="margin-top: 12px; font-size: 12px;">Optimized for low-latency operations across distributed nodes.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Packet Loss</div>
+        <div class="metric-value">0.02%</div>
+        <div class="metric-unit">of total traffic</div>
+        <p style="margin-top: 12px; font-size: 12px;">Well within acceptable ranges with error correction enabled.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Bandwidth Utilization</div>
+        <div class="metric-value">68%</div>
+        <div class="metric-unit">of total capacity</div>
+        <p style="margin-top: 12px; font-size: 12px;">Healthy utilization with capacity for growth and spikes.</p>
+      </div>
+    </div>
+
+    <h2>Real-Time Activity</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Active Connections</div>
+        <div class="metric-value">1,247</div>
+        <div class="metric-unit">current sessions</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Data Processed</div>
+        <div class="metric-value">847</div>
+        <div class="metric-unit">GB today</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Requests/sec</div>
+        <div class="metric-value">12,400</div>
+        <div class="metric-unit">average throughput</div>
+      </div>
+    </div>
+
+    <div class="footer-text">
+      Geo Totem v1.0 • Powered by Tree House • Last Updated: 2024-12-19 14:35 UTC
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('loadChart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+        datasets: [
+          {
+            label: 'Dracut',
+            data: [45, 38, 32, 28, 35, 48, 62, 75, 82, 78, 65, 52],
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.05)',
+            borderWidth: 2,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            pointBackgroundColor: '#f59e0b'
+          },
+          {
+            label: 'Pepperell',
+            data: [28, 25, 22, 20, 25, 35, 48, 58, 62, 60, 52, 40],
+            borderColor: '#34d399',
+            backgroundColor: 'rgba(52, 211, 153, 0.05)',
+            borderWidth: 2,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            pointBackgroundColor: '#34d399'
+          },
+          {
+            label: 'Groton',
+            data: [22, 20, 18, 16, 20, 28, 40, 50, 55, 52, 48, 38],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.05)',
+            borderWidth: 2,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            pointBackgroundColor: '#3b82f6'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            display: true,
+            labels: {
+              color: '#8899a8',
+              font: { size: 12 },
+              padding: 15,
+              usePointStyle: true
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(15, 25, 35, 0.9)',
+            titleColor: '#e8edf2',
+            bodyColor: '#8899a8',
+            borderColor: 'rgba(245, 158, 11, 0.3)',
+            borderWidth: 1,
+            padding: 10,
+            titleFont: { size: 13, weight: 'bold' },
+            bodyFont: { size: 12 }
+          }
+<!DOCTYPE html>
+            <html lang="en">
+            <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Tree House Geo Totem</title>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+      :root {
+            --bg-primary: #0f1923;
+            --bg-secondary: #162029;
+            --bg-card: #1a2733;
+            --bg-card-hover: #1f3040;
+            --border-subtle: rgba(255,255,255,0.06);
+            --border-active: rgba(245,158,11,0.4);
+            --text-primary: #e8edf2;
+            --text-secondary: #8899a8;
+            --text-muted: #5a6b7a;
+            --accent-green: #34d399;
+            --accent-orange: #f59e0b;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            --accent-purple: #a78bfa;
+            --accent-teal: #2dd4bf;
+            --dracut: #f59e0b;
+            --pepperell: #34d399;
+            --groton: #3b82f6;
+            --sidebar-width: 200px;
+      }
+      * { margin:0; padding:0; box-sizing:border-box; }
+      body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+      }
+      .sidebar {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-subtle);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; left: 0;
+            height: 100vh;
+            z-index: 100;
+      }
+      .sidebar-title {
+            font-size: 13px; font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--accent-green);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+      }
+      .sidebar-subtitle {
+            font-size: 11px; color: var(--text-muted);
+            margin-bottom: 28px;
+      }
+      .sidebar-section-label {
+            font-size: 10px; font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--accent-orange);
+            text-transform: uppercase;
+            margin-bottom: 10px; margin-top: 20px;
+      }
+      .sidebar-section-label:first-of-type { margin-top: 0; }
+      .nav-item {
+            padding: 8px 10px; font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer; border-radius: 6px;
+            margin-bottom: 2px; transition: all 0.15s;
+      }
+      .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
+      .nav-item.active { color: var(--accent-green); background: rgba(52,211,153,0.08); }
+      .sidebar-spacer { flex: 1; }
+      .sidebar-footer { font-size: 10px; color: var(--text-muted); }
+      .main {
+            margin-left: var(--sidebar-width);
+            flex: 1; padding: 24px 32px 40px;
+            min-height: 100vh;
+      }
+      .live-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(52,211,153,0.1);
+            border: 1px solid rgba(52,211,153,0.2);
+            padding: 5px 14px; border-radius: 20px;
+            font-size: 12px; color: var(--accent-green);
+            margin-bottom: 16px;
+      }
+      .live-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+      }
+      @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+      h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+      h2 { font-size: 20px; font-weight: 500; margin-bottom: 16px; margin-top: 28px; color: var(--accent-green); }
+      p { font-size: 14px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 12px; }
+      .section-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; margin-top: 24px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+      .card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 20px; transition: all 0.15s; }
+      .card:hover { background: var(--bg-card-hover); border-color: var(--border-active); }
+      .card-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+      .card-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+      .metric-value { font-size: 32px; font-weight: 700; color: var(--accent-green); margin-bottom: 4px; }
+      .metric-unit { font-size: 12px; color: var(--text-muted); }
+      .bar { height: 8px; background: var(--border-subtle); border-radius: 4px; margin: 12px 0; overflow: hidden; }
+      .bar-fill { height: 100%; border-radius: 4px; animation: grow 0.6s ease-out; }
+      @keyframes grow { from { width: 0; } }
+      .status { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+      .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); }
+      .status.offline .status-dot { background: var(--text-muted); }
+      .comparison-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+      .comparison-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 16px; text-align: center; }
+      .comparison-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+      .comparison-value { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+      .comparison-change { font-size: 12px; font-weight: 600; color: var(--accent-green); }
+      .comparison-change.negative { color: var(--accent-red); }
+      .color-city-dracut { color: var(--dracut); }
+      .color-city-pepperell { color: var(--pepperell); }
+      .color-city-groton { color: var(--groton); }
+      .chart-container { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 20px; margin-bottom: 24px; }
+      .chart-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: var(--text-primary); }
+      canvas { max-height: 300px; }
+      .footer-text { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 40px; }
+    </style>
+</head>
+  <body>
+      <div class="sidebar">
+            <div>
+                    <div class="sidebar-title">GEO TOTEM</div>
+                    <div class="sidebar-subtitle">Tree House Network</div>
+                    <div class="sidebar-section-label">Navigation</div>
+                    <div class="nav-item active">Overview</div>
+                    <div class="nav-item">Dracut</div>
+                    <div class="nav-item">Pepperell</div>
+                    <div class="nav-item">Groton</div>
+                    <div class="nav-item">Analytics</div>
+                    <div class="nav-item">Settings</div>
+            </div>
+            <div class="sidebar-spacer"></div>
+            <div class="sidebar-footer">v1.0 • Tree House</div>
+      </div>
+
+      <div class="main">
+            <div class="live-badge">
+                    <span class="live-dot"></span>span>
+                    <span>Live Network • All Systems Nominal</span>
+            </div>
+      
+          <h1>Geo Totem Network Dashboard</h1>
+          <p>Real-time monitoring of Tree House distributed network across three facilities.</p>
+      
+          <h2>Network Status</h2>
+          <div class="grid">
+                <div class="card">
+                        <div class="card-title">Total Nodes</div>
+                        <div class="card-subtitle">Active Network</div>
+                        <div class="metric-value">342</div>
+                        <div class="metric-unit">devices online</div>
+                </div>
+                <div class="card">
+                        <div class="card-title">Data Throughput</div>
+                        <div class="card-subtitle">Current</div>
+                        <div class="metric-value">2.4</div>
+                        <div class="metric-unit">GB/s</div>
+                </div>
+                <div class="card">
+                        <div class="card-title">System Health</div>
+                        <div class="card-subtitle">Overall</div>
+                        <div class="metric-value">99.8%</div>
+                        <div class="metric-unit">uptime</div>
+                </div>
+          </div>
+      
+          <h2>Location Performance</h2>
+          <div class="comparison-grid">
+                <div class="comparison-item">
+                        <div class="comparison-label">Dracut</div>
+                        <div class="comparison-value color-city-dracut">156</div>
+                        <div class="comparison-change">nodes</div>
+                </div>
+                <div class="comparison-item">
+                        <div class="comparison-label">Pepperell</div>
+                        <div class="comparison-value color-city-pepperell">98</div>
+                        <div class="comparison-change">nodes</div>
+                </div>
+                <div class="comparison-item">
+                        <div class="comparison-label">Groton</div>
+                        <div class="comparison-value color-city-groton">88</div>
+                        <div class="comparison-change">nodes</div>
+                </div>
+          </div>
+      
+          <h2>Historical Trend</h2>
+          <div class="chart-container">
+                <div class="chart-title">Network Load (Last 24 Hours)</div>
+                <canvas id="loadChart"></canvas>canvas>
+          </div>
+      
+          <h2>Facility Details</h2>
+          <div class="grid">
+                <div class="card">
+                        <div class="card-title color-city-dracut">Dracut Facility</div>
+                        <div class="card-subtitle">Tree House HQ</div>
+                        <p>Primary distribution hub with redundant systems and backup power.</p>
+                        <div class="bar"><div class="bar-fill" style="width:92%; background: var(--dracut);"></div></div>
+                        <div class="status"><span class="status-dot"></span><span>Operational - 156 nodes</span></div>
+                </div>
+                <div class="card">
+                        <div class="card-title color-city-pepperell">Pepperell Facility</div>
+                        <div class="card-subtitle">Secondary Hub</div>
+                        <p>Secondary distribution with e</p></p></h1></span>
+            </div>
+  </style>},
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: { color: '#5a6b7a', font: { size: 11 } },
+            grid: { color: 'rgba(255, 255, 255, 0.03)' }
+          },
+          x: {
+            ticks: { color: '#5a6b7a', font: { size: 11 } },
+            grid: { color: 'rgba(255, 255, 255, 0.03)' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
