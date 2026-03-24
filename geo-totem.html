@@ -96,576 +96,1158 @@
     background: var(--accent-green);
     animation: pulse 2s infinite;
   }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-  h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
-  h2 { font-size: 20px; font-weight: 500; margin-bottom: 16px; margin-top: 28px; color: var(--accent-green); }
-  p { font-size: 14px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 12px; }
-  .section-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; margin-top: 24px; }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-    margin-bottom: 24px;
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .page-title { font-size: 26px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+  .page-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+  .time-toggle {
+    display: flex; background: var(--bg-card);
+    border-radius: 8px; border: 1px solid var(--border-subtle);
+    overflow: hidden; margin-bottom: 24px;
   }
+  .time-btn {
+    flex: 1; padding: 12px 8px; text-align: center;
+    font-size: 13px; font-weight: 500;
+    color: var(--text-secondary); cursor: pointer;
+    transition: all 0.2s; border: none; background: none;
+  }
+  .time-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
+  .time-btn.active {
+    color: var(--accent-orange);
+    background: rgba(245,158,11,0.08);
+    border-bottom: 2px solid var(--accent-orange);
+  }
+  .time-btn small { display: block; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
   .card {
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
-    border-radius: 8px;
-    padding: 20px;
-    transition: all 0.15s;
+    border-radius: 10px; padding: 20px 24px;
+    margin-bottom: 20px;
   }
-  .card:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--border-active);
-  }
-  .card-title {
-    font-size: 15px; font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-  }
-  .card-subtitle {
-    font-size: 12px; color: var(--text-muted);
-    margin-bottom: 12px;
-  }
-  .metric-value {
-    font-size: 32px; font-weight: 700;
-    color: var(--accent-green);
-    margin-bottom: 4px;
-  }
-  .metric-unit { font-size: 12px; color: var(--text-muted); }
-  .bar {
-    height: 8px;
-    background: var(--border-subtle);
-    border-radius: 4px;
-    margin: 12px 0;
-    overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%; border-radius: 4px;
-    animation: grow 0.6s ease-out;
-  }
-  @keyframes grow { from { width: 0; } }
-  .status {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px;
-  }
-  .status-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--accent-green);
-  }
-  .status.offline .status-dot { background: var(--text-muted); }
-  .comparison-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .comparison-item {
+  .card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .card-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card {
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
-    border-radius: 8px;
-    padding: 16px;
-    text-align: center;
+    border-radius: 10px; padding: 18px 20px;
   }
-  .comparison-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-  .comparison-value { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-  .comparison-change {
+  .kpi-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 6px;
+  }
+  .kpi-value { font-size: 28px; font-weight: 700; color: var(--accent-orange); }
+  .kpi-detail { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+  .store-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .store-tab {
+    padding: 8px 20px; border-radius: 6px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-card); color: var(--text-secondary);
+  }
+  .store-tab:hover { border-color: rgba(255,255,255,0.12); color: var(--text-primary); }
+  .store-tab.active-dracut { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); color: var(--dracut); }
+  .store-tab.active-pepperell { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.3); color: var(--pepperell); }
+  .store-tab.active-groton { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.3); color: var(--groton); }
+  .geo-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .geo-table th {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--text-muted); text-align: left;
+    padding: 8px 12px; border-bottom: 1px solid var(--border-subtle);
+  }
+  .geo-table td {
+    font-size: 13px; padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: var(--text-secondary);
+  }
+  .geo-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .geo-table .rank { font-size: 12px; font-weight: 700; color: var(--text-muted); width: 30px; }
+  .geo-table .city-name { color: var(--text-primary); font-weight: 500; }
+  .geo-table .scan-count { color: var(--accent-orange); font-weight: 600; text-align: right; }
+  .geo-table .pct { color: var(--text-muted); text-align: right; font-size: 12px; }
+  .bar-cell { width: 120px; }
+  .bar-bg { height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+  .bar-dracut { background: var(--dracut); }
+  .bar-pepperell { background: var(--pepperell); }
+  .bar-groton { background: var(--groton); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .bucket-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px; padding: 20px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .bucket-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-1px); }
+  .bucket-card.selected { border-color: var(--accent-orange); box-shadow: 0 0 0 1px var(--accent-orange); }
+  .bucket-label {
     font-size: 12px; font-weight: 600;
-    color: var(--accent-green);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--text-muted); margin-bottom: 8px;
   }
-  .comparison-change.negative { color: var(--accent-red); }
-  .color-city-dracut { color: var(--dracut); }
-  .color-city-pepperell { color: var(--pepperell); }
-  .color-city-groton { color: var(--groton); }
-  .chart-container {
+  .bucket-value { font-size: 32px; font-weight: 700; margin-bottom: 2px; }
+  .bucket-pct { font-size: 13px; color: var(--text-secondary); }
+  .bucket-ma .bucket-value { color: var(--accent-green); }
+  .bucket-nh .bucket-value { color: var(--accent-blue); }
+  .bucket-other .bucket-value { color: var(--accent-purple); }
+  .behavior-panel {
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 24px;
+    border-radius: 10px; padding: 24px;
+    display: none;
   }
-  .chart-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: var(--text-primary); }
-  canvas { max-height: 300px; }
-  .footer-text {
-    font-size: 12px; color: var(--text-muted);
-    text-align: center;
-    margin-top: 40px;
+  .behavior-panel.visible { display: block; }
+  .behavior-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  .behavior-stat { background: var(--bg-secondary); border-radius: 8px; padding: 16px; }
+  .behavior-stat-label {
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px;
   }
+  .behavior-stat-value { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+  .behavior-stat-detail { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .chart-container { position: relative; height: 280px; margin-top: 12px; }
+  .chart-container-tall { position: relative; height: 360px; margin-top: 12px; }
+  .footer {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 12px 0;
+    margin-top: 20px;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 11px; color: var(--text-muted);
+  }
+  .footer-status { display: flex; align-items: center; gap: 6px; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); }
+  .section { display: none; }
+  .section.active { display: block; }
+  /* City Trends section */
+  .city-trend-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .city-trend-table th {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--text-muted); text-align: left; padding: 8px 10px;
+    border-bottom: 1px solid var(--border-subtle); position: sticky; top: 0;
+    background: var(--bg-card);
+  }
+  .city-trend-table th.num { text-align: right; }
+  .city-trend-table td {
+    font-size: 13px; padding: 10px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: var(--text-secondary); vertical-align: middle;
+  }
+  .city-trend-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .city-trend-table .city-name-cell { color: var(--text-primary); font-weight: 500; white-space: nowrap; }
+  .city-trend-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .wow-up { color: var(--accent-green); font-weight: 600; }
+  .wow-down { color: var(--accent-red); font-weight: 600; }
+  .wow-flat { color: var(--text-muted); }
+  .spark-cell { width: 140px; padding: 6px 10px !important; }
+  .sparkline { display: flex; align-items: flex-end; gap: 2px; height: 28px; }
+  .spark-bar { flex: 1; min-width: 0; border-radius: 2px 2px 0 0; transition: height 0.3s; }
+  .city-legend-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .city-chip {
+    padding: 4px 12px; border-radius: 14px; font-size: 11px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; border: 1px solid rgba(255,255,255,0.1);
+    background: var(--bg-card); color: var(--text-secondary);
+  }
+  .city-chip.active { border-color: var(--accent-orange); color: var(--accent-orange); background: rgba(245,158,11,0.08); }
+  .city-chip:hover { border-color: rgba(255,255,255,0.2); }
+  .view-toggle { display: flex; gap: 6px; margin-bottom: 16px; }
+  .view-btn {
+    padding: 6px 16px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--border-subtle);
+    background: var(--bg-card); color: var(--text-secondary); transition: all 0.15s;
+  }
+  .view-btn.active { color: var(--accent-orange); border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.08); }
+  .view-btn:hover { border-color: rgba(255,255,255,0.12); }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
 </style>
 </head>
 <body>
-  <div class="sidebar">
-    <div>
-      <div class="sidebar-title">GEO TOTEM</div>
-      <div class="sidebar-subtitle">Tree House Network</div>
-      
-      <div class="sidebar-section-label">Navigation</div>
-      <div class="nav-item active">Overview</div>
-      <div class="nav-item">Dracut</div>
-      <div class="nav-item">Pepperell</div>
-      <div class="nav-item">Groton</div>
-      <div class="nav-item">Analytics</div>
-      <div class="nav-item">Settings</div>
+
+<nav class="sidebar">
+  <div class="sidebar-title">Tree House<br>Geo Totem</div>
+  <div class="sidebar-subtitle">Customer Geography Intelligence</div>
+  <div class="sidebar-section-label">Sections</div>
+  <div class="nav-item active" onclick="showSection('overview')">Overview</div>
+  <div class="nav-item" onclick="showSection('store-detail')">Store Breakdown</div>
+  <div class="nav-item" onclick="showSection('state-buckets')">State Analysis</div>
+  <div class="nav-item" onclick="showSection('trends')">Trends Over Time</div>
+  <div class="nav-item" onclick="showSection('city-trends')">City Tracker</div>
+  <div class="sidebar-spacer"></div>
+  <div class="sidebar-footer">Data as of Mar 22, 2026</div>
+</nav>
+
+<div class="main">
+  <div class="live-badge"><div class="live-dot"></div><span id="header-updated">Last updated: Mar 23, 2026</span></div>
+
+  <!-- ========== OVERVIEW ========== -->
+  <div id="section-overview" class="section active">
+    <div class="page-title">Geographic Overview</div>
+    <div class="page-desc">Where your customers are coming from across all three stores</div>
+    <div class="time-toggle" id="toggle-overview">
+      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 21</small></button>
+      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 9–15</small></button>
+      <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
+      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 – Feb 26</small></button>
     </div>
-    <div class="sidebar-spacer"></div>
-    <div class="sidebar-footer">v1.0 • Tree House</div>
-  </div>
-
-  <div class="main">
-    <div class="live-badge">
-      <span class="live-dot"></span>
-      <span>Live Network • All Systems Nominal</span>
-    </div>
-
-    <h1>Geo Totem Network Dashboard</h1>
-    <p>Real-time monitoring of Tree House distributed network across three facilities.</p>
-
-    <h2>Network Status</h2>
-    <div class="grid">
-      <div class="card">
-        <div class="card-title">Total Nodes</div>
-        <div class="card-subtitle">Active Network</div>
-        <div class="metric-value">342</div>
-        <div class="metric-unit">devices online</div>
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Scans</div>
+        <div class="kpi-value" id="kpi-total-scans">—</div>
+        <div class="kpi-detail" id="kpi-total-detail">All stores</div>
       </div>
-
-      <div class="card">
-        <div class="card-title">Data Throughput</div>
-        <div class="card-subtitle">Current</div>
-        <div class="metric-value">2.4</div>
-        <div class="metric-unit">GB/s</div>
+      <div class="kpi-card">
+        <div class="kpi-label">Unique Locations</div>
+        <div class="kpi-value" id="kpi-unique-cities">—</div>
+        <div class="kpi-detail">Distinct cities</div>
       </div>
-
-      <div class="card">
-        <div class="card-title">System Health</div>
-        <div class="card-subtitle">Overall</div>
-        <div class="metric-value">99.8%</div>
-        <div class="metric-unit">uptime</div>
+      <div class="kpi-card">
+        <div class="kpi-label">Top State</div>
+        <div class="kpi-value" id="kpi-top-state">—</div>
+        <div class="kpi-detail" id="kpi-top-state-detail"></div>
       </div>
-    </div>
-
-    <h2>Location Performance</h2>
-    <div class="comparison-grid">
-      <div class="comparison-item">
-        <div class="comparison-label">Dracut</div>
-        <div class="comparison-value color-city-dracut">156</div>
-        <div class="comparison-change">nodes</div>
-      </div>
-      <div class="comparison-item">
-        <div class="comparison-label">Pepperell</div>
-        <div class="comparison-value color-city-pepperell">98</div>
-        <div class="comparison-change">nodes</div>
-      </div>
-      <div class="comparison-item">
-        <div class="comparison-label">Groton</div>
-        <div class="comparison-value color-city-groton">88</div>
-        <div class="comparison-change">nodes</div>
+      <div class="kpi-card">
+        <div class="kpi-label">Out-of-State %</div>
+        <div class="kpi-value" id="kpi-oos-pct">—</div>
+        <div class="kpi-detail" id="kpi-oos-detail">NH + Other</div>
       </div>
     </div>
-
-    <h2>Historical Trend</h2>
-    <div class="chart-container">
-      <div class="chart-title">Network Load (Last 24 Hours)</div>
-      <canvas id="loadChart"></canvas>
+    <div class="store-tabs">
+      <div class="store-tab active-dracut" data-store="dracut" onclick="setOverviewStore('dracut')">Dracut (DD)</div>
+      <div class="store-tab" data-store="pepperell" onclick="setOverviewStore('pepperell')">Pepperell (PD)</div>
+      <div class="store-tab" data-store="groton" onclick="setOverviewStore('groton')">Groton (GD)</div>
     </div>
-
-    <h2>Facility Details</h2>
-    <div class="grid">
-      <div class="card">
-        <div class="card-title color-city-dracut">Dracut Facility</div>
-        <div class="card-subtitle">Tree House HQ</div>
-        <p>Primary distribution hub with redundant systems and backup power.</p>
-        <div class="bar">
-          <div class="bar-fill" style="width:92%; background: var(--dracut);"></div>
-        </div>
-        <div class="status">
-          <span class="status-dot"></span>
-          <span>Operational - 156 nodes</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title color-city-pepperell">Pepperell Facility</div>
-        <div class="card-subtitle">Secondary Hub</div>
-        <p>Secondary distribution with enhanced monitoring and failover capability.</p>
-        <div class="bar">
-          <div class="bar-fill" style="width:87%; background: var(--pepperell);"></div>
-        </div>
-        <div class="status">
-          <span class="status-dot"></span>
-          <span>Operational - 98 nodes</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title color-city-groton">Groton Facility</div>
-        <div class="card-subtitle">Tertiary Hub</div>
-        <p>Tertiary facility providing edge processing and local caching services.</p>
-        <div class="bar">
-          <div class="bar-fill" style="width:79%; background: var(--groton);"></div>
-        </div>
-        <div class="status">
-          <span class="status-dot"></span>
-          <span>Operational - 88 nodes</span>
-        </div>
-      </div>
-    </div>
-
-    <h2>Performance Metrics</h2>
-    <div class="grid">
-      <div class="card">
-        <div class="card-title">Latency</div>
-        <div class="metric-value">4.2</div>
-        <div class="metric-unit">milliseconds average</div>
-        <p style="margin-top: 12px; font-size: 12px;">Optimized for low-latency operations across distributed nodes.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Packet Loss</div>
-        <div class="metric-value">0.02%</div>
-        <div class="metric-unit">of total traffic</div>
-        <p style="margin-top: 12px; font-size: 12px;">Well within acceptable ranges with error correction enabled.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Bandwidth Utilization</div>
-        <div class="metric-value">68%</div>
-        <div class="metric-unit">of total capacity</div>
-        <p style="margin-top: 12px; font-size: 12px;">Healthy utilization with capacity for growth and spikes.</p>
-      </div>
-    </div>
-
-    <h2>Real-Time Activity</h2>
-    <div class="grid">
-      <div class="card">
-        <div class="card-title">Active Connections</div>
-        <div class="metric-value">1,247</div>
-        <div class="metric-unit">current sessions</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Data Processed</div>
-        <div class="metric-value">847</div>
-        <div class="metric-unit">GB today</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Requests/sec</div>
-        <div class="metric-value">12,400</div>
-        <div class="metric-unit">average throughput</div>
-      </div>
-    </div>
-
-    <div class="footer-text">
-      Geo Totem v1.0 • Powered by Tree House • Last Updated: 2024-12-19 14:35 UTC
+    <div class="card">
+      <div class="card-title" id="overview-table-title">Top 12 Locations — Dracut (DD)</div>
+      <div class="card-subtitle" id="overview-table-sub">Customer scans by city</div>
+      <div id="overview-table-container"></div>
     </div>
   </div>
 
-  <script>
-    const ctx = document.getElementById('loadChart').getContext('2d');
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-        datasets: [
-          {
-            label: 'Dracut',
-            data: [45, 38, 32, 28, 35, 48, 62, 75, 82, 78, 65, 52],
-            borderColor: '#f59e0b',
-            backgroundColor: 'rgba(245, 158, 11, 0.05)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true,
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            pointBackgroundColor: '#f59e0b'
-          },
-          {
-            label: 'Pepperell',
-            data: [28, 25, 22, 20, 25, 35, 48, 58, 62, 60, 52, 40],
-            borderColor: '#34d399',
-            backgroundColor: 'rgba(52, 211, 153, 0.05)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true,
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            pointBackgroundColor: '#34d399'
-          },
-          {
-            label: 'Groton',
-            data: [22, 20, 18, 16, 20, 28, 40, 50, 55, 52, 48, 38],
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.05)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true,
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            pointBackgroundColor: '#3b82f6'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        interaction: {
-          mode: 'index',
-          intersect: false
-        },
-        plugins: {
-          legend: {
-            display: true,
-            labels: {
-              color: '#8899a8',
-              font: { size: 12 },
-              padding: 15,
-              usePointStyle: true
-            }
-          },
-          tooltip: {
-            backgroundColor: 'rgba(15, 25, 35, 0.9)',
-            titleColor: '#e8edf2',
-            bodyColor: '#8899a8',
-            borderColor: 'rgba(245, 158, 11, 0.3)',
-            borderWidth: 1,
-            padding: 10,
-            titleFont: { size: 13, weight: 'bold' },
-            bodyFont: { size: 12 }
-          }
-<!DOCTYPE html>
-            <html lang="en">
-            <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Tree House Geo Totem</title>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-  <style>
-      :root {
-            --bg-primary: #0f1923;
-            --bg-secondary: #162029;
-            --bg-card: #1a2733;
-            --bg-card-hover: #1f3040;
-            --border-subtle: rgba(255,255,255,0.06);
-            --border-active: rgba(245,158,11,0.4);
-            --text-primary: #e8edf2;
-            --text-secondary: #8899a8;
-            --text-muted: #5a6b7a;
-            --accent-green: #34d399;
-            --accent-orange: #f59e0b;
-            --accent-blue: #3b82f6;
-            --accent-red: #ef4444;
-            --accent-purple: #a78bfa;
-            --accent-teal: #2dd4bf;
-            --dracut: #f59e0b;
-            --pepperell: #34d399;
-            --groton: #3b82f6;
-            --sidebar-width: 200px;
-      }
-      * { margin:0; padding:0; box-sizing:border-box; }
-      body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-      }
-      .sidebar {
-            width: var(--sidebar-width);
-            min-width: var(--sidebar-width);
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-subtle);
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0; left: 0;
-            height: 100vh;
-            z-index: 100;
-      }
-      .sidebar-title {
-            font-size: 13px; font-weight: 700;
-            letter-spacing: 0.5px;
-            color: var(--accent-green);
-            text-transform: uppercase;
-            margin-bottom: 2px;
-      }
-      .sidebar-subtitle {
-            font-size: 11px; color: var(--text-muted);
-            margin-bottom: 28px;
-      }
-      .sidebar-section-label {
-            font-size: 10px; font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--accent-orange);
-            text-transform: uppercase;
-            margin-bottom: 10px; margin-top: 20px;
-      }
-      .sidebar-section-label:first-of-type { margin-top: 0; }
-      .nav-item {
-            padding: 8px 10px; font-size: 13px;
-            color: var(--text-secondary);
-            cursor: pointer; border-radius: 6px;
-            margin-bottom: 2px; transition: all 0.15s;
-      }
-      .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
-      .nav-item.active { color: var(--accent-green); background: rgba(52,211,153,0.08); }
-      .sidebar-spacer { flex: 1; }
-      .sidebar-footer { font-size: 10px; color: var(--text-muted); }
-      .main {
-            margin-left: var(--sidebar-width);
-            flex: 1; padding: 24px 32px 40px;
-            min-height: 100vh;
-      }
-      .live-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(52,211,153,0.1);
-            border: 1px solid rgba(52,211,153,0.2);
-            padding: 5px 14px; border-radius: 20px;
-            font-size: 12px; color: var(--accent-green);
-            margin-bottom: 16px;
-      }
-      .live-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: var(--accent-green);
-            animation: pulse 2s infinite;
-      }
-      @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-      h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
-      h2 { font-size: 20px; font-weight: 500; margin-bottom: 16px; margin-top: 28px; color: var(--accent-green); }
-      p { font-size: 14px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 12px; }
-      .section-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; margin-top: 24px; }
-      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
-      .card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 20px; transition: all 0.15s; }
-      .card:hover { background: var(--bg-card-hover); border-color: var(--border-active); }
-      .card-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
-      .card-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
-      .metric-value { font-size: 32px; font-weight: 700; color: var(--accent-green); margin-bottom: 4px; }
-      .metric-unit { font-size: 12px; color: var(--text-muted); }
-      .bar { height: 8px; background: var(--border-subtle); border-radius: 4px; margin: 12px 0; overflow: hidden; }
-      .bar-fill { height: 100%; border-radius: 4px; animation: grow 0.6s ease-out; }
-      @keyframes grow { from { width: 0; } }
-      .status { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-      .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); }
-      .status.offline .status-dot { background: var(--text-muted); }
-      .comparison-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
-      .comparison-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 16px; text-align: center; }
-      .comparison-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-      .comparison-value { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-      .comparison-change { font-size: 12px; font-weight: 600; color: var(--accent-green); }
-      .comparison-change.negative { color: var(--accent-red); }
-      .color-city-dracut { color: var(--dracut); }
-      .color-city-pepperell { color: var(--pepperell); }
-      .color-city-groton { color: var(--groton); }
-      .chart-container { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 20px; margin-bottom: 24px; }
-      .chart-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: var(--text-primary); }
-      canvas { max-height: 300px; }
-      .footer-text { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 40px; }
-    </style>
-</head>
-  <body>
-      <div class="sidebar">
-            <div>
-                    <div class="sidebar-title">GEO TOTEM</div>
-                    <div class="sidebar-subtitle">Tree House Network</div>
-                    <div class="sidebar-section-label">Navigation</div>
-                    <div class="nav-item active">Overview</div>
-                    <div class="nav-item">Dracut</div>
-                    <div class="nav-item">Pepperell</div>
-                    <div class="nav-item">Groton</div>
-                    <div class="nav-item">Analytics</div>
-                    <div class="nav-item">Settings</div>
-            </div>
-            <div class="sidebar-spacer"></div>
-            <div class="sidebar-footer">v1.0 • Tree House</div>
+  <!-- ========== STORE DETAIL ========== -->
+  <div id="section-store-detail" class="section">
+    <div class="page-title">Store Breakdown</div>
+    <div class="page-desc">Side-by-side comparison of top 12 customer locations per store</div>
+    <div class="time-toggle" id="toggle-store-detail">
+      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 21</small></button>
+      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 9–15</small></button>
+      <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
+      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 – Feb 26</small></button>
+    </div>
+    <div class="three-col">
+      <div class="card">
+        <div class="card-title" style="color:var(--dracut)">Dracut (DD)</div>
+        <div class="card-subtitle">Top 12 locations</div>
+        <div id="table-dracut"></div>
       </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--pepperell)">Pepperell (PD)</div>
+        <div class="card-subtitle">Top 12 locations</div>
+        <div id="table-pepperell"></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--groton)">Groton (GD)</div>
+        <div class="card-subtitle">Top 12 locations</div>
+        <div id="table-groton"></div>
+      </div>
+    </div>
+  </div>
 
-      <div class="main">
-            <div class="live-badge">
-                    <span class="live-dot"></span>span>
-                    <span>Live Network • All Systems Nominal</span>
-            </div>
-      
-          <h1>Geo Totem Network Dashboard</h1>
-          <p>Real-time monitoring of Tree House distributed network across three facilities.</p>
-      
-          <h2>Network Status</h2>
-          <div class="grid">
-                <div class="card">
-                        <div class="card-title">Total Nodes</div>
-                        <div class="card-subtitle">Active Network</div>
-                        <div class="metric-value">342</div>
-                        <div class="metric-unit">devices online</div>
-                </div>
-                <div class="card">
-                        <div class="card-title">Data Throughput</div>
-                        <div class="card-subtitle">Current</div>
-                        <div class="metric-value">2.4</div>
-                        <div class="metric-unit">GB/s</div>
-                </div>
-                <div class="card">
-                        <div class="card-title">System Health</div>
-                        <div class="card-subtitle">Overall</div>
-                        <div class="metric-value">99.8%</div>
-                        <div class="metric-unit">uptime</div>
-                </div>
-          </div>
-      
-          <h2>Location Performance</h2>
-          <div class="comparison-grid">
-                <div class="comparison-item">
-                        <div class="comparison-label">Dracut</div>
-                        <div class="comparison-value color-city-dracut">156</div>
-                        <div class="comparison-change">nodes</div>
-                </div>
-                <div class="comparison-item">
-                        <div class="comparison-label">Pepperell</div>
-                        <div class="comparison-value color-city-pepperell">98</div>
-                        <div class="comparison-change">nodes</div>
-                </div>
-                <div class="comparison-item">
-                        <div class="comparison-label">Groton</div>
-                        <div class="comparison-value color-city-groton">88</div>
-                        <div class="comparison-change">nodes</div>
-                </div>
-          </div>
-      
-          <h2>Historical Trend</h2>
-          <div class="chart-container">
-                <div class="chart-title">Network Load (Last 24 Hours)</div>
-                <canvas id="loadChart"></canvas>canvas>
-          </div>
-      
-          <h2>Facility Details</h2>
-          <div class="grid">
-                <div class="card">
-                        <div class="card-title color-city-dracut">Dracut Facility</div>
-                        <div class="card-subtitle">Tree House HQ</div>
-                        <p>Primary distribution hub with redundant systems and backup power.</p>
-                        <div class="bar"><div class="bar-fill" style="width:92%; background: var(--dracut);"></div></div>
-                        <div class="status"><span class="status-dot"></span><span>Operational - 156 nodes</span></div>
-                </div>
-                <div class="card">
-                        <div class="card-title color-city-pepperell">Pepperell Facility</div>
-                        <div class="card-subtitle">Secondary Hub</div>
-                        <p>Secondary distribution with e</p></p></h1></span>
-            </div>
-  </style>},
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 100,
-            ticks: { color: '#5a6b7a', font: { size: 11 } },
-            grid: { color: 'rgba(255, 255, 255, 0.03)' }
-          },
-          x: {
-            ticks: { color: '#5a6b7a', font: { size: 11 } },
-            grid: { color: 'rgba(255, 255, 255, 0.03)' }
-          }
+  <!-- ========== STATE ANALYSIS ========== -->
+  <div id="section-state-buckets" class="section">
+    <div class="page-title">State Analysis</div>
+    <div class="page-desc">Customer origins bucketed by MA, NH, and Out of State — click a bucket to see visit behavior</div>
+    <div class="time-toggle" id="toggle-state">
+      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 21</small></button>
+      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 9–15</small></button>
+      <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
+      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 – Feb 26</small></button>
+    </div>
+    <div class="three-col">
+      <div class="bucket-card bucket-ma" onclick="selectBucket('MA')">
+        <div class="bucket-label">Massachusetts</div>
+        <div class="bucket-value" id="bucket-ma-val">—</div>
+        <div class="bucket-pct" id="bucket-ma-pct">scans</div>
+      </div>
+      <div class="bucket-card bucket-nh" onclick="selectBucket('NH')">
+        <div class="bucket-label">New Hampshire</div>
+        <div class="bucket-value" id="bucket-nh-val">—</div>
+        <div class="bucket-pct" id="bucket-nh-pct">scans</div>
+      </div>
+      <div class="bucket-card bucket-other" onclick="selectBucket('OTHER')">
+        <div class="bucket-label">Out of State</div>
+        <div class="bucket-value" id="bucket-other-val">—</div>
+        <div class="bucket-pct" id="bucket-other-pct">scans (excl. MA &amp; NH)</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">State Breakdown by Store</div>
+        <div class="card-subtitle">All three stores compared</div>
+        <div class="chart-container"><canvas id="chart-state-by-store"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Overall Mix</div>
+        <div class="card-subtitle">MA vs NH vs Out of State</div>
+        <div class="chart-container"><canvas id="chart-state-donut"></canvas></div>
+      </div>
+    </div>
+    <div class="behavior-panel" id="behavior-panel">
+      <div class="card-title" id="behavior-title">Visit Behavior — Massachusetts Customers</div>
+      <div class="card-subtitle" id="behavior-subtitle">Based on Veriscan scan data for the selected period</div>
+      <div class="behavior-grid">
+        <div class="behavior-stat">
+          <div class="behavior-stat-label">Total Scans</div>
+          <div class="behavior-stat-value" id="beh-total-scans">—</div>
+          <div class="behavior-stat-detail" id="beh-total-scans-d"></div>
+        </div>
+        <div class="behavior-stat">
+          <div class="behavior-stat-label">% of All Traffic</div>
+          <div class="behavior-stat-value" id="beh-pct-traffic">—</div>
+          <div class="behavior-stat-detail" id="beh-pct-traffic-d"></div>
+        </div>
+        <div class="behavior-stat">
+          <div class="behavior-stat-label">Store Distribution</div>
+          <div class="behavior-stat-value" id="beh-store-dist">—</div>
+          <div class="behavior-stat-detail" id="beh-store-dist-d"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TRENDS ========== -->
+  <div id="section-trends" class="section">
+    <div class="page-title">Trends Over Time</div>
+    <div class="page-desc">18-month view of customer origin patterns — monthly scan counts by state bucket</div>
+    <div class="card">
+      <div class="card-title">Monthly Scans by State Bucket</div>
+      <div class="card-subtitle">MA / NH / Out of State — all stores combined</div>
+      <div class="chart-container-tall"><canvas id="chart-trends-state"></canvas></div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Monthly Scans by Store</div>
+        <div class="card-subtitle">Dracut / Pepperell / Groton total foot traffic</div>
+        <div class="chart-container"><canvas id="chart-trends-store"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">NH Customer Share Over Time</div>
+        <div class="card-subtitle">% of total scans from New Hampshire</div>
+        <div class="chart-container"><canvas id="chart-trends-nh-pct"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CITY TRACKER ========== -->
+  <div id="section-city-trends" class="section">
+    <div class="page-title">City Tracker</div>
+    <div class="page-desc">Week-over-week municipality trends by store — see exactly where traffic is rising or falling</div>
+
+    <div class="store-tabs" style="display:flex;gap:8px;margin-bottom:16px">
+      <div class="store-tab active-dracut" data-store="dracut" onclick="setCityStore('dracut')">Dracut (DD)</div>
+      <div class="store-tab" data-store="pepperell" onclick="setCityStore('pepperell')">Pepperell (PD)</div>
+      <div class="store-tab" data-store="groton" onclick="setCityStore('groton')">Groton (GD)</div>
+    </div>
+
+    <div class="view-toggle">
+      <div class="view-btn active" onclick="setCityView('table')">Table View</div>
+      <div class="view-btn" onclick="setCityView('chart')">Chart View</div>
+    </div>
+
+    <div id="city-table-view">
+      <div class="card" style="overflow-x:auto">
+        <div class="card-title" id="city-table-title">Weekly Municipality Tracker — Dracut</div>
+        <div class="card-subtitle">Top 12 cities — 12 weeks ending Mar 15, 2026. Green = up WoW, Red = down WoW</div>
+        <div id="city-trend-table-container"></div>
+      </div>
+    </div>
+
+    <div id="city-chart-view" style="display:none">
+      <div class="card">
+        <div class="card-title" id="city-chart-title">Municipality Traffic Over Time — Dracut</div>
+        <div class="card-subtitle">Click city chips to toggle visibility — showing weekly scan counts</div>
+        <div class="city-legend-chips" id="city-chips-container"></div>
+        <div class="chart-container-tall"><canvas id="chart-city-trends"></canvas></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Biggest Movers This Week</div>
+        <div class="card-subtitle">Largest WoW changes (Mar 9–15 vs Mar 2–8)</div>
+        <div id="movers-up-container"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Declining Markets</div>
+        <div class="card-subtitle">Cities trending down over 4+ weeks</div>
+        <div id="movers-down-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-status">
+      <div class="status-dot"></div>
+      <span id="last-updated-text">Last updated: Mar 23, 2026 — auto-refreshes daily</span>
+    </div>
+    <div>Tree House Craft Cannabis — Geo Totem v2.2</div>
+  </div>
+</div>
+
+<script>
+// ========== EMBEDDED DATA ==========
+const DATA = {
+  yesterday: {
+    total: 514, uniqueCities: 96,
+    byStore: {dracut:317, pepperell:148, groton:49},
+    byState: {MA:224, NH:259, OTHER:31},
+    byStoreByState: {
+      dracut:{MA:110,NH:184,OTHER:23},
+      pepperell:{MA:70,NH:72,OTHER:6},
+      groton:{MA:44,NH:3,OTHER:2}
+    },
+    topCities: {
+      dracut: [
+        {rank:1,name:"MANCHESTER, NH",count:52,pct:"16.4"},
+        {rank:2,name:"METHUEN, MA",count:35,pct:"11.0"},
+        {rank:3,name:"SALEM, NH",count:31,pct:"9.8"},
+        {rank:4,name:"DERRY, NH",count:30,pct:"9.5"},
+        {rank:5,name:"LAWRENCE, MA",count:22,pct:"6.9"},
+        {rank:6,name:"LONDONDERRY, NH",count:14,pct:"4.4"},
+        {rank:7,name:"WINDHAM, NH",count:13,pct:"4.1"},
+        {rank:8,name:"DRACUT, MA",count:12,pct:"3.8"},
+        {rank:9,name:"PELHAM, NH",count:9,pct:"2.8"},
+        {rank:10,name:"LOWELL, MA",count:4,pct:"1.3"},
+        {rank:11,name:"GOFFSTOWN, NH",count:4,pct:"1.3"},
+        {rank:12,name:"WEARE, NH",count:3,pct:"0.9"}
+      ],
+      pepperell: [
+        {rank:1,name:"PEPPERELL, MA",count:35,pct:"23.6"},
+        {rank:2,name:"NASHUA, NH",count:24,pct:"16.2"},
+        {rank:3,name:"TOWNSEND, MA",count:11,pct:"7.4"},
+        {rank:4,name:"MILFORD, NH",count:11,pct:"7.4"},
+        {rank:5,name:"GROTON, MA",count:5,pct:"3.4"},
+        {rank:6,name:"HOLLIS, NH",count:5,pct:"3.4"},
+        {rank:7,name:"MASON, NH",count:4,pct:"2.7"},
+        {rank:8,name:"MERRIMACK, NH",count:4,pct:"2.7"},
+        {rank:9,name:"BROOKLINE, NH",count:4,pct:"2.7"},
+        {rank:10,name:"MANCHESTER, NH",count:4,pct:"2.7"},
+        {rank:11,name:"DERRY, NH",count:3,pct:"2.0"},
+        {rank:12,name:"DUNSTABLE, MA",count:3,pct:"2.0"}
+      ],
+      groton: [
+        {rank:1,name:"GROTON, MA",count:14,pct:"28.6"},
+        {rank:2,name:"WESTFORD, MA",count:11,pct:"22.4"},
+        {rank:3,name:"FITCHBURG, MA",count:2,pct:"4.1"},
+        {rank:4,name:"HARVARD, MA",count:2,pct:"4.1"},
+        {rank:5,name:"HUDSON, NH",count:2,pct:"4.1"},
+        {rank:6,name:"AYER, MA",count:2,pct:"4.1"},
+        {rank:7,name:"PEPPERELL, MA",count:2,pct:"4.1"},
+        {rank:8,name:"SHIRLEY, MA",count:2,pct:"4.1"},
+        {rank:9,name:"CHELMSFORD, MA",count:2,pct:"4.1"},
+        {rank:10,name:"LITTLETON, MA",count:1,pct:"2.0"},
+        {rank:11,name:"TOWNSEND, MA",count:1,pct:"2.0"},
+        {rank:12,name:"LUNENBURG, MA",count:1,pct:"2.0"}
+      ]
+    }
+  },
+  week: {
+    total: 2922, uniqueCities: 226,
+    byStore: {dracut:1701, pepperell:901, groton:320},
+    byState: {MA:1190, NH:1562, OTHER:170},
+    byStoreByState: {
+      dracut:{MA:563,NH:1021,OTHER:117},
+      pepperell:{MA:366,NH:496,OTHER:39},
+      groton:{MA:261,NH:45,OTHER:14}
+    },
+    topCities: {
+      dracut: [
+        {rank:1,name:"MANCHESTER, NH",count:221,pct:"13.0"},
+        {rank:2,name:"METHUEN, MA",count:194,pct:"11.4"},
+        {rank:3,name:"SALEM, NH",count:136,pct:"8.0"},
+        {rank:4,name:"DERRY, NH",count:130,pct:"7.6"},
+        {rank:5,name:"LAWRENCE, MA",count:106,pct:"6.2"},
+        {rank:6,name:"LONDONDERRY, NH",count:77,pct:"4.5"},
+        {rank:7,name:"PELHAM, NH",count:68,pct:"4.0"},
+        {rank:8,name:"DRACUT, MA",count:58,pct:"3.4"},
+        {rank:9,name:"WINDHAM, NH",count:54,pct:"3.2"},
+        {rank:10,name:"CONCORD, NH",count:31,pct:"1.8"},
+        {rank:11,name:"Unknown, USA",count:28,pct:"1.6"},
+        {rank:12,name:"NASHUA, NH",count:22,pct:"1.3"}
+      ],
+      pepperell: [
+        {rank:1,name:"PEPPERELL, MA",count:176,pct:"19.5"},
+        {rank:2,name:"NASHUA, NH",count:151,pct:"16.8"},
+        {rank:3,name:"MILFORD, NH",count:54,pct:"6.0"},
+        {rank:4,name:"TOWNSEND, MA",count:44,pct:"4.9"},
+        {rank:5,name:"MANCHESTER, NH",count:43,pct:"4.8"},
+        {rank:6,name:"BROOKLINE, NH",count:39,pct:"4.3"},
+        {rank:7,name:"HOLLIS, NH",count:34,pct:"3.8"},
+        {rank:8,name:"GROTON, MA",count:23,pct:"2.6"},
+        {rank:9,name:"MERRIMACK, NH",count:20,pct:"2.2"},
+        {rank:10,name:"AMHERST, NH",count:18,pct:"2.0"},
+        {rank:11,name:"DUNSTABLE, MA",count:15,pct:"1.7"},
+        {rank:12,name:"BEDFORD, NH",count:13,pct:"1.4"}
+      ],
+      groton: [
+        {rank:1,name:"WESTFORD, MA",count:70,pct:"21.9"},
+        {rank:2,name:"GROTON, MA",count:63,pct:"19.7"},
+        {rank:3,name:"TOWNSEND, MA",count:14,pct:"4.4"},
+        {rank:4,name:"PEPPERELL, MA",count:12,pct:"3.8"},
+        {rank:5,name:"LITTLETON, MA",count:12,pct:"3.8"},
+        {rank:6,name:"AYER, MA",count:11,pct:"3.4"},
+        {rank:7,name:"LEOMINSTER, MA",count:7,pct:"2.2"},
+        {rank:8,name:"LOWELL, MA",count:7,pct:"2.2"},
+        {rank:9,name:"MANCHESTER, NH",count:5,pct:"1.6"},
+        {rank:10,name:"FITCHBURG, MA",count:4,pct:"1.3"},
+        {rank:11,name:"BROOKLINE, NH",count:4,pct:"1.3"},
+        {rank:12,name:"CHELMSFORD, MA",count:4,pct:"1.3"}
+      ]
+    }
+  },
+  month: {
+    total: 11267, uniqueCities: 616,
+    byStore: {dracut:6491, pepperell:3519, groton:1257},
+    byState: {MA:4808, NH:5732, OTHER:727},
+    byStoreByState: {
+      dracut:{MA:2368,NH:3645,OTHER:478},
+      pepperell:{MA:1396,NH:1942,OTHER:181},
+      groton:{MA:1044,NH:145,OTHER:68}
+    },
+    topCities: {
+      dracut: [
+        {rank:1,name:"METHUEN, MA",count:856,pct:"13.2"},
+        {rank:2,name:"MANCHESTER, NH",count:767,pct:"11.8"},
+        {rank:3,name:"SALEM, NH",count:574,pct:"8.8"},
+        {rank:4,name:"DERRY, NH",count:497,pct:"7.7"},
+        {rank:5,name:"LAWRENCE, MA",count:474,pct:"7.3"},
+        {rank:6,name:"LONDONDERRY, NH",count:310,pct:"4.8"},
+        {rank:7,name:"DRACUT, MA",count:238,pct:"3.7"},
+        {rank:8,name:"PELHAM, NH",count:235,pct:"3.6"},
+        {rank:9,name:"WINDHAM, NH",count:187,pct:"2.9"},
+        {rank:10,name:"HOOKSETT, NH",count:100,pct:"1.5"},
+        {rank:11,name:"Unknown, USA",count:98,pct:"1.5"},
+        {rank:12,name:"CONCORD, NH",count:94,pct:"1.4"}
+      ],
+      pepperell: [
+        {rank:1,name:"PEPPERELL, MA",count:696,pct:"19.8"},
+        {rank:2,name:"NASHUA, NH",count:524,pct:"14.9"},
+        {rank:3,name:"MILFORD, NH",count:214,pct:"6.1"},
+        {rank:4,name:"TOWNSEND, MA",count:173,pct:"4.9"},
+        {rank:5,name:"HOLLIS, NH",count:166,pct:"4.7"},
+        {rank:6,name:"BROOKLINE, NH",count:149,pct:"4.2"},
+        {rank:7,name:"MANCHESTER, NH",count:137,pct:"3.9"},
+        {rank:8,name:"MERRIMACK, NH",count:86,pct:"2.4"},
+        {rank:9,name:"GROTON, MA",count:84,pct:"2.4"},
+        {rank:10,name:"AMHERST, NH",count:56,pct:"1.6"},
+        {rank:11,name:"DUNSTABLE, MA",count:55,pct:"1.6"},
+        {rank:12,name:"BEDFORD, NH",count:47,pct:"1.3"}
+      ],
+      groton: [
+        {rank:1,name:"GROTON, MA",count:271,pct:"21.6"},
+        {rank:2,name:"WESTFORD, MA",count:253,pct:"20.1"},
+        {rank:3,name:"LITTLETON, MA",count:68,pct:"5.4"},
+        {rank:4,name:"TOWNSEND, MA",count:66,pct:"5.3"},
+        {rank:5,name:"AYER, MA",count:64,pct:"5.1"},
+        {rank:6,name:"PEPPERELL, MA",count:44,pct:"3.5"},
+        {rank:7,name:"MANCHESTER, NH",count:25,pct:"2.0"},
+        {rank:8,name:"LOWELL, MA",count:20,pct:"1.6"},
+        {rank:9,name:"CONCORD, MA",count:16,pct:"1.3"},
+        {rank:10,name:"HUDSON, NH",count:13,pct:"1.0"},
+        {rank:11,name:"NASHUA, NH",count:13,pct:"1.0"},
+        {rank:12,name:"SHIRLEY, MA",count:12,pct:"1.0"}
+      ]
+    }
+  }
+};
+
+// 18-month trend data — compute totals for the "18month" period view
+const TREND = [
+  {label:"Sep 24",total:7396,byState:{MA:2744,NH:3877,OTHER:775},byStore:{dracut:7396,pepperell:0,groton:0}},
+  {label:"Oct 24",total:8362,byState:{MA:3136,NH:4392,OTHER:834},byStore:{dracut:8362,pepperell:0,groton:0}},
+  {label:"Nov 24",total:7502,byState:{MA:2773,NH:4043,OTHER:686},byStore:{dracut:7502,pepperell:0,groton:0}},
+  {label:"Dec 24",total:7498,byState:{MA:2793,NH:4011,OTHER:694},byStore:{dracut:7498,pepperell:0,groton:0}},
+  {label:"Jan 25",total:8656,byState:{MA:3144,NH:4795,OTHER:717},byStore:{dracut:6818,pepperell:1772,groton:66}},
+  {label:"Feb 25",total:10483,byState:{MA:3998,NH:5652,OTHER:833},byStore:{dracut:5999,pepperell:4157,groton:327}},
+  {label:"Mar 25",total:12518,byState:{MA:5125,NH:6423,OTHER:970},byStore:{dracut:6948,pepperell:4567,groton:1003}},
+  {label:"Apr 25",total:12985,byState:{MA:5234,NH:6814,OTHER:937},byStore:{dracut:7346,pepperell:4540,groton:1099}},
+  {label:"May 25",total:13448,byState:{MA:5415,NH:6981,OTHER:1052},byStore:{dracut:7619,pepperell:4607,groton:1222}},
+  {label:"Jun 25",total:13370,byState:{MA:5459,NH:6742,OTHER:1169},byStore:{dracut:7855,pepperell:4155,groton:1360}},
+  {label:"Jul 25",total:13921,byState:{MA:5751,NH:6982,OTHER:1188},byStore:{dracut:7944,pepperell:4591,groton:1386}},
+  {label:"Aug 25",total:14076,byState:{MA:5799,NH:7117,OTHER:1160},byStore:{dracut:8159,pepperell:4379,groton:1538}},
+  {label:"Sep 25",total:13707,byState:{MA:5886,NH:6712,OTHER:1109},byStore:{dracut:7969,pepperell:4265,groton:1473}},
+  {label:"Oct 25",total:14282,byState:{MA:6015,NH:7117,OTHER:1150},byStore:{dracut:8386,pepperell:4435,groton:1461}},
+  {label:"Nov 25",total:13458,byState:{MA:5693,NH:6824,OTHER:941},byStore:{dracut:7954,pepperell:4082,groton:1422}},
+  {label:"Dec 25",total:13639,byState:{MA:5776,NH:6914,OTHER:949},byStore:{dracut:7879,pepperell:4313,groton:1447}},
+  {label:"Jan 26",total:12821,byState:{MA:5346,NH:6689,OTHER:786},byStore:{dracut:7452,pepperell:3955,groton:1414}},
+  {label:"Feb 26",total:11267,byState:{MA:4808,NH:5732,OTHER:727},byStore:{dracut:6491,pepperell:3519,groton:1257}}
+];
+
+// ========== PER-STORE WEEKLY CITY TREND DATA ==========
+const CITY_TREND_STORE = {
+  dracut: {
+    cities: ["METHUEN, MA","MANCHESTER, NH","SALEM, NH","DERRY, NH","LAWRENCE, MA","LONDONDERRY, NH","PELHAM, NH","DRACUT, MA","WINDHAM, NH","UNKNOWN, USA","LOWELL, MA","CONCORD, NH"],
+    weeks: [
+      {label:"Dec 22–28",total:1833,cities:{"METHUEN, MA":254,"MANCHESTER, NH":177,"SALEM, NH":149,"DERRY, NH":128,"LAWRENCE, MA":143,"LONDONDERRY, NH":91,"PELHAM, NH":74,"DRACUT, MA":57,"WINDHAM, NH":57,"UNKNOWN, USA":27,"LOWELL, MA":42,"CONCORD, NH":29}},
+      {label:"Dec 29–Jan 4",total:1867,cities:{"METHUEN, MA":259,"MANCHESTER, NH":222,"SALEM, NH":139,"DERRY, NH":125,"LAWRENCE, MA":136,"LONDONDERRY, NH":84,"PELHAM, NH":79,"DRACUT, MA":64,"WINDHAM, NH":57,"UNKNOWN, USA":33,"LOWELL, MA":33,"CONCORD, NH":32}},
+      {label:"Jan 5–11",total:1644,cities:{"METHUEN, MA":221,"MANCHESTER, NH":181,"SALEM, NH":155,"DERRY, NH":118,"LAWRENCE, MA":130,"LONDONDERRY, NH":77,"PELHAM, NH":57,"DRACUT, MA":56,"WINDHAM, NH":47,"UNKNOWN, USA":35,"LOWELL, MA":25,"CONCORD, NH":22}},
+      {label:"Jan 12–18",total:1614,cities:{"METHUEN, MA":203,"MANCHESTER, NH":182,"SALEM, NH":159,"DERRY, NH":120,"LAWRENCE, MA":102,"LONDONDERRY, NH":64,"PELHAM, NH":66,"DRACUT, MA":57,"WINDHAM, NH":46,"UNKNOWN, USA":23,"LOWELL, MA":30,"CONCORD, NH":20}},
+      {label:"Jan 19–25",total:1849,cities:{"METHUEN, MA":259,"MANCHESTER, NH":219,"SALEM, NH":152,"DERRY, NH":118,"LAWRENCE, MA":138,"LONDONDERRY, NH":82,"PELHAM, NH":69,"DRACUT, MA":61,"WINDHAM, NH":56,"UNKNOWN, USA":32,"LOWELL, MA":23,"CONCORD, NH":19}},
+      {label:"Jan 26–Feb 1",total:1541,cities:{"METHUEN, MA":191,"MANCHESTER, NH":206,"SALEM, NH":154,"DERRY, NH":129,"LAWRENCE, MA":109,"LONDONDERRY, NH":77,"PELHAM, NH":66,"DRACUT, MA":49,"WINDHAM, NH":49,"UNKNOWN, USA":24,"LOWELL, MA":19,"CONCORD, NH":30}},
+      {label:"Feb 2–8",total:1633,cities:{"METHUEN, MA":238,"MANCHESTER, NH":184,"SALEM, NH":149,"DERRY, NH":137,"LAWRENCE, MA":112,"LONDONDERRY, NH":72,"PELHAM, NH":52,"DRACUT, MA":61,"WINDHAM, NH":39,"UNKNOWN, USA":30,"LOWELL, MA":22,"CONCORD, NH":23}},
+      {label:"Feb 9–15",total:1588,cities:{"METHUEN, MA":201,"MANCHESTER, NH":197,"SALEM, NH":152,"DERRY, NH":123,"LAWRENCE, MA":115,"LONDONDERRY, NH":69,"PELHAM, NH":62,"DRACUT, MA":55,"WINDHAM, NH":44,"UNKNOWN, USA":21,"LOWELL, MA":21,"CONCORD, NH":24}},
+      {label:"Feb 16–22",total:1627,cities:{"METHUEN, MA":212,"MANCHESTER, NH":181,"SALEM, NH":148,"DERRY, NH":118,"LAWRENCE, MA":121,"LONDONDERRY, NH":91,"PELHAM, NH":69,"DRACUT, MA":63,"WINDHAM, NH":56,"UNKNOWN, USA":19,"LOWELL, MA":16,"CONCORD, NH":18}},
+      {label:"Feb 23–Mar 1",total:1631,cities:{"METHUEN, MA":208,"MANCHESTER, NH":197,"SALEM, NH":119,"DERRY, NH":110,"LAWRENCE, MA":122,"LONDONDERRY, NH":79,"PELHAM, NH":52,"DRACUT, MA":62,"WINDHAM, NH":41,"UNKNOWN, USA":30,"LOWELL, MA":30,"CONCORD, NH":26}},
+      {label:"Mar 2–8",total:1526,cities:{"METHUEN, MA":163,"MANCHESTER, NH":176,"SALEM, NH":109,"DERRY, NH":139,"LAWRENCE, MA":108,"LONDONDERRY, NH":85,"PELHAM, NH":60,"DRACUT, MA":49,"WINDHAM, NH":39,"UNKNOWN, USA":21,"LOWELL, MA":23,"CONCORD, NH":27}},
+      {label:"Mar 9–15",total:1701,cities:{"METHUEN, MA":194,"MANCHESTER, NH":221,"SALEM, NH":136,"DERRY, NH":130,"LAWRENCE, MA":106,"LONDONDERRY, NH":77,"PELHAM, NH":68,"DRACUT, MA":58,"WINDHAM, NH":54,"UNKNOWN, USA":28,"LOWELL, MA":18,"CONCORD, NH":31}}
+    ]
+  },
+  pepperell: {
+    cities: ["PEPPERELL, MA","NASHUA, NH","MILFORD, NH","TOWNSEND, MA","HOLLIS, NH","MANCHESTER, NH","BROOKLINE, NH","MERRIMACK, NH","GROTON, MA","AMHERST, NH","DUNSTABLE, MA","LOWELL, MA"],
+    weeks: [
+      {label:"Dec 22–28",total:1017,cities:{"PEPPERELL, MA":218,"NASHUA, NH":166,"MILFORD, NH":54,"TOWNSEND, MA":44,"HOLLIS, NH":39,"MANCHESTER, NH":45,"BROOKLINE, NH":45,"MERRIMACK, NH":34,"GROTON, MA":15,"AMHERST, NH":19,"DUNSTABLE, MA":14,"LOWELL, MA":11}},
+      {label:"Dec 29–Jan 4",total:970,cities:{"PEPPERELL, MA":203,"NASHUA, NH":159,"MILFORD, NH":55,"TOWNSEND, MA":59,"HOLLIS, NH":29,"MANCHESTER, NH":45,"BROOKLINE, NH":38,"MERRIMACK, NH":32,"GROTON, MA":17,"AMHERST, NH":19,"DUNSTABLE, MA":12,"LOWELL, MA":14}},
+      {label:"Jan 5–11",total:937,cities:{"PEPPERELL, MA":180,"NASHUA, NH":150,"MILFORD, NH":61,"TOWNSEND, MA":50,"HOLLIS, NH":51,"MANCHESTER, NH":40,"BROOKLINE, NH":45,"MERRIMACK, NH":29,"GROTON, MA":13,"AMHERST, NH":19,"DUNSTABLE, MA":12,"LOWELL, MA":15}},
+      {label:"Jan 12–18",total:839,cities:{"PEPPERELL, MA":167,"NASHUA, NH":145,"MILFORD, NH":47,"TOWNSEND, MA":57,"HOLLIS, NH":40,"MANCHESTER, NH":33,"BROOKLINE, NH":27,"MERRIMACK, NH":31,"GROTON, MA":13,"AMHERST, NH":17,"DUNSTABLE, MA":16,"LOWELL, MA":15}},
+      {label:"Jan 19–25",total:944,cities:{"PEPPERELL, MA":188,"NASHUA, NH":138,"MILFORD, NH":57,"TOWNSEND, MA":54,"HOLLIS, NH":57,"MANCHESTER, NH":46,"BROOKLINE, NH":37,"MERRIMACK, NH":35,"GROTON, MA":15,"AMHERST, NH":25,"DUNSTABLE, MA":13,"LOWELL, MA":16}},
+      {label:"Jan 26–Feb 1",total:825,cities:{"PEPPERELL, MA":162,"NASHUA, NH":131,"MILFORD, NH":44,"TOWNSEND, MA":42,"HOLLIS, NH":39,"MANCHESTER, NH":33,"BROOKLINE, NH":29,"MERRIMACK, NH":23,"GROTON, MA":15,"AMHERST, NH":19,"DUNSTABLE, MA":6,"LOWELL, MA":12}},
+      {label:"Feb 2–8",total:874,cities:{"PEPPERELL, MA":169,"NASHUA, NH":136,"MILFORD, NH":54,"TOWNSEND, MA":42,"HOLLIS, NH":48,"MANCHESTER, NH":28,"BROOKLINE, NH":31,"MERRIMACK, NH":23,"GROTON, MA":20,"AMHERST, NH":11,"DUNSTABLE, MA":15,"LOWELL, MA":14}},
+      {label:"Feb 9–15",total:854,cities:{"PEPPERELL, MA":168,"NASHUA, NH":135,"MILFORD, NH":49,"TOWNSEND, MA":30,"HOLLIS, NH":33,"MANCHESTER, NH":35,"BROOKLINE, NH":38,"MERRIMACK, NH":25,"GROTON, MA":17,"AMHERST, NH":15,"DUNSTABLE, MA":11,"LOWELL, MA":8}},
+      {label:"Feb 16–22",total:944,cities:{"PEPPERELL, MA":200,"NASHUA, NH":142,"MILFORD, NH":54,"TOWNSEND, MA":56,"HOLLIS, NH":48,"MANCHESTER, NH":38,"BROOKLINE, NH":42,"MERRIMACK, NH":22,"GROTON, MA":22,"AMHERST, NH":13,"DUNSTABLE, MA":13,"LOWELL, MA":9}},
+      {label:"Feb 23–Mar 1",total:858,cities:{"PEPPERELL, MA":176,"NASHUA, NH":113,"MILFORD, NH":55,"TOWNSEND, MA":44,"HOLLIS, NH":32,"MANCHESTER, NH":36,"BROOKLINE, NH":36,"MERRIMACK, NH":19,"GROTON, MA":27,"AMHERST, NH":18,"DUNSTABLE, MA":17,"LOWELL, MA":9}},
+      {label:"Mar 2–8",total:918,cities:{"PEPPERELL, MA":166,"NASHUA, NH":162,"MILFORD, NH":62,"TOWNSEND, MA":49,"HOLLIS, NH":37,"MANCHESTER, NH":33,"BROOKLINE, NH":37,"MERRIMACK, NH":21,"GROTON, MA":29,"AMHERST, NH":13,"DUNSTABLE, MA":17,"LOWELL, MA":15}},
+      {label:"Mar 9–15",total:901,cities:{"PEPPERELL, MA":176,"NASHUA, NH":151,"MILFORD, NH":54,"TOWNSEND, MA":44,"HOLLIS, NH":34,"MANCHESTER, NH":43,"BROOKLINE, NH":39,"MERRIMACK, NH":20,"GROTON, MA":23,"AMHERST, NH":18,"DUNSTABLE, MA":15,"LOWELL, MA":13}}
+    ]
+  },
+  groton: {
+    cities: ["GROTON, MA","WESTFORD, MA","LITTLETON, MA","AYER, MA","TOWNSEND, MA","PEPPERELL, MA","LOWELL, MA","MANCHESTER, NH","NASHUA, NH","NORTH READING, MA","LEOMINSTER, MA","LUNENBURG, MA"],
+    weeks: [
+      {label:"Dec 22–28",total:321,cities:{"GROTON, MA":87,"WESTFORD, MA":56,"LITTLETON, MA":17,"AYER, MA":14,"TOWNSEND, MA":10,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":7,"NASHUA, NH":7,"NORTH READING, MA":7,"LEOMINSTER, MA":3,"LUNENBURG, MA":1}},
+      {label:"Dec 29–Jan 4",total:322,cities:{"GROTON, MA":68,"WESTFORD, MA":67,"LITTLETON, MA":14,"AYER, MA":18,"TOWNSEND, MA":9,"PEPPERELL, MA":5,"LOWELL, MA":9,"MANCHESTER, NH":9,"NASHUA, NH":3,"NORTH READING, MA":7,"LEOMINSTER, MA":3,"LUNENBURG, MA":1}},
+      {label:"Jan 5–11",total:335,cities:{"GROTON, MA":68,"WESTFORD, MA":61,"LITTLETON, MA":25,"AYER, MA":18,"TOWNSEND, MA":10,"PEPPERELL, MA":11,"LOWELL, MA":11,"MANCHESTER, NH":11,"NASHUA, NH":4,"NORTH READING, MA":9,"LEOMINSTER, MA":1,"LUNENBURG, MA":5}},
+      {label:"Jan 12–18",total:314,cities:{"GROTON, MA":66,"WESTFORD, MA":40,"LITTLETON, MA":13,"AYER, MA":17,"TOWNSEND, MA":21,"PEPPERELL, MA":13,"LOWELL, MA":13,"MANCHESTER, NH":8,"NASHUA, NH":5,"NORTH READING, MA":4,"LEOMINSTER, MA":2,"LUNENBURG, MA":6}},
+      {label:"Jan 19–25",total:349,cities:{"GROTON, MA":63,"WESTFORD, MA":61,"LITTLETON, MA":26,"AYER, MA":16,"TOWNSEND, MA":18,"PEPPERELL, MA":17,"LOWELL, MA":11,"MANCHESTER, NH":7,"NASHUA, NH":7,"NORTH READING, MA":2,"LEOMINSTER, MA":5,"LUNENBURG, MA":7}},
+      {label:"Jan 26–Feb 1",total:290,cities:{"GROTON, MA":68,"WESTFORD, MA":51,"LITTLETON, MA":19,"AYER, MA":19,"TOWNSEND, MA":13,"PEPPERELL, MA":10,"LOWELL, MA":3,"MANCHESTER, NH":6,"NASHUA, NH":8,"NORTH READING, MA":1,"LEOMINSTER, MA":1,"LUNENBURG, MA":2}},
+      {label:"Feb 2–8",total:292,cities:{"GROTON, MA":65,"WESTFORD, MA":53,"LITTLETON, MA":13,"AYER, MA":12,"TOWNSEND, MA":18,"PEPPERELL, MA":14,"LOWELL, MA":6,"MANCHESTER, NH":7,"NASHUA, NH":3,"NORTH READING, MA":2,"LEOMINSTER, MA":2,"LUNENBURG, MA":6}},
+      {label:"Feb 9–15",total:311,cities:{"GROTON, MA":64,"WESTFORD, MA":67,"LITTLETON, MA":13,"AYER, MA":15,"TOWNSEND, MA":14,"PEPPERELL, MA":7,"LOWELL, MA":3,"MANCHESTER, NH":7,"NASHUA, NH":6,"NORTH READING, MA":4,"LEOMINSTER, MA":4,"LUNENBURG, MA":1}},
+      {label:"Feb 16–22",total:347,cities:{"GROTON, MA":83,"WESTFORD, MA":69,"LITTLETON, MA":21,"AYER, MA":15,"TOWNSEND, MA":16,"PEPPERELL, MA":10,"LOWELL, MA":6,"MANCHESTER, NH":5,"NASHUA, NH":1,"NORTH READING, MA":3,"LEOMINSTER, MA":5,"LUNENBURG, MA":4}},
+      {label:"Feb 23–Mar 1",total:309,cities:{"GROTON, MA":61,"WESTFORD, MA":66,"LITTLETON, MA":23,"AYER, MA":19,"TOWNSEND, MA":15,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":7,"NASHUA, NH":2,"NORTH READING, MA":1,"LEOMINSTER, MA":3,"LUNENBURG, MA":2}},
+      {label:"Mar 2–8",total:327,cities:{"GROTON, MA":80,"WESTFORD, MA":60,"LITTLETON, MA":18,"AYER, MA":8,"TOWNSEND, MA":13,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":3,"NASHUA, NH":4,"NORTH READING, MA":1,"LEOMINSTER, MA":5,"LUNENBURG, MA":3}},
+      {label:"Mar 9–15",total:320,cities:{"GROTON, MA":63,"WESTFORD, MA":70,"LITTLETON, MA":12,"AYER, MA":11,"TOWNSEND, MA":14,"PEPPERELL, MA":12,"LOWELL, MA":7,"MANCHESTER, NH":5,"NASHUA, NH":4,"NORTH READING, MA":1,"LEOMINSTER, MA":7,"LUNENBURG, MA":1}}
+    ]
+  }
+};
+
+// Build the 18-month aggregate period (sum of all trend months)
+(function build18MonthAggregate() {
+  let total = 0;
+  const byState = {MA:0,NH:0,OTHER:0};
+  const byStore = {dracut:0,pepperell:0,groton:0};
+  const byStoreByState = {
+    dracut:{MA:0,NH:0,OTHER:0},
+    pepperell:{MA:0,NH:0,OTHER:0},
+    groton:{MA:0,NH:0,OTHER:0}
+  };
+  for (const m of TREND) {
+    total += m.total;
+    byState.MA += m.byState.MA;
+    byState.NH += m.byState.NH;
+    byState.OTHER += m.byState.OTHER;
+    byStore.dracut += m.byStore.dracut;
+    byStore.pepperell += m.byStore.pepperell;
+    byStore.groton += m.byStore.groton;
+  }
+  // Estimate store-by-state proportions from the monthly data ratios
+  for (const store of ['dracut','pepperell','groton']) {
+    const storeTotal = byStore[store];
+    const overallTotal = total;
+    // Use the month data ratios as a proxy
+    const ref = DATA.month.byStoreByState[store];
+    const refTotal = ref.MA + ref.NH + ref.OTHER;
+    if (refTotal > 0) {
+      byStoreByState[store].MA = Math.round(storeTotal * ref.MA / refTotal);
+      byStoreByState[store].NH = Math.round(storeTotal * ref.NH / refTotal);
+      byStoreByState[store].OTHER = storeTotal - byStoreByState[store].MA - byStoreByState[store].NH;
+    }
+  }
+  // Use month top cities as representative for 18-month (accurate enough for display)
+  DATA['18month'] = {
+    total, uniqueCities: 900, byStore, byState, byStoreByState,
+    topCities: DATA.month.topCities
+  };
+})();
+
+// ========== STATE ==========
+const STORE_LABELS = {dracut:'Dracut (DD)', pepperell:'Pepperell (PD)', groton:'Groton (GD)'};
+const STORE_COLORS = {dracut:'#f59e0b', pepperell:'#34d399', groton:'#3b82f6'};
+const BAR_CLASS = {dracut:'bar-dracut', pepperell:'bar-pepperell', groton:'bar-groton'};
+let currentPeriod = 'yesterday';
+let currentOverviewStore = 'dracut';
+let selectedBucket = null;
+let chartInstances = {};
+
+// ========== NAVIGATION ==========
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.target.classList.add('active');
+  if (id === 'trends') renderTrends();
+  if (id === 'city-trends') renderCityTrends();
+}
+
+function setPeriod(p) {
+  currentPeriod = p;
+  document.querySelectorAll('.time-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.period === p);
+  });
+  renderAll();
+}
+
+function setOverviewStore(store) {
+  currentOverviewStore = store;
+  document.querySelectorAll('.store-tab').forEach(t => {
+    t.className = 'store-tab';
+    if (t.dataset.store === store) t.classList.add('active-' + store);
+  });
+  renderOverviewTable();
+}
+
+// ========== RENDERING ==========
+function renderAll() {
+  const d = DATA[currentPeriod];
+  if (!d) return;
+
+  // KPIs
+  document.getElementById('kpi-total-scans').textContent = d.total.toLocaleString();
+  document.getElementById('kpi-unique-cities').textContent = d.uniqueCities.toLocaleString();
+  const topState = Object.entries(d.byState).sort((a,b) => b[1]-a[1])[0];
+  document.getElementById('kpi-top-state').textContent = topState[0];
+  document.getElementById('kpi-top-state-detail').textContent =
+    `${topState[1].toLocaleString()} scans (${(topState[1]/d.total*100).toFixed(1)}%)`;
+  const oos = d.byState.NH + d.byState.OTHER;
+  document.getElementById('kpi-oos-pct').textContent = (oos/d.total*100).toFixed(1) + '%';
+  document.getElementById('kpi-oos-detail').textContent = `${oos.toLocaleString()} scans`;
+  document.getElementById('kpi-total-detail').textContent =
+    `DD: ${d.byStore.dracut.toLocaleString()} / PD: ${d.byStore.pepperell.toLocaleString()} / GD: ${d.byStore.groton.toLocaleString()}`;
+
+  renderOverviewTable();
+  renderStoreDetailTables();
+  renderStateBuckets();
+}
+
+function renderTable(containerId, rows, store) {
+  const maxCount = rows.length > 0 ? rows[0].count : 1;
+  let html = `<table class="geo-table">
+    <thead><tr><th>#</th><th>Location</th><th class="bar-cell"></th><th style="text-align:right">Scans</th><th style="text-align:right">%</th></tr></thead>
+    <tbody>`;
+  for (const r of rows) {
+    const barPct = (r.count / maxCount * 100).toFixed(0);
+    html += `<tr>
+      <td class="rank">${r.rank}</td>
+      <td class="city-name">${r.name}</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill ${BAR_CLASS[store]}" style="width:${barPct}%"></div></div></td>
+      <td class="scan-count">${r.count.toLocaleString()}</td>
+      <td class="pct">${r.pct}%</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  document.getElementById(containerId).innerHTML = rows.length === 0
+    ? '<div style="text-align:center;padding:20px;color:var(--text-muted)">No data for this period</div>'
+    : html;
+}
+
+function renderOverviewTable() {
+  const d = DATA[currentPeriod];
+  if (!d) return;
+  const store = currentOverviewStore;
+  document.getElementById('overview-table-title').textContent = `Top 12 Locations — ${STORE_LABELS[store]}`;
+  renderTable('overview-table-container', d.topCities[store] || [], store);
+}
+
+function renderStoreDetailTables() {
+  const d = DATA[currentPeriod];
+  if (!d) return;
+  for (const store of ['dracut','pepperell','groton']) {
+    renderTable(`table-${store}`, d.topCities[store] || [], store);
+  }
+}
+
+function renderStateBuckets() {
+  const d = DATA[currentPeriod];
+  if (!d) return;
+  const total = d.total || 1;
+  document.getElementById('bucket-ma-val').textContent = d.byState.MA.toLocaleString();
+  document.getElementById('bucket-ma-pct').textContent = `${(d.byState.MA/total*100).toFixed(1)}% of all scans`;
+  document.getElementById('bucket-nh-val').textContent = d.byState.NH.toLocaleString();
+  document.getElementById('bucket-nh-pct').textContent = `${(d.byState.NH/total*100).toFixed(1)}% of all scans`;
+  document.getElementById('bucket-other-val').textContent = d.byState.OTHER.toLocaleString();
+  document.getElementById('bucket-other-pct').textContent = `${(d.byState.OTHER/total*100).toFixed(1)}% of all scans`;
+  renderStateByStoreChart(d);
+  renderStateDonutChart(d);
+  if (selectedBucket) selectBucket(selectedBucket);
+}
+
+function renderStateByStoreChart(d) {
+  const ctx = document.getElementById('chart-state-by-store');
+  if (chartInstances['state-by-store']) chartInstances['state-by-store'].destroy();
+  chartInstances['state-by-store'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Dracut', 'Pepperell', 'Groton'],
+      datasets: [
+        {label:'MA', data:[d.byStoreByState.dracut.MA, d.byStoreByState.pepperell.MA, d.byStoreByState.groton.MA], backgroundColor:'#34d399', borderRadius:4},
+        {label:'NH', data:[d.byStoreByState.dracut.NH, d.byStoreByState.pepperell.NH, d.byStoreByState.groton.NH], backgroundColor:'#3b82f6', borderRadius:4},
+        {label:'Other', data:[d.byStoreByState.dracut.OTHER, d.byStoreByState.pepperell.OTHER, d.byStoreByState.groton.OTHER], backgroundColor:'#a78bfa', borderRadius:4}
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#8899a8',font:{size:11}}}},
+      scales:{
+        x:{stacked:true, ticks:{color:'#5a6b7a'}, grid:{color:'rgba(255,255,255,0.03)'}},
+        y:{stacked:true, ticks:{color:'#5a6b7a'}, grid:{color:'rgba(255,255,255,0.05)'}}
+      }
+    }
+  });
+}
+
+function renderStateDonutChart(d) {
+  const ctx = document.getElementById('chart-state-donut');
+  if (chartInstances['state-donut']) chartInstances['state-donut'].destroy();
+  chartInstances['state-donut'] = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Massachusetts','New Hampshire','Out of State'],
+      datasets: [{
+        data: [d.byState.MA, d.byState.NH, d.byState.OTHER],
+        backgroundColor: ['#34d399','#3b82f6','#a78bfa'],
+        borderWidth: 0, hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false, cutout:'65%',
+      plugins:{legend:{position:'bottom',labels:{color:'#8899a8',font:{size:11},padding:16}}}
+    }
+  });
+}
+
+// ========== BEHAVIOR PANEL ==========
+function selectBucket(bucket) {
+  selectedBucket = bucket;
+  document.querySelectorAll('.bucket-card').forEach(c => c.classList.remove('selected'));
+  const idx = {MA:0,NH:1,OTHER:2}[bucket];
+  document.querySelectorAll('.bucket-card')[idx].classList.add('selected');
+  const panel = document.getElementById('behavior-panel');
+  panel.classList.add('visible');
+  const labels = {MA:'Massachusetts', NH:'New Hampshire', OTHER:'Out of State'};
+  document.getElementById('behavior-title').textContent = `Visit Behavior — ${labels[bucket]} Customers`;
+
+  const d = DATA[currentPeriod];
+  if (!d) return;
+  const bucketScans = d.byState[bucket];
+  const total = d.total;
+  const pct = (bucketScans/total*100).toFixed(1);
+
+  document.getElementById('beh-total-scans').textContent = bucketScans.toLocaleString();
+  document.getElementById('beh-total-scans-d').textContent = `of ${total.toLocaleString()} total scans`;
+  document.getElementById('beh-pct-traffic').textContent = pct + '%';
+  document.getElementById('beh-pct-traffic-d').textContent = `of all foot traffic`;
+
+  // Store distribution for this bucket
+  const dd = d.byStoreByState.dracut[bucket];
+  const pd = d.byStoreByState.pepperell[bucket];
+  const gd = d.byStoreByState.groton[bucket];
+  const biggest = dd >= pd && dd >= gd ? 'Dracut' : pd >= gd ? 'Pepperell' : 'Groton';
+  document.getElementById('beh-store-dist').textContent = biggest;
+  document.getElementById('beh-store-dist-d').textContent =
+    `DD: ${dd.toLocaleString()} / PD: ${pd.toLocaleString()} / GD: ${gd.toLocaleString()}`;
+}
+
+// ========== TRENDS ==========
+function renderTrends() {
+  const labels = TREND.map(m => m.label);
+  const chartOpts = {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:'#8899a8',font:{size:11}}}},
+    scales:{
+      x:{ticks:{color:'#5a6b7a',maxRotation:45}, grid:{color:'rgba(255,255,255,0.03)'}},
+      y:{ticks:{color:'#5a6b7a'}, grid:{color:'rgba(255,255,255,0.05)'}}
+    }
+  };
+
+  // State bucket trends
+  const ctx1 = document.getElementById('chart-trends-state');
+  if (chartInstances['trends-state']) chartInstances['trends-state'].destroy();
+  chartInstances['trends-state'] = new Chart(ctx1, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {label:'MA', data:TREND.map(m=>m.byState.MA), borderColor:'#34d399', backgroundColor:'rgba(52,211,153,0.1)', fill:true, tension:0.3, pointRadius:3},
+        {label:'NH', data:TREND.map(m=>m.byState.NH), borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,0.1)', fill:true, tension:0.3, pointRadius:3},
+        {label:'Other', data:TREND.map(m=>m.byState.OTHER), borderColor:'#a78bfa', backgroundColor:'rgba(167,139,250,0.1)', fill:true, tension:0.3, pointRadius:3}
+      ]
+    },
+    options: chartOpts
+  });
+
+  // Store volume trends
+  const ctx2 = document.getElementById('chart-trends-store');
+  if (chartInstances['trends-store']) chartInstances['trends-store'].destroy();
+  chartInstances['trends-store'] = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {label:'Dracut', data:TREND.map(m=>m.byStore.dracut), borderColor:'#f59e0b', tension:0.3, pointRadius:3},
+        {label:'Pepperell', data:TREND.map(m=>m.byStore.pepperell), borderColor:'#34d399', tension:0.3, pointRadius:3},
+        {label:'Groton', data:TREND.map(m=>m.byStore.groton), borderColor:'#3b82f6', tension:0.3, pointRadius:3}
+      ]
+    },
+    options: chartOpts
+  });
+
+  // NH % trends
+  const ctx3 = document.getElementById('chart-trends-nh-pct');
+  if (chartInstances['trends-nh']) chartInstances['trends-nh'].destroy();
+  chartInstances['trends-nh'] = new Chart(ctx3, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label:'NH %',
+        data: TREND.map(m => (m.byState.NH / m.total * 100).toFixed(1)),
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.15)',
+        fill: true, tension: 0.3, pointRadius: 4,
+        pointBackgroundColor: '#3b82f6'
+      }]
+    },
+    options: {
+      ...chartOpts,
+      scales: {
+        ...chartOpts.scales,
+        y: {
+          ...chartOpts.scales.y,
+          ticks: { ...chartOpts.scales.y.ticks, callback: v => v + '%' }
         }
       }
+    }
+  });
+}
+
+// ========== CITY TRACKER ==========
+const cityColors = ['#f59e0b','#34d399','#3b82f6','#a78bfa','#ef4444','#2dd4bf','#f472b6','#fb923c','#818cf8','#4ade80','#fbbf24','#60a5fa'];
+let currentCityStore = 'dracut';
+let activeCityChips = new Set(CITY_TREND_STORE.dracut.cities.slice(0, 5));
+
+function setCityStore(store) {
+  currentCityStore = store;
+  // Update store tabs
+  document.querySelectorAll('#section-city-trends .store-tab').forEach(t => {
+    t.className = 'store-tab';
+    if (t.dataset.store === store) t.classList.add('active-' + store);
+  });
+  // Reset active chips to top 5 for this store
+  activeCityChips = new Set(CITY_TREND_STORE[store].cities.slice(0, 5));
+  // Update titles
+  const label = STORE_LABELS[store];
+  document.getElementById('city-table-title').textContent = 'Weekly Municipality Tracker — ' + label;
+  document.getElementById('city-chart-title').textContent = 'Municipality Traffic Over Time — ' + label;
+  renderCityTrends();
+}
+
+function setCityView(view) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.view-btn[onclick*="${view}"]`).classList.add('active');
+  document.getElementById('city-table-view').style.display = view === 'table' ? 'block' : 'none';
+  document.getElementById('city-chart-view').style.display = view === 'chart' ? 'block' : 'none';
+  if (view === 'chart') renderCityChart();
+}
+
+function renderCityTrendTable() {
+  const storeData = CITY_TREND_STORE[currentCityStore];
+  const weeks = storeData.weeks;
+  const storeCities = storeData.cities;
+  const latest = weeks[weeks.length - 1];
+  const prev = weeks[weeks.length - 2];
+
+  let html = '<table class="city-trend-table"><thead><tr>';
+  html += '<th>#</th><th>Municipality</th><th class="num">This Week</th><th class="num">Last Week</th><th class="num">WoW</th><th>12-Wk Trend</th>';
+  html += '<th class="num">4-Wk Avg</th>';
+  html += '</tr></thead><tbody>';
+
+  const sorted = [...storeCities].sort((a, b) => (latest.cities[b] || 0) - (latest.cities[a] || 0));
+
+  sorted.forEach((city, i) => {
+    const cur = latest.cities[city] || 0;
+    const prv = prev.cities[city] || 0;
+    const diff = cur - prv;
+    const pctChg = prv > 0 ? ((diff / prv) * 100).toFixed(1) : '—';
+    const wowClass = diff > 0 ? 'wow-up' : diff < 0 ? 'wow-down' : 'wow-flat';
+    const arrow = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
+    const sign = diff > 0 ? '+' : '';
+
+    const last4 = weeks.slice(-4).map(w => w.cities[city] || 0);
+    const avg4 = Math.round(last4.reduce((a, b) => a + b, 0) / 4);
+
+    const allVals = weeks.map(w => w.cities[city] || 0);
+    const maxVal = Math.max(...allVals, 1);
+    let sparkHtml = '<div class="sparkline">';
+    allVals.forEach((v, idx) => {
+      const h = Math.max(2, (v / maxVal) * 28);
+      const isLast = idx === allVals.length - 1;
+      const color = isLast ? (diff >= 0 ? '#34d399' : '#ef4444') : 'rgba(245,158,11,0.35)';
+      sparkHtml += `<div class="spark-bar" style="height:${h}px;background:${color}"></div>`;
     });
-  </script>
+    sparkHtml += '</div>';
+
+    const shortCity = city.replace(', NH', ' NH').replace(', MA', ' MA').replace(', USA', '');
+    html += `<tr>`;
+    html += `<td class="rank" style="font-size:12px;font-weight:700;color:var(--text-muted)">${i + 1}</td>`;
+    html += `<td class="city-name-cell">${shortCity}</td>`;
+    html += `<td class="num" style="font-weight:600;color:${STORE_COLORS[currentCityStore]}">${cur.toLocaleString()}</td>`;
+    html += `<td class="num">${prv.toLocaleString()}</td>`;
+    html += `<td class="num ${wowClass}">${arrow} ${sign}${diff} <span style="font-size:11px;opacity:0.7">(${pctChg}%)</span></td>`;
+    html += `<td class="spark-cell">${sparkHtml}</td>`;
+    html += `<td class="num">${avg4.toLocaleString()}</td>`;
+    html += `</tr>`;
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('city-trend-table-container').innerHTML = html;
+}
+
+function renderCityChips() {
+  const container = document.getElementById('city-chips-container');
+  const storeCities = CITY_TREND_STORE[currentCityStore].cities;
+  let html = '';
+  storeCities.forEach((city, i) => {
+    const active = activeCityChips.has(city) ? 'active' : '';
+    const shortCity = city.replace(', NH', ' NH').replace(', MA', ' MA').replace(', USA', '');
+    html += `<div class="city-chip ${active}" style="${active ? 'border-color:' + cityColors[i] + ';color:' + cityColors[i] : ''}" onclick="toggleCityChip('${city}', ${i})">${shortCity}</div>`;
+  });
+  container.innerHTML = html;
+}
+
+function toggleCityChip(city, idx) {
+  if (activeCityChips.has(city)) activeCityChips.delete(city);
+  else activeCityChips.add(city);
+  renderCityChips();
+  renderCityChart();
+}
+
+function renderCityChart() {
+  const storeData = CITY_TREND_STORE[currentCityStore];
+  const ctx = document.getElementById('chart-city-trends');
+  if (chartInstances['city-trends']) chartInstances['city-trends'].destroy();
+  const labels = storeData.weeks.map(w => w.label);
+  const datasets = [];
+  storeData.cities.forEach((city, i) => {
+    if (!activeCityChips.has(city)) return;
+    datasets.push({
+      label: city.replace(', NH', ' NH').replace(', MA', ' MA').replace(', USA', ''),
+      data: storeData.weeks.map(w => w.cities[city] || 0),
+      borderColor: cityColors[i],
+      backgroundColor: cityColors[i] + '18',
+      tension: 0.3, pointRadius: 4, pointHoverRadius: 7,
+      borderWidth: 2.5, pointBackgroundColor: cityColors[i]
+    });
+  });
+  chartInstances['city-trends'] = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(15,25,35,0.95)', titleColor: '#e8edf2',
+          bodyColor: '#8899a8', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1,
+          padding: 12, bodySpacing: 6,
+          callbacks: {
+            label: function(ctx) {
+              const prev = ctx.dataIndex > 0 ? ctx.dataset.data[ctx.dataIndex - 1] : null;
+              const cur = ctx.parsed.y;
+              let change = '';
+              if (prev !== null) {
+                const diff = cur - prev;
+                const pct = prev > 0 ? ((diff/prev)*100).toFixed(1) : '—';
+                change = diff >= 0 ? ` ▲+${diff} (${pct}%)` : ` ▼${diff} (${pct}%)`;
+              }
+              return `${ctx.dataset.label}: ${cur}${change}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#5a6b7a', maxRotation: 45 }, grid: { color: 'rgba(255,255,255,0.03)' } },
+        y: { ticks: { color: '#5a6b7a' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+      }
+    }
+  });
+}
+
+function renderMovers() {
+  const storeData = CITY_TREND_STORE[currentCityStore];
+  const weeks = storeData.weeks;
+  const storeCities = storeData.cities;
+  const latest = weeks[weeks.length - 1];
+  const prev = weeks[weeks.length - 2];
+  const changes = storeCities.map(city => {
+    const cur = latest.cities[city] || 0;
+    const prv = prev.cities[city] || 0;
+    return { city, cur, prv, diff: cur - prv, pct: prv > 0 ? ((cur - prv) / prv * 100).toFixed(1) : 0 };
+  });
+
+  const gainers = changes.filter(c => c.diff > 0).sort((a, b) => b.diff - a.diff).slice(0, 5);
+  let upHtml = '<table class="city-trend-table"><thead><tr><th>City</th><th class="num">This Wk</th><th class="num">Change</th></tr></thead><tbody>';
+  if (gainers.length === 0) {
+    upHtml += '<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:20px">No gainers this week</td></tr>';
+  }
+  gainers.forEach(g => {
+    const short = g.city.replace(', NH', ' NH').replace(', MA', ' MA').replace(', USA', '');
+    upHtml += `<tr><td class="city-name-cell">${short}</td><td class="num" style="color:${STORE_COLORS[currentCityStore]}">${g.cur}</td><td class="num wow-up">▲ +${g.diff} (${g.pct}%)</td></tr>`;
+  });
+  upHtml += '</tbody></table>';
+  document.getElementById('movers-up-container').innerHTML = upHtml;
+
+  const decliners = storeCities.map(city => {
+    const last5 = weeks.slice(-5).map(w => w.cities[city] || 0);
+    let downWeeks = 0;
+    for (let i = 1; i < last5.length; i++) if (last5[i] < last5[i-1]) downWeeks++;
+    const totalDrop = last5[last5.length-1] - last5[0];
+    return { city, downWeeks, totalDrop, current: last5[last5.length-1] };
+  }).filter(d => d.downWeeks >= 2).sort((a, b) => a.totalDrop - b.totalDrop).slice(0, 5);
+
+  let downHtml = '<table class="city-trend-table"><thead><tr><th>City</th><th class="num">Current</th><th class="num">5-Wk Chg</th><th class="num">Down Wks</th></tr></thead><tbody>';
+  if (decliners.length === 0) {
+    downHtml += '<tr><td colspan="4" style="text-align:center;color:var(--accent-green);padding:20px">No sustained declines detected</td></tr>';
+  }
+  decliners.forEach(d => {
+    const short = d.city.replace(', NH', ' NH').replace(', MA', ' MA').replace(', USA', '');
+    const cls = d.totalDrop < 0 ? 'wow-down' : 'wow-flat';
+    downHtml += `<tr><td class="city-name-cell">${short}</td><td class="num">${d.current}</td><td class="num ${cls}">${d.totalDrop}</td><td class="num">${d.downWeeks}/4</td></tr>`;
+  });
+  downHtml += '</tbody></table>';
+  document.getElementById('movers-down-container').innerHTML = downHtml;
+}
+
+function renderCityTrends() {
+  renderCityTrendTable();
+  renderCityChips();
+  renderMovers();
+}
+
+// ========== INIT ==========
+renderAll();
+renderCityTrends();
+</script>
 </body>
 </html>
