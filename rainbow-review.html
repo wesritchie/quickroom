@@ -49,7 +49,7 @@
 </style> </head><body><button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-<div class="sidebar" id="sidebar"><div class="sidebar-title">TREE HOUSE RAINBOW REVIEW</div><div class="sidebar-subtitle">Competitor Review Terminal</div><div class="nav-section"><div class="nav-section-title">Sections</div><div class="nav-item active" onclick="showSection('market-overview')">Market Overview</div><div class="nav-item" onclick="showSection('th-position')">Tree House Position</div><div class="nav-item" onclick="showSection('over-time')">Over Time Analysis</div><div class="nav-section-title" style="margin-top:12px;">SKU & Pricing</div><div class="nav-item" onclick="showSection('sku-dracut')">SKU Analysis â DD</div><div class="nav-item" onclick="showSection('sku-pepperell')">SKU Analysis â PD</div><div class="nav-item" onclick="showSection('sku-groton')">SKU Analysis â GD</div></div><div class="nav-section"><div class="nav-section-title">Actions</div><div class="nav-item" onclick="refreshData()" style="color:#3fb950;">â» Refresh Data</div></div></div><div class="main"><div id="data-freshness" style="display:none; margin-bottom:16px;"><div id="rf-done" style="display:none; font-size:12px; padding:8px 14px; background:rgba(63,185,80,0.08); border-radius:8px; border:1px solid rgba(63,185,80,0.2); color:#3fb950;"></div><div id="rf-loading" style="display:none; border-radius:8px; overflow:hidden; border:1px solid #30363d; background:#161b22;"><div style="display:flex; align-items:center; justify-content:space-between; padding:8px 14px 6px;"><div style="display:flex; align-items:center; gap:8px;"><div id="rf-spinner" style="width:14px;height:14px;border:2px solid #30363d;border-top-color:#ffa94d;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div><span id="rf-step" style="font-size:12px; color:#c9d1d9; font-weight:500;"></span></div><div style="display:flex; align-items:center; gap:10px;"><span id="rf-stall" style="font-size:11px; color:#f85149; display:none;">Stalled?</span><span id="rf-elapsed" style="font-size:11px; color:#6e7681; font-variant-numeric:tabular-nums;"></span><span id="rf-pct-text" style="font-size:12px; font-weight:700; color:#ffa94d; font-variant-numeric:tabular-nums; min-width:32px; text-align:right;"></span></div></div><div style="height:4px; background:#21262d; margin:0 0 0 0;"><div id="rf-bar" style="height:100%; width:0%; border-radius:0 0 0 8px; transition:width 0.6s ease; background:linear-gradient(90deg, #ff6b6b, #ffa94d, #ffd43b, #69db7c, #4dabf7, #9775fa, #ff6b6b); background-size:200% 100%; animation:rainbow-scroll 2s linear infinite;"></div></div></div></div><div id="market-overview" class="tab-content active"><h1 class="page-title">Market Overview</h1><p class="page-subtitle">Massachusetts Cannabis Market â TH Actuals + Lit Alerts Market Estimates</p><div class="period-tabs" data-section="market"><div class="period-tab active" onclick="setPeriod('market','daily')"> Yesterday<div class="period-label" id="market-daily-label">â</div></div><div class="period-tab" onclick="setPeriod('market','weekly')"> Past 7 Days<div class="period-label" id="market-weekly-label">â</div></div><div class="period-tab" onclick="setPeriod('market','monthly')"> Month to Date<div class="period-label" id="market-monthly-label">â</div></div><div class="period-tab" onclick="setPeriod('market','lastMonth')"> Last Complete Month<div class="period-label" id="market-lastMonth-label">â</div></div></div><div id="market-kpis" class="kpi-grid"><div class="kpi-card"><div class="kpi-label">Total Market Revenue</div><div class="kpi-value" id="market-total-rev">â</div><div class="kpi-subtext" id="market-total-rev-sub"></div></div><div class="kpi-card"><div class="kpi-label">Active Retailers</div><div class="kpi-value" id="market-store-count">â</div><div class="kpi-subtext">With estimated sales</div></div><div class="kpi-card"><div class="kpi-label">Avg Revenue/Store</div><div class="kpi-value" id="market-avg-rev">â</div><div class="kpi-subtext" id="market-avg-rev-sub"></div></div><div class="kpi-card"><div class="kpi-label">Tree House Store Rankings</div><div id="market-th-ranks" style="margin-top:6px;"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;"><span style="font-size:12px;color:#c9d1d9;">Dracut</span><span style="font-size:20px;font-weight:700;color:#ffa94d;" id="market-rank-dracut">â</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;"><span style="font-size:12px;color:#c9d1d9;">Pepperell</span><span style="font-size:20px;font-weight:700;color:#ffd43b;" id="market-rank-pepperell">â</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:12px;color:#c9d1d9;">Groton</span><span style="font-size:20px;font-weight:700;color:#69db7c;" id="market-rank-groton">â</span></div></div><div class="kpi-subtext" id="market-th-rank-sub"></div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;"><div class="chart-container" style="margin-bottom:0;min-height:400px;"><div class="chart-title">Market Category Breakdown</div><div class="chart-subtitle" style="color:#8b949e;">All MA retailers â Lit Alerts estimates</div><div style="position:relative;height:340px;"><canvas id="market-cat-chart"></canvas></div><div id="market-cat-legend" style="padding:12px 0 4px;"></div></div><div class="chart-container" style="margin-bottom:0;min-height:400px;"><div class="chart-title">Tree House Category Breakdown</div><div class="chart-subtitle" id="th-cat-subtitle" style="color:#8b949e;">All 3 stores combined â Dutchie POS actuals</div><div style="position:relative;height:340px;"><canvas id="th-combined-cat-chart"></canvas></div><div id="th-cat-legend" style="padding:12px 0 4px;"></div></div></div><div class="section-divider">Competitive Ranking â Tree House Stores</div><div class="note-box"><strong>How to read:</strong> Each table shows the 10 stores ranked above and 10 below Tree House (highlighted in orange). TH revenue is from Dutchie POS actuals <span style="color:#4CAF50;">(Actual)</span> â all other stores use Lit Alerts estimates. Arrows show rank movement vs. the prior period. </div><div id="ranking-dracut-container"></div><div id="ranking-pepperell-container"></div><div id="ranking-groton-container"></div></div><div id="th-position" class="tab-content"><h1 class="page-title">Tree House Position</h1><p class="page-subtitle">Revenue & Category Performance vs. Local Competitors</p><div class="period-tabs" data-section="th"><div class="period-tab active" onclick="setPeriod('th','daily')"> Yesterday<div class="period-label" id="th-daily-label">â</div></div><div class="period-tab" onclick="setPeriod('th','weekly')"> Past 7 Days<div class="period-label" id="th-weekly-label">â</div></div><div class="period-tab" onclick="setPeriod('th','monthly')"> Month to Date<div class="period-label" id="th-monthly-label">â</div></div><div class="period-tab" onclick="setPeriod('th','lastMonth')"> Last Complete Month<div class="period-label" id="th-lastMonth-label">â</div></div></div><div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">TH Dracut (Actual)</div><div class="kpi-value" id="th-dracut-rev">â</div><div class="kpi-subtext" id="th-dracut-sub"></div></div><div class="kpi-card"><div class="kpi-label">TH Pepperell (Actual)</div><div class="kpi-value" id="th-pepperell-rev">â</div><div class="kpi-subtext" id="th-pepperell-sub"></div></div><div class="kpi-card"><div class="kpi-label">TH Groton (Actual)</div><div class="kpi-value" id="th-groton-rev">â</div><div class="kpi-subtext" id="th-groton-sub"></div></div><div class="kpi-card"><div class="kpi-label">TH Combined</div><div class="kpi-value" id="th-combined-rev">â</div><div class="kpi-subtext">All 3 stores</div></div></div><div class="note-box" id="dutchie-notice"><strong>Live POS Data:</strong> Tree House revenue is pulled directly from Dutchie POS closing-reports (real actuals, not estimates). Competitors use Lit Alerts estimates. TH data updates automatically on each dashboard refresh. </div><div class="chart-container" style="height:420px;"><div class="chart-title">Dracut Region â Revenue Comparison</div><canvas id="th-dracut-comp-chart"></canvas></div><div class="chart-container" style="height:350px;"><div class="chart-title">Pepperell Region â Revenue Comparison</div><canvas id="th-pepperell-comp-chart"></canvas></div><div class="chart-container" style="height:350px;"><div class="chart-title">Groton Region â Revenue Comparison</div><canvas id="th-groton-comp-chart"></canvas></div><div class="section-divider">Category Breakdown by Store â Dutchie POS Actuals</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;"><div class="chart-container" style="margin-bottom:0;min-height:350px;"><div class="chart-title">TH Dracut</div><div style="position:relative;height:250px;"><canvas id="th-cat-dracut"></canvas></div><div id="th-cat-dracut-legend" style="padding:8px 0 4px;"></div></div><div class="chart-container" style="margin-bottom:0;min-height:350px;"><div class="chart-title">TH Pepperell</div><div style="position:relative;height:250px;"><canvas id="th-cat-pepperell"></canvas></div><div id="th-cat-pepperell-legend" style="padding:8px 0 4px;"></div></div><div class="chart-container" style="margin-bottom:0;min-height:350px;"><div class="chart-title">TH Groton</div><div style="position:relative;height:250px;"><canvas id="th-cat-groton"></canvas></div><div id="th-cat-groton-legend" style="padding:8px 0 4px;"></div></div></div></div><div id="over-time" class="tab-content"><h1 class="page-title">Over Time Analysis</h1><p class="page-subtitle">Revenue Trends â Tree House Actuals vs. Market & Competitors</p><div class="period-tabs" data-section="ot"><div class="period-tab active" onclick="setPeriod('ot','daily')"> Past 14 Days<div class="period-label" id="ot-daily-label">â</div></div><div class="period-tab" onclick="setPeriod('ot','weekly')"> Past 30 Days<div class="period-label" id="ot-weekly-label">â</div></div><div class="period-tab" onclick="setPeriod('ot','lastMonth')"> Last Complete Month<div class="period-label" id="ot-lastMonth-label">â</div></div><div class="period-tab" onclick="setPeriod('ot','monthly')"> 24-Month Trend<div class="period-label" id="ot-monthly-label">â</div></div></div><div class="note-box"><strong>Tree House Data:</strong> TH store data uses live Dutchie POS actuals via API. Competitor data from Lit Alerts estimates. </div><div class="chart-container" style="height:400px;"><div class="chart-title">Market-Wide Revenue</div><canvas id="ot-market-trend-chart"></canvas></div><div class="chart-container" style="height:400px;"><div class="chart-title">Tree House Stores â Revenue</div><canvas id="ot-th-trend-chart"></canvas></div><div class="chart-container" style="height:420px;"><div class="chart-title">Dracut Region â Revenue Comparison</div><canvas id="ot-dracut-trend-chart"></canvas></div><div class="chart-container" style="height:350px;"><div class="chart-title">Pepperell Region â Revenue Comparison</div><canvas id="ot-pepperell-trend-chart"></canvas></div><div class="chart-container" style="height:350px;"><div class="chart-title">Groton Region â Revenue Comparison</div><canvas id="ot-groton-trend-chart"></canvas></div></div><div id="sku-dracut" class="tab-content"><h1 class="page-title">SKU Analysis â Dracut District</h1><p class="page-subtitle">TH Dracut vs. Regional Competitors â Menu & Pricing Snapshot</p><div class="note-box"><strong>Data Source:</strong> Product-level data from Lit Alerts product API (live Dutchie menu scrape). Updated on each refresh. </div><div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">TH Dracut Menu Items</div><div class="kpi-value" id="sku-dracut-total">â</div></div><div class="kpi-card"><div class="kpi-label">Largest Competitor Menu</div><div class="kpi-value" id="sku-dracut-max-comp">â</div><div class="kpi-subtext" id="sku-dracut-max-comp-name"></div></div></div><div class="chart-container" style="height:450px;"><div class="chart-title">Dracut Region â SKU Count by Category</div><canvas id="sku-dracut-chart"></canvas></div><div class="section-divider">Price Range Analysis â Dracut Region</div><div id="price-range-dracut"></div></div><div id="sku-pepperell" class="tab-content"><h1 class="page-title">SKU Analysis â Pepperell District</h1><p class="page-subtitle">TH Pepperell vs. Regional Competitors â Menu & Pricing Snapshot</p><div class="note-box"><strong>Data Source:</strong> Product-level data from Lit Alerts product API (live Dutchie menu scrape). Updated on each refresh. </div><div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">TH Pepperell Menu Items</div><div class="kpi-value" id="sku-pepperell-total">â</div></div><div class="kpi-card"><div class="kpi-label">Largest Competitor Menu</div><div class="kpi-value" id="sku-pepperell-max-comp">â</div><div class="kpi-subtext" id="sku-pepperell-max-comp-name"></div></div></div><div class="chart-container" style="height:450px;"><div class="chart-title">Pepperell Region â SKU Count by Category</div><canvas id="sku-pepperell-chart"></canvas></div><div class="section-divider">Price Range Analysis â Pepperell Region</div><div id="price-range-pepperell"></div></div><div id="sku-groton" class="tab-content"><h1 class="page-title">SKU Analysis â Groton District</h1><p class="page-subtitle">TH Groton vs. Regional Competitors â Menu & Pricing Snapshot</p><div class="note-box"><strong>Data Source:</strong> Product-level data from Lit Alerts product API (live Dutchie menu scrape). Updated on each refresh. </div><div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">TH Groton Menu Items</div><div class="kpi-value" id="sku-groton-total">â</div></div><div class="kpi-card"><div class="kpi-label">Largest Competitor Menu</div><div class="kpi-value" id="sku-groton-max-comp">â</div><div class="kpi-subtext" id="sku-groton-max-comp-name"></div></div></div><div class="chart-container" style="height:450px;"><div class="chart-title">Groton Region â SKU Count by Category</div><canvas id="sku-groton-chart"></canvas></div><div class="section-divider">Price Range Analysis â Groton Region</div><div id="price-range-groton"></div></div></div><div class="rainbow-banner" id="rainbow-banner"><div class="rb-ring"><div class="rb-ring-inner"><span id="rb-pct"></span></div></div><div class="rb-title">RAINBOW REVIEW</div><div class="rb-text" id="rb-text">Loading...</div><div class="rb-bar"><div class="rb-bar-fill" id="rb-bar"></div></div></div><div class="status-bar"><div class="rainbow-loader" id="rainbow-loader"></div><div class="status-bar-content"><div><span class="status-dot loading" id="status-dot"></span><span id="status-text">Initializing...</span></div><div id="status-time">â</div></div></div> <script>const CONFIG = {
+<div class="sidebar" id="sidebar"><div class="sidebar-title">TREE HOUSE RAINBOW REVIEW</div><div class="sidebar-subtitle">Competitor Review Terminal</div><div class="nav-section"><div class="nav-section-title">Sections</div><div class="nav-item active" onclick="showSection('market-overview')">Market Overview</div><div class="nav-item" onclick="showSection('th-position')">Tree House Position</div><div class="nav-item" onclick="showSection('over-time')">Over Time Analysis</div><div class="nav-section-title" style="margin-top:12px;">SKU & Pricing</div><div class="nav-item" onclick="showSection('sku-dracut')">SKU Analysis &#226;&#128;&#148; DD</div><div class="nav-item" onclick="showSection('sku-pepperell')">SKU Analysis &#226;&#128;&#148; PD</div><div class="nav-item" onclick="showSection('sku-groton')">SKU Analysis &#226;&#128;&#148; GD</div></div><div class="nav-section"><div class="nav-section-title">Actions</div><div class="nav-item" onclick="refreshData()" style="color:#3fb950;">&#226;&#134;&#187; Refresh Data</div></div></div><div class="main"><div id="data-freshness" style="display:none; margin-bottom:16px;"><div id="rf-done" style="display:none; font-size:12px; padding:8px 14px; background:rgba(63,185,80,0.08); border-radius:8px; border:1px solid rgba(63,185,80,0.2); color:#3fb950;"></div><div id="rf-loading" style="display:none; border-radius:8px; overflow:hidden; border:1px solid #30363d; background:#161b22;"><div style="display:flex; align-items:center; justify-content:space-between; padding:8px 14px 6px;"><div style="display:flex; align-items:center; gap:8px;"><div id="rf-spinner" style="width:14px;height:14px;border:2px solid #30363d;border-top-color:#ffa94d;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div><span id="rf-step" style="font-size:12px; color:#c9d1d9; font-weight:500;"></span></div><div style="display:flex; align-items:center; gap:10px;"><span id="rf-stall" style="font-size:11px; color:#f85149; display:none;">Stalled?</span><span id="rf-elapsed" style="font-size:11px; color:#6e7681; font-variant-numeric:tabular-nums;"></span><span id="rf-pct-text" style="font-size:12px; font-weight:700; color:#ffa94d; font-variant-numeric:tabular-nums; min-width:32px; text-align:right;"></span></div></div><div style="height:4px; background:#21262d; margin:0 0 0 0;"><div id="rf-bar" style="height:100%; width:0%; border-radius:0 0 0 8px; transition:width 0.6s ease; background:linear-gradient(90deg, #ff6b6b, #ffa94d, #ffd43b, #69db7c, #4dabf7, #9775fa, #ff6b6b); background-size:200% 100%; animation:rainbow-scroll 2s linear infinite;"></div></div></div></div><div id="market-overview" class="tab-content active"><h1 class="page-title">Market Overview</h1><p class="page-subtitle">Massachusetts Cannabis Market &#226;&#128;&#148; TH Actuals + Lit Alerts Market Estimates</p><div class="period-tabs" data-section="market"><div class="period-tab active" onclick="setPeriod('market','daily')"> Yesterday<div class="period-label" id="market-daily-label">&#226;&#128;&#148;</div></div><div class="period-tab" onclick="setPeriod('market','weekly')"> Past 7 Days<div class="period-label" id="market-weekly-label">&#226;&#128;&#148;</div></div><div class="period-tab" onclick="setPeriod('market','monthly')"> Month to Date<div class="period-label" id="market-monthly-label">&#226;&#128;&#148;</div></div><div class="period-tab" onclick="setPeriod('market','lastMonth')"> Last Complete Month<div class="period-label" id="market-lastMonth-label">&#226;&#128;&#148;</div></div></div><div id="market-kpis" class="kpi-grid"><div class="kpi-card"><div class="kpi-label">Total Market Revenue</div><div class="kpi-value" id="market-total-rev">&#226;&#128;&#148;</div><div class="kpi-subtext" id="market-total-rev-sub"></div></div><div class="kpi-card"><div class="kpi-label">Active Retailers</div><div class="kpi-value" id="market-store-count">&#226;&#128;&#148;</div><div class="kpi-subtext">With estimated sales</div></div><div class="kpi-card"><div class="kpi-label">Avg Revenue/Store</div><div class="kpi-value" id="market-avg-rev">&#226;&#128;&#148;</div><div class="kpi-subtext" id="market-avg-rev-sub"></div></div><div class="kpi-card"><div class="kpi-label">Tree House Store Rankings</div><div id="market-th-ranks" style="margin-top:6px;"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;"><span style="font-size:12px;color:#c9d1d9;">Dracut</span><span style="font-size:20px;font-weight:700;color:#ffa94d;" id="market-rank-dracut">&#226;&#128;&#148;</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;"><span style="font-size:12px;color:#c9d1d9;">Pepperell</span><span style="font-size:20px;font-weight:700;color:#ffd43b;" id="market-rank-pepperell">&#226;&#128;&#148;</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:12px;color:#c9d1d9;">Groton</span><span style="font-size:20px;font-weight:700;color:#69db7c;" id="market-rank-groton">&#226;&#128;&#148;</span></div></div><div class="kpi-subtext" id="market-th-rank-sub"></div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;"><div class="chart-container" style="margin-bottom:0;min-height:400px;"><div class="chart-title">Market Category Breakdown</div><div class="chart-subtitle" style="color:#8b949e;">All MA retailers &#226;&#128;&#148; Lit Alerts estimates</div><div style="position:relative;height:340px;"><canvas id="market-cat-chart"></canvas></div><div id="market-cat-legend" style="padding:12px 0 4px;"></div></div><div class="chart-container" style="margin-bottom:0;min-height:400px;"><div class="chart-title">Tree House Category Breakdown</div><div class="chart-subtitle" id="th-cat-subtitle" style="color:#8b949e;">All 3 stores combined &#226;&#128;&#148; Dutchie POS actuals</div><div style="position:relative;height:340px;"><canvas id="th-combined-cat-chart"></canvas></div><div id="th-cat-legend" style="padding:12px 0 4px;"></div></div></div><div class="section-divider">Competitive Ranking &#226;&#128;&#148; Tree House Stores</div><div class="note-box"><strong>How to read:</strong> Each table shows the 10 stores ranked above and 10 below Tree House (highlighted in orange). TH revenue is from Dutchie POS actuals <span style="color:#4CAF50;">(Actual)</span> &#226;&#128;&#148; all other stores use Lit Alerts estimates. Arrows show rank movement vs. the prior period. </div><div id="ranking-dracut-container"></div><div id="ranking-pepperell-container"></div><div id="ranking-groton-container"></div></div><div id="th-position" class="tab-content"><h1 class="page-title">Tree House Position</h1><p class="page-subtitle">Revenue & Category Performance vs. Local Competitors</p><div class="period-tabs" data-section="th"><div class="period-tab active" onclick="setPeriod('th','daily')"> Yesterday<div class="period-label" id="th-daily-label">&#226;&#128;&#148;</div></div><div class="period-tab" onclick="setPeriod('th','weekly')"> Past 7 Days<div class="period-label" id="th-weekly-label">&#226;&#128;&#148;</div></div><div class="period-tab" onclick="setPeriod('th','monthly')"> Month to Date<div class="period-label" id="th-monthly-label">&#226;&#128;&#148;</div></div><div class="period-tab" onclick="setPeriod('th','lastMonth')"> Last Complete Month<div class="period-label" id="th-lastMonth-label">&#226;&#128;&#148;</div></div></div><div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">TH Dracut (Actual)</div><div class="kpi-value" id="th-dracut-rev">&#226;&#128;&#148;</div><div class="kpi-subtext" id="th-dracut-sub"></div></div><div class="kpi-card"><div class="kpi-label">TH Pepperell (Actual)</div><div class="kpi-value" id="th-pepperell-rev">&#226;&#128;&#148;</div><div class="kpi-subtext" id="th-pepperell-sub"></div></div><div class="kpi-card"><div class="kpi-label">TH Groton (Actual)</div><div class="kpi-value" id="th-groton-rev">&#226;&#128;&#148;</div><div class="kpi-subtext" id="th-groton-sub"></div></div><div class="kpi-card"><div class="kpi-label">TH Combined</div><div class="kpi-value" id="th-combined-rev">&#226;&#128;&#148;</div><div class="kpi-subtext">All 3 stores</div></div></div><div class="note-box" id="dutchie-notice"><strong>Live POS Data:</strong> Tree House revenue is pulled directly from Dutchie POS closing-reports (real actuals, not estimates). Competitors use Lit Alerts estimates. TH data updates automatically on each dashboard refresh. </div><div class="chart-container" style="height:420px;"><div class="chart-title">Dracut Region &#226;&#128;&#148; Revenue Comparison</div><canvas id="th-dracut-comp-chart"></canvas></div><div class="chart-container" style="height:350px;"><div class="chart-title">Pepperell Region &#226;&#128;&#148; Revenue Comparison</div><canvas id="th-pepperell-comp-chart"></canvas></div><div class="chart-container" style="height:350px;"><div class="chart-title">Groton Region &#226;&#128;&#148; Revenue Comparison</div><canvas id="th-groton-comp-chart"></canvas></div><div class="section-divider">Category Breakdown by Store &#226;&#128;&#148; Dutchie POS Actuals</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;"><div class="chart-container" style="margin-bottom:0;min-height:350px;"><div class="chart-title">TH Dracut</div><div style="position:relative;height:250px;"><canvas id="th-cat-dracut"></canvas></div><div id="th-cat-dracut-legend" style="padding:8px 0 4px;"></div></div><div class="chart-container" style="margin-bottom:0;min-height:350px;"><div class="chart-title">TH Pepperell</div><div style="position:relative;height:250px;"><canvas id="th-cat-pepperell"></canvas></div><div id="th-cat-pepperell-legend" style="padding:8px 0 4px;"></div></div><div class="chart-container" style="margin-bottom:0;min-height:350px;"><div class="chart-title">TH Groton</div><div style="position:relative;height:250px;"><canvas id="th-cat-groton"></canvas></div><div id="th-cat-groton-legend" style="padding:8px 0 4px;"></div></div></div></div><div id="over-time" class="tab-content"><h1 class="page-title">Over Time Analysis</h1><p class="page-subtitle">Revenue Trends &#226;&#128;&#148; Tree House Actuals vs. Market & Competitors</p><div class="period-tabs" data-section="ot"><div class="period-tab active" onclick="setPeriod('ot','daily')"> Past 14 Days<div class="period-label" id="ot-daily-label">&#226;&#128;&#148;</div></div><div class="period-tab" onclick="setPeriod('ot','weekly')"> Past 30 Days<div class="period-label" id="ot-weekly-label">&#226;&#128;&#148;</div></div><div class="period-tab" onclick="setPeriod('ot','lastMonth')"> Last Complete Month<div class="period-label" id="ot-lastMonth-label">&#226;&#128;&#148;</div></div><div class="period-tab" onclick="setPeriod('ot','monthly')"> 24-Month Trend<div class="period-label" id="ot-monthly-label">&#226;&#128;&#148;</div></div></div><div class="note-box"><strong>Tree House Data:</strong> TH store data uses live Dutchie POS actuals via API. Competitor data from Lit Alerts estimates. </div><div class="chart-container" style="height:400px;"><div class="chart-title">Market-Wide Revenue</div><canvas id="ot-market-trend-chart"></canvas></div><div class="chart-container" style="height:400px;"><div class="chart-title">Tree House Stores &#226;&#128;&#148; Revenue</div><canvas id="ot-th-trend-chart"></canvas></div><div class="chart-container" style="height:420px;"><div class="chart-title">Dracut Region &#226;&#128;&#148; Revenue Comparison</div><canvas id="ot-dracut-trend-chart"></canvas></div><div class="chart-container" style="height:350px;"><div class="chart-title">Pepperell Region &#226;&#128;&#148; Revenue Comparison</div><canvas id="ot-pepperell-trend-chart"></canvas></div><div class="chart-container" style="height:350px;"><div class="chart-title">Groton Region &#226;&#128;&#148; Revenue Comparison</div><canvas id="ot-groton-trend-chart"></canvas></div></div><div id="sku-dracut" class="tab-content"><h1 class="page-title">SKU Analysis &#226;&#128;&#148; Dracut District</h1><p class="page-subtitle">TH Dracut vs. Regional Competitors &#226;&#128;&#148; Menu & Pricing Snapshot</p><div class="note-box"><strong>Data Source:</strong> Product-level data from Lit Alerts product API (live Dutchie menu scrape). Updated on each refresh. </div><div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">TH Dracut Menu Items</div><div class="kpi-value" id="sku-dracut-total">&#226;&#128;&#148;</div></div><div class="kpi-card"><div class="kpi-label">Largest Competitor Menu</div><div class="kpi-value" id="sku-dracut-max-comp">&#226;&#128;&#148;</div><div class="kpi-subtext" id="sku-dracut-max-comp-name"></div></div></div><div class="chart-container" style="height:450px;"><div class="chart-title">Dracut Region &#226;&#128;&#148; SKU Count by Category</div><canvas id="sku-dracut-chart"></canvas></div><div class="section-divider">Price Range Analysis &#226;&#128;&#148; Dracut Region</div><div id="price-range-dracut"></div></div><div id="sku-pepperell" class="tab-content"><h1 class="page-title">SKU Analysis &#226;&#128;&#148; Pepperell District</h1><p class="page-subtitle">TH Pepperell vs. Regional Competitors &#226;&#128;&#148; Menu & Pricing Snapshot</p><div class="note-box"><strong>Data Source:</strong> Product-level data from Lit Alerts product API (live Dutchie menu scrape). Updated on each refresh. </div><div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">TH Pepperell Menu Items</div><div class="kpi-value" id="sku-pepperell-total">&#226;&#128;&#148;</div></div><div class="kpi-card"><div class="kpi-label">Largest Competitor Menu</div><div class="kpi-value" id="sku-pepperell-max-comp">&#226;&#128;&#148;</div><div class="kpi-subtext" id="sku-pepperell-max-comp-name"></div></div></div><div class="chart-container" style="height:450px;"><div class="chart-title">Pepperell Region &#226;&#128;&#148; SKU Count by Category</div><canvas id="sku-pepperell-chart"></canvas></div><div class="section-divider">Price Range Analysis &#226;&#128;&#148; Pepperell Region</div><div id="price-range-pepperell"></div></div><div id="sku-groton" class="tab-content"><h1 class="page-title">SKU Analysis &#226;&#128;&#148; Groton District</h1><p class="page-subtitle">TH Groton vs. Regional Competitors &#226;&#128;&#148; Menu & Pricing Snapshot</p><div class="note-box"><strong>Data Source:</strong> Product-level data from Lit Alerts product API (live Dutchie menu scrape). Updated on each refresh. </div><div class="kpi-grid"><div class="kpi-card"><div class="kpi-label">TH Groton Menu Items</div><div class="kpi-value" id="sku-groton-total">&#226;&#128;&#148;</div></div><div class="kpi-card"><div class="kpi-label">Largest Competitor Menu</div><div class="kpi-value" id="sku-groton-max-comp">&#226;&#128;&#148;</div><div class="kpi-subtext" id="sku-groton-max-comp-name"></div></div></div><div class="chart-container" style="height:450px;"><div class="chart-title">Groton Region &#226;&#128;&#148; SKU Count by Category</div><canvas id="sku-groton-chart"></canvas></div><div class="section-divider">Price Range Analysis &#226;&#128;&#148; Groton Region</div><div id="price-range-groton"></div></div></div><div class="rainbow-banner" id="rainbow-banner"><div class="rb-ring"><div class="rb-ring-inner"><span id="rb-pct"></span></div></div><div class="rb-title">RAINBOW REVIEW</div><div class="rb-text" id="rb-text">Loading...</div><div class="rb-bar"><div class="rb-bar-fill" id="rb-bar"></div></div></div><div class="status-bar"><div class="rainbow-loader" id="rainbow-loader"></div><div class="status-bar-content"><div><span class="status-dot loading" id="status-dot"></span><span id="status-text">Initializing...</span></div><div id="status-time">&#226;&#128;&#148;</div></div></div> <script>const CONFIG = {
 STATE: 'MA',
 TH_STORES: [
 { name: 'TH Dracut', id: 34826, laName: 'Treehouse Craft Cannabis - Dracut' },
@@ -295,7 +295,7 @@ const actualRev = getTHActualRevenue(r.id, period, retailers);
 return { ...r, estimatedAmount: actualRev, _isActual: true };
 });
 }
-const CACHE_VERSION = 9; // Increment to force cache invalidation â use 24m snapshot endpoint
+const CACHE_VERSION = 9; // Increment to force cache invalidation \u00e2\u0080\u0094 use 24m snapshot endpoint
 const CACHE_KEY = 'th-intel-cache';
 const CACHE_DUTCHIE_KEY = 'th-intel-dutchie';
 function saveCache() {
@@ -318,7 +318,7 @@ const raw = localStorage.getItem(CACHE_KEY);
 if (!raw) return null;
 const cached = JSON.parse(raw);
 if (cached._cacheVersion !== CACHE_VERSION) {
-console.log('[Cache] Stale version ' + (cached._cacheVersion || 'none') + ' â clearing for v' + CACHE_VERSION);
+console.log('[Cache] Stale version ' + (cached._cacheVersion || 'none') + ' \u00e2\u0080\u0094 clearing for v' + CACHE_VERSION);
 localStorage.removeItem('th-24m-cache'); // also clear 24m cache
 localStorage.removeItem(CACHE_KEY);
 localStorage.removeItem(CACHE_DUTCHIE_KEY);
@@ -350,12 +350,12 @@ if (parts.length === 3 && parts[2].length === 4) return parts[2] + '-' + parts[0
 return dateStr; // already ISO or unknown format
 }
 function fmtCurrency(v) {
-if (v == null || isNaN(v)) return 'â';
+if (v == null || isNaN(v)) return '\u00e2\u0080\u0094';
 if (Math.abs(v) >= 1000000) return '$' + (v/1000000).toFixed(1) + 'M';
 if (Math.abs(v) >= 1000) return '$' + (v/1000).toFixed(1) + 'K';
 return '$' + Math.round(v).toLocaleString();
 }
-function fmtNum(v) { return v == null ? 'â' : Math.round(v).toLocaleString(); }
+function fmtNum(v) { return v == null ? '\u00e2\u0080\u0094' : Math.round(v).toLocaleString(); }
 function getDateRanges() {
 const now = new Date();
 const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
@@ -368,8 +368,8 @@ const thirtyAgo = new Date(now); thirtyAgo.setDate(now.getDate() - 30);
 const m24ago = new Date(now); m24ago.setMonth(now.getMonth() - 24);
 return {
 daily: { begin: fmtDate(yesterday), end: fmtDate(yesterday), label: fmtDateShort(yesterday) },
-weekly: { begin: fmtDate(weekAgo), end: fmtDate(yesterday), label: fmtDateShort(weekAgo) + ' â ' + fmtDateShort(yesterday) },
-monthly: { begin: fmtDate(monthStart), end: fmtDate(yesterday), label: fmtDateShort(monthStart) + ' â ' + fmtDateShort(yesterday) },
+weekly: { begin: fmtDate(weekAgo), end: fmtDate(yesterday), label: fmtDateShort(weekAgo) + ' \u00e2\u0080\u0093 ' + fmtDateShort(yesterday) },
+monthly: { begin: fmtDate(monthStart), end: fmtDate(yesterday), label: fmtDateShort(monthStart) + ' \u00e2\u0080\u0093 ' + fmtDateShort(yesterday) },
 lastMonth: { begin: fmtDate(lastMonthStart), end: fmtDate(lastMonthEnd), label: fmtMonthYear(lastMonthStart) },
 trend14: { begin: fmtDate(fourteenAgo), end: fmtDate(yesterday) },
 trend30: { begin: fmtDate(thirtyAgo), end: fmtDate(yesterday) },
@@ -401,7 +401,7 @@ async function safeFetch(path, params = {}) {
 API_TOTAL++;
 try {
 const result = await apiFetch(path, params);
-console.log(`â ${path}`, params.beginDate || '', 'â', result ? (result.results ? result.results.length + ' results' : typeof result) : 'null');
+console.log(`\u00e2\u009c\u0085 ${path}`, params.beginDate || '', '\u00e2\u0086\u0092', result ? (result.results ? result.results.length + ' results' : typeof result) : 'null');
 return result;
 } catch (e) {
 API_FAILURES++;
@@ -482,7 +482,7 @@ let pct = 5;
 for (const [key, val] of Object.entries(_LOADING_PHASES)) {
 if (text.includes(key) || text.startsWith(key)) pct = Math.max(pct, val);
 }
-const m24match = text.match(/history[.â¦]*\s*(\d+)%/);
+const m24match = text.match(/history[.\u00e2\u0080\u00a6]*\s*(\d+)%/);
 if (m24match) pct = 65 + Math.round(parseInt(m24match[1]) * 0.30);
 if (pct < _refreshLastPct) pct = _refreshLastPct;
 _refreshLastPct = pct;
@@ -527,7 +527,7 @@ if (rbBar) rbBar.style.width = (_refreshLastPct || 5) + '%';
 if (rbPct) rbPct.textContent = (_refreshLastPct || 5) + '%';
 } else {
 if (rbBar) rbBar.style.width = '100%';
-if (rbPct) rbPct.textContent = 'â';
+if (rbPct) rbPct.textContent = '\u00e2\u009c\u0093';
 if (rbText) rbText.textContent = 'Ready';
 setTimeout(() => { banner.classList.remove('active'); }, 800);
 }
@@ -558,11 +558,11 @@ if (el) el.textContent = ranges[p].label;
 }
 }
 const now = new Date();
-const otDaily14Label = fmtDateShort(new Date(now.getTime() - 14*86400000)) + ' â ' + ranges.daily.label;
+const otDaily14Label = fmtDateShort(new Date(now.getTime() - 14*86400000)) + ' \u00e2\u0080\u0093 ' + ranges.daily.label;
 document.getElementById('ot-daily-label').textContent = otDaily14Label;
-document.getElementById('ot-weekly-label').textContent = fmtDateShort(new Date(now.getTime() - 30*86400000)) + ' â ' + ranges.daily.label;
+document.getElementById('ot-weekly-label').textContent = fmtDateShort(new Date(now.getTime() - 30*86400000)) + ' \u00e2\u0080\u0093 ' + ranges.daily.label;
 const m24start = new Date(); m24start.setMonth(m24start.getMonth() - 24);
-document.getElementById('ot-monthly-label').textContent = fmtMonthYear(m24start) + ' â Now';
+document.getElementById('ot-monthly-label').textContent = fmtMonthYear(m24start) + ' \u00e2\u0080\u0093 Now';
 document.getElementById('ot-lastMonth-label').textContent = ranges.lastMonth.label;
 DUTCHIE_ACTUALS = { stores: {}, fetchedAt: prebaked.buildTime };
 storeConfigs.forEach(store => {
@@ -635,7 +635,7 @@ DATA.products = {};
 DATA.fetchTime = new Date(prebaked.buildTime);
 DATA._fromCache = false;
 DATA._prebaked = true;
-console.log('[Prebaked] Core data loaded â Market Overview + TH Position ready instantly. Over Time + SKU load from cache or on-demand.');
+console.log('[Prebaked] Core data loaded \u00e2\u0080\u0094 Market Overview + TH Position ready instantly. Over Time + SKU load from cache or on-demand.');
 }
 async function fetchRemainingData(ranges) {
 const storeConfigs = [
@@ -717,12 +717,12 @@ renderAll();
 saveCache();
 }).catch(e => {
 console.warn('[Prebaked] Background fetch failed:', e.message);
-setStatus('Core data loaded â some sections may be incomplete', 'ok');
+setStatus('Core data loaded \u00e2\u0080\u0094 some sections may be incomplete', 'ok');
 });
 }
 return;
 } catch(e) {
-console.warn('[Prebaked] Failed to load pre-baked data:', e.message, 'â falling back to API');
+console.warn('[Prebaked] Failed to load pre-baked data:', e.message, '\u00e2\u0080\u0094 falling back to API');
 }
 }
 const cached = loadCache();
@@ -748,11 +748,11 @@ const el = document.getElementById(`${sec}-${p}-label`);
 if (el) el.textContent = ranges[p].label;
 }
 }
-const otDaily14Label = fmtDateShort(new Date(now.getTime() - 14*86400000)) + ' â ' + ranges.daily.label;
+const otDaily14Label = fmtDateShort(new Date(now.getTime() - 14*86400000)) + ' \u00e2\u0080\u0093 ' + ranges.daily.label;
 document.getElementById('ot-daily-label').textContent = otDaily14Label;
-document.getElementById('ot-weekly-label').textContent = fmtDateShort(new Date(now.getTime() - 30*86400000)) + ' â ' + ranges.daily.label;
+document.getElementById('ot-weekly-label').textContent = fmtDateShort(new Date(now.getTime() - 30*86400000)) + ' \u00e2\u0080\u0093 ' + ranges.daily.label;
 const m24start = new Date(); m24start.setMonth(m24start.getMonth() - 24);
-document.getElementById('ot-monthly-label').textContent = fmtMonthYear(m24start) + ' â Now';
+document.getElementById('ot-monthly-label').textContent = fmtMonthYear(m24start) + ' \u00e2\u0080\u0093 Now';
 document.getElementById('ot-lastMonth-label').textContent = ranges.lastMonth.label;
 document.getElementById('status-time').textContent = 'Cached: ' + new Date(cached.fetchTime).toLocaleTimeString();
 setStatus('Using today\'s data (cached ' + new Date(cached.fetchTime).toLocaleTimeString() + ')', 'ok');
@@ -779,11 +779,11 @@ const el = document.getElementById(`${sec}-${p}-label`);
 if (el) el.textContent = ranges[p].label;
 }
 }
-const otDaily14Label = fmtDateShort(new Date(new Date().getTime() - 14*86400000)) + ' â ' + ranges.daily.label;
+const otDaily14Label = fmtDateShort(new Date(new Date().getTime() - 14*86400000)) + ' \u00e2\u0080\u0093 ' + ranges.daily.label;
 document.getElementById('ot-daily-label').textContent = otDaily14Label;
-document.getElementById('ot-weekly-label').textContent = fmtDateShort(new Date(new Date().getTime() - 30*86400000)) + ' â ' + ranges.daily.label;
+document.getElementById('ot-weekly-label').textContent = fmtDateShort(new Date(new Date().getTime() - 30*86400000)) + ' \u00e2\u0080\u0093 ' + ranges.daily.label;
 const m24start = new Date(); m24start.setMonth(m24start.getMonth() - 24);
-document.getElementById('ot-monthly-label').textContent = fmtMonthYear(m24start) + ' â Now';
+document.getElementById('ot-monthly-label').textContent = fmtMonthYear(m24start) + ' \u00e2\u0080\u0093 Now';
 document.getElementById('ot-lastMonth-label').textContent = ranges.lastMonth.label;
 try {
 const corePromises = [
@@ -860,11 +860,11 @@ DATA.fetchTime = new Date();
 DATA._fromCache = false;
 document.getElementById('status-time').textContent = 'Last updated: ' + DATA.fetchTime.toLocaleTimeString();
 if (API_FAILURES === 0) {
-setStatus('Data loaded â all sources live', 'ok');
+setStatus('Data loaded \u00e2\u0080\u0094 all sources live', 'ok');
 } else if (hasMarketData) {
-setStatus(`Loaded with ${API_FAILURES} partial failures â most data available`, 'ok');
+setStatus(`Loaded with ${API_FAILURES} partial failures \u00e2\u0080\u0094 most data available`, 'ok');
 } else {
-setStatus('Lit Alerts API unavailable â showing Dutchie POS actuals only', 'error');
+setStatus('Lit Alerts API unavailable \u00e2\u0080\u0094 showing Dutchie POS actuals only', 'error');
 DATA._apiDown = true;
 }
 renderAll();
@@ -874,16 +874,16 @@ const thStoreIds = [34826, 34827, 34825]; // dracut, pepperell, groton
 const has24mTH = thStoreIds.every(id => DATA.storeTrends24m?.[id]?.results?.length > 10);
 const has24mCached = has24mMarket && has24mTH;
 if (has24mCached) {
-console.log('[24m] Skipping 24-month fetch â already have market:', DATA.market.trend24m.results.length, 'pts, TH stores all >10 months');
-setStatus('Data loaded â all sources live', 'ok');
+console.log('[24m] Skipping 24-month fetch \u00e2\u0080\u0094 already have market:', DATA.market.trend24m.results.length, 'pts, TH stores all >10 months');
+setStatus('Data loaded \u00e2\u0080\u0094 all sources live', 'ok');
 } else {
-console.log('[24m] Starting 24m fetch â market:', DATA.market?.trend24m?.results?.length || 0, 'pts, TH stores:', thStoreIds.map(id => `${id}:${DATA.storeTrends24m?.[id]?.results?.length || 0}`).join(','));
+console.log('[24m] Starting 24m fetch \u00e2\u0080\u0094 market:', DATA.market?.trend24m?.results?.length || 0, 'pts, TH stores:', thStoreIds.map(id => `${id}:${DATA.storeTrends24m?.[id]?.results?.length || 0}`).join(','));
 fetch24MonthHistory(ranges);
 }
 } catch (err) {
 console.error('Fetch error:', err);
 if (cached) {
-setStatus('Refresh failed â showing cached data', 'error');
+setStatus('Refresh failed \u00e2\u0080\u0094 showing cached data', 'error');
 DATA._fromCache = true;
 updateStalenessIndicators();
 } else {
@@ -894,7 +894,7 @@ setStatus('Error: ' + err.message, 'error');
 let _fetching24m = false; // Lock to prevent concurrent 24m fetches
 async function fetch24MonthHistory(ranges) {
 if (_fetching24m) {
-console.log('[24m] Already fetching â skipping duplicate call');
+console.log('[24m] Already fetching \u00e2\u0080\u0094 skipping duplicate call');
 return;
 }
 _fetching24m = true;
@@ -975,7 +975,7 @@ const storeCoverage = compStoreIds.map(id => {
 const r = DATA.storeTrends24m[id]?.results || [];
 const firstDate = r.length > 0 ? r[0].date : 'none';
 const lastDate = r.length > 0 ? r[r.length - 1].date : 'none';
-return `${id}:${r.length}pts(${firstDate}â${lastDate})`;
+return `${id}:${r.length}pts(${firstDate}\u00e2\u0086\u0092${lastDate})`;
 }).join(', ');
 console.log(`[24m] Store coverage: ${storeCoverage}`);
 const thStoreKeys = [
@@ -983,7 +983,7 @@ const thStoreKeys = [
 { litId: 34827, key: 'pepperell' },
 { litId: 34825, key: 'groton' }
 ];
-setStatus('Loading 24-month history â Dutchie POS...', 'loading');
+setStatus('Loading 24-month history \u00e2\u0080\u0094 Dutchie POS...', 'loading');
 try {
 const snapshotUrl = new URL(PROXY_URL);
 snapshotUrl.searchParams.set('path', '/dutchie/24m-snapshot');
@@ -1029,11 +1029,11 @@ console.warn('[24m] Snapshot returned but no thStores data:', snapshot?.error ||
 console.warn(`[24m] Snapshot endpoint returned ${snapshotResp.status}`);
 }
 } catch (e) {
-console.warn('[24m] Snapshot fetch failed:', e.message, 'â TH 24m data unavailable');
+console.warn('[24m] Snapshot fetch failed:', e.message, '\u00e2\u0080\u0094 TH 24m data unavailable');
 }
 console.log('[24m] TH Dutchie 24-month data loaded');
 console.log('[24m] Background fetch complete');
-setStatus('Data loaded â all sources live', 'ok');
+setStatus('Data loaded \u00e2\u0080\u0094 all sources live', 'ok');
 saveCache();
 try {
 const cache24m = {
@@ -1050,7 +1050,7 @@ console.log('[24m] Saved to dedicated 24m localStorage cache');
 renderOverTime();
 } catch (e) {
 console.error('[24m] Background history fetch failed:', e.message, e);
-setStatus('24-month history failed â other data is live', 'error');
+setStatus('24-month history failed \u00e2\u0080\u0094 other data is live', 'error');
 } finally {
 _fetching24m = false;
 }
@@ -1137,21 +1137,21 @@ const sorted = [...retailers].sort((a, b) => (b.estimatedAmount || 0) - (a.estim
 const storeRanks = {};
 CONFIG.TH_STORES.forEach(store => {
 const idx = sorted.findIndex(r => r.id === store.id || (r.name && r.name.includes('Treehouse') && r.name.includes(store.name.replace('TH ', ''))));
-storeRanks[store.id] = idx >= 0 ? idx + 1 : 'â';
+storeRanks[store.id] = idx >= 0 ? idx + 1 : '\u00e2\u0080\u0094';
 });
 const periodLabels = { daily: 'Yesterday', weekly: 'Past 7 days', monthly: 'Month to date', lastMonth: 'Last complete month' };
 const periodStoreLabels = { daily: 'Per store yesterday', weekly: 'Per store (7 days)', monthly: 'Per store (MTD)', lastMonth: 'Per store (last month)' };
-document.getElementById('market-total-rev').textContent = hasRetailers ? fmtCurrency(totalRev) : 'â';
+document.getElementById('market-total-rev').textContent = hasRetailers ? fmtCurrency(totalRev) : '\u00e2\u0080\u0094';
 document.getElementById('market-total-rev-sub').textContent = hasRetailers ? (periodLabels[period] || '') : 'Lit Alerts API unavailable';
-document.getElementById('market-store-count').textContent = hasRetailers ? fmtNum(activeStores) : 'â';
-document.getElementById('market-avg-rev').textContent = hasRetailers ? fmtCurrency(avgRev) : 'â';
+document.getElementById('market-store-count').textContent = hasRetailers ? fmtNum(activeStores) : '\u00e2\u0080\u0094';
+document.getElementById('market-avg-rev').textContent = hasRetailers ? fmtCurrency(avgRev) : '\u00e2\u0080\u0094';
 document.getElementById('market-avg-rev-sub').textContent = hasRetailers ? (periodStoreLabels[period] || '') : '';
 const rankDracut = storeRanks[34826];
 const rankPepperell = storeRanks[34827];
 const rankGroton = storeRanks[34825];
-document.getElementById('market-rank-dracut').textContent = (!hasRetailers || rankDracut === 'â') ? 'â' : '#' + rankDracut;
-document.getElementById('market-rank-pepperell').textContent = (!hasRetailers || rankPepperell === 'â') ? 'â' : '#' + rankPepperell;
-document.getElementById('market-rank-groton').textContent = (!hasRetailers || rankGroton === 'â') ? 'â' : '#' + rankGroton;
+document.getElementById('market-rank-dracut').textContent = (!hasRetailers || rankDracut === '\u00e2\u0080\u0094') ? '\u00e2\u0080\u0094' : '#' + rankDracut;
+document.getElementById('market-rank-pepperell').textContent = (!hasRetailers || rankPepperell === '\u00e2\u0080\u0094') ? '\u00e2\u0080\u0094' : '#' + rankPepperell;
+document.getElementById('market-rank-groton').textContent = (!hasRetailers || rankGroton === '\u00e2\u0080\u0094') ? '\u00e2\u0080\u0094' : '#' + rankGroton;
 document.getElementById('market-th-rank-sub').textContent = hasRetailers ? 'of ' + retailers.length + ' stores' : 'No ranking data';
 const catsRaw = d.categories?.results || d.categories || [];
 const cats = Array.isArray(catsRaw) ? catsRaw : [];
@@ -1188,7 +1188,7 @@ labels: catEntries.map(c => c.name),
 datasets: [{ data: catEntries.map(c => c.estimatedAmount), backgroundColor: colors, borderColor: '#161b22', borderWidth: 2 }]
 }, {
 plugins: {
-legend: { display: false }, // hidden â we use HTML legend below
+legend: { display: false }, // hidden \u00e2\u0080\u0094 we use HTML legend below
 tooltip: {
 titleColor: '#f0f6fc', bodyColor: '#e6edf3',
 backgroundColor: '#21262d', borderColor: '#30363d', borderWidth: 1,
@@ -1220,7 +1220,7 @@ const thCatEntries = Object.entries(thCombinedCats)
 if (thCatEntries.length > 0) {
 buildCatDonut('th-combined-cat-chart', 'th-cat-legend', thCatEntries);
 const subtitle = document.getElementById('th-cat-subtitle');
-if (subtitle) subtitle.textContent = 'All 3 stores combined â Dutchie POS actuals';
+if (subtitle) subtitle.textContent = 'All 3 stores combined \u00e2\u0080\u0094 Dutchie POS actuals';
 } else {
 const thLACats = {};
 CONFIG.TH_STORES.forEach(store => {
@@ -1239,7 +1239,7 @@ const thLAEntries = Object.entries(thLACats)
 if (thLAEntries.length > 0) {
 buildCatDonut('th-combined-cat-chart', 'th-cat-legend', thLAEntries);
 const subtitle = document.getElementById('th-cat-subtitle');
-if (subtitle) subtitle.textContent = 'All 3 stores combined â Lit Alerts estimates (Dutchie categories pending)';
+if (subtitle) subtitle.textContent = 'All 3 stores combined \u00e2\u0080\u0094 Lit Alerts estimates (Dutchie categories pending)';
 } else {
 const legendEl = document.getElementById('th-cat-legend');
 if (legendEl) legendEl.innerHTML = '<p style="color:#8b949e;text-align:center;padding:20px 0;">TH category data unavailable for this period</p>';
@@ -1264,7 +1264,7 @@ const container = document.getElementById(containerId);
 if (!container) continue;
 const thIdx = currentSorted.findIndex(r => r.id === store.id || (r.name && r.name.includes('Treehouse') && r.name.includes(store.name.replace('TH ', ''))));
 if (thIdx < 0) {
-container.innerHTML = '<div class="table-container"><div class="table-header">' + store.name + ' â Not found in rankings</div></div>';
+container.innerHTML = '<div class="table-container"><div class="table-header">' + store.name + ' \u00e2\u0080\u0094 Not found in rankings</div></div>';
 continue;
 }
 const thRank = thIdx + 1;
@@ -1274,7 +1274,7 @@ const slice = currentSorted.slice(startIdx, endIdx);
 const thActualRev = currentSorted[thIdx]?.estimatedAmount;
 const thIsActual = currentSorted[thIdx]?._isActual;
 let html = '<div class="table-container">';
-html += '<div class="table-header">' + store.name + ' â Rank #' + thRank + ' of ' + currentSorted.length;
+html += '<div class="table-header">' + store.name + ' \u00e2\u0080\u0094 Rank #' + thRank + ' of ' + currentSorted.length;
 if (thIsActual && thActualRev) html += ' <span style="font-size:12px;color:#4CAF50;font-weight:400;">(' + fmtCurrency(thActualRev) + ' actual)</span>';
 html += '</div>';
 if (priorKey) {
@@ -1300,11 +1300,11 @@ const priorRank = priorRankMap[r.id];
 if (priorRank != null) {
 const diff = priorRank - rank; // positive = moved up
 if (diff > 0) {
-trendCell = '<td style="text-align:center;"><span class="trend-up">â² ' + diff + '</span></td>';
+trendCell = '<td style="text-align:center;"><span class="trend-up">\u00e2\u0096\u00b2 ' + diff + '</span></td>';
 } else if (diff < 0) {
-trendCell = '<td style="text-align:center;"><span class="trend-down">â¼ ' + Math.abs(diff) + '</span></td>';
+trendCell = '<td style="text-align:center;"><span class="trend-down">\u00e2\u0096\u00bc ' + Math.abs(diff) + '</span></td>';
 } else {
-trendCell = '<td style="text-align:center;"><span class="trend-flat">â</span></td>';
+trendCell = '<td style="text-align:center;"><span class="trend-flat">\u00e2\u0080\u0094</span></td>';
 }
 } else {
 trendCell = '<td style="text-align:center;"><span class="trend-flat">NEW</span></td>';
@@ -1332,9 +1332,9 @@ if (actualData) {
 const parts = [];
 if (actualData.transactionCount) parts.push(actualData.transactionCount + ' txns');
 if (actualData.averageCartNetSales) parts.push('avg cart ' + fmtCurrency(actualData.averageCartNetSales));
-if (parts.length) suffix += ' Â· ' + parts.join(' Â· ');
+if (parts.length) suffix += ' \u00c2\u00b7 ' + parts.join(' \u00c2\u00b7 ');
 }
-document.getElementById(elId + '-sub').textContent = suffix + ' â ' + (periodLabels[period] || period);
+document.getElementById(elId + '-sub').textContent = suffix + ' \u00e2\u0080\u0094 ' + (periodLabels[period] || period);
 });
 const thTotal = CONFIG.TH_STORES.reduce((s, store) => s + getTHActualRevenue(store.id, period, retailers), 0);
 document.getElementById('th-combined-rev').textContent = fmtCurrency(thTotal);
@@ -1477,13 +1477,13 @@ return raw && raw.length > 0 ? { data: raw, isMonthly: false } : null;
 return null;
 }
 function buildTHActualDataset(store, labels, trendSource, colorIndex) {
-const colors = ['#ffa94d', '#ffd43b', '#69db7c']; // orange, yellow, green â rainbow subset for TH
+const colors = ['#ffa94d', '#ffd43b', '#69db7c']; // orange, yellow, green \u00e2\u0080\u0094 rainbow subset for TH
 const color = colors[colorIndex] || colors[0];
 const trend = DATA.storeTrends24m?.[store.id];
 let data;
 if (trend?.results && trend.results.length > 0) {
 if (trendSource.isMonthly) {
-const monthlyAggs = {}; // "YYYY-MM" â total from monthly aggregate entries
+const monthlyAggs = {}; // "YYYY-MM" \u00e2\u0086\u0092 total from monthly aggregate entries
 const dailyEntries = []; // non-aggregate daily entries
 trend.results.forEach(r => {
 if (r.date && r.date.endsWith('-15')) {
@@ -1551,10 +1551,10 @@ spanGaps: true
 }
 const OT_CHART_META = {
 'ot-market-trend-chart': 'Market-Wide Revenue',
-'ot-th-trend-chart': 'Tree House Stores â Revenue',
-'ot-dracut-trend-chart': 'Dracut Region â Revenue Comparison',
-'ot-pepperell-trend-chart': 'Pepperell Region â Revenue Comparison',
-'ot-groton-trend-chart': 'Groton Region â Revenue Comparison'
+'ot-th-trend-chart': 'Tree House Stores \u00e2\u0080\u0094 Revenue',
+'ot-dracut-trend-chart': 'Dracut Region \u00e2\u0080\u0094 Revenue Comparison',
+'ot-pepperell-trend-chart': 'Pepperell Region \u00e2\u0080\u0094 Revenue Comparison',
+'ot-groton-trend-chart': 'Groton Region \u00e2\u0080\u0094 Revenue Comparison'
 };
 function ensureOTCanvases() {
 for (const [id, title] of Object.entries(OT_CHART_META)) {
@@ -1592,7 +1592,7 @@ existing.results.sort((a, b) => a.date.localeCompare(b.date));
 } catch(e) {}
 if (!DATA.market?.trend24m?.results || DATA.market.trend24m.results.length < 100) {
 if (_fetching24m) {
-console.log('[24m] Fetch already in progress â showing loading state');
+console.log('[24m] Fetch already in progress \u00e2\u0080\u0094 showing loading state');
 } else {
 console.log('[24m] Fetching 24-month data live from APIs...');
 setStatus('Loading 24-month history...', 'loading');
@@ -1638,7 +1638,7 @@ if (existing) existing.remove();
 const msg = document.createElement('p');
 msg.className = 'ot-error-msg';
 msg.style.cssText = 'color:#8b949e;text-align:center;padding:60px 0;';
-msg.textContent = 'Trend data unavailable for this period â try another time range';
+msg.textContent = 'Trend data unavailable for this period \u00e2\u0080\u0094 try another time range';
 container.appendChild(msg);
 }
 });
@@ -1812,7 +1812,7 @@ if (!hasData) return;
 const chartDiv = document.createElement('div');
 chartDiv.className = 'chart-container';
 chartDiv.style.cssText = 'height:320px;margin-bottom:16px;';
-chartDiv.innerHTML = '<div class="chart-title">' + cat + ' â Price Distribution</div><canvas id="price-' + region + '-' + cat.toLowerCase().replace(/[^a-z]/g, '') + '"></canvas>';
+chartDiv.innerHTML = '<div class="chart-title">' + cat + ' \u00e2\u0080\u0094 Price Distribution</div><canvas id="price-' + region + '-' + cat.toLowerCase().replace(/[^a-z]/g, '') + '"></canvas>';
 regionContainer.appendChild(chartDiv);
 const canvasId = 'price-' + region + '-' + cat.toLowerCase().replace(/[^a-z]/g, '');
 const datasets = allStores.map((store, i) => {
@@ -1901,10 +1901,10 @@ if (el) el.textContent = ranges[p].label;
 }
 }
 const now = new Date();
-document.getElementById('ot-daily-label').textContent = fmtDateShort(new Date(now.getTime() - 14*86400000)) + ' â ' + ranges.daily.label;
-document.getElementById('ot-weekly-label').textContent = fmtDateShort(new Date(now.getTime() - 30*86400000)) + ' â ' + ranges.daily.label;
+document.getElementById('ot-daily-label').textContent = fmtDateShort(new Date(now.getTime() - 14*86400000)) + ' \u00e2\u0080\u0093 ' + ranges.daily.label;
+document.getElementById('ot-weekly-label').textContent = fmtDateShort(new Date(now.getTime() - 30*86400000)) + ' \u00e2\u0080\u0093 ' + ranges.daily.label;
 const m24s = new Date(); m24s.setMonth(m24s.getMonth() - 24);
-document.getElementById('ot-monthly-label').textContent = fmtMonthYear(m24s) + ' â Now';
+document.getElementById('ot-monthly-label').textContent = fmtMonthYear(m24s) + ' \u00e2\u0080\u0093 Now';
 document.getElementById('ot-lastMonth-label').textContent = ranges.lastMonth.label;
 const ageMs = Date.now() - new Date(cached.fetchTime).getTime();
 const ageHrs = Math.round(ageMs / 3600000);
@@ -1915,7 +1915,7 @@ console.log('[Init] Cached data rendered instantly (' + ageText + ' old)');
 }
 } catch(e) { console.warn('[Init] Cache load failed:', e.message); }
 if (window.__STATIC_SNAPSHOT__) {
-console.log('[Static] Running in static snapshot mode â no API calls.');
+console.log('[Static] Running in static snapshot mode \u00e2\u0080\u0094 no API calls.');
 fetchAllData(); // Will use __PREBAKED_DATA__ and skip background fetches
 } else if (hasCache) {
 const cacheDate = DATA.fetchTime ? new Date(DATA.fetchTime) : null;
@@ -1928,14 +1928,14 @@ if (isToday && ageHours < 2) {
 setStatus('Using today\'s cached data', 'ok');
 } else {
 const label = isToday ? 'Cached data is ' + Math.round(ageHours) + 'h old' : 'Showing yesterday\'s data';
-setStatus(label + ' â refreshing in background...', 'loading');
+setStatus(label + ' \u00e2\u0080\u0094 refreshing in background...', 'loading');
 fetchAllData(false);
 }
 } else if (window.__PREBAKED_DATA__) {
-console.log('[Init] No localStorage cache â using server prebaked data');
+console.log('[Init] No localStorage cache \u00e2\u0080\u0094 using server prebaked data');
 fetchAllData();
 } else {
-console.log('[Init] No cache anywhere â fetching from APIs');
+console.log('[Init] No cache anywhere \u00e2\u0080\u0094 fetching from APIs');
 fetchAllData();
 }
 }
