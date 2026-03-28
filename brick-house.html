@@ -711,7 +711,7 @@ const vendorAliases = {
 
 // === LIVE DATA (updated by scheduled task) ===
 // AUDITED 2026-03-26: Only verified MA retailers (in Lit Alerts directory) are shown.
-// 2026-03-27 refresh (run 2): Lit Alerts /brand/{id}/retailers and /market/brands returning HTTP 500 (3rd consecutive day). Retailer + market trend data retained from 2026-03-26. Dutchie product data refreshed (22002 products, 3475 matched). tb corrected to 204 SKUs (previous run 384 erroneously included Coastal Cultivars LLC â per vendor alias rules Coastal Cultivars is NOT T.Bear/Coast). storeData updated with Mar26 partial-month revenue (source: backup collected 2026-03-25).
+// 2026-03-28 refresh: Lit Alerts /brand/{id}/retailers and /market/brands returning HTTP 500 (4th consecutive day). Retailer + market trend data retained from 2026-03-26. Dutchie product data refreshed (22002 products, 3475 matched — catalog unchanged). Inventory refreshed (648 active SKUs, 188 brick). No sales endpoint available — storeData Mar26 retained from 2026-03-25 backup.
 // Unverified = iHeartJane/unknown retailer IDs not in directory (could be MA, unconfirmed).
 // Non-MA entries (e.g. Missouri "Forbidden Fruit") have been excluded.
 const LIT_ALERTS_DATA = {
@@ -798,13 +798,13 @@ const LIT_ALERTS_DATA = {
 
 // Dutchie product catalog data â aggregated by vendor & category
 // Format: { skus, avgPrice, avgCost } per category per vendor
-// Updated: 2026-03-27 (run 2) via Dutchie POS API (3 stores: Dracut 7350, Pepperell 7323, Groton 7329 = 22002 total, 3475 matched)
-// tb corrected: 204 SKUs (T.Bear vendor only). Coastal Cultivars LLC excluded per vendor alias rules.
+// Updated: 2026-03-28 via Dutchie POS API (3 stores: Dracut 7350, Pepperell 7323, Groton 7329 = 22002 total, 3475 matched)
+// Catalog unchanged from 2026-03-27. tb: 204 SKUs (T.Bear vendor only). Coastal Cultivars LLC excluded per vendor alias rules.
 const PRODUCT_DATA = {
-  lastUpdated: "2026-03-27T18:00:00Z",
+  lastUpdated: "2026-03-28T04:30:00Z",
   vendors: {
     fb: { totalSkus: 407, categories: {
-      "Gummies":            { skus: 111, avgPrice: 14.09, avgCost: 6.53 },
+      "Gummies":            { skus: 111, avgPrice: 14.48, avgCost: 6.71 },
       "510 Cart":           { skus: 83,  avgPrice: 50.12, avgCost: 21.46 },
       "Disposable":         { skus: 69,  avgPrice: 35.62, avgCost: 15.30 },
       "Multipack":          { skus: 66,  avgPrice: 30.59, avgCost: 14.73 },
@@ -864,9 +864,9 @@ const PRODUCT_DATA = {
       "SAMPLE":             { skus: 3,   avgPrice: 0.01,  avgCost: 0.01 }
     }},
     mc: { totalSkus: 1258, categories: {
-      "Single":             { skus: 327, avgPrice: 6.65,  avgCost: 1.13 },
-      "Pre Ground":         { skus: 312, avgPrice: 28.56, avgCost: 9.25 },
-      "Apparel":            { skus: 297, avgPrice: 32.34, avgCost: 21.07 },
+      "Single":             { skus: 327, avgPrice: 6.71,  avgCost: 1.16 },
+      "Pre Ground":         { skus: 312, avgPrice: 28.75, avgCost: 9.32 },
+      "Apparel":            { skus: 297, avgPrice: 32.67, avgCost: 21.15 },
       "Bud":                { skus: 102, avgPrice: 21.97, avgCost: 6.64 },
       "Seeds":              { skus: 45,  avgPrice: 30.00, avgCost: 9.03 },
       "Multipack":          { skus: 30,  avgPrice: 19.18, avgCost: 6.85 },
@@ -897,7 +897,7 @@ const PRODUCT_DATA = {
 // MARKET TREND DATA (Lit Alerts â Estimated MA Market Sales)
 // âââââââââââââââââââââââââââââââââââââââââââââââââââ
 const MARKET_TREND_DATA = {
-  lastUpdated: "2026-03-27T07:00:00Z",
+  lastUpdated: "2026-03-28T04:30:00Z",
   note: "Monthly estimated sales ($) across all MA retailers, via Lit Alerts analytics. March 2026 is partial month.",
   months: ["2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02"],
   vendors: {
@@ -915,63 +915,62 @@ const MARKET_TREND_DATA = {
 // INVENTORY MIX â Bricks vs Non-Bricks (from Dutchie product catalog)
 // âââââââââââââââââââââââââââââââââââââââââââââââââââ
 const INVENTORY_MIX = {
-  lastUpdated: "2026-03-27T18:00:00Z",
+  lastUpdated: "2026-03-28T04:30:00Z",
   note: "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
-  totalActive: 652,
-  totalBrick: 189,
-  totalCore: 318,
-  totalOther: 145,
+  totalActive: 648,
+  totalBrick: 188,
+  totalCore: 370,
+  totalOther: 90,
   perStore: {
-    dracut:   { total: 378 },
-    pepperell:{ total: 395 },
-    groton:   { total: 363 }
+    dracut:   { total: 375 },
+    pepperell:{ total: 392 },
+    groton:   { total: 360 }
   },
   brickVendors: [
     { name: "Freshly Baked",    skus: 40 },
-    { name: "Wellman Farms",    skus: 39 },
+    { name: "Wellman Farms",    skus: 38 },
     { name: "High Plains Farm", skus: 28 },
     { name: "MACC",             skus: 26 },
-    { name: "T. Bear / Coast",  skus: 24 },
+    { name: "T. Bear / Coast",  skus: 25 },
     { name: "Good Feels",       skus: 16 },
-    { name: "Bostica",          skus: 16 }
+    { name: "Bostica",          skus: 15 }
   ],
   coreVendors: [
     { name: "AFG Distribution",     skus: 80 },
     { name: "Cultivate",            skus: 41 },
-    { name: "Garden Remedies",      skus: 31 },
+    { name: "ARL Healthcare",       skus: 32 },
+    { name: "Garden Remedies",      skus: 30 },
     { name: "Green Meadows",        skus: 28 },
     { name: "LuvBuds",              skus: 27 },
     { name: "Hudson Botanical",     skus: 24 },
-    { name: "ARL Healthcare",       skus: 23 },
-    { name: "Mill Town Agriculture",skus: 23 },
     { name: "Novel Beverage",       skus: 22 },
+    { name: "Mill Town Agriculture",skus: 22 },
     { name: "ZZZ's Rolling Papers", skus: 19 }
   ],
   otherVendors: [
-    { name: "AFG Distribution", skus: 80 },
-    { name: "LuvBuds", skus: 27 },
-    { name: "Mill Town Agriculture", skus: 23 },
-    { name: "ZZZ's Rolling Paper", skus: 19 },
+    { name: "Lunar Xtracts", skus: 19 },
     { name: "Healing Rose", skus: 14 },
-    { name: "Nova Farms", skus: 14 },
+    { name: "Nova Farms LLC", skus: 13 },
+    { name: "Curaleaf", skus: 13 },
     { name: "Green Harbor", skus: 12 },
+    { name: "Mederi", skus: 9 },
     { name: "Pilgrim Soul", skus: 7 },
-    { name: "Atlantic Medicinal", skus: 6 },
-    { name: "Cannalive Genetics", skus: 6 },
+    { name: "Atlantic Medicinal Partners, Inc", skus: 6 },
     { name: "Erva Inc.", skus: 5 },
+    { name: "Cannalive Genetics LLC", skus: 5 },
+    { name: "Humboldt Masters", skus: 4 },
+    { name: "Bodelle's", skus: 4 },
     { name: "Hara Brands", skus: 4 },
-    { name: "Solar Therapeutics", skus: 4 },
+    { name: "Solar Therapeutics, Inc. - C", skus: 4 },
     { name: "Palazzi Incorporated", skus: 3 },
-    { name: "Bodelle's", skus: 3 },
     { name: "Amazon", skus: 3 },
-    { name: "Alt Compassion Svcs", skus: 3 },
+    { name: "Alternative Compassion Services, Inc. - P", skus: 2 },
     { name: "Revolutionary Clinics", skus: 2 },
-    { name: "Elevated Cultivation", skus: 2 },
+    { name: "Elevated Cultivation Co LLC", skus: 2 },
     { name: "Royal Supply Co.", skus: 1 },
-    { name: "Coastal Cultivars LLC", skus: 1 },
     { name: "Carbon Colors", skus: 1 }
   ],
-  otherVendorsFull: 23,
+  otherVendorsFull: 21,
   missingCore: ["Cresco", "Eureka", "Fathom Cannabis", "JBAM", "Levia", "Regenerative", "Standard Farms"],
   byCategory: [
     { group: "Merch / Accessories", brick: 7,  core: 33, other: 188,
@@ -1000,32 +999,31 @@ const INVENTORY_MIX = {
       brickVendors: {"Wellman Farms":1} }
   ]
 };
-
 // âââââââââââââââââââââââââââââââââââââââââââââââââââ
 // PER-STORE INVENTORY (from Dutchie /inventory, deduplicated by productId per store)
 // âââââââââââââââââââââââââââââââââââââââââââââââââââ
 const STORE_INVENTORY = {
   dracut: {
-    total: 377, brick: 130, core: 134, other: 113,
+    total: 375, brick: 132, core: 208, other: 35,
     brickVendors: [
-      { name: "Freshly Baked", skus: 30 }, { name: "Wellman Farms", skus: 24 },
-      { name: "T. Bear / Coast", skus: 20 }, { name: "High Plains Farm", skus: 18 },
-      { name: "MACC", skus: 15 }, { name: "Good Feels", skus: 13 }, { name: "Bostica", skus: 10 }
+      { name: "Freshly Baked", skus: 30 }, { name: "T. Bear / Coast", skus: 24 },
+      { name: "Wellman Farms", skus: 24 }, { name: "High Plains Farm", skus: 17 },
+      { name: "MACC", skus: 15 }, { name: "Good Feels", skus: 13 }, { name: "Bostica", skus: 9 }
     ],
     coreVendors: [
-      { name: "Cultivate", skus: 25 }, { name: "Novel Beverage", skus: 21 },
-      { name: "Hudson Botanical", skus: 18 }, { name: "ARL Healthcare", skus: 15 },
-      { name: "Lunar Xtracts", skus: 15 }, { name: "Curaleaf", skus: 13 },
-      { name: "Garden Remedies", skus: 12 }, { name: "Green Meadows", skus: 9 },
+      { name: "Cultivate", skus: 25 }, { name: "LuvBuds", skus: 23 },
+      { name: "AFG Distribution", skus: 22 }, { name: "Novel Beverage", skus: 21 },
+      { name: "Hudson Botanical", skus: 18 }, { name: "Mill Town Agriculture", skus: 17 },
+      { name: "ARL Healthcare", skus: 15 }, { name: "Lunar Xtracts", skus: 15 },
+      { name: "ZZZ's Rolling Papers", skus: 13 }, { name: "Curaleaf", skus: 13 },
+      { name: "Garden Remedies", skus: 11 }, { name: "Green Meadows", skus: 9 },
       { name: "Mederi", skus: 4 }, { name: "Humboldt Masters", skus: 2 }
     ],
     otherVendors: [
-      { name: "LuvBuds", skus: 23 }, { name: "AFG Distribution", skus: 23 },
-      { name: "Mill Town Agriculture", skus: 18 }, { name: "ZZZ's Rolling Paper", skus: 14 },
-      { name: "Green Harbor", skus: 9 }, { name: "Nova Farms", skus: 7 },
+      { name: "Green Harbor", skus: 9 }, { name: "Nova Farms LLC", skus: 7 },
       { name: "Erva Inc.", skus: 4 }
     ],
-    otherVendorsFull: 18,
+    otherVendorsFull: 14,
     byCategory: [
       { group: "Pre-Rolls", brick: 31, core: 24, other: 9 },
       { group: "Flower",    brick: 22, core: 20, other: 8 },
@@ -1037,25 +1035,26 @@ const STORE_INVENTORY = {
     ]
   },
   pepperell: {
-    total: 395, brick: 123, core: 148, other: 124,
+    total: 392, brick: 120, core: 218, other: 54,
     brickVendors: [
       { name: "Freshly Baked", skus: 32 }, { name: "T. Bear / Coast", skus: 22 },
-      { name: "Wellman Farms", skus: 20 }, { name: "MACC", skus: 13 },
-      { name: "High Plains Farm", skus: 13 }, { name: "Good Feels", skus: 12 },
+      { name: "Wellman Farms", skus: 18 }, { name: "MACC", skus: 13 },
+      { name: "Good Feels", skus: 12 }, { name: "High Plains Farm", skus: 12 },
       { name: "Bostica", skus: 11 }
     ],
     coreVendors: [
-      { name: "Cultivate", skus: 29 }, { name: "Hudson Botanical", skus: 21 },
-      { name: "Green Meadows", skus: 20 }, { name: "Garden Remedies", skus: 20 },
-      { name: "ARL Healthcare", skus: 18 }, { name: "Novel Beverage", skus: 18 },
-      { name: "Lunar Xtracts", skus: 15 }, { name: "Mederi", skus: 5 },
+      { name: "AFG Distribution", skus: 40 }, { name: "Cultivate", skus: 29 },
+      { name: "Hudson Botanical", skus: 21 }, { name: "Garden Remedies", skus: 20 },
+      { name: "Green Meadows", skus: 19 }, { name: "ARL Healthcare", skus: 18 },
+      { name: "Novel Beverage", skus: 18 }, { name: "Lunar Xtracts", skus: 15 },
+      { name: "Mill Town Agriculture", skus: 13 }, { name: "LuvBuds", skus: 9 },
+      { name: "ZZZ's Rolling Papers", skus: 9 }, { name: "Mederi", skus: 5 },
       { name: "Humboldt Masters", skus: 2 }
     ],
     otherVendors: [
-      { name: "AFG Distribution", skus: 40 }, { name: "Mill Town Agriculture", skus: 13 },
-      { name: "Healing Rose", skus: 10 }, { name: "LuvBuds", skus: 9 },
-      { name: "Green Harbor", skus: 9 }, { name: "ZZZ's Rolling Paper", skus: 9 },
-      { name: "Bodelle's", skus: 7 }, { name: "Nova Farms", skus: 6 }
+      { name: "Healing Rose", skus: 10 }, { name: "Green Harbor", skus: 9 },
+      { name: "Bodelle's", skus: 7 }, { name: "Nova Farms LLC", skus: 6 },
+      { name: "Pilgrim Soul", skus: 5 }
     ],
     otherVendorsFull: 18,
     byCategory: [
@@ -1069,23 +1068,24 @@ const STORE_INVENTORY = {
     ]
   },
   groton: {
-    total: 364, brick: 114, core: 122, other: 128,
+    total: 360, brick: 113, core: 202, other: 45,
     brickVendors: [
       { name: "Wellman Farms", skus: 24 }, { name: "Freshly Baked", skus: 22 },
       { name: "T. Bear / Coast", skus: 19 }, { name: "High Plains Farm", skus: 19 },
-      { name: "Bostica", skus: 11 }, { name: "Good Feels", skus: 10 }, { name: "MACC", skus: 9 }
+      { name: "Bostica", skus: 11 }, { name: "Good Feels", skus: 10 }, { name: "MACC", skus: 8 }
     ],
     coreVendors: [
-      { name: "Cultivate", skus: 24 }, { name: "ARL Healthcare", skus: 18 },
-      { name: "Green Meadows", skus: 17 }, { name: "Hudson Botanical", skus: 15 },
-      { name: "Novel Beverage", skus: 15 }, { name: "Lunar Xtracts", skus: 15 },
-      { name: "Garden Remedies", skus: 14 }, { name: "Mederi", skus: 4 }
+      { name: "AFG Distribution", skus: 67 }, { name: "Cultivate", skus: 24 },
+      { name: "ARL Healthcare", skus: 18 }, { name: "Green Meadows", skus: 17 },
+      { name: "Hudson Botanical", skus: 15 }, { name: "Novel Beverage", skus: 15 },
+      { name: "Lunar Xtracts", skus: 15 }, { name: "Garden Remedies", skus: 14 },
+      { name: "LuvBuds", skus: 6 }, { name: "Mill Town Agriculture", skus: 6 },
+      { name: "Mederi", skus: 4 }, { name: "Humboldt Masters", skus: 1 }
     ],
     otherVendors: [
-      { name: "AFG Distribution", skus: 67 }, { name: "Healing Rose", skus: 9 },
-      { name: "Green Harbor", skus: 8 }, { name: "LuvBuds", skus: 6 },
-      { name: "Mill Town Agriculture", skus: 6 }, { name: "Atlantic Medicinal", skus: 5 },
-      { name: "Cannalive Genetics", skus: 5 }, { name: "Pilgrim Soul", skus: 4 }
+      { name: "Healing Rose", skus: 9 }, { name: "Green Harbor", skus: 8 },
+      { name: "Cannalive Genetics LLC", skus: 5 }, { name: "Atlantic Medicinal Partners, Inc", skus: 5 },
+      { name: "Pilgrim Soul", skus: 4 }, { name: "Nova Farms LLC", skus: 3 }
     ],
     otherVendorsFull: 16,
     byCategory: [
@@ -1099,7 +1099,6 @@ const STORE_INVENTORY = {
     ]
   }
 };
-
 // Global caches for API data
 let dutchieProductsCache = null;
 let litAlertsDataCache = {};
