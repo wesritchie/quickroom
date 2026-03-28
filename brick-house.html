@@ -1155,13 +1155,18 @@ function totalVendorRevenue(vendorKey) {
 // \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // CHART DEFAULTS
 // \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-Chart.defaults.color = '#8b949e';
-Chart.defaults.borderColor = '#30363d';
-Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-Chart.defaults.font.size = 11;
-Chart.defaults.plugins.legend.labels.usePointStyle = true;
-Chart.defaults.plugins.legend.labels.pointStyleWidth = 8;
-Chart.defaults.animation.duration = 400;
+const CHARTS_AVAILABLE = typeof Chart !== 'undefined';
+if (CHARTS_AVAILABLE) {
+    Chart.defaults.color = '#8b949e';
+    Chart.defaults.borderColor = '#30363d';
+    Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.legend.labels.pointStyleWidth = 8;
+    Chart.defaults.animation.duration = 400;
+} else {
+    console.warn('[BrickHouse] Chart.js not loaded');
+}
 
 const chartInstances = {};
 
@@ -1175,6 +1180,7 @@ function sortDatasetsByTotal(datasets) {
 }
 
 function makeDoughnut(canvasId, labels, data, colors, centerText) {
+    if (!CHARTS_AVAILABLE) return null;
     const ctx = document.getElementById(canvasId);
     if (!ctx) return null;
     if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
@@ -1216,6 +1222,7 @@ function makeDoughnut(canvasId, labels, data, colors, centerText) {
 }
 
 function makeHorizontalBar(canvasId, datasets, labels) {
+    if (!CHARTS_AVAILABLE) return null;
     const ctx = document.getElementById(canvasId);
     if (!ctx) return null;
     if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
@@ -1238,6 +1245,7 @@ function makeHorizontalBar(canvasId, datasets, labels) {
 }
 
 function makeLineChart(canvasId, datasets, labels) {
+    if (!CHARTS_AVAILABLE) return null;
     const ctx = document.getElementById(canvasId);
     if (!ctx) return null;
     if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
@@ -1260,6 +1268,7 @@ function makeLineChart(canvasId, datasets, labels) {
 }
 
 function makeStackedBar(canvasId, datasets, labels) {
+    if (!CHARTS_AVAILABLE) return null;
     const ctx = document.getElementById(canvasId);
     if (!ctx) return null;
     if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
@@ -1522,7 +1531,7 @@ function buildBricksMix() {
 
     // \u2500\u2500 Donut: 3-tier Brick / Core / Other \u2500\u2500
     const donutCtx = document.getElementById('chart-brick-donut');
-    if (donutCtx) {
+    if (donutCtx && CHARTS_AVAILABLE) {
         if (chartInstances['chart-brick-donut']) chartInstances['chart-brick-donut'].destroy();
         chartInstances['chart-brick-donut'] = new Chart(donutCtx, {
             type: 'doughnut',
@@ -1584,7 +1593,7 @@ function buildBricksMix() {
     const catLabels = cats.map(c => c.group);
 
     const catChartCtx = document.getElementById('chart-brick-by-category');
-    if (catChartCtx) {
+    if (catChartCtx && CHARTS_AVAILABLE) {
         if (chartInstances['chart-brick-by-category']) chartInstances['chart-brick-by-category'].destroy();
         chartInstances['chart-brick-by-category'] = new Chart(catChartCtx, {
             type: 'bar',
@@ -1686,7 +1695,7 @@ function buildBricksMix() {
 
     // \u2500\u2500 Bar: Revenue by vendor \u2500\u2500
     const revCtx = document.getElementById('chart-brick-rev-by-vendor');
-    if (revCtx) {
+    if (revCtx && CHARTS_AVAILABLE) {
         if (chartInstances['chart-brick-rev-by-vendor']) chartInstances['chart-brick-rev-by-vendor'].destroy();
         chartInstances['chart-brick-rev-by-vendor'] = new Chart(revCtx, {
             type: 'bar',
@@ -1724,7 +1733,7 @@ function buildInvMixSection(prefix, data, accentColor) {
 
     // Donut
     const donutEl = document.getElementById('chart-invmix-' + prefix + '-donut');
-    if (donutEl) {
+    if (donutEl && CHARTS_AVAILABLE) {
         if (chartInstances['invmix-' + prefix + '-donut']) chartInstances['invmix-' + prefix + '-donut'].destroy();
         chartInstances['invmix-' + prefix + '-donut'] = new Chart(donutEl, {
             type: 'doughnut',
@@ -1774,7 +1783,7 @@ function buildInvMixSection(prefix, data, accentColor) {
     // Category bar
     const cats = (data.byCategory || INVENTORY_MIX.byCategory).filter(c => c.group !== 'Merch / Accessories');
     const barEl = document.getElementById('chart-invmix-' + prefix + '-bar');
-    if (barEl) {
+    if (barEl && CHARTS_AVAILABLE) {
         if (chartInstances['invmix-' + prefix + '-bar']) chartInstances['invmix-' + prefix + '-bar'].destroy();
         chartInstances['invmix-' + prefix + '-bar'] = new Chart(barEl, {
             type: 'bar',
