@@ -352,29 +352,29 @@
     <div class="page-desc">Where your customers are coming from across all three stores</div>
     <div class="time-toggle" id="toggle-overview">
       <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 27</small></button>
-      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16&#226;&#128;&#147;22</small></button>
+      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16&#8211;22</small></button>
       <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
-      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 &#226;&#128;&#147; Feb 26</small></button>
+      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 &#8211; Feb 26</small></button>
     </div>
     <div class="kpi-row">
       <div class="kpi-card">
         <div class="kpi-label">Total Scans</div>
-        <div class="kpi-value" id="kpi-total-scans">&#226;&#128;&#148;</div>
+        <div class="kpi-value" id="kpi-total-scans">&#8212;</div>
         <div class="kpi-detail" id="kpi-total-detail">All stores</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Unique Locations</div>
-        <div class="kpi-value" id="kpi-unique-cities">&#226;&#128;&#148;</div>
+        <div class="kpi-value" id="kpi-unique-cities">&#8212;</div>
         <div class="kpi-detail">Distinct cities</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Top State</div>
-        <div class="kpi-value" id="kpi-top-state">&#226;&#128;&#148;</div>
+        <div class="kpi-value" id="kpi-top-state">&#8212;</div>
         <div class="kpi-detail" id="kpi-top-state-detail"></div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Out-of-State %</div>
-        <div class="kpi-value" id="kpi-oos-pct">&#226;&#128;&#148;</div>
+        <div class="kpi-value" id="kpi-oos-pct">&#8212;</div>
         <div class="kpi-detail" id="kpi-oos-detail">NH + Other</div>
       </div>
     </div>
@@ -384,7 +384,7 @@
       <div class="store-tab" data-store="groton" onclick="setOverviewStore('groton')">Groton (GD)</div>
     </div>
     <div class="card">
-      <div class="card-title" id="overview-table-title">Top 12 Locations &#226;&#128;&#148; Dracut (DD)</div>
+      <div class="card-title" id="overview-table-title">Top 12 Locations &#8212; Dracut (DD)</div>
       <div class="card-subtitle" id="overview-table-sub">Customer scans by city</div>
       <div id="overview-table-container"></div>
     </div>
@@ -396,9 +396,9 @@
     <div class="page-desc">Side-by-side comparison of top 12 customer locations per store</div>
     <div class="time-toggle" id="toggle-store-detail">
       <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 27</small></button>
-      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16&#226;&#128;&#147;22</small></button>
+      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16&#8211;22</small></button>
       <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
-      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 &#226;&#128;&#147; Feb 26</small></button>
+      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 &#8211; Feb 26</small></button>
     </div>
     <div class="three-col">
       <div class="card">
@@ -422,27 +422,27 @@
   <!-- ========== STATE ANALYSIS ========== -->
   <div id="section-state-buckets" class="section">
     <div class="page-title">State Analysis</div>
-    <div class="page-desc">Customer origins bucketed by MA, NH, and Out of State &#226;&#128;&#148; click a bucket to see visit behavior</div>
+    <div class="page-desc">Customer origins bucketed by MA, NH, and Out of State &#8212; click a bucket to see visit behavior</div>
     <div class="time-toggle" id="toggle-state">
       <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 27</small></button>
-      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16&#226;&#128;&#147;22</small></button>
+      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16&#8211;22</small></button>
       <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
-      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 &#226;&#128;&#147; Feb 26</small></button>
+      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 &#8211; Feb 26</small></button>
     </div>
     <div class="three-col">
       <div class="bucket-card bucket-ma" onclick="selectBucket('MA')">
         <div class="bucket-label">Massachusetts</div>
-        <div class="bucket-value" id="bucket-ma-val">&#226;&#128;&#148;</div>
+        <div class="bucket-value" id="bucket-ma-val">&#8212;</div>
         <div class="bucket-pct" id="bucket-ma-pct">scans</div>
       </div>
       <div class="bucket-card bucket-nh" onclick="selectBucket('NH')">
         <div class="bucket-label">New Hampshire</div>
-        <div class="bucket-value" id="bucket-nh-val">&#226;&#128;&#148;</div>
+        <div class="bucket-value" id="bucket-nh-val">&#8212;</div>
         <div class="bucket-pct" id="bucket-nh-pct">scans</div>
       </div>
       <div class="bucket-card bucket-other" onclick="selectBucket('OTHER')">
         <div class="bucket-label">Out of State</div>
-        <div class="bucket-value" id="bucket-other-val">&#226;&#128;&#148;</div>
+        <div class="bucket-value" id="bucket-other-val">&#8212;</div>
         <div class="bucket-pct" id="bucket-other-pct">scans (excl. MA &amp; NH)</div>
       </div>
     </div>
@@ -459,22 +459,22 @@
       </div>
     </div>
     <div class="behavior-panel" id="behavior-panel">
-      <div class="card-title" id="behavior-title">Visit Behavior &#226;&#128;&#148; Massachusetts Customers</div>
+      <div class="card-title" id="behavior-title">Visit Behavior &#8212; Massachusetts Customers</div>
       <div class="card-subtitle" id="behavior-subtitle">Based on Veriscan scan data for the selected period</div>
       <div class="behavior-grid">
         <div class="behavior-stat">
           <div class="behavior-stat-label">Total Scans</div>
-          <div class="behavior-stat-value" id="beh-total-scans">&#226;&#128;&#148;</div>
+          <div class="behavior-stat-value" id="beh-total-scans">&#8212;</div>
           <div class="behavior-stat-detail" id="beh-total-scans-d"></div>
         </div>
         <div class="behavior-stat">
           <div class="behavior-stat-label">% of All Traffic</div>
-          <div class="behavior-stat-value" id="beh-pct-traffic">&#226;&#128;&#148;</div>
+          <div class="behavior-stat-value" id="beh-pct-traffic">&#8212;</div>
           <div class="behavior-stat-detail" id="beh-pct-traffic-d"></div>
         </div>
         <div class="behavior-stat">
           <div class="behavior-stat-label">Store Distribution</div>
-          <div class="behavior-stat-value" id="beh-store-dist">&#226;&#128;&#148;</div>
+          <div class="behavior-stat-value" id="beh-store-dist">&#8212;</div>
           <div class="behavior-stat-detail" id="beh-store-dist-d"></div>
         </div>
       </div>
@@ -484,10 +484,10 @@
   <!-- ========== TRENDS ========== -->
   <div id="section-trends" class="section">
     <div class="page-title">Trends Over Time</div>
-    <div class="page-desc">18-month view of customer origin patterns &#226;&#128;&#148; ionthly scan counts by state bucket</div>
+    <div class="page-desc">18-month view of customer origin patterns &#8212; ionthly scan counts by state bucket</div>
     <div class="card">
       <div class="card-title">Monthly Scans by State Bucket</div>
-      <div class="card-subtitle">MA / NH / Out of State &#226;&#128;&#148; all stores combined</div>
+      <div class="card-subtitle">MA / NH / Out of State &#8212; all stores combined</div>
       <div class="chart-container-tall"><canvas id="chart-trends-state"></canvas></div>
     </div>
     <div class="two-col">
@@ -507,7 +507,7 @@
   <!-- ========== CITY TRACKER ========== -->
   <div id="section-city-trends" class="section">
     <div class="page-title">City Tracker</div>
-    <div class="page-desc">Week-over-week municipality trends by store &#226;&#128;&#148; see exactly where traffic is rising or falling</div>
+    <div class="page-desc">Week-over-week municipality trends by store &#8212; see exactly where traffic is rising or falling</div>
 
     <div class="store-tabs" style="display:flex;gap:8px;margin-bottom:16px">
       <div class="store-tab active-dracut" data-store="dracut" onclick="setCityStore('dracut')">Dracut (DD)</div>
@@ -522,16 +522,16 @@
 
     <div id="city-table-view">
       <div class="card" style="overflow-x:auto">
-        <div class="card-title" id="city-table-title">Weekly Municipality Tracker &#226;&#128;&#148; Dracut</div>
-        <div class="card-subtitle">Top 12 cities &#226;&#128;&#148; 12 weeks ending Mar 15, 2026. Green = up WoW, Red = down WoW</div>
+        <div class="card-title" id="city-table-title">Weekly Municipality Tracker &#8212; Dracut</div>
+        <div class="card-subtitle">Top 12 cities &#8212; 12 weeks ending Mar 15, 2026. Green = up WoW, Red = down WoW</div>
         <div id="city-trend-table-container"></div>
       </div>
     </div>
 
     <div id="city-chart-view" style="display:none">
       <div class="card">
-        <div class="card-title" id="city-chart-title">Municipality Traffic Over Time &#226;&#128;&#148; Dracut</div>
-        <div class="card-subtitle">Click city chips to toggle visibility &#226;&#128;&#148; showing weekly scan counts</div>
+        <div class="card-title" id="city-chart-title">Municipality Traffic Over Time &#8212; Dracut</div>
+        <div class="card-subtitle">Click city chips to toggle visibility &#8212; showing weekly scan counts</div>
         <div class="city-legend-chips" id="city-chips-container"></div>
         <div class="chart-container-tall"><canvas id="chart-city-trends"></canvas></div>
       </div>
@@ -540,7 +540,7 @@
     <div class="two-col">
       <div class="card">
         <div class="card-title">Biggest Movers This Week</div>
-        <div class="card-subtitle">Largest WoW changes (Mar 9&#226;&#128;&#147;15 vs Mar 2&#226;&#128;&#147;8)</div>
+        <div class="card-subtitle">Largest WoW changes (Mar 9&#8211;15 vs Mar 2&#8211;8)</div>
         <div id="movers-up-container"></div>
       </div>
       <div class="card">
@@ -554,9 +554,9 @@
   <div class="footer">
     <div class="footer-status">
       <div class="status-dot"></div>
-      <span id="last-updated-text">Last updated: Mar 28, 2026 &#226;&#128;&#148; auto-refreshes daily</span>
+      <span id="last-updated-text">Last updated: Mar 28, 2026 &#8212; auto-refreshes daily</span>
     </div>
-    <div>Tree House Craft Cannabis &#226;&#128;&#148; Geo Totem v2.2</div>
+    <div>Tree House Craft Cannabis &#8212; Geo Totem v2.2</div>
   </div>
 </div>
 
