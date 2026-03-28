@@ -631,7 +631,12 @@ DATA.storeTrends24m[id].results.push(r);
 });
 DATA.storeTrends24m[id].results.sort((a, b) => a.date.localeCompare(b.date));
 }
-DATA.products = {};
+if (prebaked.products && Object.keys(prebaked.products).length > 0) {
+            DATA.products = prebaked.products;
+            console.log('[Prebaked] Products loaded for', Object.keys(prebaked.products).length, 'stores');
+        } else {
+            DATA.products = {};
+        }
 DATA.fetchTime = new Date(prebaked.buildTime);
 DATA._fromCache = false;
 DATA._prebaked = true;
@@ -1953,4 +1958,7 @@ document.querySelectorAll('.nav-item').forEach(function(item) {
     }
   });
 });
-</script> </body></html> 
+</script> 
+    <!-- Pre-baked data loaded from separate file (refreshed daily before 8am) -->
+    <script src="rainbow-review-data.js"></script>
+</body></html> 
