@@ -340,18 +340,18 @@
   <div class="nav-item" onclick="showSection('trends')">Trends Over Time</div>
   <div class="nav-item" onclick="showSection('city-trends')">City Tracker</div>
   <div class="sidebar-spacer"></div>
-  <div class="sidebar-footer">Data as of Mar 26, 2026</div>
+  <div class="sidebar-footer">Data as of Mar 27, 2026</div>
 </nav>
 
 <div class="main">
-  <div class="live-badge"><div class="live-dot"></div><span id="header-updated">Last updated: Mar 27, 2026</span></div>
+  <div class="live-badge"><div class="live-dot"></div><span id="header-updated">Last updated: Mar 28, 2026</span></div>
 
   <!-- ========== OVERVIEW ========== -->
   <div id="section-overview" class="section active">
     <div class="page-title">Geographic Overview</div>
     <div class="page-desc">Where your customers are coming from across all three stores</div>
     <div class="time-toggle" id="toggle-overview">
-      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 26</small></button>
+      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 27</small></button>
       <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16â22</small></button>
       <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
       <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 â Feb 26</small></button>
@@ -395,7 +395,7 @@
     <div class="page-title">Store Breakdown</div>
     <div class="page-desc">Side-by-side comparison of top 12 customer locations per store</div>
     <div class="time-toggle" id="toggle-store-detail">
-      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 26</small></button>
+      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 27</small></button>
       <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16â22</small></button>
       <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
       <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 â Feb 26</small></button>
@@ -424,7 +424,7 @@
     <div class="page-title">State Analysis</div>
     <div class="page-desc">Customer origins bucketed by MA, NH, and Out of State â click a bucket to see visit behavior</div>
     <div class="time-toggle" id="toggle-state">
-      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 26</small></button>
+      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 27</small></button>
       <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16â22</small></button>
       <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
       <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 â Feb 26</small></button>
@@ -554,7 +554,7 @@
   <div class="footer">
     <div class="footer-status">
       <div class="status-dot"></div>
-      <span id="last-updated-text">Last updated: Mar 27, 2026 â auto-refreshes daily</span>
+      <span id="last-updated-text">Last updated: Mar 28, 2026 â auto-refreshes daily</span>
     </div>
     <div>Tree House Craft Cannabis â Geo Totem v2.2</div>
   </div>
@@ -564,60 +564,60 @@
 // ========== EMBEDDED DATA ==========
 const DATA = {
   yesterday: {
-    total: 374, uniqueCities: 108,
-    byStore: {dracut:221, pepperell:113, groton:40},
-    byState: {MA:152, NH:194, OTHER:28},
+    total: 501, uniqueCities: 127,
+    byStore: {dracut:278, pepperell:165, groton:58},
+    byState: {MA:208, NH:262, OTHER:31},
     byStoreByState: {
-      dracut:{MA:72,NH:131,OTHER:18},
-      pepperell:{MA:49,NH:54,OTHER:10},
-      groton:{MA:31,NH:9,OTHER:0}
+      dracut:{MA:98,NH:158,OTHER:22},
+      pepperell:{MA:64,NH:94,OTHER:7},
+      groton:{MA:46,NH:10,OTHER:2}
     },
     topCities: {
       dracut: [
-        {rank:1,name:"METHUEN, MA",count:26,pct:"11.8"},
-        {rank:2,name:"MANCHESTER, NH",count:25,pct:"11.3"},
-        {rank:3,name:"SALEM, NH",count:20,pct:"9.0"},
-        {rank:4,name:"DERRY, NH",count:18,pct:"8.1"},
-        {rank:5,name:"PELHAM, NH",count:16,pct:"7.2"},
-        {rank:6,name:"LONDONDERRY, NH",count:14,pct:"6.3"},
-        {rank:7,name:"LAWRENCE, MA",count:14,pct:"6.3"},
-        {rank:8,name:"HOOKSETT, NH",count:6,pct:"2.7"},
-        {rank:9,name:"LOWELL, MA",count:5,pct:"2.3"},
-        {rank:10,name:"WINDHAM, NH",count:5,pct:"2.3"},
-        {rank:11,name:"UNKNOWN, USA",count:4,pct:"1.8"},
-        {rank:12,name:"HAVERHILL, MA",count:3,pct:"1.4"}
+        {rank:1,name:"METHUEN, MA",count:35,pct:"12.6"},
+        {rank:2,name:"SALEM, NH",count:28,pct:"10.1"},
+        {rank:3,name:"MANCHESTER, NH",count:26,pct:"9.4"},
+        {rank:4,name:"DERRY, NH",count:23,pct:"8.3"},
+        {rank:5,name:"LAWRENCE, MA",count:16,pct:"5.8"},
+        {rank:6,name:"DRACUT, MA",count:16,pct:"5.8"},
+        {rank:7,name:"LONDONDERRY, NH",count:9,pct:"3.2"},
+        {rank:8,name:"PELHAM, NH",count:8,pct:"2.9"},
+        {rank:9,name:"CONCORD, NH",count:8,pct:"2.9"},
+        {rank:10,name:"WINDHAM, NH",count:6,pct:"2.2"},
+        {rank:11,name:"HOOKSETT, NH",count:6,pct:"2.2"},
+        {rank:12,name:"UNKNOWN, USA",count:5,pct:"1.8"}
       ],
       pepperell: [
-        {rank:1,name:"PEPPERELL, MA",count:27,pct:"23.9"},
-        {rank:2,name:"NASHUA, NH",count:17,pct:"15.0"},
-        {rank:3,name:"MILFORD, NH",count:6,pct:"5.3"},
-        {rank:4,name:"MANCHESTER, NH",count:5,pct:"4.4"},
-        {rank:5,name:"TOWNSEND, MA",count:4,pct:"3.5"},
-        {rank:6,name:"MERRIMACK, NH",count:3,pct:"2.7"},
-        {rank:7,name:"LEOMINSTER, MA",count:3,pct:"2.7"},
-        {rank:8,name:"HOLLIS, NH",count:2,pct:"1.8"},
-        {rank:9,name:"WEARE, NH",count:2,pct:"1.8"},
-        {rank:10,name:"GROTON, MA",count:2,pct:"1.8"},
-        {rank:11,name:"BROOKLINE, NH",count:2,pct:"1.8"},
-        {rank:12,name:"WILTON, NH",count:2,pct:"1.8"}
+        {rank:1,name:"PEPPERELL, MA",count:33,pct:"20.0"},
+        {rank:2,name:"NASHUA, NH",count:22,pct:"13.3"},
+        {rank:3,name:"HOLLIS, NH",count:11,pct:"6.7"},
+        {rank:4,name:"MILFORD, NH",count:10,pct:"6.1"},
+        {rank:5,name:"TOWNSEND, MA",count:9,pct:"5.5"},
+        {rank:6,name:"BROOKLINE, NH",count:8,pct:"4.8"},
+        {rank:7,name:"MERRIMACK, NH",count:8,pct:"4.8"},
+        {rank:8,name:"GROTON, MA",count:6,pct:"3.6"},
+        {rank:9,name:"AMHERST, NH",count:4,pct:"2.4"},
+        {rank:10,name:"DUNSTABLE, MA",count:4,pct:"2.4"},
+        {rank:11,name:"BEDFORD, NH",count:3,pct:"1.8"},
+        {rank:12,name:"HENNIKER, NH",count:3,pct:"1.8"}
       ],
       groton: [
-        {rank:1,name:"WESTFORD, MA",count:10,pct:"25.0"},
-        {rank:2,name:"GROTON, MA",count:10,pct:"25.0"},
-        {rank:3,name:"BROOKLINE, NH",count:3,pct:"7.5"},
-        {rank:4,name:"LITTLETON, MA",count:3,pct:"7.5"},
-        {rank:5,name:"AYER, MA",count:2,pct:"5.0"},
-        {rank:6,name:"TOWNSEND, MA",count:1,pct:"2.5"},
-        {rank:7,name:"MASON, NH",count:1,pct:"2.5"},
-        {rank:8,name:"MARBLEHEAD, MA",count:1,pct:"2.5"},
-        {rank:9,name:"CONCORD, MA",count:1,pct:"2.5"},
-        {rank:10,name:"JAFFREY, NH",count:1,pct:"2.5"},
-        {rank:11,name:"NASHUA, NH",count:1,pct:"2.5"},
-        {rank:12,name:"LOWELL, MA",count:1,pct:"2.5"}
+        {rank:1,name:"GROTON, MA",count:13,pct:"22.4"},
+        {rank:2,name:"WESTFORD, MA",count:12,pct:"20.7"},
+        {rank:3,name:"LITTLETON, MA",count:3,pct:"5.2"},
+        {rank:4,name:"LOWELL, MA",count:3,pct:"5.2"},
+        {rank:5,name:"PEPPERELL, MA",count:2,pct:"3.4"},
+        {rank:6,name:"MILFORD, NH",count:2,pct:"3.4"},
+        {rank:7,name:"MASON, NH",count:2,pct:"3.4"},
+        {rank:8,name:"AYER, MA",count:2,pct:"3.4"},
+        {rank:9,name:"LAKEVILLE, MA",count:1,pct:"1.7"},
+        {rank:10,name:"QUINCY, MA",count:1,pct:"1.7"},
+        {rank:11,name:"WOBURN, MA",count:1,pct:"1.7"},
+        {rank:12,name:"DELAND, FL",count:1,pct:"1.7"}
       ]
     }
   },
-  week: {
+    week: {
     total: 2871, uniqueCities: 346,
     byStore: {dracut:1619, pepperell:921, groton:331},
     byState: {MA:1236, NH:1445, OTHER:190},
