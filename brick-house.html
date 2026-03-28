@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brick House v2 &#226;&#128;&#148; Tree House Craft Cannabis</title>
+    <title>Brick House v2 &#8212; Tree House Craft Cannabis</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
@@ -39,7 +39,7 @@
             min-height: 100vh;
         }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; LEFT SIDEBAR &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; LEFT SIDEBAR &#9472;&#9472; */
         .sidebar {
             width: 220px;
             min-width: 220px;
@@ -99,7 +99,7 @@
             margin: 8px 16px;
         }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; MAIN CONTENT &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; MAIN CONTENT &#9472;&#9472; */
         .main {
             margin-left: 220px;
             flex: 1;
@@ -109,7 +109,7 @@
         .panel { display: none; }
         .panel.active { display: block; }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; CARDS &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; CARDS &#9472;&#9472; */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -130,7 +130,7 @@
         }
         @media (max-width: 1100px) { .card-row { grid-template-columns: 1fr; } }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; STORE TOGGLES &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; STORE TOGGLES &#9472;&#9472; */
         .store-toggles {
             display: flex;
             gap: 1rem;
@@ -154,7 +154,7 @@
         }
         .store-toggle input:checked + .store-dot { background: currentColor; }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; KPI ROW &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; KPI ROW &#9472;&#9472; */
         .kpi-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -174,7 +174,7 @@
         .delta.up { color: #3fb950; }
         .delta.down { color: #f85149; }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; TABLE &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; TABLE &#9472;&#9472; */
         table.data-table {
             width: 100%;
             border-collapse: collapse;
@@ -195,7 +195,7 @@
         table.data-table td:first-child, table.data-table th:first-child { text-align: left; }
         table.data-table tr:hover td { background: rgba(255,255,255,0.02); }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; CONFIDENCE BADGE &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; CONFIDENCE BADGE &#9472;&#9472; */
         .confidence-badge {
             display: inline-flex;
             align-items: center;
@@ -224,11 +224,11 @@
             color: var(--text-secondary);
         }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; CHART CONTAINERS &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; CHART CONTAINERS &#9472;&#9472; */
         .chart-wrap { position: relative; height: 300px; }
         .chart-wrap canvas { width: 100% !important; }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; LOADING & ERROR STATES &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; LOADING & ERROR STATES &#9472;&#9472; */
         .loading-spinner {
             display: inline-block;
             width: 16px;
@@ -274,7 +274,7 @@
             background: rgba(248, 81, 73, 0.25);
         }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; OVERVIEW HEADER &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; OVERVIEW HEADER &#9472;&#9472; */
         .overview-title {
             font-size: 1.6rem;
             margin-bottom: 0.25rem;
@@ -285,7 +285,7 @@
             margin-bottom: 1.5rem;
         }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; VENDOR PANEL HEADER &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; VENDOR PANEL HEADER &#9472;&#9472; */
         .vendor-header {
             display: flex;
             align-items: center;
@@ -299,7 +299,7 @@
         .vendor-header h2 { font-size: 1.4rem; }
         .vendor-header .vendor-sub { color: var(--text-muted); font-size: 0.82rem; margin-left: auto; }
 
-        /* &#226;&#148;&#128;&#226;&#148;&#128; DATA TABLE STYLES &#226;&#148;&#128;&#226;&#148;&#128; */
+        /* &#9472;&#9472; DATA TABLE STYLES &#9472;&#9472; */
         .api-table {
             width: 100%;
             border-collapse: collapse;
@@ -388,7 +388,7 @@
 </head>
 <body>
 
-<!-- &#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144; SIDEBAR &#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144; -->
+<!-- &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; SIDEBAR &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; -->
 <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
@@ -445,13 +445,13 @@
     </div>
 </nav>
 
-<!-- &#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144; MAIN &#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144;&#226;&#149;&#144; -->
+<!-- &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; MAIN &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; -->
 <div class="main">
 
-<!-- &#226;&#148;&#128;&#226;&#148;&#128; OVERVIEW PANEL &#226;&#148;&#128;&#226;&#148;&#128; -->
+<!-- &#9472;&#9472; OVERVIEW PANEL &#9472;&#9472; -->
 <div id="panel-overview" class="panel active">
     <div class="overview-title">Brick Vendor Overview</div>
-    <div class="overview-sub">Jan 2025 &#226;&#128;&#148; Feb 2026 &middot; All Stores Combined</div>
+    <div class="overview-sub">Jan 2025 &#8212; Feb 2026 &middot; All Stores Combined</div>
 
     <div class="kpi-row" id="overview-kpis"></div>
 
@@ -461,12 +461,12 @@
     </div>
 
     <div class="card">
-        <h3>Vendor Share of Wallet &#226;&#128;&#148; All Stores</h3>
+        <h3>Vendor Share of Wallet &#8212; All Stores</h3>
         <div class="chart-wrap"><canvas id="chart-overview-share"></canvas></div>
     </div>
 
     <div class="card">
-        <h3>Market Intelligence &#226;&#128;&#148; Lit Alerts Statewide Brands (MA)</h3>
+        <h3>Market Intelligence &#8212; Lit Alerts Statewide Brands (MA)</h3>
         <div id="market-intel-section" class="data-section loading">
             <div class="loading-spinner"></div>
             Loading market data...
@@ -474,7 +474,7 @@
     </div>
 
     <div class="card">
-        <h3>Inventory Mix &#226;&#128;&#148; Brick / Core / Other</h3>
+        <h3>Inventory Mix &#8212; Brick / Core / Other</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:260px; height:260px;"><canvas id="chart-brick-donut"></canvas></div>
             <div style="display:flex; flex-direction:column; justify-content:center; gap:8px;">
@@ -496,24 +496,24 @@
                         <div style="font-size:1rem; font-weight:600; color:var(--text-primary);">653</div>
                     </div>
                 </div>
-                <div style="font-size:0.72rem; color:var(--text-muted);">In-stock SKUs only. <a href="#" onclick="showPanel('inventory-mix'); return false;" style="color:var(--store-dracut);">Full breakdown by store &#226;&#134;&#146;</a></div>
+                <div style="font-size:0.72rem; color:var(--text-muted);">In-stock SKUs only. <a href="#" onclick="showPanel('inventory-mix'); return false;" style="color:var(--store-dracut);">Full breakdown by store &#8594;</a></div>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h3>Brick Vendor Revenue &#226;&#128;&#148; Share of Tracked Sales</h3>
+        <h3>Brick Vendor Revenue &#8212; Share of Tracked Sales</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:280px; height:280px;"><canvas id="chart-brick-rev-donut"></canvas></div>
             <div style="flex:1; min-width:400px;"><canvas id="chart-brick-rev-by-vendor" style="height:280px;"></canvas></div>
         </div>
-        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:8px;">Revenue split among the 7 brick vendors. Non-brick vendor revenue not currently available via Dutchie REST API &#226;&#128;&#148; requires SQL connector for total store revenue.</div>
+        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:8px;">Revenue split among the 7 brick vendors. Non-brick vendor revenue not currently available via Dutchie REST API &#8212; requires SQL connector for total store revenue.</div>
     </div>
 
     <div class="card">
         <h3>MA Market Sales Trends (Lit Alerts Estimates)</h3>
         <div class="chart-wrap"><canvas id="chart-overview-market-trend"></canvas></div>
-        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:6px;">Estimated statewide retail sales for each vendor brand. <a href="#" onclick="showPanel('market-trends'); return false;" style="color:var(--store-dracut);">View full analysis &#226;&#134;&#146;</a></div>
+        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:6px;">Estimated statewide retail sales for each vendor brand. <a href="#" onclick="showPanel('market-trends'); return false;" style="color:var(--store-dracut);">View full analysis &#8594;</a></div>
     </div>
 
     <div class="card-row">
@@ -528,12 +528,12 @@
     </div>
 </div>
 
-<!-- &#226;&#148;&#128;&#226;&#148;&#128; VENDOR PANELS (generated by JS) &#226;&#148;&#128;&#226;&#148;&#128; -->
+<!-- &#9472;&#9472; VENDOR PANELS (generated by JS) &#9472;&#9472; -->
 <div id="vendor-panels"></div>
 
-<!-- &#226;&#148;&#128;&#226;&#148;&#128; INVENTORY MIX PANEL &#226;&#148;&#128;&#226;&#148;&#128; -->
+<!-- &#9472;&#9472; INVENTORY MIX PANEL &#9472;&#9472; -->
 <div id="panel-inventory-mix" class="panel">
-    <div class="overview-title">Inventory Mix &#226;&#128;&#148; Brick / Core / Other</div>
+    <div class="overview-title">Inventory Mix &#8212; Brick / Core / Other</div>
     <div class="overview-sub">In-stock SKUs via Dutchie /inventory &middot; Deduplicated by product &middot; All 3 Stores</div>
 
     <div class="card">
@@ -552,7 +552,7 @@
     </div>
 
     <div class="card">
-        <h3 style="color:var(--store-dracut);">Dracut &#226;&#128;&#148; 377 SKUs</h3>
+        <h3 style="color:var(--store-dracut);">Dracut &#8212; 377 SKUs</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:260px; height:260px;"><canvas id="chart-invmix-dracut-donut"></canvas></div>
             <div style="flex:1; min-width:450px;">
@@ -563,7 +563,7 @@
     </div>
 
     <div class="card">
-        <h3 style="color:var(--store-pepperell);">Pepperell &#226;&#128;&#148; 395 SKUs</h3>
+        <h3 style="color:var(--store-pepperell);">Pepperell &#8212; 395 SKUs</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:260px; height:260px;"><canvas id="chart-invmix-pepperell-donut"></canvas></div>
             <div style="flex:1; min-width:450px;">
@@ -574,7 +574,7 @@
     </div>
 
     <div class="card">
-        <h3 style="color:var(--store-groton);">Groton &#226;&#128;&#148; 364 SKUs</h3>
+        <h3 style="color:var(--store-groton);">Groton &#8212; 364 SKUs</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:260px; height:260px;"><canvas id="chart-invmix-groton-donut"></canvas></div>
             <div style="flex:1; min-width:450px;">
@@ -585,15 +585,15 @@
     </div>
 </div>
 
-<!-- &#226;&#148;&#128;&#226;&#148;&#128; MARKET TRENDS PANEL &#226;&#148;&#128;&#226;&#148;&#128; -->
+<!-- &#9472;&#9472; MARKET TRENDS PANEL &#9472;&#9472; -->
 <div id="panel-market-trends" class="panel">
-    <div class="overview-title">Market Sales Trends &#226;&#128;&#148; Lit Alerts</div>
-    <div class="overview-sub">Estimated MA-wide sales by vendor brand &middot; Jan 2025 &#226;&#128;&#148; Feb 2026 &middot; Source: Lit Alerts Analytics API</div>
+    <div class="overview-title">Market Sales Trends &#8212; Lit Alerts</div>
+    <div class="overview-sub">Estimated MA-wide sales by vendor brand &middot; Jan 2025 &#8212; Feb 2026 &middot; Source: Lit Alerts Analytics API</div>
 
     <div class="kpi-row" id="market-trend-kpis"></div>
 
     <div class="card">
-        <h3>Estimated Market Sales &#226;&#128;&#148; All Vendors</h3>
+        <h3>Estimated Market Sales &#8212; All Vendors</h3>
         <div class="chart-wrap"><canvas id="chart-market-trend-all"></canvas></div>
     </div>
 
@@ -618,7 +618,7 @@
     </div>
 </div>
 
-<!-- &#226;&#148;&#128;&#226;&#148;&#128; CONFIDENCE PANEL &#226;&#148;&#128;&#226;&#148;&#128; -->
+<!-- &#9472;&#9472; CONFIDENCE PANEL &#9472;&#9472; -->
 <div id="panel-confidence" class="panel">
     <div class="overview-title">Data Confidence Audit</div>
     <div class="overview-sub">How vendor names map between Dutchie POS and Lit Alerts &middot; Confidence scoring</div>
@@ -628,9 +628,9 @@
 </div><!-- /main -->
 
 <script>
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // DATA
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 const MONTHS = ["Jan25","Feb25","Mar25","Apr25","May25","Jun25","Jul25","Aug25","Sep25","Oct25","Nov25","Dec25","Jan26","Feb26"];
 
 const VENDORS = {
@@ -708,15 +708,15 @@ const vendorAliases = {
     fb: { dutchie: ["Freshly Baked"], litAlerts: [{id:183, name:"Freshly Baked"}],
           confidence: "high", note: "Exact match in Dutchie. Single brand name, no aliases needed. Lit Alerts brand ID 183 confirmed." },
     tb: { dutchie: ["T. Bear"], litAlerts: [{id:4, name:"Coast Cannabis"}],
-          confidence: "high", note: "Dutchie vendor name is 'T. Bear', brand name is 'Coast'. Lit Alerts tracks as 'Coast Cannabis' ID 4. Note: 'Coastal Cultivars LLC' is a SEPARATE company (brands: No. 9, Shake and Get Baked) \u00e2\u0080\u0094 not affiliated with T.Bear/Coast." },
+          confidence: "high", note: "Dutchie vendor name is 'T. Bear', brand name is 'Coast'. Lit Alerts tracks as 'Coast Cannabis' ID 4. Note: 'Coastal Cultivars LLC' is a SEPARATE company (brands: No. 9, Shake and Get Baked) \u2014 not affiliated with T.Bear/Coast." },
     gf: { dutchie: ["Good Feels Inc"], litAlerts: [{id:4891, name:"Good Vibes (Good Feels)"}],
           confidence: "high", note: "Dutchie lists as 'Good Feels Inc'. Lit Alerts tracks as 'Good Vibes' ID 4891 (brand name is Good Feels). Single entity, no ambiguity." },
     wf: { dutchie: ["Wellman Farm, Inc."], litAlerts: [{id:423, name:"Wellman Farm"}, {id:9488, name:"OMG"}, {id:10021, name:"WildFlower by Wellman"}],
-          confidence: "medium", note: "Dutchie has only 'Wellman Farm, Inc.' \u00e2\u0080\u0094 no OMG or WildFlower variants appeared in our transaction data. Lit Alerts has 3 related brand IDs. Possible that OMG/WildFlower products are tagged under the parent vendor name in Dutchie. Revenue captured is likely complete for our stores, but Lit Alerts market data should aggregate all 3 brand IDs." },
+          confidence: "medium", note: "Dutchie has only 'Wellman Farm, Inc.' \u2014 no OMG or WildFlower variants appeared in our transaction data. Lit Alerts has 3 related brand IDs. Possible that OMG/WildFlower products are tagged under the parent vendor name in Dutchie. Revenue captured is likely complete for our stores, but Lit Alerts market data should aggregate all 3 brand IDs." },
     bo: { dutchie: ["Bostica, LLC"], litAlerts: [{id:8059, name:"Bostica"}],
           confidence: "high", note: "Exact match. Single brand identity in both systems." },
     hp: { dutchie: ["27 Broom Street, LLC"], litAlerts: [{id:322, name:"High Plains Farm"}, {id:21292, name:"Cowboy Kush"}],
-          confidence: "medium", note: "Dutchie uses the parent company name '27 Broom Street, LLC' rather than the brand name. Confirmed via cross-referencing. Lit Alerts has High Plains Farm (ID 322) and Cowboy Kush (ID 21292) as separate brands \u00e2\u0080\u0094 both are 27 Broom Street products. Market data should aggregate both IDs." },
+          confidence: "medium", note: "Dutchie uses the parent company name '27 Broom Street, LLC' rather than the brand name. Confirmed via cross-referencing. Lit Alerts has High Plains Farm (ID 322) and Cowboy Kush (ID 21292) as separate brands \u2014 both are 27 Broom Street products. Market data should aggregate both IDs." },
     mc: { dutchie: ["MACC", "Tree House Craft Cannabis", "New England Craft Cultivators", "Yellow Brick Road", "YBR", "Tree House Select", "Forbidden Fruit", "Habitual Ritual", "Aristo Fuego"], litAlerts: [{id:11857,name:"Forbidden Fruit"},{id:16211,name:"Habitual Ritual"},{id:13009,name:"Tree House Cannabis"},{id:16079,name:"Tree House Select"},{id:9985,name:"Yellow Brick Road"}],
           confidence: "high", note: "MACC is Tree House's own cultivation arm. Multiple sub-brands: Yellow Brick Road/YBR (flower), Tree House Select (premium), Forbidden Fruit (edibles), Habitual Ritual (pre-rolls), Aristo Fuego (concentrates). All confirmed in Dutchie product catalog. Lit Alerts tracks the premium sub-brands." }
 };
@@ -808,7 +808,7 @@ const LIT_ALERTS_DATA = {
   }
 };
 
-// Dutchie product catalog data \u00e2\u0080\u0094 aggregated by vendor & category
+// Dutchie product catalog data \u2014 aggregated by vendor & category
 // Format: { skus, avgPrice, avgCost } per category per vendor
 // Updated: 2026-03-28 via Dutchie POS API (3 stores: Dracut 7350, Pepperell 7323, Groton 7329 = 22002 total, 3475 matched)
 // Catalog unchanged from 2026-03-27. tb: 204 SKUs (T.Bear vendor only). Coastal Cultivars LLC excluded per vendor alias rules.
@@ -905,9 +905,9 @@ const PRODUCT_DATA = {
   }
 };
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
-// MARKET TREND DATA (Lit Alerts \u00e2\u0080\u0094 Estimated MA Market Sales)
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// MARKET TREND DATA (Lit Alerts \u2014 Estimated MA Market Sales)
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 const MARKET_TREND_DATA = {
   lastUpdated: "2026-03-28T04:30:00Z",
   note: "Monthly estimated sales ($) across all MA retailers, via Lit Alerts analytics. March 2026 is partial month.",
@@ -923,9 +923,9 @@ const MARKET_TREND_DATA = {
   }
 };
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
-// INVENTORY MIX \u00e2\u0080\u0094 Bricks vs Non-Bricks (from Dutchie product catalog)
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// INVENTORY MIX \u2014 Bricks vs Non-Bricks (from Dutchie product catalog)
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 const INVENTORY_MIX = {
   lastUpdated: "2026-03-28T04:30:00Z",
   note: "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
@@ -1011,9 +1011,9 @@ const INVENTORY_MIX = {
       brickVendors: {"Wellman Farms":1} }
   ]
 };
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // PER-STORE INVENTORY (from Dutchie /inventory, deduplicated by productId per store)
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 const STORE_INVENTORY = {
   dracut: {
     total: 375, brick: 132, core: 208, other: 35,
@@ -1115,13 +1115,13 @@ const STORE_INVENTORY = {
 let dutchieProductsCache = null;
 let litAlertsDataCache = {};
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // HELPERS
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 const VK = v => v.toUpperCase();
 const fmt = n => n >= 1000 ? '$' + (n/1000).toFixed(1) + 'K' : '$' + n;
 const fmtFull = n => '$' + n.toLocaleString();
-const pct = (a,b) => b ? ((a-b)/b*100).toFixed(1) : '\u00e2\u0080\u0094';
+const pct = (a,b) => b ? ((a-b)/b*100).toFixed(1) : '\u2014';
 
 function getVendorKey(vendor) { return vendor.toUpperCase(); }
 
@@ -1152,9 +1152,9 @@ function totalVendorRevenue(vendorKey) {
     return Object.values(cm).reduce((a,b) => a+b, 0);
 }
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // CHART DEFAULTS
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 Chart.defaults.color = '#8b949e';
 Chart.defaults.borderColor = '#30363d';
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
@@ -1367,7 +1367,7 @@ function buildLitAlertsTable(vendor) {
     `;
 
     retailersData.retailers.forEach(r => {
-        const isOurStore = r.n.includes('Treehouse') ? '<span style="color:#3fb950; font-weight:600;">\u00e2\u0098\u0085 Our Store</span>' : '';
+        const isOurStore = r.n.includes('Treehouse') ? '<span style="color:#3fb950; font-weight:600;">\u2605 Our Store</span>' : '';
         html += `<tr><td>${r.n}</td><td style="text-align:center;">${r.p}</td><td>${isOurStore}</td></tr>`;
     });
 
@@ -1387,7 +1387,7 @@ function buildLitAlertsTable(vendor) {
     const notes = LIT_ALERTS_DATA.notes;
     const vendorNote = notes[vendor];
     if (vendorNote) {
-        html += `<div style="margin-top:10px; padding:8px 10px; background:rgba(210,153,34,0.08); border:1px solid rgba(210,153,34,0.2); border-radius:4px; font-size:0.75rem; color:#d29922;">\u00e2\u009a\u00a0 ${vendorNote}</div>`;
+        html += `<div style="margin-top:10px; padding:8px 10px; background:rgba(210,153,34,0.08); border:1px solid rgba(210,153,34,0.2); border-radius:4px; font-size:0.75rem; color:#d29922;">\u26a0 ${vendorNote}</div>`;
     }
 
     container.innerHTML = html;
@@ -1407,7 +1407,7 @@ function loadMarketIntelligence() {
         const unverified = retailersData ? (retailersData.unverified || 0) : 0;
         const brandStr = brandIds ? brandIds.map(b => `${b.name}`).join(', ') : 'N/A';
 
-        html += `<tr><td><span style="color:${VENDORS[v].color}">\u00e2\u0096\u00a0</span> ${VENDORS[v].name}</td><td style="text-align:center; font-weight:600;">${verified}</td><td style="text-align:center; color:var(--text-muted);">${unverified ? '+' + unverified : '\u00e2\u0080\u0094'}</td><td style="font-size:0.78rem;">${brandStr}</td></tr>`;
+        html += `<tr><td><span style="color:${VENDORS[v].color}">\u25a0</span> ${VENDORS[v].name}</td><td style="text-align:center; font-weight:600;">${verified}</td><td style="text-align:center; color:var(--text-muted);">${unverified ? '+' + unverified : '\u2014'}</td><td style="font-size:0.78rem;">${brandStr}</td></tr>`;
     });
 
     html += '</tbody></table>';
@@ -1415,9 +1415,9 @@ function loadMarketIntelligence() {
     container.innerHTML = html;
 }
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // NAVIGATION
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function showPanel(id) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1429,9 +1429,9 @@ function showPanel(id) {
     });
 }
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // BUILD OVERVIEW
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function buildOverview() {
     const kpiContainer = document.getElementById('overview-kpis');
     const vendorTotals = {};
@@ -1446,7 +1446,7 @@ function buildOverview() {
         <div class="kpi"><div class="label">Total Brick Revenue</div><div class="value">${fmtFull(grandTotal)}</div></div>
         <div class="kpi"><div class="label">Top Vendor</div><div class="value" style="color:${VENDORS[sorted[0][0]].color}">${VENDORS[sorted[0][0]].name}</div></div>
         <div class="kpi"><div class="label">Vendors Tracked</div><div class="value">7</div></div>
-        <div class="kpi"><div class="label">Period</div><div class="value" style="font-size:1.1rem">Jan 25 \u00e2\u0080\u0094 Feb 26</div></div>
+        <div class="kpi"><div class="label">Period</div><div class="value" style="font-size:1.1rem">Jan 25 \u2014 Feb 26</div></div>
     `;
 
     // Revenue line chart (sorted highest to lowest)
@@ -1482,7 +1482,7 @@ function buildOverview() {
     const rankTable = document.getElementById('table-overview-ranking');
     rankTable.innerHTML = '<thead><tr><th>Vendor</th><th>Total Revenue</th><th>Share</th></tr></thead><tbody>' +
         sorted.map(([v, total], i) =>
-            `<tr><td><span style="color:${VENDORS[v].color}">\u00e2\u0096\u00a0</span> ${VENDORS[v].name}</td><td>${fmtFull(total)}</td><td>${(total/grandTotal*100).toFixed(1)}%</td></tr>`
+            `<tr><td><span style="color:${VENDORS[v].color}">\u25a0</span> ${VENDORS[v].name}</td><td>${fmtFull(total)}</td><td>${(total/grandTotal*100).toFixed(1)}%</td></tr>`
         ).join('') + '</tbody>';
 
     // Growth table
@@ -1502,7 +1502,7 @@ function buildOverview() {
     const growthTable = document.getElementById('table-overview-growth');
     growthTable.innerHTML = '<thead><tr><th>Vendor</th><th>Recent 3mo</th><th>Prior 3mo</th><th>Growth</th></tr></thead><tbody>' +
         growthData.map(d =>
-            `<tr><td><span style="color:${VENDORS[d.v].color}">\u00e2\u0096\u00a0</span> ${VENDORS[d.v].name}</td><td>${fmtFull(d.recent)}</td><td>${fmtFull(d.prior)}</td><td class="delta ${d.growth >= 0 ? 'up' : 'down'}">${d.growth >= 0 ? '+' : ''}${d.growth.toFixed(1)}%</td></tr>`
+            `<tr><td><span style="color:${VENDORS[d.v].color}">\u25a0</span> ${VENDORS[d.v].name}</td><td>${fmtFull(d.recent)}</td><td>${fmtFull(d.prior)}</td><td class="delta ${d.growth >= 0 ? 'up' : 'down'}">${d.growth >= 0 ? '+' : ''}${d.growth.toFixed(1)}%</td></tr>`
         ).join('') + '</tbody>';
 
     // Load market intelligence
@@ -1520,7 +1520,7 @@ function buildBricksMix() {
     const CORE_COLOR = '#f0883e';
     const OTHER_COLOR = '#30363d';
 
-    // \u00e2\u0094\u0080\u00e2\u0094\u0080 Donut: 3-tier Brick / Core / Other \u00e2\u0094\u0080\u00e2\u0094\u0080
+    // \u2500\u2500 Donut: 3-tier Brick / Core / Other \u2500\u2500
     const donutCtx = document.getElementById('chart-brick-donut');
     if (donutCtx) {
         if (chartInstances['chart-brick-donut']) chartInstances['chart-brick-donut'].destroy();
@@ -1543,7 +1543,7 @@ function buildBricksMix() {
                             label: function(ctx) {
                                 const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
                                 const pct = (ctx.raw / total * 100).toFixed(1);
-                                return ctx.label + ' \u00e2\u0080\u0094 ' + pct + '%';
+                                return ctx.label + ' \u2014 ' + pct + '%';
                             },
                             afterBody: function(tooltipItems) {
                                 const idx = tooltipItems[0].dataIndex;
@@ -1579,7 +1579,7 @@ function buildBricksMix() {
         });
     }
 
-    // \u00e2\u0094\u0080\u00e2\u0094\u0080 Horizontal stacked bar: By category (3 tiers) \u00e2\u0094\u0080\u00e2\u0094\u0080
+    // \u2500\u2500 Horizontal stacked bar: By category (3 tiers) \u2500\u2500
     const cats = mix.byCategory.filter(c => c.group !== 'Merch / Accessories');
     const catLabels = cats.map(c => c.group);
 
@@ -1636,7 +1636,7 @@ function buildBricksMix() {
         });
     }
 
-    // \u00e2\u0094\u0080\u00e2\u0094\u0080 All three vendor tier tag lists \u00e2\u0094\u0080\u00e2\u0094\u0080
+    // \u2500\u2500 All three vendor tier tag lists \u2500\u2500
     const tagsEl = document.getElementById('vendor-tier-tags');
     if (tagsEl) {
         const makeTag = (name, count, bgColor, borderColor, textColor) =>
@@ -1672,7 +1672,7 @@ function buildBricksMix() {
         `;
     }
 
-    // \u00e2\u0094\u0080\u00e2\u0094\u0080 Donut: Revenue split among brick vendors \u00e2\u0094\u0080\u00e2\u0094\u0080
+    // \u2500\u2500 Donut: Revenue split among brick vendors \u2500\u2500
     const vendorTotals = Object.keys(VENDORS).map(v => ({
         v, total: totalVendorRevenue(v)
     })).sort((a,b) => b.total - a.total);
@@ -1684,7 +1684,7 @@ function buildBricksMix() {
         fmtFull(vendorTotals.reduce((s,d) => s + d.total, 0))
     );
 
-    // \u00e2\u0094\u0080\u00e2\u0094\u0080 Bar: Revenue by vendor \u00e2\u0094\u0080\u00e2\u0094\u0080
+    // \u2500\u2500 Bar: Revenue by vendor \u2500\u2500
     const revCtx = document.getElementById('chart-brick-rev-by-vendor');
     if (revCtx) {
         if (chartInstances['chart-brick-rev-by-vendor']) chartInstances['chart-brick-rev-by-vendor'].destroy();
@@ -1714,9 +1714,9 @@ function buildBricksMix() {
     }
 }
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // BUILD INVENTORY MIX PANEL (combined + per-store)
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function buildInvMixSection(prefix, data, accentColor) {
     const BRICK_COLOR = '#58a6ff';
     const CORE_COLOR = '#f0883e';
@@ -1740,7 +1740,7 @@ function buildInvMixSection(prefix, data, accentColor) {
                         callbacks: {
                             label: function(ctx) {
                                 const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
-                                return ctx.label + ' \u00e2\u0080\u0094 ' + (ctx.raw / total * 100).toFixed(1) + '%';
+                                return ctx.label + ' \u2014 ' + (ctx.raw / total * 100).toFixed(1) + '%';
                             },
                             afterBody: function(tooltipItems) {
                                 const idx = tooltipItems[0].dataIndex;
@@ -1858,9 +1858,9 @@ function buildInventoryMixPanel() {
     });
 }
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // BUILD VENDOR PANELS
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function buildVendorPanels() {
     const container = document.getElementById('vendor-panels');
     Object.keys(VENDORS).forEach(v => {
@@ -1873,7 +1873,7 @@ function buildVendorPanels() {
         const priorMonth = MONTHS[MONTHS.length - 2];
         const latestVal = combined[latestMonth] || 0;
         const priorVal = combined[priorMonth] || 0;
-        const momGrowth = priorVal ? ((latestVal - priorVal) / priorVal * 100).toFixed(1) : '\u00e2\u0080\u0094';
+        const momGrowth = priorVal ? ((latestVal - priorVal) / priorVal * 100).toFixed(1) : '\u2014';
 
         const panel = document.createElement('div');
         panel.id = 'panel-' + v;
@@ -1923,7 +1923,7 @@ function buildVendorPanels() {
             </div>
 
             <div class="card">
-                <h3>Market Presence \u00e2\u0080\u0094 Lit Alerts</h3>
+                <h3>Market Presence \u2014 Lit Alerts</h3>
                 <div id="lit-section-${v}" class="data-section"></div>
             </div>
 
@@ -2043,15 +2043,15 @@ function buildStoreCompTable(vendor) {
     let html = '<thead><tr><th>Store</th><th>Total</th><th>Share</th><th>Avg/Month</th></tr></thead><tbody>';
     Object.keys(STORES).forEach(s => {
         const monthsActive = MONTHS.filter(m => storeData[s][m] && storeData[s][m][vk]).length;
-        html += `<tr><td style="color:${STORES[s].color}">${STORES[s].name}</td><td>${fmtFull(totals[s])}</td><td>${grand ? (totals[s]/grand*100).toFixed(1) : 0}%</td><td>${monthsActive ? fmtFull(Math.round(totals[s]/monthsActive)) : '\u00e2\u0080\u0094'}</td></tr>`;
+        html += `<tr><td style="color:${STORES[s].color}">${STORES[s].name}</td><td>${fmtFull(totals[s])}</td><td>${grand ? (totals[s]/grand*100).toFixed(1) : 0}%</td><td>${monthsActive ? fmtFull(Math.round(totals[s]/monthsActive)) : '\u2014'}</td></tr>`;
     });
     html += '</tbody>';
     table.innerHTML = html;
 }
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // BUILD MARKET TRENDS
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 const TREND_MONTHS = MARKET_TREND_DATA.months;
 const TREND_LABELS = TREND_MONTHS.map(m => {
     const [y, mo] = m.split('-');
@@ -2059,7 +2059,7 @@ const TREND_LABELS = TREND_MONTHS.map(m => {
 });
 
 function buildMarketTrends() {
-    // \u00e2\u0094\u0080\u00e2\u0094\u0080 Overview mini-chart \u00e2\u0094\u0080\u00e2\u0094\u0080
+    // \u2500\u2500 Overview mini-chart \u2500\u2500
     const overviewDatasets = sortDatasetsByTotal(Object.keys(VENDORS).map(v => ({
         label: VENDORS[v].name,
         data: TREND_MONTHS.map(m => MARKET_TREND_DATA.vendors[v][m] || 0),
@@ -2071,7 +2071,7 @@ function buildMarketTrends() {
     })));
     makeLineChart('chart-overview-market-trend', overviewDatasets, TREND_LABELS);
 
-    // \u00e2\u0094\u0080\u00e2\u0094\u0080 Full Market Trends panel \u00e2\u0094\u0080\u00e2\u0094\u0080
+    // \u2500\u2500 Full Market Trends panel \u2500\u2500
     // KPIs
     const kpiContainer = document.getElementById('market-trend-kpis');
     if (kpiContainer) {
@@ -2093,7 +2093,7 @@ function buildMarketTrends() {
         `;
     }
 
-    // Line chart \u00e2\u0080\u0094 all vendors (sorted highest to lowest)
+    // Line chart \u2014 all vendors (sorted highest to lowest)
     const allDatasets = sortDatasetsByTotal(Object.keys(VENDORS).map(v => ({
         label: VENDORS[v].name,
         data: TREND_MONTHS.map(m => MARKET_TREND_DATA.vendors[v][m] || 0),
@@ -2105,7 +2105,7 @@ function buildMarketTrends() {
     })));
     makeLineChart('chart-market-trend-all', allDatasets, TREND_LABELS);
 
-    // Stacked bar \u00e2\u0080\u0094 market share (sorted highest to lowest)
+    // Stacked bar \u2014 market share (sorted highest to lowest)
     const shareDatasets = sortDatasetsByTotal(Object.keys(VENDORS).map(v => ({
         label: VENDORS[v].name,
         data: TREND_MONTHS.map(m => MARKET_TREND_DATA.vendors[v][m] || 0),
@@ -2124,7 +2124,7 @@ function buildMarketTrends() {
             const cells = vendorKeys.map(v => {
                 const val = MARKET_TREND_DATA.vendors[v][m] || 0;
                 rowTotal += val;
-                return `<td>${val ? fmtFull(val) : '\u00e2\u0080\u0094'}</td>`;
+                return `<td>${val ? fmtFull(val) : '\u2014'}</td>`;
             }).join('');
             html += `<tr><td>${TREND_LABELS[i]}</td>${cells}<td><strong>${fmtFull(rowTotal)}</strong></td></tr>`;
         });
@@ -2150,8 +2150,8 @@ function buildMarketTrends() {
 
         let html = '<thead><tr><th>Vendor</th><th>Recent 3mo</th><th>Prior 3mo</th><th>Growth</th><th>Peak Month</th></tr></thead><tbody>';
         growthData.forEach(d => {
-            const peakLabel = TREND_LABELS[TREND_MONTHS.indexOf(d.peak.m)] || '\u00e2\u0080\u0094';
-            html += `<tr><td><span style="color:${VENDORS[d.v].color}">\u00e2\u0096\u00a0</span> ${VENDORS[d.v].name}</td><td>${fmtFull(d.recent)}</td><td>${fmtFull(d.prior)}</td><td class="delta ${d.growth >= 0 ? 'up' : 'down'}">${d.growth >= 0 ? '+' : ''}${d.growth.toFixed(1)}%</td><td>${peakLabel} (${fmtFull(d.peak.val)})</td></tr>`;
+            const peakLabel = TREND_LABELS[TREND_MONTHS.indexOf(d.peak.m)] || '\u2014';
+            html += `<tr><td><span style="color:${VENDORS[d.v].color}">\u25a0</span> ${VENDORS[d.v].name}</td><td>${fmtFull(d.recent)}</td><td>${fmtFull(d.prior)}</td><td class="delta ${d.growth >= 0 ? 'up' : 'down'}">${d.growth >= 0 ? '+' : ''}${d.growth.toFixed(1)}%</td><td>${peakLabel} (${fmtFull(d.peak.val)})</td></tr>`;
         });
         html += '</tbody>';
         growthTable.innerHTML = html;
@@ -2173,7 +2173,7 @@ function getVendorMarketDatasets(vendor) {
 
     // Market line (Lit Alerts)
     datasets.push({
-        label: VENDORS[vendor].name + ' \u00e2\u0080\u0094 MA Market',
+        label: VENDORS[vendor].name + ' \u2014 MA Market',
         data: TREND_MONTHS.map(m => data[m] || 0),
         borderColor: VENDORS[vendor].color,
         backgroundColor: VENDORS[vendor].color + '22',
@@ -2224,11 +2224,11 @@ function buildVendorMarketTrend(vendor) {
             const val = data[m] || 0;
             return val > best.val ? { m, val } : best;
         }, { m: '', val: 0 });
-        const peakLabel = TREND_LABELS[TREND_MONTHS.indexOf(peak.m)] || '\u00e2\u0080\u0094';
+        const peakLabel = TREND_LABELS[TREND_MONTHS.indexOf(peak.m)] || '\u2014';
 
         const recent = TREND_MONTHS.slice(-3).reduce((s, m) => s + (data[m] || 0), 0);
         const prior = TREND_MONTHS.slice(-6, -3).reduce((s, m) => s + (data[m] || 0), 0);
-        const growth = prior ? ((recent - prior) / prior * 100).toFixed(1) : '\u00e2\u0080\u0094';
+        const growth = prior ? ((recent - prior) / prior * 100).toFixed(1) : '\u2014';
 
         // Calculate Tree House share of market
         const thStoreTotal = TREND_MONTHS.reduce((s, tm) => {
@@ -2240,7 +2240,7 @@ function buildVendorMarketTrend(vendor) {
             });
             return s + storeSum;
         }, 0);
-        const marketShare = total ? (thStoreTotal / total * 100).toFixed(1) : '\u00e2\u0080\u0094';
+        const marketShare = total ? (thStoreTotal / total * 100).toFixed(1) : '\u2014';
 
         summaryEl.innerHTML = `
             <div style="display:flex; gap:2rem; flex-wrap:wrap;">
@@ -2266,9 +2266,9 @@ function updateVendorMarketChart(vendor) {
     makeLineChart('chart-market-' + vendor, datasets, TREND_LABELS);
 }
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // BUILD CONFIDENCE PANEL
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function buildConfidence() {
     const container = document.getElementById('confidence-cards');
     const scores = { high: 0, medium: 0, low: 0 };
@@ -2312,7 +2312,7 @@ function buildConfidence() {
         </div>
         <div style="font-size:0.82rem; color:var(--text-secondary); margin-top:12px;">
             5 of 7 vendors have HIGH confidence mappings (exact name matches or confirmed cross-references).<br>
-            2 vendors (Wellman Farms, High Plains Farm) are MEDIUM \u00e2\u0080\u0094 the Dutchie vendor name differs from the consumer-facing brand, but matches were confirmed via transaction data analysis.
+            2 vendors (Wellman Farms, High Plains Farm) are MEDIUM \u2014 the Dutchie vendor name differs from the consumer-facing brand, but matches were confirmed via transaction data analysis.
             Revenue capture at Tree House stores is high-confidence for all 7.<br><br>
             <strong>Lit Alerts caveat:</strong> Market-wide data depends on how other retailers tag vendor names in their POS/menu systems.
             Brands with multiple sub-brands (Wellman + OMG + WildFlower, High Plains + Cowboy Kush) may have partial market data if some retailers tag under the sub-brand only.
@@ -2321,9 +2321,9 @@ function buildConfidence() {
     container.insertBefore(summary, container.firstChild);
 }
 
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 // INIT
-// \u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090\u00e2\u0095\u0090
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 buildOverview();
 buildInventoryMixPanel();
 buildVendorPanels();
