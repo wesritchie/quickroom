@@ -264,73 +264,11 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
-
-
-  /* -- MOBILE HAMBURGER -- */
-  .hamburger {
-    display: none; position: fixed; top: 14px; left: 14px; z-index: 200;
-    width: 40px; height: 40px; border-radius: 8px;
-    background: var(--bg-card); border: 1px solid var(--border-subtle);
-    cursor: pointer; align-items: center; justify-content: center;
-    font-size: 20px; color: var(--text-primary); line-height: 1;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .sidebar-overlay {
-    display: none; position: fixed; inset: 0; z-index: 99;
-    background: rgba(0,0,0,0.6); -webkit-tap-highlight-color: transparent;
-  }
-  .sidebar-overlay.open { display: block; }
-
-  /* -- MOBILE RESPONSIVE -- */
-  @media (max-width: 900px) {
-    .hamburger { display: flex; }
-    .sidebar {
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      box-shadow: none;
-    }
-    .sidebar.open {
-      transform: translateX(0);
-      box-shadow: 4px 0 24px rgba(0,0,0,0.5);
-    }
-    .main {
-      margin-left: 0;
-      padding: 70px 16px 32px;
-    }
-    .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .two-col { grid-template-columns: 1fr; }
-    .three-col { grid-template-columns: 1fr; }
-    .behavior-grid { grid-template-columns: 1fr; }
-    .time-toggle { flex-wrap: wrap; }
-    .time-btn { flex: none; min-width: 48%; padding: 10px 6px; font-size: 12px; }
-    .time-btn small { font-size: 10px; }
-    .store-tabs { flex-wrap: wrap; gap: 6px; }
-    .store-tab { padding: 8px 14px; font-size: 12px; }
-    .page-title { font-size: 20px; }
-    .card { padding: 16px; }
-    .kpi-value { font-size: 22px; }
-    .bucket-value { font-size: 24px; }
-    .geo-table { font-size: 12px; }
-    .geo-table th, .geo-table td { padding: 8px 6px; }
-    .bar-cell { width: 80px; }
-    .chart-container, .chart-container-tall { height: 220px; }
-    .city-trend-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .spark-cell { width: 100px; }
-    .view-toggle { flex-wrap: wrap; }
-    .footer { flex-direction: column; gap: 4px; text-align: center; }
-  }
-  @media (max-width: 480px) {
-    .kpi-row { grid-template-columns: 1fr; }
-    .time-btn { min-width: 100%; }
-  }
 </style>
 </head>
 <body>
 
-<button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-<nav class="sidebar" id="sidebar">
+<nav class="sidebar">
   <div class="sidebar-title">Tree House<br>Geo Totem</div>
   <div class="sidebar-subtitle">Customer Geography Intelligence</div>
   <div class="sidebar-section-label">Sections</div>
@@ -340,41 +278,41 @@
   <div class="nav-item" onclick="showSection('trends')">Trends Over Time</div>
   <div class="nav-item" onclick="showSection('city-trends')">City Tracker</div>
   <div class="sidebar-spacer"></div>
-  <div class="sidebar-footer">Data as of Mar 27, 2026</div>
+  <div class="sidebar-footer">Data as of Mar 28, 2026</div>
 </nav>
 
 <div class="main">
-  <div class="live-badge"><div class="live-dot"></div><span id="header-updated">Last updated: Mar 28, 2026</span></div>
+  <div class="live-badge"><div class="live-dot"></div><span id="header-updated">Last updated: Mar 29, 2026</span></div>
 
   <!-- ========== OVERVIEW ========== -->
   <div id="section-overview" class="section active">
     <div class="page-title">Geographic Overview</div>
     <div class="page-desc">Where your customers are coming from across all three stores</div>
     <div class="time-toggle" id="toggle-overview">
-      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 27</small></button>
-      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16&#8211;22</small></button>
+      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 28</small></button>
+      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16–22</small></button>
       <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
-      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 &#8211; Feb 26</small></button>
+      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 – Feb 26</small></button>
     </div>
     <div class="kpi-row">
       <div class="kpi-card">
         <div class="kpi-label">Total Scans</div>
-        <div class="kpi-value" id="kpi-total-scans">&#8212;</div>
+        <div class="kpi-value" id="kpi-total-scans">—</div>
         <div class="kpi-detail" id="kpi-total-detail">All stores</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Unique Locations</div>
-        <div class="kpi-value" id="kpi-unique-cities">&#8212;</div>
+        <div class="kpi-value" id="kpi-unique-cities">—</div>
         <div class="kpi-detail">Distinct cities</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Top State</div>
-        <div class="kpi-value" id="kpi-top-state">&#8212;</div>
+        <div class="kpi-value" id="kpi-top-state">—</div>
         <div class="kpi-detail" id="kpi-top-state-detail"></div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Out-of-State %</div>
-        <div class="kpi-value" id="kpi-oos-pct">&#8212;</div>
+        <div class="kpi-value" id="kpi-oos-pct">—</div>
         <div class="kpi-detail" id="kpi-oos-detail">NH + Other</div>
       </div>
     </div>
@@ -384,7 +322,7 @@
       <div class="store-tab" data-store="groton" onclick="setOverviewStore('groton')">Groton (GD)</div>
     </div>
     <div class="card">
-      <div class="card-title" id="overview-table-title">Top 12 Locations &#8212; Dracut (DD)</div>
+      <div class="card-title" id="overview-table-title">Top 12 Locations — Dracut (DD)</div>
       <div class="card-subtitle" id="overview-table-sub">Customer scans by city</div>
       <div id="overview-table-container"></div>
     </div>
@@ -395,10 +333,10 @@
     <div class="page-title">Store Breakdown</div>
     <div class="page-desc">Side-by-side comparison of top 12 customer locations per store</div>
     <div class="time-toggle" id="toggle-store-detail">
-      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 27</small></button>
-      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16&#8211;22</small></button>
+      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 28</small></button>
+      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16–22</small></button>
       <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
-      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 &#8211; Feb 26</small></button>
+      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 – Feb 26</small></button>
     </div>
     <div class="three-col">
       <div class="card">
@@ -422,27 +360,27 @@
   <!-- ========== STATE ANALYSIS ========== -->
   <div id="section-state-buckets" class="section">
     <div class="page-title">State Analysis</div>
-    <div class="page-desc">Customer origins bucketed by MA, NH, and Out of State &#8212; click a bucket to see visit behavior</div>
+    <div class="page-desc">Customer origins bucketed by MA, NH, and Out of State — click a bucket to see visit behavior</div>
     <div class="time-toggle" id="toggle-state">
-      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 27</small></button>
-      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16&#8211;22</small></button>
+      <button class="time-btn active" data-period="yesterday" onclick="setPeriod('yesterday')">Yesterday<small>Mar 28</small></button>
+      <button class="time-btn" data-period="week" onclick="setPeriod('week')">Last Completed Week<small>Mar 16–22</small></button>
       <button class="time-btn" data-period="month" onclick="setPeriod('month')">Last Completed Month<small>February 2026</small></button>
-      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 &#8211; Feb 26</small></button>
+      <button class="time-btn" data-period="18month" onclick="setPeriod('18month')">18 Month Snapshot<small>Sep 24 – Feb 26</small></button>
     </div>
     <div class="three-col">
       <div class="bucket-card bucket-ma" onclick="selectBucket('MA')">
         <div class="bucket-label">Massachusetts</div>
-        <div class="bucket-value" id="bucket-ma-val">&#8212;</div>
+        <div class="bucket-value" id="bucket-ma-val">—</div>
         <div class="bucket-pct" id="bucket-ma-pct">scans</div>
       </div>
       <div class="bucket-card bucket-nh" onclick="selectBucket('NH')">
         <div class="bucket-label">New Hampshire</div>
-        <div class="bucket-value" id="bucket-nh-val">&#8212;</div>
+        <div class="bucket-value" id="bucket-nh-val">—</div>
         <div class="bucket-pct" id="bucket-nh-pct">scans</div>
       </div>
       <div class="bucket-card bucket-other" onclick="selectBucket('OTHER')">
         <div class="bucket-label">Out of State</div>
-        <div class="bucket-value" id="bucket-other-val">&#8212;</div>
+        <div class="bucket-value" id="bucket-other-val">—</div>
         <div class="bucket-pct" id="bucket-other-pct">scans (excl. MA &amp; NH)</div>
       </div>
     </div>
@@ -459,22 +397,22 @@
       </div>
     </div>
     <div class="behavior-panel" id="behavior-panel">
-      <div class="card-title" id="behavior-title">Visit Behavior &#8212; Massachusetts Customers</div>
+      <div class="card-title" id="behavior-title">Visit Behavior — Massachusetts Customers</div>
       <div class="card-subtitle" id="behavior-subtitle">Based on Veriscan scan data for the selected period</div>
       <div class="behavior-grid">
         <div class="behavior-stat">
           <div class="behavior-stat-label">Total Scans</div>
-          <div class="behavior-stat-value" id="beh-total-scans">&#8212;</div>
+          <div class="behavior-stat-value" id="beh-total-scans">—</div>
           <div class="behavior-stat-detail" id="beh-total-scans-d"></div>
         </div>
         <div class="behavior-stat">
           <div class="behavior-stat-label">% of All Traffic</div>
-          <div class="behavior-stat-value" id="beh-pct-traffic">&#8212;</div>
+          <div class="behavior-stat-value" id="beh-pct-traffic">—</div>
           <div class="behavior-stat-detail" id="beh-pct-traffic-d"></div>
         </div>
         <div class="behavior-stat">
           <div class="behavior-stat-label">Store Distribution</div>
-          <div class="behavior-stat-value" id="beh-store-dist">&#8212;</div>
+          <div class="behavior-stat-value" id="beh-store-dist">—</div>
           <div class="behavior-stat-detail" id="beh-store-dist-d"></div>
         </div>
       </div>
@@ -484,10 +422,10 @@
   <!-- ========== TRENDS ========== -->
   <div id="section-trends" class="section">
     <div class="page-title">Trends Over Time</div>
-    <div class="page-desc">18-month view of customer origin patterns &#8212; ionthly scan counts by state bucket</div>
+    <div class="page-desc">18-month view of customer origin patterns — monthly scan counts by state bucket</div>
     <div class="card">
       <div class="card-title">Monthly Scans by State Bucket</div>
-      <div class="card-subtitle">MA / NH / Out of State &#8212; all stores combined</div>
+      <div class="card-subtitle">MA / NH / Out of State — all stores combined</div>
       <div class="chart-container-tall"><canvas id="chart-trends-state"></canvas></div>
     </div>
     <div class="two-col">
@@ -507,7 +445,7 @@
   <!-- ========== CITY TRACKER ========== -->
   <div id="section-city-trends" class="section">
     <div class="page-title">City Tracker</div>
-    <div class="page-desc">Week-over-week municipality trends by store &#8212; see exactly where traffic is rising or falling</div>
+    <div class="page-desc">Week-over-week municipality trends by store — see exactly where traffic is rising or falling</div>
 
     <div class="store-tabs" style="display:flex;gap:8px;margin-bottom:16px">
       <div class="store-tab active-dracut" data-store="dracut" onclick="setCityStore('dracut')">Dracut (DD)</div>
@@ -522,16 +460,16 @@
 
     <div id="city-table-view">
       <div class="card" style="overflow-x:auto">
-        <div class="card-title" id="city-table-title">Weekly Municipality Tracker &#8212; Dracut</div>
-        <div class="card-subtitle">Top 12 cities &#8212; 12 weeks ending Mar 15, 2026. Green = up WoW, Red = down WoW</div>
+        <div class="card-title" id="city-table-title">Weekly Municipality Tracker — Dracut</div>
+        <div class="card-subtitle">Top 12 cities — 12 weeks ending Mar 15, 2026. Green = up WoW, Red = down WoW</div>
         <div id="city-trend-table-container"></div>
       </div>
     </div>
 
     <div id="city-chart-view" style="display:none">
       <div class="card">
-        <div class="card-title" id="city-chart-title">Municipality Traffic Over Time &#8212; Dracut</div>
-        <div class="card-subtitle">Click city chips to toggle visibility &#8212; showing weekly scan counts</div>
+        <div class="card-title" id="city-chart-title">Municipality Traffic Over Time — Dracut</div>
+        <div class="card-subtitle">Click city chips to toggle visibility — showing weekly scan counts</div>
         <div class="city-legend-chips" id="city-chips-container"></div>
         <div class="chart-container-tall"><canvas id="chart-city-trends"></canvas></div>
       </div>
@@ -540,7 +478,7 @@
     <div class="two-col">
       <div class="card">
         <div class="card-title">Biggest Movers This Week</div>
-        <div class="card-subtitle">Largest WoW changes (Mar 9&#8211;15 vs Mar 2&#8211;8)</div>
+        <div class="card-subtitle">Largest WoW changes (Mar 9–15 vs Mar 2–8)</div>
         <div id="movers-up-container"></div>
       </div>
       <div class="card">
@@ -554,9 +492,9 @@
   <div class="footer">
     <div class="footer-status">
       <div class="status-dot"></div>
-      <span id="last-updated-text">Last updated: Mar 28, 2026 &#8212; auto-refreshes daily</span>
+      <span id="last-updated-text">Last updated: Mar 29, 2026 — auto-refreshes daily</span>
     </div>
-    <div>Tree House Craft Cannabis &#8212; Geo Totem v2.2</div>
+    <div>Tree House Craft Cannabis — Geo Totem v2.2</div>
   </div>
 </div>
 
@@ -564,60 +502,60 @@
 // ========== EMBEDDED DATA ==========
 const DATA = {
   yesterday: {
-    total: 501, uniqueCities: 127,
-    byStore: {dracut:278, pepperell:165, groton:58},
-    byState: {MA:208, NH:262, OTHER:31},
+    total: 489, uniqueCities: 131,
+    byStore: {dracut:302, pepperell:141, groton:46},
+    byState: {MA:204, NH:255, OTHER:30},
     byStoreByState: {
-      dracut:{MA:98,NH:158,OTHER:22},
-      pepperell:{MA:64,NH:94,OTHER:7},
-      groton:{MA:46,NH:10,OTHER:2}
+      dracut:{MA:114,NH:172,OTHER:16},
+      pepperell:{MA:53,NH:80,OTHER:8},
+      groton:{MA:37,NH:3,OTHER:6}
     },
     topCities: {
       dracut: [
-        {rank:1,name:"METHUEN, MA",count:35,pct:"12.6"},
-        {rank:2,name:"SALEM, NH",count:28,pct:"10.1"},
-        {rank:3,name:"MANCHESTER, NH",count:26,pct:"9.4"},
-        {rank:4,name:"DERRY, NH",count:23,pct:"8.3"},
-        {rank:5,name:"LAWRENCE, MA",count:16,pct:"5.8"},
-        {rank:6,name:"DRACUT, MA",count:16,pct:"5.8"},
-        {rank:7,name:"LONDONDERRY, NH",count:9,pct:"3.2"},
-        {rank:8,name:"PELHAM, NH",count:8,pct:"2.9"},
-        {rank:9,name:"CONCORD, NH",count:8,pct:"2.9"},
-        {rank:10,name:"WINDHAM, NH",count:6,pct:"2.2"},
-        {rank:11,name:"HOOKSETT, NH",count:6,pct:"2.2"},
-        {rank:12,name:"UNKNOWN, USA",count:5,pct:"1.8"}
+        {rank:1,name:"METHUEN, MA",count:36,pct:"11.9"},
+        {rank:2,name:"MANCHESTER, NH",count:34,pct:"11.3"},
+        {rank:3,name:"DERRY, NH",count:27,pct:"8.9"},
+        {rank:4,name:"SALEM, NH",count:26,pct:"8.6"},
+        {rank:5,name:"LAWRENCE, MA",count:25,pct:"8.3"},
+        {rank:6,name:"LONDONDERRY, NH",count:11,pct:"3.6"},
+        {rank:7,name:"DRACUT, MA",count:9,pct:"3.0"},
+        {rank:8,name:"PELHAM, NH",count:6,pct:"2.0"},
+        {rank:9,name:"WINDHAM, NH",count:6,pct:"2.0"},
+        {rank:10,name:"HAVERHILL, MA",count:5,pct:"1.7"},
+        {rank:11,name:"NORTH ANDOVER, MA",count:5,pct:"1.7"},
+        {rank:12,name:"WEARE, NH",count:5,pct:"1.7"}
       ],
       pepperell: [
-        {rank:1,name:"PEPPERELL, MA",count:33,pct:"20.0"},
-        {rank:2,name:"NASHUA, NH",count:22,pct:"13.3"},
-        {rank:3,name:"HOLLIS, NH",count:11,pct:"6.7"},
-        {rank:4,name:"MILFORD, NH",count:10,pct:"6.1"},
-        {rank:5,name:"TOWNSEND, MA",count:9,pct:"5.5"},
-        {rank:6,name:"BROOKLINE, NH",count:8,pct:"4.8"},
-        {rank:7,name:"MERRIMACK, NH",count:8,pct:"4.8"},
-        {rank:8,name:"GROTON, MA",count:6,pct:"3.6"},
-        {rank:9,name:"AMHERST, NH",count:4,pct:"2.4"},
-        {rank:10,name:"DUNSTABLE, MA",count:4,pct:"2.4"},
-        {rank:11,name:"BEDFORD, NH",count:3,pct:"1.8"},
-        {rank:12,name:"HENNIKER, NH",count:3,pct:"1.8"}
+        {rank:1,name:"NASHUA, NH",count:24,pct:"17.0"},
+        {rank:2,name:"PEPPERELL, MA",count:20,pct:"14.2"},
+        {rank:3,name:"TOWNSEND, MA",count:11,pct:"7.8"},
+        {rank:4,name:"MILFORD, NH",count:9,pct:"6.4"},
+        {rank:5,name:"BROOKLINE, NH",count:7,pct:"5.0"},
+        {rank:6,name:"MERRIMACK, NH",count:5,pct:"3.5"},
+        {rank:7,name:"HOLLIS, NH",count:5,pct:"3.5"},
+        {rank:8,name:"AMHERST, NH",count:5,pct:"3.5"},
+        {rank:9,name:"MANCHESTER, NH",count:4,pct:"2.8"},
+        {rank:10,name:"GOFFSTOWN, NH",count:3,pct:"2.1"},
+        {rank:11,name:"FITCHBURG, MA",count:2,pct:"1.4"},
+        {rank:12,name:"LEOMINSTER, MA",count:2,pct:"1.4"}
       ],
       groton: [
-        {rank:1,name:"GROTON, MA",count:13,pct:"22.4"},
-        {rank:2,name:"WESTFORD, MA",count:12,pct:"20.7"},
-        {rank:3,name:"LITTLETON, MA",count:3,pct:"5.2"},
-        {rank:4,name:"LOWELL, MA",count:3,pct:"5.2"},
-        {rank:5,name:"PEPPERELL, MA",count:2,pct:"3.4"},
-        {rank:6,name:"MILFORD, NH",count:2,pct:"3.4"},
-        {rank:7,name:"MASON, NH",count:2,pct:"3.4"},
-        {rank:8,name:"AYER, MA",count:2,pct:"3.4"},
-        {rank:9,name:"LAKEVILLE, MA",count:1,pct:"1.7"},
-        {rank:10,name:"QUINCY, MA",count:1,pct:"1.7"},
-        {rank:11,name:"WOBURN, MA",count:1,pct:"1.7"},
-        {rank:12,name:"DELAND, FL",count:1,pct:"1.7"}
+        {rank:1,name:"GROTON, MA",count:12,pct:"26.1"},
+        {rank:2,name:"WESTFORD, MA",count:4,pct:"8.7"},
+        {rank:3,name:"AYER, MA",count:4,pct:"8.7"},
+        {rank:4,name:"ACTON, MA",count:3,pct:"6.5"},
+        {rank:5,name:"TOWNSEND, MA",count:2,pct:"4.3"},
+        {rank:6,name:"LOWELL, MA",count:2,pct:"4.3"},
+        {rank:7,name:"PAWTUCKET, RI",count:2,pct:"4.3"},
+        {rank:8,name:"UNKNOWN, USA",count:1,pct:"2.2"},
+        {rank:9,name:"DUNSTABLE, MA",count:1,pct:"2.2"},
+        {rank:10,name:"PELHAM, NH",count:1,pct:"2.2"},
+        {rank:11,name:"HAMPSTEAD, NH",count:1,pct:"2.2"},
+        {rank:12,name:"HUDSON, NH",count:1,pct:"2.2"}
       ]
     }
   },
-    week: {
+  week: {
     total: 2871, uniqueCities: 346,
     byStore: {dracut:1619, pepperell:921, groton:331},
     byState: {MA:1236, NH:1445, OTHER:190},
@@ -727,7 +665,7 @@ const DATA = {
   }
 };
 
-// 18-month trend data \u2014 compute totals for the "18month" period view
+// 18-month trend data — compute totals for the "18month" period view
 const TREND = [
   {label:"Sep 24",total:7396,byState:{MA:2744,NH:3877,OTHER:775},byStore:{dracut:7396,pepperell:0,groton:0}},
   {label:"Oct 24",total:8362,byState:{MA:3136,NH:4392,OTHER:834},byStore:{dracut:8362,pepperell:0,groton:0}},
@@ -754,52 +692,52 @@ const CITY_TREND_STORE = {
   dracut: {
     cities: ["METHUEN, MA","MANCHESTER, NH","SALEM, NH","DERRY, NH","LAWRENCE, MA","LONDONDERRY, NH","PELHAM, NH","DRACUT, MA","WINDHAM, NH","UNKNOWN, USA","LOWELL, MA","CONCORD, NH"],
     weeks: [
-      {label:"Dec 29\u2013Jan 4",total:1867,cities:{"METHUEN, MA":259,"MANCHESTER, NH":222,"SALEM, NH":139,"DERRY, NH":125,"LAWRENCE, MA":136,"LONDONDERRY, NH":84,"PELHAM, NH":79,"DRACUT, MA":64,"WINDHAM, NH":57,"UNKNOWN, USA":33,"LOWELL, MA":33,"CONCORD, NH":32}},
-      {label:"Jan 5\u201311",total:1644,cities:{"METHUEN, MA":221,"MANCHESTER, NH":181,"SALEM, NH":155,"DERRY, NH":118,"LAWRENCE, MA":130,"LONDONDERRY, NH":77,"PELHAM, NH":57,"DRACUT, MA":56,"WINDHAM, NH":47,"UNKNOWN, USA":35,"LOWELL, MA":25,"CONCORD, NH":22}},
-      {label:"Jan 12\u201318",total:1614,cities:{"METHUEN, MA":203,"MANCHESTER, NH":182,"SALEM, NH":159,"DERRY, NH":120,"LAWRENCE, MA":102,"LONDONDERRY, NH":64,"PELHAM, NH":66,"DRACUT, MA":57,"WINDHAM, NH":46,"UNKNOWN, USA":23,"LOWELL, MA":30,"CONCORD, NH":20}},
-      {label:"Jan 19\u201325",total:1849,cities:{"METHUEN, MA":259,"MANCHESTER, NH":219,"SALEM, NH":152,"DERRY, NH":118,"LAWRENCE, MA":138,"LONDONDERRY, NH":82,"PELHAM, NH":69,"DRACUT, MA":61,"WINDHAM, NH":56,"UNKNOWN, USA":32,"LOWELL, MA":23,"CONCORD, NH":19}},
-      {label:"Jan 26\u2013Feb 1",total:1541,cities:{"METHUEN, MA":191,"MANCHESTER, NH":206,"SALEM, NH":154,"DERRY, NH":129,"LAWRENCE, MA":109,"LONDONDERRY, NH":77,"PELHAM, NH":66,"DRACUT, MA":49,"WINDHAM, NH":49,"UNKNOWN, USA":24,"LOWELL, MA":19,"CONCORD, NH":30}},
-      {label:"Feb 2\u20138",total:1633,cities:{"METHUEN, MA":238,"MANCHESTER, NH":184,"SALEM, NH":149,"DERRY, NH":137,"LAWRENCE, MA":112,"LONDONDERRY, NH":72,"PELHAM, NH":52,"DRACUT, MA":61,"WINDHAM, NH":39,"UNKNOWN, USA":30,"LOWELL, MA":22,"CONCORD, NH":23}},
-      {label:"Feb 9\u201315",total:1588,cities:{"METHUEN, MA":201,"MANCHESTER, NH":197,"SALEM, NH":152,"DERRY, NH":123,"LAWRENCE, MA":115,"LONDONDERRY, NH":69,"PELHAM, NH":62,"DRACUT, MA":55,"WINDHAM, NH":44,"UNKNOWN, USA":21,"LOWELL, MA":21,"CONCORD, NH":24}},
-      {label:"Feb 16\u201322",total:1627,cities:{"METHUEN, MA":212,"MANCHESTER, NH":181,"SALEM, NH":148,"DERRY, NH":118,"LAWRENCE, MA":121,"LONDONDERRY, NH":91,"PELHAM, NH":69,"DRACUT, MA":63,"WINDHAM, NH":56,"UNKNOWN, USA":19,"LOWELL, MA":16,"CONCORD, NH":18}},
-      {label:"Feb 23\u2013Mar 1",total:1631,cities:{"METHUEN, MA":208,"MANCHESTER, NH":197,"SALEM, NH":119,"DERRY, NH":110,"LAWRENCE, MA":122,"LONDONDERRY, NH":79,"PELHAM, NH":52,"DRACUT, MA":62,"WINDHAM, NH":41,"UNKNOWN, USA":30,"LOWELL, MA":30,"CONCORD, NH":26}},
-      {label:"Mar 2\u20138",total:1526,cities:{"METHUEN, MA":163,"MANCHESTER, NH":176,"SALEM, NH":109,"DERRY, NH":139,"LAWRENCE, MA":108,"LONDONDERRY, NH":85,"PELHAM, NH":60,"DRACUT, MA":49,"WINDHAM, NH":39,"UNKNOWN, USA":21,"LOWELL, MA":23,"CONCORD, NH":27}},
-      {label:"Mar 9\u201315",total:1701,cities:{"METHUEN, MA":194,"MANCHESTER, NH":221,"SALEM, NH":136,"DERRY, NH":130,"LAWRENCE, MA":106,"LONDONDERRY, NH":77,"PELHAM, NH":68,"DRACUT, MA":58,"WINDHAM, NH":54,"UNKNOWN, USA":28,"LOWELL, MA":18,"CONCORD, NH":31}},
-      {label:"Mar 16\u201322",total:1619,cities:{"METHUEN, MA":203,"MANCHESTER, NH":196,"SALEM, NH":145,"DERRY, NH":130,"LAWRENCE, MA":123,"LONDONDERRY, NH":72,"PELHAM, NH":47,"DRACUT, MA":51,"WINDHAM, NH":47,"UNKNOWN, USA":18,"LOWELL, MA":19,"CONCORD, NH":19}}
+      {label:"Dec 29–Jan 4",total:1867,cities:{"METHUEN, MA":259,"MANCHESTER, NH":222,"SALEM, NH":139,"DERRY, NH":125,"LAWRENCE, MA":136,"LONDONDERRY, NH":84,"PELHAM, NH":79,"DRACUT, MA":64,"WINDHAM, NH":57,"UNKNOWN, USA":33,"LOWELL, MA":33,"CONCORD, NH":32}},
+      {label:"Jan 5–11",total:1644,cities:{"METHUEN, MA":221,"MANCHESTER, NH":181,"SALEM, NH":155,"DERRY, NH":118,"LAWRENCE, MA":130,"LONDONDERRY, NH":77,"PELHAM, NH":57,"DRACUT, MA":56,"WINDHAM, NH":47,"UNKNOWN, USA":35,"LOWELL, MA":25,"CONCORD, NH":22}},
+      {label:"Jan 12–18",total:1614,cities:{"METHUEN, MA":203,"MANCHESTER, NH":182,"SALEM, NH":159,"DERRY, NH":120,"LAWRENCE, MA":102,"LONDONDERRY, NH":64,"PELHAM, NH":66,"DRACUT, MA":57,"WINDHAM, NH":46,"UNKNOWN, USA":23,"LOWELL, MA":30,"CONCORD, NH":20}},
+      {label:"Jan 19–25",total:1849,cities:{"METHUEN, MA":259,"MANCHESTER, NH":219,"SALEM, NH":152,"DERRY, NH":118,"LAWRENCE, MA":138,"LONDONDERRY, NH":82,"PELHAM, NH":69,"DRACUT, MA":61,"WINDHAM, NH":56,"UNKNOWN, USA":32,"LOWELL, MA":23,"CONCORD, NH":19}},
+      {label:"Jan 26–Feb 1",total:1541,cities:{"METHUEN, MA":191,"MANCHESTER, NH":206,"SALEM, NH":154,"DERRY, NH":129,"LAWRENCE, MA":109,"LONDONDERRY, NH":77,"PELHAM, NH":66,"DRACUT, MA":49,"WINDHAM, NH":49,"UNKNOWN, USA":24,"LOWELL, MA":19,"CONCORD, NH":30}},
+      {label:"Feb 2–8",total:1633,cities:{"METHUEN, MA":238,"MANCHESTER, NH":184,"SALEM, NH":149,"DERRY, NH":137,"LAWRENCE, MA":112,"LONDONDERRY, NH":72,"PELHAM, NH":52,"DRACUT, MA":61,"WINDHAM, NH":39,"UNKNOWN, USA":30,"LOWELL, MA":22,"CONCORD, NH":23}},
+      {label:"Feb 9–15",total:1588,cities:{"METHUEN, MA":201,"MANCHESTER, NH":197,"SALEM, NH":152,"DERRY, NH":123,"LAWRENCE, MA":115,"LONDONDERRY, NH":69,"PELHAM, NH":62,"DRACUT, MA":55,"WINDHAM, NH":44,"UNKNOWN, USA":21,"LOWELL, MA":21,"CONCORD, NH":24}},
+      {label:"Feb 16–22",total:1627,cities:{"METHUEN, MA":212,"MANCHESTER, NH":181,"SALEM, NH":148,"DERRY, NH":118,"LAWRENCE, MA":121,"LONDONDERRY, NH":91,"PELHAM, NH":69,"DRACUT, MA":63,"WINDHAM, NH":56,"UNKNOWN, USA":19,"LOWELL, MA":16,"CONCORD, NH":18}},
+      {label:"Feb 23–Mar 1",total:1631,cities:{"METHUEN, MA":208,"MANCHESTER, NH":197,"SALEM, NH":119,"DERRY, NH":110,"LAWRENCE, MA":122,"LONDONDERRY, NH":79,"PELHAM, NH":52,"DRACUT, MA":62,"WINDHAM, NH":41,"UNKNOWN, USA":30,"LOWELL, MA":30,"CONCORD, NH":26}},
+      {label:"Mar 2–8",total:1526,cities:{"METHUEN, MA":163,"MANCHESTER, NH":176,"SALEM, NH":109,"DERRY, NH":139,"LAWRENCE, MA":108,"LONDONDERRY, NH":85,"PELHAM, NH":60,"DRACUT, MA":49,"WINDHAM, NH":39,"UNKNOWN, USA":21,"LOWELL, MA":23,"CONCORD, NH":27}},
+      {label:"Mar 9–15",total:1701,cities:{"METHUEN, MA":194,"MANCHESTER, NH":221,"SALEM, NH":136,"DERRY, NH":130,"LAWRENCE, MA":106,"LONDONDERRY, NH":77,"PELHAM, NH":68,"DRACUT, MA":58,"WINDHAM, NH":54,"UNKNOWN, USA":28,"LOWELL, MA":18,"CONCORD, NH":31}},
+      {label:"Mar 16–22",total:1619,cities:{"METHUEN, MA":203,"MANCHESTER, NH":196,"SALEM, NH":145,"DERRY, NH":130,"LAWRENCE, MA":123,"LONDONDERRY, NH":72,"PELHAM, NH":47,"DRACUT, MA":51,"WINDHAM, NH":47,"UNKNOWN, USA":18,"LOWELL, MA":19,"CONCORD, NH":19}}
     ]
   },
   pepperell: {
     cities: ["PEPPERELL, MA","NASHUA, NH","MILFORD, NH","TOWNSEND, MA","HOLLIS, NH","MANCHESTER, NH","BROOKLINE, NH","MERRIMACK, NH","GROTON, MA","AMHERST, NH","DUNSTABLE, MA","LOWELL, MA"],
     weeks: [
-      {label:"Dec 29\u2013Jan 4",total:970,cities:{"PEPPERELL, MA":203,"NASHUA, NH":159,"MILFORD, NH":55,"TOWNSEND, MA":59,"HOLLIS, NH":29,"MANCHESTER, NH":45,"BROOKLINE, NH":38,"MERRIMACK, NH":32,"GROTON, MA":17,"AMHERST, NH":19,"DUNSTABLE, MA":12,"LOWELL, MA":14}},
-      {label:"Jan 5\u201311",total:937,cities:{"PEPPERELL, MA":180,"NASHUA, NH":150,"MILFORD, NH":61,"TOWNSEND, MA":50,"HOLLIS, NH":51,"MANCHESTER, NH":40,"BROOKLINE, NH":45,"MERRIMACK, NH":29,"GROTON, MA":13,"AMHERST, NH":19,"DUNSTABLE, MA":12,"LOWELL, MA":15}},
-      {label:"Jan 12\u201318",total:839,cities:{"PEPPERELL, MA":167,"NASHUA, NH":145,"MILFORD, NH":47,"TOWNSEND, MA":57,"HOLLIS, NH":40,"MANCHESTER, NH":33,"BROOKLINE, NH":27,"MERRIMACK, NH":31,"GROTON, MA":13,"AMHERST, NH":17,"DUNSTABLE, MA":16,"LOWELL, MA":15}},
-      {label:"Jan 19\u201325",total:944,cities:{"PEPPERELL, MA":188,"NASHUA, NH":138,"MILFORD, NH":57,"TOWNSEND, MA":54,"HOLLIS, NH":57,"MANCHESTER, NH":46,"BROOKLINE, NH":37,"MERRIMACK, NH":35,"GROTON, MA":15,"AMHERST, NH":25,"DUNSTABLE, MA":13,"LOWELL, MA":16}},
-      {label:"Jan 26\u2013Feb 1",total:825,cities:{"PEPPERELL, MA":162,"NASHUA, NH":131,"MILFORD, NH":44,"TOWNSEND, MA":42,"HOLLIS, NH":39,"MANCHESTER, NH":33,"BROOKLINE, NH":29,"MERRIMACK, NH":23,"GROTON, MA":15,"AMHERST, NH":19,"DUNSTABLE, MA":6,"LOWELL, MA":12}},
-      {label:"Feb 2\u20138",total:874,cities:{"PEPPERELL, MA":169,"NASHUA, NH":136,"MILFORD, NH":54,"TOWNSEND, MA":42,"HOLLIS, NH":48,"MANCHESTER, NH":28,"BROOKLINE, NH":31,"MERRIMACK, NH":23,"GROTON, MA":20,"AMHERST, NH":11,"DUNSTABLE, MA":15,"LOWELL, MA":14}},
-      {label:"Feb 9\u201315",total:854,cities:{"PEPPERELL, MA":168,"NASHUA, NH":135,"MILFORD, NH":49,"TOWNSEND, MA":30,"HOLLIS, NH":33,"MANCHESTER, NH":35,"BROOKLINE, NH":38,"MERRIMACK, NH":25,"GROTON, MA":17,"AMHERST, NH":15,"DUNSTABLE, MA":11,"LOWELL, MA":8}},
-      {label:"Feb 16\u201322",total:944,cities:{"PEPPERELL, MA":200,"NASHUA, NH":142,"MILFORD, NH":54,"TOWNSEND, MA":56,"HOLLIS, NH":48,"MANCHESTER, NH":38,"BROOKLINE, NH":42,"MERRIMACK, NH":22,"GROTON, MA":22,"AMHERST, NH":13,"DUNSTABLE, MA":13,"LOWELL, MA":9}},
-      {label:"Feb 23\u2013Mar 1",total:858,cities:{"PEPPERELL, MA":176,"NASHUA, NH":113,"MILFORD, NH":55,"TOWNSEND, MA":44,"HOLLIS, NH":32,"MANCHESTER, NH":36,"BROOKLINE, NH":36,"MERRIMACK, NH":19,"GROTON, MA":27,"AMHERST, NH":18,"DUNSTABLE, MA":17,"LOWELL, MA":9}},
-      {label:"Mar 2\u20138",total:918,cities:{"PEPPERELL, MA":166,"NASHUA, NH":162,"MILFORD, NH":62,"TOWNSEND, MA":49,"HOLLIS, NH":37,"MANCHESTER, NH":33,"BROOKLINE, NH":37,"MERRIMACK, NH":21,"GROTON, MA":29,"AMHERST, NH":13,"DUNSTABLE, MA":17,"LOWELL, MA":15}},
-      {label:"Mar 9\u201315",total:901,cities:{"PEPPERELL, MA":176,"NASHUA, NH":151,"MILFORD, NH":54,"TOWNSEND, MA":44,"HOLLIS, NH":34,"MANCHESTER, NH":43,"BROOKLINE, NH":39,"MERRIMACK, NH":20,"GROTON, MA":23,"AMHERST, NH":18,"DUNSTABLE, MA":15,"LOWELL, MA":13}},
-      {label:"Mar 16\u201322",total:921,cities:{"PEPPERELL, MA":202,"NASHUA, NH":145,"MILFORD, NH":45,"TOWNSEND, MA":55,"HOLLIS, NH":43,"MANCHESTER, NH":27,"BROOKLINE, NH":36,"MERRIMACK, NH":28,"GROTON, MA":22,"AMHERST, NH":16,"DUNSTABLE, MA":15,"LOWELL, MA":9}}
+      {label:"Dec 29–Jan 4",total:970,cities:{"PEPPERELL, MA":203,"NASHUA, NH":159,"MILFORD, NH":55,"TOWNSEND, MA":59,"HOLLIS, NH":29,"MANCHESTER, NH":45,"BROOKLINE, NH":38,"MERRIMACK, NH":32,"GROTON, MA":17,"AMHERST, NH":19,"DUNSTABLE, MA":12,"LOWELL, MA":14}},
+      {label:"Jan 5–11",total:937,cities:{"PEPPERELL, MA":180,"NASHUA, NH":150,"MILFORD, NH":61,"TOWNSEND, MA":50,"HOLLIS, NH":51,"MANCHESTER, NH":40,"BROOKLINE, NH":45,"MERRIMACK, NH":29,"GROTON, MA":13,"AMHERST, NH":19,"DUNSTABLE, MA":12,"LOWELL, MA":15}},
+      {label:"Jan 12–18",total:839,cities:{"PEPPERELL, MA":167,"NASHUA, NH":145,"MILFORD, NH":47,"TOWNSEND, MA":57,"HOLLIS, NH":40,"MANCHESTER, NH":33,"BROOKLINE, NH":27,"MERRIMACK, NH":31,"GROTON, MA":13,"AMHERST, NH":17,"DUNSTABLE, MA":16,"LOWELL, MA":15}},
+      {label:"Jan 19–25",total:944,cities:{"PEPPERELL, MA":188,"NASHUA, NH":138,"MILFORD, NH":57,"TOWNSEND, MA":54,"HOLLIS, NH":57,"MANCHESTER, NH":46,"BROOKLINE, NH":37,"MERRIMACK, NH":35,"GROTON, MA":15,"AMHERST, NH":25,"DUNSTABLE, MA":13,"LOWELL, MA":16}},
+      {label:"Jan 26–Feb 1",total:825,cities:{"PEPPERELL, MA":162,"NASHUA, NH":131,"MILFORD, NH":44,"TOWNSEND, MA":42,"HOLLIS, NH":39,"MANCHESTER, NH":33,"BROOKLINE, NH":29,"MERRIMACK, NH":23,"GROTON, MA":15,"AMHERST, NH":19,"DUNSTABLE, MA":6,"LOWELL, MA":12}},
+      {label:"Feb 2–8",total:874,cities:{"PEPPERELL, MA":169,"NASHUA, NH":136,"MILFORD, NH":54,"TOWNSEND, MA":42,"HOLLIS, NH":48,"MANCHESTER, NH":28,"BROOKLINE, NH":31,"MERRIMACK, NH":23,"GROTON, MA":20,"AMHERST, NH":11,"DUNSTABLE, MA":15,"LOWELL, MA":14}},
+      {label:"Feb 9–15",total:854,cities:{"PEPPERELL, MA":168,"NASHUA, NH":135,"MILFORD, NH":49,"TOWNSEND, MA":30,"HOLLIS, NH":33,"MANCHESTER, NH":35,"BROOKLINE, NH":38,"MERRIMACK, NH":25,"GROTON, MA":17,"AMHERST, NH":15,"DUNSTABLE, MA":11,"LOWELL, MA":8}},
+      {label:"Feb 16–22",total:944,cities:{"PEPPERELL, MA":200,"NASHUA, NH":142,"MILFORD, NH":54,"TOWNSEND, MA":56,"HOLLIS, NH":48,"MANCHESTER, NH":38,"BROOKLINE, NH":42,"MERRIMACK, NH":22,"GROTON, MA":22,"AMHERST, NH":13,"DUNSTABLE, MA":13,"LOWELL, MA":9}},
+      {label:"Feb 23–Mar 1",total:858,cities:{"PEPPERELL, MA":176,"NASHUA, NH":113,"MILFORD, NH":55,"TOWNSEND, MA":44,"HOLLIS, NH":32,"MANCHESTER, NH":36,"BROOKLINE, NH":36,"MERRIMACK, NH":19,"GROTON, MA":27,"AMHERST, NH":18,"DUNSTABLE, MA":17,"LOWELL, MA":9}},
+      {label:"Mar 2–8",total:918,cities:{"PEPPERELL, MA":166,"NASHUA, NH":162,"MILFORD, NH":62,"TOWNSEND, MA":49,"HOLLIS, NH":37,"MANCHESTER, NH":33,"BROOKLINE, NH":37,"MERRIMACK, NH":21,"GROTON, MA":29,"AMHERST, NH":13,"DUNSTABLE, MA":17,"LOWELL, MA":15}},
+      {label:"Mar 9–15",total:901,cities:{"PEPPERELL, MA":176,"NASHUA, NH":151,"MILFORD, NH":54,"TOWNSEND, MA":44,"HOLLIS, NH":34,"MANCHESTER, NH":43,"BROOKLINE, NH":39,"MERRIMACK, NH":20,"GROTON, MA":23,"AMHERST, NH":18,"DUNSTABLE, MA":15,"LOWELL, MA":13}},
+      {label:"Mar 16–22",total:921,cities:{"PEPPERELL, MA":202,"NASHUA, NH":145,"MILFORD, NH":45,"TOWNSEND, MA":55,"HOLLIS, NH":43,"MANCHESTER, NH":27,"BROOKLINE, NH":36,"MERRIMACK, NH":28,"GROTON, MA":22,"AMHERST, NH":16,"DUNSTABLE, MA":15,"LOWELL, MA":9}}
     ]
   },
   groton: {
     cities: ["GROTON, MA","WESTFORD, MA","LITTLETON, MA","AYER, MA","TOWNSEND, MA","PEPPERELL, MA","LOWELL, MA","MANCHESTER, NH","NASHUA, NH","NORTH READING, MA","LEOMINSTER, MA","LUNENBURG, MA"],
     weeks: [
-      {label:"Dec 29\u2013Jan 4",total:322,cities:{"GROTON, MA":68,"WESTFORD, MA":67,"LITTLETON, MA":14,"AYER, MA":18,"TOWNSEND, MA":9,"PEPPERELL, MA":5,"LOWELL, MA":9,"MANCHESTER, NH":9,"NASHUA, NH":3,"NORTH READING, MA":7,"LEOMINSTER, MA":3,"LUNENBURG, MA":1}},
-      {label:"Jan 5\u201311",total:335,cities:{"GROTON, MA":68,"WESTFORD, MA":61,"LITTLETON, MA":25,"AYER, MA":18,"TOWNSEND, MA":10,"PEPPERELL, MA":11,"LOWELL, MA":11,"MANCHESTER, NH":11,"NASHUA, NH":4,"NORTH READING, MA":9,"LEOMINSTER, MA":1,"LUNENBURG, MA":5}},
-      {label:"Jan 12\u201318",total:314,cities:{"GROTON, MA":66,"WESTFORD, MA":40,"LITTLETON, MA":13,"AYER, MA":17,"TOWNSEND, MA":21,"PEPPERELL, MA":13,"LOWELL, MA":13,"MANCHESTER, NH":8,"NASHUA, NH":5,"NORTH READING, MA":4,"LEOMINSTER, MA":2,"LUNENBURG, MA":6}},
-      {label:"Jan 19\u201325",total:349,cities:{"GROTON, MA":63,"WESTFORD, MA":61,"LITTLETON, MA":26,"AYER, MA":16,"TOWNSEND, MA":18,"PEPPERELL, MA":17,"LOWELL, MA":11,"MANCHESTER, NH":7,"NASHUA, NH":7,"NORTH READING, MA":2,"LEOMINSTER, MA":5,"LUNENBURG, MA":7}},
-      {label:"Jan 26\u2013Feb 1",total:290,cities:{"GROTON, MA":68,"WESTFORD, MA":51,"LITTLETON, MA":19,"AYER, MA":19,"TOWNSEND, MA":13,"PEPPERELL, MA":10,"LOWELL, MA":3,"MANCHESTER, NH":6,"NASHUA, NH":8,"NORTH READING, MA":1,"LEOMINSTER, MA":1,"LUNENBURG, MA":2}},
-      {label:"Feb 2\u20138",total:292,cities:{"GROTON, MA":65,"WESTFORD, MA":53,"LITTLETON, MA":13,"AYER, MA":12,"TOWNSEND, MA":18,"PEPPERELL, MA":14,"LOWELL, MA":6,"MANCHESTER, NH":7,"NASHUA, NH":3,"NORTH READING, MA":2,"LEOMINSTER, MA":2,"LUNENBURG, MA":6}},
-      {label:"Feb 9\u201315",total:311,cities:{"GROTON, MA":64,"WESTFORD, MA":67,"LITTLETON, MA":13,"AYER, MA":15,"TOWNSEND, MA":14,"PEPPERELL, MA":7,"LOWELL, MA":3,"MANCHESTER, NH":7,"NASHUA, NH":6,"NORTH READING, MA":4,"LEOMINSTER, MA":4,"LUNENBURG, MA":1}},
-      {label:"Feb 16\u201322",total:347,cities:{"GROTON, MA":83,"WESTFORD, MA":69,"LITTLETON, MA":21,"AYER, MA":15,"TOWNSEND, MA":16,"PEPPERELL, MA":10,"LOWELL, MA":6,"MANCHESTER, NH":5,"NASHUA, NH":1,"NORTH READING, MA":3,"LEOMINSTER, MA":5,"LUNENBURG, MA":4}},
-      {label:"Feb 23\u2013Mar 1",total:309,cities:{"GROTON, MA":61,"WESTFORD, MA":66,"LITTLETON, MA":23,"AYER, MA":19,"TOWNSEND, MA":15,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":7,"NASHUA, NH":2,"NORTH READING, MA":1,"LEOMINSTER, MA":3,"LUNENBURG, MA":2}},
-      {label:"Mar 2\u20138",total:327,cities:{"GROTON, MA":80,"WESTFORD, MA":60,"LITTLETON, MA":18,"AYER, MA":8,"TOWNSEND, MA":13,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":3,"NASHUA, NH":4,"NORTH READING, MA":1,"LEOMINSTER, MA":5,"LUNENBURG, MA":3}},
-      {label:"Mar 9\u201315",total:320,cities:{"GROTON, MA":63,"WESTFORD, MA":70,"LITTLETON, MA":12,"AYER, MA":11,"TOWNSEND, MA":14,"PEPPERELL, MA":12,"LOWELL, MA":7,"MANCHESTER, NH":5,"NASHUA, NH":4,"NORTH READING, MA":1,"LEOMINSTER, MA":7,"LUNENBURG, MA":1}},
-      {label:"Mar 16\u201322",total:331,cities:{"GROTON, MA":61,"WESTFORD, MA":77,"LITTLETON, MA":17,"AYER, MA":13,"TOWNSEND, MA":15,"PEPPERELL, MA":15,"LOWELL, MA":15,"MANCHESTER, NH":3,"NASHUA, NH":4,"NORTH READING, MA":3,"LEOMINSTER, MA":3,"LUNENBURG, MA":1}}
+      {label:"Dec 29–Jan 4",total:322,cities:{"GROTON, MA":68,"WESTFORD, MA":67,"LITTLETON, MA":14,"AYER, MA":18,"TOWNSEND, MA":9,"PEPPERELL, MA":5,"LOWELL, MA":9,"MANCHESTER, NH":9,"NASHUA, NH":3,"NORTH READING, MA":7,"LEOMINSTER, MA":3,"LUNENBURG, MA":1}},
+      {label:"Jan 5–11",total:335,cities:{"GROTON, MA":68,"WESTFORD, MA":61,"LITTLETON, MA":25,"AYER, MA":18,"TOWNSEND, MA":10,"PEPPERELL, MA":11,"LOWELL, MA":11,"MANCHESTER, NH":11,"NASHUA, NH":4,"NORTH READING, MA":9,"LEOMINSTER, MA":1,"LUNENBURG, MA":5}},
+      {label:"Jan 12–18",total:314,cities:{"GROTON, MA":66,"WESTFORD, MA":40,"LITTLETON, MA":13,"AYER, MA":17,"TOWNSEND, MA":21,"PEPPERELL, MA":13,"LOWELL, MA":13,"MANCHESTER, NH":8,"NASHUA, NH":5,"NORTH READING, MA":4,"LEOMINSTER, MA":2,"LUNENBURG, MA":6}},
+      {label:"Jan 19–25",total:349,cities:{"GROTON, MA":63,"WESTFORD, MA":61,"LITTLETON, MA":26,"AYER, MA":16,"TOWNSEND, MA":18,"PEPPERELL, MA":17,"LOWELL, MA":11,"MANCHESTER, NH":7,"NASHUA, NH":7,"NORTH READING, MA":2,"LEOMINSTER, MA":5,"LUNENBURG, MA":7}},
+      {label:"Jan 26–Feb 1",total:290,cities:{"GROTON, MA":68,"WESTFORD, MA":51,"LITTLETON, MA":19,"AYER, MA":19,"TOWNSEND, MA":13,"PEPPERELL, MA":10,"LOWELL, MA":3,"MANCHESTER, NH":6,"NASHUA, NH":8,"NORTH READING, MA":1,"LEOMINSTER, MA":1,"LUNENBURG, MA":2}},
+      {label:"Feb 2–8",total:292,cities:{"GROTON, MA":65,"WESTFORD, MA":53,"LITTLETON, MA":13,"AYER, MA":12,"TOWNSEND, MA":18,"PEPPERELL, MA":14,"LOWELL, MA":6,"MANCHESTER, NH":7,"NASHUA, NH":3,"NORTH READING, MA":2,"LEOMINSTER, MA":2,"LUNENBURG, MA":6}},
+      {label:"Feb 9–15",total:311,cities:{"GROTON, MA":64,"WESTFORD, MA":67,"LITTLETON, MA":13,"AYER, MA":15,"TOWNSEND, MA":14,"PEPPERELL, MA":7,"LOWELL, MA":3,"MANCHESTER, NH":7,"NASHUA, NH":6,"NORTH READING, MA":4,"LEOMINSTER, MA":4,"LUNENBURG, MA":1}},
+      {label:"Feb 16–22",total:347,cities:{"GROTON, MA":83,"WESTFORD, MA":69,"LITTLETON, MA":21,"AYER, MA":15,"TOWNSEND, MA":16,"PEPPERELL, MA":10,"LOWELL, MA":6,"MANCHESTER, NH":5,"NASHUA, NH":1,"NORTH READING, MA":3,"LEOMINSTER, MA":5,"LUNENBURG, MA":4}},
+      {label:"Feb 23–Mar 1",total:309,cities:{"GROTON, MA":61,"WESTFORD, MA":66,"LITTLETON, MA":23,"AYER, MA":19,"TOWNSEND, MA":15,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":7,"NASHUA, NH":2,"NORTH READING, MA":1,"LEOMINSTER, MA":3,"LUNENBURG, MA":2}},
+      {label:"Mar 2–8",total:327,cities:{"GROTON, MA":80,"WESTFORD, MA":60,"LITTLETON, MA":18,"AYER, MA":8,"TOWNSEND, MA":13,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":3,"NASHUA, NH":4,"NORTH READING, MA":1,"LEOMINSTER, MA":5,"LUNENBURG, MA":3}},
+      {label:"Mar 9–15",total:320,cities:{"GROTON, MA":63,"WESTFORD, MA":70,"LITTLETON, MA":12,"AYER, MA":11,"TOWNSEND, MA":14,"PEPPERELL, MA":12,"LOWELL, MA":7,"MANCHESTER, NH":5,"NASHUA, NH":4,"NORTH READING, MA":1,"LEOMINSTER, MA":7,"LUNENBURG, MA":1}},
+      {label:"Mar 16–22",total:331,cities:{"GROTON, MA":61,"WESTFORD, MA":77,"LITTLETON, MA":17,"AYER, MA":13,"TOWNSEND, MA":15,"PEPPERELL, MA":15,"LOWELL, MA":15,"MANCHESTER, NH":3,"NASHUA, NH":4,"NORTH READING, MA":3,"LEOMINSTER, MA":3,"LUNENBURG, MA":1}}
     ]
   }
 };
@@ -927,7 +865,7 @@ function renderOverviewTable() {
   const d = DATA[currentPeriod];
   if (!d) return;
   const store = currentOverviewStore;
-  document.getElementById('overview-table-title').textContent = `Top 12 Locations \u2014 ${STORE_LABELS[store]}`;
+  document.getElementById('overview-table-title').textContent = `Top 12 Locations — ${STORE_LABELS[store]}`;
   renderTable('overview-table-container', d.topCities[store] || [], store);
 }
 
@@ -944,11 +882,11 @@ function renderStateBuckets() {
   if (!d) return;
   const total = d.total || 1;
   document.getElementById('bucket-ma-val').textContent = d.byState.MA.toLocaleString();
-  document.getElementById('bucket-ma-pct').textContent = `$y(d.byState.MA/total*100).toFixed(1)}% of all scans`;
+  document.getElementById('bucket-ma-pct').textContent = `${(d.byState.MA/total*100).toFixed(1)}% of all scans`;
   document.getElementById('bucket-nh-val').textContent = d.byState.NH.toLocaleString();
-  document.getElementById('bucket-nh-pct').textContent = `$y(d.byState.NH/total*100).toFixed(1)}% of all scans`;
+  document.getElementById('bucket-nh-pct').textContent = `${(d.byState.NH/total*100).toFixed(1)}% of all scans`;
   document.getElementById('bucket-other-val').textContent = d.byState.OTHER.toLocaleString();
-  document.getElementById('bucket-other-pct').textContent = `$y(d.byState.OTHER/total*100).toFixed(1)}% of all scans`;
+  document.getElementById('bucket-other-pct').textContent = `${(d.byState.OTHER/total*100).toFixed(1)}% of all scans`;
   renderStateByStoreChart(d);
   renderStateDonutChart(d);
   if (selectedBucket) selectBucket(selectedBucket);
@@ -1007,7 +945,7 @@ function selectBucket(bucket) {
   const panel = document.getElementById('behavior-panel');
   panel.classList.add('visible');
   const labels = {MA:'Massachusetts', NH:'New Hampshire', OTHER:'Out of State'};
-  document.getElementById('behavior-title').textContent = `Visit Behavior \u2014 ${labels[bucket]} Customers`;
+  document.getElementById('behavior-title').textContent = `Visit Behavior — ${labels[bucket]} Customers`;
 
   const d = DATA[currentPeriod];
   if (!d) return;
@@ -1052,7 +990,7 @@ function renderTrends() {
       datasets: [
         {label:'MA', data:TREND.map(m=>m.byState.MA), borderColor:'#34d399', backgroundColor:'rgba(52,211,153,0.1)', fill:true, tension:0.3, pointRadius:3},
         {label:'NH', data:TREND.map(m=>m.byState.NH), borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,0.1)', fill:true, tension:0.3, pointRadius:3},
-        {label:'Other', data:TREMND.map(m=>m.byState.OTHER), borderColor:'s#a78bfa', backgroundColor:'rgba(167,139,250,0.1)', fill:true, tension:0.3, pointRadius:3}
+        {label:'Other', data:TREND.map(m=>m.byState.OTHER), borderColor:'#a78bfa', backgroundColor:'rgba(167,139,250,0.1)', fill:true, tension:0.3, pointRadius:3}
       ]
     },
     options: chartOpts
@@ -1119,8 +1057,8 @@ function setCityStore(store) {
   activeCityChips = new Set(CITY_TREND_STORE[store].cities.slice(0, 5));
   // Update titles
   const label = STORE_LABELS[store];
-  document.getElementById('city-table-title').textContent = 'Weekly Municipality Tracker \u2014 ' + label;
-  document.getElementById('city-chart-title').textContent = 'Municipality Traffic Over Time \u2014 ' + label;
+  document.getElementById('city-table-title').textContent = 'Weekly Municipality Tracker — ' + label;
+  document.getElementById('city-chart-title').textContent = 'Municipality Traffic Over Time — ' + label;
   renderCityTrends();
 }
 
@@ -1133,7 +1071,7 @@ function setCityView(view) {
 }
 
 function renderCityTrendTable() {
-  const storeData = CITVETREUND_STORE[currentCityStore];
+  const storeData = CITY_TREND_STORE[currentCityStore];
   const weeks = storeData.weeks;
   const storeCities = storeData.cities;
   const latest = weeks[weeks.length - 1];
@@ -1150,9 +1088,9 @@ function renderCityTrendTable() {
     const cur = latest.cities[city] || 0;
     const prv = prev.cities[city] || 0;
     const diff = cur - prv;
-    const pctChg = prv > 0 ? ((diff / prv) * 100).toFixed(1) : '\u2014';
+    const pctChg = prv > 0 ? ((diff / prv) * 100).toFixed(1) : '—';
     const wowClass = diff > 0 ? 'wow-up' : diff < 0 ? 'wow-down' : 'wow-flat';
-    const arrow = diff > 0 ? '\u25b2' : diff < 0 ? '\u25bc' : '\u2014';
+    const arrow = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
     const sign = diff > 0 ? '+' : '';
 
     const last4 = weeks.slice(-4).map(w => w.cities[city] || 0);
@@ -1240,8 +1178,8 @@ function renderCityChart() {
               let change = '';
               if (prev !== null) {
                 const diff = cur - prev;
-                const pct = prev > 0 ? ((diff/prev)*100).toFixed(1) : '\u2014';
-                change = diff >= 0 ? ` \u25b2+${diff} (${pct}%)` : ` \u25bc${diff} (${pct}%)`;
+                const pct = prev > 0 ? ((diff/prev)*100).toFixed(1) : '—';
+                change = diff >= 0 ? ` ▲+${diff} (${pct}%)` : ` ▼${diff} (${pct}%)`;
               }
               return `${ctx.dataset.label}: ${cur}${change}`;
             }
@@ -1275,7 +1213,7 @@ function renderMovers() {
   }
   gainers.forEach(g => {
     const short = g.city.replace(', NH', ' NH').replace(', MA', ' MA').replace(', USA', '');
-    upHtml += `<tr><td class="city-name-cell">${short}</td><td class="num" style="color:${STORE_COLORS[currentCityStore]}">${g.cur}</td><td class="num wow-up">\u25b2 +${g.diff} (${g.pct}%)</td></tr>`;
+    upHtml += `<tr><td class="city-name-cell">${short}</td><td class="num" style="color:${STORE_COLORS[currentCityStore]}">${g.cur}</td><td class="num wow-up">▲ +${g.diff} (${g.pct}%)</td></tr>`;
   });
   upHtml += '</tbody></table>';
   document.getElementById('movers-up-container').innerHTML = upHtml;
@@ -1310,22 +1248,6 @@ function renderCityTrends() {
 // ========== INIT ==========
 renderAll();
 renderCityTrends();
-
-
-// ========== MOBILE SIDEBAR TOGGLE ==========
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebarOverlay').classList.toggle('open');
-}
-// Auto-close sidebar when a nav item is clicked on mobile
-document.querySelectorAll('.nav-item').forEach(function(item) {
-  item.addEventListener('click', function() {
-    if (window.innerWidth <= 900) {
-      document.getElementById('sidebar').classList.remove('open');
-      document.getElementById('sidebarOverlay').classList.remove('open');
-    }
-  });
-});
 </script>
 </body>
 </html>
