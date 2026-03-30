@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brick House v2 &#8212; Tree House Craft Cannabis</title>
+    <title>Brick House v2 &mdash; Tree House Craft Cannabis</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
             --bg-primary: #0d1117;
             --bg-secondary: #161b22;
-            --bg-card: #1c2129
+            --bg-card: #1c2129;
             --bg-sidebar: #0d1117;
             --border: #30363d;
             --border-hover: #484f58;
@@ -39,7 +39,7 @@
             min-height: 100vh;
         }
 
-        /* &#9472;&#9472; LEFT SIDEBAR &#9472;&#9472; */
+        /* -- LEFT SIDEBAR -- */
         .sidebar {
             width: 220px;
             min-width: 220px;
@@ -99,7 +99,7 @@
             margin: 8px 16px;
         }
 
-        /* &#9472;&#9472; MAIN CONTENT &#9472;&#9472; */
+        /* -- MAIN CONTENT -- */
         .main {
             margin-left: 220px;
             flex: 1;
@@ -109,7 +109,7 @@
         .panel { display: none; }
         .panel.active { display: block; }
 
-        /* &#9472;&#9472; CARDS &#9472;&#9472; */
+        /* -- CARDS -- */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -119,7 +119,7 @@
         }
         .card h3 {
             font-size: 1rem;
-      2     color: var(--text-secondary);
+            color: var(--text-secondary);
             margin-bottom: 1rem;
             font-weight: 500;
         }
@@ -130,7 +130,7 @@
         }
         @media (max-width: 1100px) { .card-row { grid-template-columns: 1fr; } }
 
-        /* &#9472;&#9472; STORE TOGGLES &#9472;&#9472; */
+        /* -- STORE TOGGLES -- */
         .store-toggles {
             display: flex;
             gap: 1rem;
@@ -154,7 +154,7 @@
         }
         .store-toggle input:checked + .store-dot { background: currentColor; }
 
-        /* &#9472;&#9472; KPI ROW &#9472;&#9472; */
+        /* -- KPI ROW -- */
         .kpi-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -174,7 +174,7 @@
         .delta.up { color: #3fb950; }
         .delta.down { color: #f85149; }
 
-        /* &#9472;&#9472; TABLE &#9472;&#9472; */
+        /* -- TABLE -- */
         table.data-table {
             width: 100%;
             border-collapse: collapse;
@@ -195,7 +195,7 @@
         table.data-table td:first-child, table.data-table th:first-child { text-align: left; }
         table.data-table tr:hover td { background: rgba(255,255,255,0.02); }
 
-        /* &#9472;&#9472; CONFIDENCE BADGE &#9472;&#9472; */
+        /* -- CONFIDENCE BADGE -- */
         .confidence-badge {
             display: inline-flex;
             align-items: center;
@@ -224,11 +224,11 @@
             color: var(--text-secondary);
         }
 
-        /* &#9472;&#9472; CHART CONTAINERS &#9472;&#9472; */
+        /* -- CHART CONTAINERS -- */
         .chart-wrap { position: relative; height: 300px; }
         .chart-wrap canvas { width: 100% !important; }
 
-        /* &#9472;&#9472; LOADING & ERROR STATES &#9472;&#9472; */
+        /* -- LOADING & ERROR STATES -- */
         .loading-spinner {
             display: inline-block;
             width: 16px;
@@ -273,56 +273,6 @@
         .data-section.error button:hover {
             background: rgba(248, 81, 73, 0.25);
         }
-
-        /* &#9472;&#9472; OVERVIEW HEADER &#9472;&#9472; */
-        .overview-title {
-            font-size: 1.6rem;
-            margin-bottom: 0.25rem;
-        }
-        .overview-sub {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* &#9472;&#9472; VENDOR PANEL HEADER &#9472;&#9472; */
-        .vendor-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 1.5rem;
-        }
-        .vendor-brick-lg {
-            width: 32px; height: 20px;
-            border-radius: 3px;
-        }
-        .vendor-header h2 { font-size: 1.4rem; }
-        .vendor-header .vendor-sub { color: var(--text-muted); font-size: 0.82rem; margin-left: auto; }
-
-        /* &#9472;&#9472; DATA TABLE STYLES &#9472;&#9472; */
-        .api-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.82rem;
-        }
-        .api-table th, .api-table td {
-            padding: 8px 10px;
-            text-align: right;
-            border-bottom: 1px solid var(--border);
-        }
-        .api-table th {
-            color: var(--text-muted);
-            font-weight: 500;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            letter-spacing: 0.04em;
-            background: rgba(255,255,255,0.02);
-        }
-        .api-table td:first-child, .api-table th:first-child { text-align: left; }
-        .api-table tr:hover td { background: rgba(255,255,255,0.02); }
-        .api-table tr.total-row { font-weight: 600; background: rgba(255,255,255,0.03); }
-        .api-table tr.total-row td { border-top: 2px solid var(--border); }
-    
 
         /* -- MOBILE HAMBURGER -- */
         .hamburger {
@@ -384,14 +334,63 @@
             .kpi-row { grid-template-columns: 1fr; }
             .kpi .value { font-size: 1.2rem; }
         }
-</style>
+
+        /* -- OVERVIEW HEADER -- */
+        .overview-title {
+            font-size: 1.6rem;
+            margin-bottom: 0.25rem;
+        }
+        .overview-sub {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* -- VENDOR PANEL HEADER -- */
+        .vendor-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1.5rem;
+        }
+        .vendor-brick-lg {
+            width: 32px; height: 20px;
+            border-radius: 3px;
+        }
+        .vendor-header h2 { font-size: 1.4rem; }
+        .vendor-header .vendor-sub { color: var(--text-muted); font-size: 0.82rem; margin-left: auto; }
+
+        /* -- DATA TABLE STYLES -- */
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+        .api-table th, .api-table td {
+            padding: 8px 10px;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+        .api-table th {
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.04em;
+            background: rgba(255,255,255,0.02);
+        }
+        .api-table td:first-child, .api-table th:first-child { text-align: left; }
+        .api-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .api-table tr.total-row { font-weight: 600; background: rgba(255,255,255,0.03); }
+        .api-table tr.total-row td { border-top: 2px solid var(--border); }
+    </style>
 </head>
 <body>
 
-<!-- &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; SIDEBAR &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; -->
 <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
+<!-- =================== SIDEBAR =================== -->
 <nav class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <h1>Brick House</h1>
@@ -445,13 +444,13 @@
     </div>
 </nav>
 
-<!-- &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; MAIN &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; -->
+<!-- =================== MAIN =================== -->
 <div class="main">
 
-<!-- &#9472;&#9472; OVERVIEW PANEL &#9472;&#9472; -->
+<!-- -- OVERVIEW PANEL -- -->
 <div id="panel-overview" class="panel active">
     <div class="overview-title">Brick Vendor Overview</div>
-    <div class="overview-sub">Jan 2025 &#8212; Feb 2026 &middot; All Stores Combined</div>
+    <div class="overview-sub">Jan 2025 &mdash; Feb 2026 &middot; All Stores Combined</div>
 
     <div class="kpi-row" id="overview-kpis"></div>
 
@@ -461,12 +460,12 @@
     </div>
 
     <div class="card">
-        <h3>Vendor Share of Wallet &#8212; All Stores</h3>
+        <h3>Vendor Share of Wallet &mdash; All Stores</h3>
         <div class="chart-wrap"><canvas id="chart-overview-share"></canvas></div>
     </div>
 
     <div class="card">
-        <h3>Market Intelligence &#8212; Lit Alerts Statewide Brands (MA)</h3>
+        <h3>Market Intelligence &mdash; Lit Alerts Statewide Brands (MA)</h3>
         <div id="market-intel-section" class="data-section loading">
             <div class="loading-spinner"></div>
             Loading market data...
@@ -474,7 +473,7 @@
     </div>
 
     <div class="card">
-        <h3>Inventory Mix &#8212; Brick / Core / Other</h3>
+        <h3>Inventory Mix &mdash; Brick / Core / Other</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:260px; height:260px;"><canvas id="chart-brick-donut"></canvas></div>
             <div style="display:flex; flex-direction:column; justify-content:center; gap:8px;">
@@ -496,24 +495,24 @@
                         <div style="font-size:1rem; font-weight:600; color:var(--text-primary);">653</div>
                     </div>
                 </div>
-                <div style="font-size:0.72rem; color:var(--text-muted);">In-stock SKUs only. <a href="#" onclick="showPanel('inventory-mix'); return false;" style="color:var(--store-dracut);">Full breakdown by store &#8594;</a></div>
+                <div style="font-size:0.72rem; color:var(--text-muted);">In-stock SKUs only. <a href="#" onclick="showPanel('inventory-mix'); return false;" style="color:var(--store-dracut);">Full breakdown by store &rarr;</a></div>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h3>Brick Vendor Revenue &#8212; Share of Tracked Sales</h3>
+        <h3>Brick Vendor Revenue &mdash; Share of Tracked Sales</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:280px; height:280px;"><canvas id="chart-brick-rev-donut"></canvas></div>
             <div style="flex:1; min-width:400px;"><canvas id="chart-brick-rev-by-vendor" style="height:280px;"></canvas></div>
         </div>
-        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:8px;">Revenue split among the 7 brick vendors. Non-brick vendor revenue not currently available via Dutchie REST API &#8212; requires SQL connector for total store revenue.</div>
+        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:8px;">Revenue split among the 7 brick vendors. Non-brick vendor revenue not currently available via Dutchie REST API &mdash; requires SQL connector for total store revenue.</div>
     </div>
 
     <div class="card">
         <h3>MA Market Sales Trends (Lit Alerts Estimates)</h3>
         <div class="chart-wrap"><canvas id="chart-overview-market-trend"></canvas></div>
-        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:6px;">Estimated statewide retail sales for each vendor brand. <a href="#" onclick="showPanel('market-trends'); return false;" style="color:var(--store-dracut);">View full analysis &#8594;</a></div>
+        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:6px;">Estimated statewide retail sales for each vendor brand. <a href="#" onclick="showPanel('market-trends'); return false;" style="color:var(--store-dracut);">View full analysis &rarr;</a></div>
     </div>
 
     <div class="card-row">
@@ -528,12 +527,12 @@
     </div>
 </div>
 
-<!-- &#9472;&#9472; VENDOR PANELS (generated by JS) &#9472;&#9472; -->
+<!-- -- VENDOR PANELS (generated by JS) -- -->
 <div id="vendor-panels"></div>
 
-<!-- &#9472;&#9472; INVENTORY MIX PANEL &#9472;&#9472; -->
+<!-- -- INVENTORY MIX PANEL -- -->
 <div id="panel-inventory-mix" class="panel">
-    <div class="overview-title">Inventory Mix &#8212; Brick / Core / Other</div>
+    <div class="overview-title">Inventory Mix &mdash; Brick / Core / Other</div>
     <div class="overview-sub">In-stock SKUs via Dutchie /inventory &middot; Deduplicated by product &middot; All 3 Stores</div>
 
     <div class="card">
@@ -552,7 +551,7 @@
     </div>
 
     <div class="card">
-        <h3 style="color:var(--store-dracut);">Dracut &#8212; 377 SKUs</h3>
+        <h3 style="color:var(--store-dracut);">Dracut &mdash; 377 SKUs</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:260px; height:260px;"><canvas id="chart-invmix-dracut-donut"></canvas></div>
             <div style="flex:1; min-width:450px;">
@@ -563,7 +562,7 @@
     </div>
 
     <div class="card">
-        <h3 style="color:var(--store-pepperell);">Pepperell &#8212; 395 SKUs</h3>
+        <h3 style="color:var(--store-pepperell);">Pepperell &mdash; 395 SKUs</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:260px; height:260px;"><canvas id="chart-invmix-pepperell-donut"></canvas></div>
             <div style="flex:1; min-width:450px;">
@@ -574,7 +573,7 @@
     </div>
 
     <div class="card">
-        <h3 style="color:var(--store-groton);">Groton &#8212; 364 SKUs</h3>
+        <h3 style="color:var(--store-groton);">Groton &mdash; 364 SKUs</h3>
         <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
             <div style="width:260px; height:260px;"><canvas id="chart-invmix-groton-donut"></canvas></div>
             <div style="flex:1; min-width:450px;">
@@ -585,15 +584,15 @@
     </div>
 </div>
 
-<!-- &#9472;&#9472; MARKET TRENDS PANEL &#9472;&#9472; -->
+<!-- -- MARKET TRENDS PANEL -- -->
 <div id="panel-market-trends" class="panel">
-    <div class="overview-title">Market Sales Trends &#8212; Lit Alerts</div>
-    <div class="overview-sub">Estimated MA-wide sales by vendor brand &middot; Jan 2025 &#8212; Feb 2026 &middot; Source: Lit Alerts Analytics API</div>
+    <div class="overview-title">Market Sales Trends &mdash; Lit Alerts</div>
+    <div class="overview-sub">Estimated MA-wide sales by vendor brand &middot; Jan 2025 &mdash; Feb 2026 &middot; Source: Lit Alerts Analytics API</div>
 
     <div class="kpi-row" id="market-trend-kpis"></div>
 
     <div class="card">
-        <h3>Estimated Market Sales &#8212; All Vendors</h3>
+        <h3>Estimated Market Sales &mdash; All Vendors</h3>
         <div class="chart-wrap"><canvas id="chart-market-trend-all"></canvas></div>
     </div>
 
@@ -618,7 +617,7 @@
     </div>
 </div>
 
-<!-- &#9472;&#9472; CONFIDENCE PANEL &#9472;&#9472; -->
+<!-- -- CONFIDENCE PANEL -- -->
 <div id="panel-confidence" class="panel">
     <div class="overview-title">Data Confidence Audit</div>
     <div class="overview-sub">How vendor names map between Dutchie POS and Lit Alerts &middot; Confidence scoring</div>
@@ -628,9 +627,9 @@
 </div><!-- /main -->
 
 <script>
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 // DATA
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 const MONTHS = ["Jan25","Feb25","Mar25","Apr25","May25","Jun25","Jul25","Aug25","Sep25","Oct25","Nov25","Dec25","Jan26","Feb26"];
 
 const VENDORS = {
@@ -665,8 +664,7 @@ const storeData = {
         "Nov25":{FB:62425,TB:26004,GF:13655,WF:21935,BO:19700,HP:10892,MC:51028},
         "Dec25":{FB:68302,TB:27820,GF:12355,WF:22929,BO:21306,HP:9968,MC:52388},
         "Jan26":{FB:75446,TB:29590,GF:16285,WF:19034,BO:19984,HP:6464,MC:38759},
-        "Feb26":{FB:76203,TB:19748,GF:11812,WF:19124,BO:12654,HP:12816,MC:57657},
-        "Mar26":{FB:70381,TB:20716,GF:11802,WF:14591,BO:29150,HP:12074,MC:33650}
+        "Feb26":{FB:76203,TB:19748,GF:11812,WF:19124,BO:12654,HP:12816,MC:57657}
     },
     pepperell: {
         "Jan25":{FB:19596,TB:9518,GF:9919,WF:9206,BO:60,HP:4430,MC:57517},
@@ -682,8 +680,7 @@ const storeData = {
         "Nov25":{FB:34662,TB:9875,GF:8450,WF:13603,BO:11442,HP:3478,MC:33140},
         "Dec25":{FB:39459,TB:12640,GF:8465,WF:12970,BO:16068,HP:5044,MC:25590},
         "Jan26":{FB:45578,TB:8982,GF:7720,WF:7308,BO:15366,HP:8925,MC:25434},
-        "Feb26":{FB:44761,TB:8820,GF:7173,WF:7507,BO:6476,HP:7264,MC:23356},
-        "Mar26":{FB:36371,TB:8879,GF:7069,WF:9842,BO:10724,HP:2994,MC:11547}
+        "Feb26":{FB:44761,TB:8820,GF:7173,WF:7507,BO:6476,HP:7264,MC:23356}
     },
     groton: {
         "Feb25":{FB:2544,TB:1106,GF:487,MC:1644},
@@ -698,8 +695,7 @@ const storeData = {
         "Nov25":{FB:13957,TB:4556,GF:1720,WF:3863,HP:2110,MC:15208},
         "Dec25":{FB:14836,TB:3457,GF:2175,WF:2948,HP:1175,MC:10386},
         "Jan26":{FB:15684,TB:5100,GF:1700,WF:2902,HP:1051,MC:7983},
-        "Feb26":{FB:14088,TB:3209,GF:1190,WF:3466,BO:2140,HP:2846,MC:4486},
-        "Mar26":{FB:12154,TB:5401,GF:2181,WF:2869,BO:2810,HP:2333,MC:2588}
+        "Feb26":{FB:14088,TB:3209,GF:1190,WF:3466,BO:2140,HP:2846,MC:4486}
     }
 };
 
@@ -708,22 +704,22 @@ const vendorAliases = {
     fb: { dutchie: ["Freshly Baked"], litAlerts: [{id:183, name:"Freshly Baked"}],
           confidence: "high", note: "Exact match in Dutchie. Single brand name, no aliases needed. Lit Alerts brand ID 183 confirmed." },
     tb: { dutchie: ["T. Bear"], litAlerts: [{id:4, name:"Coast Cannabis"}],
-          confidence: "high", note: "Dutchie vendor name is 'T. Bear', brand name is 'Coast'. Lit Alerts tracks as 'Coast Cannabis' ID 4. Note: 'Coastal Cultivars LLC' is a SEPARATE company (brands: No. 9, Shake and Get Baked) \u2014 not affiliated with T.Bear/Coast." },
+          confidence: "high", note: "Dutchie vendor name is 'T. Bear', brand name is 'Coast'. Lit Alerts tracks as 'Coast Cannabis' ID 4. Note: 'Coastal Cultivars LLC' is a SEPARATE company (brands: No. 9, Shake and Get Baked) &mdash; not affiliated with T.Bear/Coast." },
     gf: { dutchie: ["Good Feels Inc"], litAlerts: [{id:4891, name:"Good Vibes (Good Feels)"}],
           confidence: "high", note: "Dutchie lists as 'Good Feels Inc'. Lit Alerts tracks as 'Good Vibes' ID 4891 (brand name is Good Feels). Single entity, no ambiguity." },
     wf: { dutchie: ["Wellman Farm, Inc."], litAlerts: [{id:423, name:"Wellman Farm"}, {id:9488, name:"OMG"}, {id:10021, name:"WildFlower by Wellman"}],
-          confidence: "medium", note: "Dutchie has only 'Wellman Farm, Inc.' \u2014 no OMG or WildFlower variants appeared in our transaction data. Lit Alerts has 3 related brand IDs. Possible that OMG/WildFlower products are tagged under the parent vendor name in Dutchie. Revenue captured is likely complete for our stores, but Lit Alerts market data should aggregate all 3 brand IDs." },
+          confidence: "medium", note: "Dutchie has only 'Wellman Farm, Inc.' &mdash; no OMG or WildFlower variants appeared in our transaction data. Lit Alerts has 3 related brand IDs. Possible that OMG/WildFlower products are tagged under the parent vendor name in Dutchie. Revenue captured is likely complete for our stores, but Lit Alerts market data should aggregate all 3 brand IDs." },
     bo: { dutchie: ["Bostica, LLC"], litAlerts: [{id:8059, name:"Bostica"}],
           confidence: "high", note: "Exact match. Single brand identity in both systems." },
     hp: { dutchie: ["27 Broom Street, LLC"], litAlerts: [{id:322, name:"High Plains Farm"}, {id:21292, name:"Cowboy Kush"}],
-          confidence: "medium", note: "Dutchie uses the parent company name '27 Broom Street, LLC' rather than the brand name. Confirmed via cross-referencing. Lit Alerts has High Plains Farm (ID 322) and Cowboy Kush (ID 21292) as separate brands \u2014 both are 27 Broom Street products. Market data should aggregate both IDs." },
+          confidence: "medium", note: "Dutchie uses the parent company name '27 Broom Street, LLC' rather than the brand name. Confirmed via cross-referencing. Lit Alerts has High Plains Farm (ID 322) and Cowboy Kush (ID 21292) as separate brands &mdash; both are 27 Broom Street products. Market data should aggregate both IDs." },
     mc: { dutchie: ["MACC", "Tree House Craft Cannabis", "New England Craft Cultivators", "Yellow Brick Road", "YBR", "Tree House Select", "Forbidden Fruit", "Habitual Ritual", "Aristo Fuego"], litAlerts: [{id:11857,name:"Forbidden Fruit"},{id:16211,name:"Habitual Ritual"},{id:13009,name:"Tree House Cannabis"},{id:16079,name:"Tree House Select"},{id:9985,name:"Yellow Brick Road"}],
           confidence: "high", note: "MACC is Tree House's own cultivation arm. Multiple sub-brands: Yellow Brick Road/YBR (flower), Tree House Select (premium), Forbidden Fruit (edibles), Habitual Ritual (pre-rolls), Aristo Fuego (concentrates). All confirmed in Dutchie product catalog. Lit Alerts tracks the premium sub-brands." }
 };
 
 // === LIVE DATA (updated by scheduled task) ===
 // AUDITED 2026-03-26: Only verified MA retailers (in Lit Alerts directory) are shown.
-// 2026-03-29 refresh: Lit Alerts analytics endpoints still returning HTTP 500 (ongoing since 2026-03-27). Retailer data retained from 2026-03-26. Dutchie product/inventory data refreshed.
+// 2026-03-30 refresh: Lit Alerts token not available in session; retailer data retained from 2026-03-26. Dutchie product/inventory data refreshed successfully.
 // Unverified = iHeartJane/unknown retailer IDs not in directory (could be MA, unconfirmed).
 // Non-MA entries (e.g. Missouri "Forbidden Fruit") have been excluded.
 const LIT_ALERTS_DATA = {
@@ -808,410 +804,394 @@ const LIT_ALERTS_DATA = {
   }
 };
 
-// Dutchie product catalog data \u2014 aggregated by vendor & category
+// Dutchie product catalog data &mdash; aggregated by vendor & category
 // Format: { skus, avgPrice, avgCost } per category per vendor
-// Updated: 2026-03-28 via Dutchie POS API (3 stores: Dracut 7350, Pepperell 7323, Groton 7329 = 22002 total, 3475 matched)
-// Catalog unchanged from 2026-03-27. tb: 204 SKUs (T.Bear vendor only). Coastal Cultivars LLC excluded per vendor alias rules.
+// Updated: 2026-03-30 via Dutchie POS API (3 stores: Dracut 7350, Pepperell 7323, Groton 7329 = 22002 total, 3257 matched)
 const PRODUCT_DATA = {
-  lastUpdated: "2026-03-29T04:45:00Z",
-  vendors: {
-    fb: {
-      totalSkus: 407,
-      categories: {
-        Gummies: {
-          skus: 111,
-          avgPrice: 14.48,
-          avgCost: 6.71
+  "lastUpdated": "2026-03-30T04:45:00Z",
+  "vendors": {
+    "fb": {
+      "totalSkus": 362,
+      "categories": {
+        "Gummies": {
+          "skus": 111,
+          "avgPrice": 14.48,
+          "avgCost": 6.71
+        },
+        "Disposable": {
+          "skus": 75,
+          "avgPrice": 35.57,
+          "avgCost": 15.16
+        },
+        "Multipack": {
+          "skus": 66,
+          "avgPrice": 30.59,
+          "avgCost": 14.73
         },
         "510 Cart": {
-          skus: 83,
-          avgPrice: 50.12,
-          avgCost: 21.46
-        },
-        Disposable: {
-          skus: 75,
-          avgPrice: 35.57,
-          avgCost: 15.16
-        },
-        Multipack: {
-          skus: 66,
-          avgPrice: 30.59,
-          avgCost: 14.73
+          "skus": 65,
+          "avgPrice": 42.54,
+          "avgCost": 17.71
         },
         "RETIRE - Edible": {
-          skus: 27,
-          avgPrice: 23.64,
-          avgCost: 12.73
+          "skus": 24,
+          "avgPrice": 24.5,
+          "avgCost": 12.25
         },
-        SAMPLE: {
-          skus: 15,
-          avgPrice: 4.01,
-          avgCost: 0.01
+        "SAMPLE": {
+          "skus": 9,
+          "avgPrice": 6.67,
+          "avgCost": 0.01
+        },
+        "Topicals": {
+          "skus": 6,
+          "avgPrice": 15.0,
+          "avgCost": 10.25
         },
         "Baked Goods": {
-          skus: 15,
-          avgPrice: 12.4,
-          avgCost: 7.2
+          "skus": 3,
+          "avgPrice": 8.0,
+          "avgCost": 4.0
         },
-        Tablet: {
-          skus: 9,
-          avgPrice: 6.67,
-          avgCost: 3.34
-        },
-        Topicals: {
-          skus: 6,
-          avgPrice: 15.0,
-          avgCost: 10.25
+        "Tablet": {
+          "skus": 3,
+          "avgPrice": 20.0,
+          "avgCost": 10.0
         }
       }
     },
-    tb: {
-      totalSkus: 204,
-      categories: {
-        Gummies: {
-          skus: 81,
-          avgPrice: 16.93,
-          avgCost: 8.2
+    "tb": {
+      "totalSkus": 204,
+      "categories": {
+        "Gummies": {
+          "skus": 81,
+          "avgPrice": 16.93,
+          "avgCost": 8.2
         },
-        Chocolate: {
-          skus: 54,
-          avgPrice: 19.89,
-          avgCost: 10.28
+        "Chocolate": {
+          "skus": 54,
+          "avgPrice": 19.89,
+          "avgCost": 10.28
         },
         "510 Cart": {
-          skus: 42,
-          avgPrice: 24.64,
-          avgCost: 12.86
+          "skus": 42,
+          "avgPrice": 24.64,
+          "avgCost": 12.86
         },
-        SAMPLE: {
-          skus: 27,
-          avgPrice: 0.01,
-          avgCost: 0.01
+        "SAMPLE": {
+          "skus": 27,
+          "avgPrice": 0.01,
+          "avgCost": 0.01
         }
       }
     },
-    gf: {
-      totalSkus: 147,
-      categories: {
+    "gf": {
+      "totalSkus": 147,
+      "categories": {
         "Drink Mix": {
-          skus: 90,
-          avgPrice: 42.87,
-          avgCost: 20.47
+          "skus": 90,
+          "avgPrice": 42.87,
+          "avgCost": 20.47
         },
-        Seltzer: {
-          skus: 30,
-          avgPrice: 5.2,
-          avgCost: 1.78
+        "Seltzer": {
+          "skus": 30,
+          "avgPrice": 5.2,
+          "avgCost": 1.78
         },
-        SAMPLE: {
-          skus: 27,
-          avgPrice: 0.01,
-          avgCost: 0.01
+        "SAMPLE": {
+          "skus": 27,
+          "avgPrice": 0.01,
+          "avgCost": 0.01
         }
       }
     },
-    wf: {
-      totalSkus: 483,
-      categories: {
-        Bud: {
-          skus: 168,
-          avgPrice: 34.29,
-          avgCost: 17.3
+    "wf": {
+      "totalSkus": 429,
+      "categories": {
+        "Bud": {
+          "skus": 141,
+          "avgPrice": 34.29,
+          "avgCost": 17.3
         },
-        Single: {
-          skus: 102,
-          avgPrice: 12.13,
-          avgCost: 5.26
+        "Single": {
+          "skus": 102,
+          "avgPrice": 12.13,
+          "avgCost": 5.26
         },
-        DISPLAY: {
-          skus: 39,
-          avgPrice: 0.01,
-          avgCost: 15.2
+        "DISPLAY": {
+          "skus": 30,
+          "avgPrice": 0.01,
+          "avgCost": 15.2
         },
-        Multipack: {
-          skus: 24,
-          avgPrice: 23.13,
-          avgCost: 11.19
+        "Multipack": {
+          "skus": 24,
+          "avgPrice": 23.13,
+          "avgCost": 11.19
         },
         "Pre Ground": {
-          skus: 24,
-          avgPrice: 57.5,
-          avgCost: 28.25
+          "skus": 24,
+          "avgPrice": 57.5,
+          "avgCost": 28.25
         },
-        Disposable: {
-          skus: 21,
-          avgPrice: 42.0,
-          avgCost: 19.57
+        "Disposable": {
+          "skus": 21,
+          "avgPrice": 42.0,
+          "avgCost": 19.57
         },
         "Live Rosin": {
-          skus: 21,
-          avgPrice: 60.0,
-          avgCost: 29.64
+          "skus": 21,
+          "avgPrice": 60.0,
+          "avgCost": 29.64
         },
-        SAMPLE: {
-          skus: 15,
-          avgPrice: 0.34,
-          avgCost: 0.01
+        "SAMPLE": {
+          "skus": 15,
+          "avgPrice": 0.34,
+          "avgCost": 0.01
         },
         "Multipack Infused": {
-          skus: 15,
-          avgPrice: 50.0,
-          avgCost: 25.0
+          "skus": 15,
+          "avgPrice": 50.0,
+          "avgCost": 25.0
         },
         "Single Infused": {
-          skus: 15,
-          avgPrice: 24.0,
-          avgCost: 12.0
+          "skus": 12,
+          "avgPrice": 24.0,
+          "avgCost": 12.0
         },
         "510 Cart": {
-          skus: 12,
-          avgPrice: 30.75,
-          avgCost: 15.38
+          "skus": 9,
+          "avgPrice": 30.75,
+          "avgCost": 15.38
         },
         "Drink Mix": {
-          skus: 9,
-          avgPrice: 8.33,
-          avgCost: 5.0
+          "skus": 6,
+          "avgPrice": 8.33,
+          "avgCost": 5.0
         },
-        "RETIRE - Pre Rolls": {
-          skus: 6,
-          avgPrice: 0.01,
-          avgCost: 0.01
+        "Salve": {
+          "skus": 6,
+          "avgPrice": 50.0,
+          "avgCost": 25.0
         },
-        Salve: {
-          skus: 6,
-          avgPrice: 50.0,
-          avgCost: 25.0
-        },
-        Shake: {
-          skus: 3,
-          avgPrice: 8.75,
-          avgCost: 2.1
-        },
-        Concentrate: {
-          skus: 3,
-          avgPrice: 60.0,
-          avgCost: 30.0
+        "Shake": {
+          "skus": 3,
+          "avgPrice": 8.75,
+          "avgCost": 2.1
         }
       }
     },
-    bo: {
-      totalSkus: 317,
-      categories: {
-        Bud: {
-          skus: 138,
-          avgPrice: 23.37,
-          avgCost: 11.51
+    "bo": {
+      "totalSkus": 215,
+      "categories": {
+        "Bud": {
+          "skus": 90,
+          "avgPrice": 23.37,
+          "avgCost": 11.51
         },
-        Multipack: {
-          skus: 62,
-          avgPrice: 14.65,
-          avgCost: 6.07
+        "Multipack": {
+          "skus": 45,
+          "avgPrice": 14.65,
+          "avgCost": 6.07
         },
-        Disposable: {
-          skus: 54,
-          avgPrice: 30.0,
-          avgCost: 15.0
+        "Disposable": {
+          "skus": 36,
+          "avgPrice": 30.0,
+          "avgCost": 15.0
         },
-        Single: {
-          skus: 27,
-          avgPrice: 9.78,
-          avgCost: 3.72
+        "Single": {
+          "skus": 18,
+          "avgPrice": 9.78,
+          "avgCost": 3.72
         },
-        DISPLAY: {
-          skus: 15,
-          avgPrice: 4.01,
-          avgCost: 10.5
+        "DISPLAY": {
+          "skus": 12,
+          "avgPrice": 4.01,
+          "avgCost": 10.5
         },
-        Kief: {
-          skus: 12,
-          avgPrice: 20.0,
-          avgCost: 10.0
+        "Kief": {
+          "skus": 9,
+          "avgPrice": 20.0,
+          "avgCost": 10.0
         },
         "Multipack Infused": {
-          skus: 9,
-          avgPrice: 12.67,
-          avgCost: 5.33
+          "skus": 5,
+          "avgPrice": 12.67,
+          "avgCost": 5.33
         }
       }
     },
-    hp: {
-      totalSkus: 659,
-      categories: {
-        Single: {
-          skus: 428,
-          avgPrice: 9.06,
-          avgCost: 3.48
+    "hp": {
+      "totalSkus": 641,
+      "categories": {
+        "Single": {
+          "skus": 410,
+          "avgPrice": 9.06,
+          "avgCost": 3.48
         },
         "Pre Ground": {
-          skus: 81,
-          avgPrice: 39.78,
-          avgCost: 17.83
+          "skus": 78,
+          "avgPrice": 39.78,
+          "avgCost": 17.83
         },
-        Bud: {
-          skus: 63,
-          avgPrice: 27.29,
-          avgCost: 13.64
+        "Bud": {
+          "skus": 63,
+          "avgPrice": 27.29,
+          "avgCost": 13.64
         },
-        Multipack: {
-          skus: 30,
-          avgPrice: 27.7,
-          avgCost: 12.0
+        "Multipack": {
+          "skus": 30,
+          "avgPrice": 27.7,
+          "avgCost": 12.0
         },
         "510 Cart": {
-          skus: 15,
-          avgPrice: 27.0,
-          avgCost: 10.9
+          "skus": 18,
+          "avgPrice": 27.0,
+          "avgCost": 10.9
         },
-        DISPLAY: {
-          skus: 15,
-          avgPrice: 12.01,
-          avgCost: 15.0
+        "DISPLAY": {
+          "skus": 15,
+          "avgPrice": 12.01,
+          "avgCost": 15.0
         },
-        Shake: {
-          skus: 12,
-          avgPrice: 70.0,
-          avgCost: 35.0
+        "Shake": {
+          "skus": 12,
+          "avgPrice": 70.0,
+          "avgCost": 35.0
         },
-        Gummies: {
-          skus: 12,
-          avgPrice: 18.17,
-          avgCost: 7.5
+        "Gummies": {
+          "skus": 12,
+          "avgPrice": 18.17,
+          "avgCost": 7.5
         },
-        SAMPLE: {
-          skus: 3,
-          avgPrice: 0.01,
-          avgCost: 0.01
+        "SAMPLE": {
+          "skus": 3,
+          "avgPrice": 0.01,
+          "avgCost": 0.01
         }
       }
     },
-    mc: {
-      totalSkus: 1258,
-      categories: {
-        Single: {
-          skus: 327,
-          avgPrice: 6.65,
-          avgCost: 1.13
+    "mc": {
+      "totalSkus": 1259,
+      "categories": {
+        "Single": {
+          "skus": 327,
+          "avgPrice": 6.65,
+          "avgCost": 1.13
         },
         "Pre Ground": {
-          skus: 312,
-          avgPrice: 28.56,
-          avgCost: 9.25
+          "skus": 312,
+          "avgPrice": 28.56,
+          "avgCost": 9.25
         },
-        Apparel: {
-          skus: 297,
-          avgPrice: 32.34,
-          avgCost: 21.07
+        "Apparel": {
+          "skus": 297,
+          "avgPrice": 32.34,
+          "avgCost": 21.07
         },
-        Bud: {
-          skus: 102,
-          avgPrice: 21.97,
-          avgCost: 6.64
+        "Bud": {
+          "skus": 102,
+          "avgPrice": 21.97,
+          "avgCost": 6.64
         },
-        Seeds: {
-          skus: 45,
-          avgPrice: 30.0,
-          avgCost: 9.03
+        "Seeds": {
+          "skus": 45,
+          "avgPrice": 30.0,
+          "avgCost": 9.03
         },
-        Multipack: {
-          skus: 30,
-          avgPrice: 19.18,
-          avgCost: 6.85
+        "Multipack": {
+          "skus": 30,
+          "avgPrice": 19.18,
+          "avgCost": 6.85
         },
-        Shake: {
-          skus: 21,
-          avgPrice: 8.75,
-          avgCost: 1.32
+        "Shake": {
+          "skus": 21,
+          "avgPrice": 8.75,
+          "avgCost": 1.32
         },
-        Accessories: {
-          skus: 18,
-          avgPrice: 25.6,
-          avgCost: 16.36
+        "Accessories": {
+          "skus": 18,
+          "avgPrice": 25.6,
+          "avgCost": 16.36
         },
         "Gift Cards": {
-          skus: 18,
-          avgPrice: 86.11,
-          avgCost: 0
+          "skus": 18,
+          "avgPrice": 86.11,
+          "avgCost": 0
         },
-        SAMPLE: {
-          skus: 16,
-          avgPrice: 0.01,
-          avgCost: 0.01
+        "SAMPLE": {
+          "skus": 16,
+          "avgPrice": 0.01,
+          "avgCost": 0.01
         },
-        Bundles: {
-          skus: 15,
-          avgPrice: 28.0,
-          avgCost: 16.55
+        "Bundles": {
+          "skus": 15,
+          "avgPrice": 28.0,
+          "avgCost": 16.55
         },
-        DISPLAY: {
-          skus: 12,
-          avgPrice: 13.76,
-          avgCost: 3.16
+        "DISPLAY": {
+          "skus": 12,
+          "avgPrice": 13.76,
+          "avgCost": 3.16
         },
-        Gifts: {
-          skus: 9,
-          avgPrice: 131.67,
-          avgCost: 62.67
+        "Gifts": {
+          "skus": 9,
+          "avgPrice": 131.67,
+          "avgCost": 62.67
         },
-        Vaporizers: {
-          skus: 9,
-          avgPrice: 15.0,
-          avgCost: 7.83
+        "Vaporizers": {
+          "skus": 9,
+          "avgPrice": 15.0,
+          "avgCost": 7.83
         },
         "RETIRE - Edible": {
-          skus: 6,
-          avgPrice: 66.0,
-          avgCost: 34.0
+          "skus": 6,
+          "avgPrice": 66.0,
+          "avgCost": 34.0
         },
-        Prizes: {
-          skus: 6,
-          avgPrice: 0,
-          avgCost: 23.5
+        "Prizes": {
+          "skus": 6,
+          "avgPrice": 0,
+          "avgCost": 23.5
         },
         "RETIRE - Pre Rolls": {
-          skus: 3,
-          avgPrice: 30.0,
-          avgCost: 17.75
+          "skus": 3,
+          "avgPrice": 30.0,
+          "avgCost": 17.75
         },
         "RETIRE - Vape Cartridges": {
-          skus: 3,
-          avgPrice: 70.0,
-          avgCost: 30.0
+          "skus": 3,
+          "avgPrice": 70.0,
+          "avgCost": 30.0
         },
         "Non-THC": {
-          skus: 3,
-          avgPrice: 350.0,
-          avgCost: 194.5
+          "skus": 3,
+          "avgPrice": 350.0,
+          "avgCost": 194.5
         },
-        Glass: {
-          skus: 3,
-          avgPrice: 35.0,
-          avgCost: 25.0
+        "Glass": {
+          "skus": 3,
+          "avgPrice": 35.0,
+          "avgCost": 25.0
         },
-        Grinders: {
-          skus: 3,
-          avgPrice: 15.0,
-          avgCost: 5.0
+        "Grinders": {
+          "skus": 3,
+          "avgPrice": 15.0,
+          "avgCost": 5.0
         },
-        Snacks: {
-          skus: 3,
-          avgPrice: 3.5,
-          avgCost: 0
-        },
-        Kief: {
-          skus: 3,
-          avgPrice: 16.67,
-          avgCost: 1.15
+        "Kief": {
+          "skus": 3,
+          "avgPrice": 16.67,
+          "avgCost": 1.15
         },
         "Cured Resin": {
-          skus: 3,
-          avgPrice: 30.0,
-          avgCost: 10.0
+          "skus": 3,
+          "avgPrice": 30.0,
+          "avgCost": 10.0
         },
         "Rolling Papers": {
-          skus: 3,
-          avgPrice: 3.0,
-          avgCost: 1.44
+          "skus": 3,
+          "avgPrice": 3.0,
+          "avgCost": 1.44
         }
       }
     }
@@ -1222,7 +1202,7 @@ const PRODUCT_DATA = {
 // MARKET TREND DATA (Lit Alerts &mdash; Estimated MA Market Sales)
 // ===================================================
 const MARKET_TREND_DATA = {
-  lastUpdated: "2026-03-28T04:30:00Z",
+  lastUpdated: "2026-03-27T07:00:00Z",
   note: "Monthly estimated sales ($) across all MA retailers, via Lit Alerts analytics. March 2026 is partial month.",
   months: ["2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02"],
   vendors: {
@@ -1236,151 +1216,195 @@ const MARKET_TREND_DATA = {
   }
 };
 
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-// INVENTORY MIX \u2014 Bricks vs Non-Bricks (from Dutchie product catalog)
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
+// INVENTORY MIX &mdash; Bricks vs Non-Bricks (from Dutchie product catalog)
+// ===================================================
 const INVENTORY_MIX = {
-  lastUpdated: "2026-03-29T04:45:00Z",
-  note: "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
-  totalActive: 647,
-  totalBrick: 186,
-  totalCore: 219,
-  totalOther: 242,
-  perStore: {
-    dracut: {
-      total: 373
+  "lastUpdated": "2026-03-30T04:45:00Z",
+  "note": "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
+  "totalActive": 640,
+  "totalBrick": 181,
+  "totalCore": 279,
+  "totalOther": 179,
+  "perStore": {
+    "dracut": {
+      "total": 372
     },
-    pepperell: {
-      total: 386
+    "pepperell": {
+      "total": 380
     },
-    groton: {
-      total: 359
+    "groton": {
+      "total": 356
     }
   },
-  brickVendors: [
+  "brickVendors": [
     {
-      name: "Freshly Baked",
-      skus: 39
+      "name": "Freshly Baked",
+      "skus": 39
     },
     {
-      name: "Wellman Farms",
-      skus: 37
+      "name": "Wellman Farms",
+      "skus": 35
     },
     {
-      name: "MACC",
-      skus: 27
+      "name": "MACC",
+      "skus": 29
     },
     {
-      name: "High Plains Farm",
-      skus: 27
+      "name": "High Plains Farm",
+      "skus": 26
     },
     {
-      name: "T. Bear / Coast",
-      skus: 25
+      "name": "T. Bear / Coast",
+      "skus": 25
     },
     {
-      name: "Good Feels",
-      skus: 16
+      "name": "Good Feels",
+      "skus": 16
     },
     {
-      name: "Bostica",
-      skus: 15
+      "name": "Bostica",
+      "skus": 11
     }
   ],
-  coreVendors: [
+  "coreVendors": [
     {
-      name: "Cultivate",
-      skus: 40
+      "name": "High Supply",
+      "skus": 29
     },
     {
-      name: "Green Meadows",
-      skus: 28
+      "name": "Eureka",
+      "skus": 25
     },
     {
-      name: "Garden Remedies",
-      skus: 28
+      "name": "Nature's Heritage",
+      "skus": 20
     },
     {
-      name: "Hudson Botanical",
-      skus: 24
+      "name": "Nimbus",
+      "skus": 17
     },
     {
-      name: "ARL Healthcare",
-      skus: 23
+      "name": "Select",
+      "skus": 13
     },
     {
-      name: "Novel Beverage",
-      skus: 22
+      "name": "Willie's Reserve",
+      "skus": 12
     },
     {
-      name: "Lunar Xtracts",
-      skus: 19
+      "name": "Realm Cannabis",
+      "skus": 12
     },
     {
-      name: "Curaleaf",
-      skus: 13
+      "name": "Buzzy",
+      "skus": 11
     },
     {
-      name: "Mederi",
-      skus: 9
+      "name": "Betty's Eddies",
+      "skus": 9
     },
     {
-      name: "Humboldt Masters",
-      skus: 4
+      "name": "Mederi",
+      "skus": 9
     }
   ],
-  otherVendors: [
+  "otherVendors": [
     {
-      name: "AFG Distribution",
-      skus: 80
+      "name": "AFG Distribution",
+      "skus": 23
     },
     {
-      name: "LuvBuds",
-      skus: 25
+      "name": "ZZZ's Rolling Paper",
+      "skus": 27
     },
     {
-      name: "Mill Town Agriculture",
-      skus: 22
+      "name": "Healing Rose",
+      "skus": 14
     },
     {
-      name: "ZZZ's Rolling Paper",
-      skus: 19
+      "name": "Green Harbor",
+      "skus": 12
     },
     {
-      name: "Healing Rose",
-      skus: 14
+      "name": "LuvBuds",
+      "skus": 12
     },
     {
-      name: "Nova Farms",
-      skus: 14
+      "name": "Pulsar",
+      "skus": 15
     },
     {
-      name: "Green Harbor",
-      skus: 12
+      "name": "Pilgrim Soul",
+      "skus": 7
     },
     {
-      name: "Pilgrim Soul",
-      skus: 7
+      "name": "Cannalive Genetics",
+      "skus": 6
     },
     {
-      name: "Atlantic Medicinal",
-      skus: 6
+      "name": "Erva Inc.",
+      "skus": 5
     },
     {
-      name: "Cannalive Genetics",
-      skus: 6
+      "name": "Hemper",
+      "skus": 5
     },
     {
-      name: "Erva Inc.",
-      skus: 5
+      "name": "Ooze",
+      "skus": 7
     },
     {
-      name: "Hara Brands",
-      skus: 4
+      "name": "Nova Farms",
+      "skus": 0
     },
     {
-      name: "Solar Therapeutics",
-      skus: 4
+      "name": "Mill Town Agriculture",
+      "skus": 0
+    }
+  ],
+  "byCategory": [
+    {
+      "group": "Pre-Rolls",
+      "brick": 30,
+      "core": 35,
+      "other": 10
+    },
+    {
+      "group": "Flower",
+      "brick": 22,
+      "core": 20,
+      "other": 8
+    },
+    {
+      "group": "Vapes",
+      "brick": 24,
+      "core": 46,
+      "other": 18
+    },
+    {
+      "group": "Edibles",
+      "brick": 27,
+      "core": 10,
+      "other": 12
+    },
+    {
+      "group": "Beverages",
+      "brick": 13,
+      "core": 18,
+      "other": 3
+    },
+    {
+      "group": "Concentrates",
+      "brick": 5,
+      "core": 9,
+      "other": 2
+    },
+    {
+      "group": "Topicals",
+      "brick": 1,
+      "core": 0,
+      "other": 0
     }
   ]
 };
@@ -1389,97 +1413,459 @@ const INVENTORY_MIX = {
 // PER-STORE INVENTORY (from Dutchie /inventory, deduplicated by productId per store)
 // ===================================================
 const STORE_INVENTORY = {
-  dracut: {
-    total: 377, brick: 130, core: 134, other: 113,
-    brickVendors: [
-      { name: "Freshly Baked", skus: 30 }, { name: "Wellman Farms", skus: 24 },
-      { name: "T. Bear / Coast", skus: 20 }, { name: "High Plains Farm", skus: 18 },
-      { name: "MACC", skus: 15 }, { name: "Good Feels", skus: 13 }, { name: "Bostica", skus: 10 }
+  "dracut": {
+    "total": 372,
+    "brick": 128,
+    "core": 163,
+    "other": 81,
+    "brickVendors": [
+      {
+        "name": "Freshly Baked",
+        "skus": 30
+      },
+      {
+        "name": "Wellman Farms",
+        "skus": 22
+      },
+      {
+        "name": "T. Bear / Coast",
+        "skus": 20
+      },
+      {
+        "name": "High Plains Farm",
+        "skus": 18
+      },
+      {
+        "name": "MACC",
+        "skus": 16
+      },
+      {
+        "name": "Good Feels",
+        "skus": 13
+      },
+      {
+        "name": "Bostica",
+        "skus": 9
+      }
     ],
-    coreVendors: [
-      { name: "Cultivate", skus: 25 }, { name: "Novel Beverage", skus: 21 },
-      { name: "Hudson Botanical", skus: 18 }, { name: "ARL Healthcare", skus: 15 },
-      { name: "Lunar Xtracts", skus: 15 }, { name: "Curaleaf", skus: 13 },
-      { name: "Garden Remedies", skus: 12 }, { name: "Green Meadows", skus: 9 },
-      { name: "Mederi", skus: 4 }, { name: "Humboldt Masters", skus: 2 }
+    "coreVendors": [
+      {
+        "name": "High Supply",
+        "skus": 22
+      },
+      {
+        "name": "Eureka",
+        "skus": 20
+      },
+      {
+        "name": "Nature's Heritage",
+        "skus": 16
+      },
+      {
+        "name": "Nimbus",
+        "skus": 14
+      },
+      {
+        "name": "Select",
+        "skus": 12
+      },
+      {
+        "name": "Willie's Reserve",
+        "skus": 11
+      },
+      {
+        "name": "Realm Cannabis",
+        "skus": 10
+      },
+      {
+        "name": "Buzzy",
+        "skus": 9
+      },
+      {
+        "name": "Betty's Eddies",
+        "skus": 8
+      },
+      {
+        "name": "Mederi",
+        "skus": 4
+      }
     ],
-    otherVendors: [
-      { name: "LuvBuds", skus: 23 }, { name: "AFG Distribution", skus: 23 },
-      { name: "Mill Town Agriculture", skus: 18 }, { name: "ZZZ's Rolling Paper", skus: 14 },
-      { name: "Green Harbor", skus: 9 }, { name: "Nova Farms", skus: 7 },
-      { name: "Erva Inc.", skus: 4 }
+    "otherVendors": [
+      {
+        "name": "LuvBuds",
+        "skus": 12
+      },
+      {
+        "name": "AFG Distribution",
+        "skus": 10
+      },
+      {
+        "name": "ZZZ's Rolling Paper",
+        "skus": 9
+      },
+      {
+        "name": "Green Harbor",
+        "skus": 7
+      },
+      {
+        "name": "Nova Farms",
+        "skus": 5
+      },
+      {
+        "name": "Pulsar",
+        "skus": 5
+      },
+      {
+        "name": "Erva Inc.",
+        "skus": 4
+      }
     ],
-    otherVendorsFull: 18,
-    byCategory: [
-      { group: "Pre-Rolls", brick: 31, core: 24, other: 9 },
-      { group: "Flower",    brick: 22, core: 20, other: 8 },
-      { group: "Vapes",     brick: 26, core: 49, other: 19 },
-      { group: "Edibles",   brick: 29, core: 11, other: 8 },
-      { group: "Beverages", brick: 15, core: 21, other: 3 },
-      { group: "Concentrates", brick: 6, core: 9, other: 2 },
-      { group: "Topicals",  brick: 1, core: 0, other: 0 }
+    "otherVendorsFull": 18,
+    "byCategory": [
+      {
+        "group": "Pre-Rolls",
+        "brick": 30,
+        "core": 24,
+        "other": 8
+      },
+      {
+        "group": "Flower",
+        "brick": 22,
+        "core": 20,
+        "other": 7
+      },
+      {
+        "group": "Vapes",
+        "brick": 24,
+        "core": 47,
+        "other": 15
+      },
+      {
+        "group": "Edibles",
+        "brick": 28,
+        "core": 11,
+        "other": 7
+      },
+      {
+        "group": "Beverages",
+        "brick": 15,
+        "core": 20,
+        "other": 3
+      },
+      {
+        "group": "Concentrates",
+        "brick": 6,
+        "core": 9,
+        "other": 2
+      },
+      {
+        "group": "Topicals",
+        "brick": 1,
+        "core": 0,
+        "other": 0
+      }
     ]
   },
-  pepperell: {
-    total: 395, brick: 123, core: 148, other: 124,
-    brickVendors: [
-      { name: "Freshly Baked", skus: 32 }, { name: "T. Bear / Coast", skus: 22 },
-      { name: "Wellman Farms", skus: 20 }, { name: "MACC", skus: 13 },
-      { name: "High Plains Farm", skus: 13 }, { name: "Good Feels", skus: 12 },
-      { name: "Bostica", skus: 11 }
+  "pepperell": {
+    "total": 380,
+    "brick": 125,
+    "core": 167,
+    "other": 88,
+    "brickVendors": [
+      {
+        "name": "Freshly Baked",
+        "skus": 32
+      },
+      {
+        "name": "T. Bear / Coast",
+        "skus": 21
+      },
+      {
+        "name": "Wellman Farms",
+        "skus": 20
+      },
+      {
+        "name": "MACC",
+        "skus": 14
+      },
+      {
+        "name": "High Plains Farm",
+        "skus": 13
+      },
+      {
+        "name": "Good Feels",
+        "skus": 12
+      },
+      {
+        "name": "Bostica",
+        "skus": 13
+      }
     ],
-    coreVendors: [
-      { name: "Cultivate", skus: 29 }, { name: "Hudson Botanical", skus: 21 },
-      { name: "Green Meadows", skus: 20 }, { name: "Garden Remedies", skus: 20 },
-      { name: "ARL Healthcare", skus: 18 }, { name: "Novel Beverage", skus: 18 },
-      { name: "Lunar Xtracts", skus: 15 }, { name: "Mederi", skus: 5 },
-      { name: "Humboldt Masters", skus: 2 }
+    "coreVendors": [
+      {
+        "name": "High Supply",
+        "skus": 24
+      },
+      {
+        "name": "Eureka",
+        "skus": 22
+      },
+      {
+        "name": "Nature's Heritage",
+        "skus": 17
+      },
+      {
+        "name": "Nimbus",
+        "skus": 15
+      },
+      {
+        "name": "Select",
+        "skus": 11
+      },
+      {
+        "name": "Willie's Reserve",
+        "skus": 10
+      },
+      {
+        "name": "Realm Cannabis",
+        "skus": 10
+      },
+      {
+        "name": "Buzzy",
+        "skus": 10
+      },
+      {
+        "name": "Mederi",
+        "skus": 5
+      }
     ],
-    otherVendors: [
-      { name: "AFG Distribution", skus: 40 }, { name: "Mill Town Agriculture", skus: 13 },
-      { name: "Healing Rose", skus: 10 }, { name: "LuvBuds", skus: 9 },
-      { name: "Green Harbor", skus: 9 }, { name: "ZZZ's Rolling Paper", skus: 9 },
-      { name: "Bodelle's", skus: 7 }, { name: "Nova Farms", skus: 6 }
+    "otherVendors": [
+      {
+        "name": "AFG Distribution",
+        "skus": 14
+      },
+      {
+        "name": "ZZZ's Rolling Paper",
+        "skus": 10
+      },
+      {
+        "name": "Healing Rose",
+        "skus": 10
+      },
+      {
+        "name": "LuvBuds",
+        "skus": 8
+      },
+      {
+        "name": "Green Harbor",
+        "skus": 7
+      },
+      {
+        "name": "Pulsar",
+        "skus": 6
+      },
+      {
+        "name": "Bodelle's",
+        "skus": 5
+      },
+      {
+        "name": "Nova Farms",
+        "skus": 4
+      }
     ],
-    otherVendorsFull: 18,
-    byCategory: [
-      { group: "Pre-Rolls", brick: 26, core: 38, other: 9 },
-      { group: "Flower",    brick: 24, core: 24, other: 8 },
-      { group: "Vapes",     brick: 29, core: 48, other: 20 },
-      { group: "Edibles",   brick: 24, core: 11, other: 15 },
-      { group: "Beverages", brick: 12, core: 18, other: 3 },
-      { group: "Concentrates", brick: 2, core: 9, other: 2 },
-      { group: "Topicals",  brick: 1, core: 0, other: 0 }
+    "otherVendorsFull": 18,
+    "byCategory": [
+      {
+        "group": "Pre-Rolls",
+        "brick": 26,
+        "core": 36,
+        "other": 9
+      },
+      {
+        "group": "Flower",
+        "brick": 23,
+        "core": 22,
+        "other": 8
+      },
+      {
+        "group": "Vapes",
+        "brick": 28,
+        "core": 48,
+        "other": 17
+      },
+      {
+        "group": "Edibles",
+        "brick": 24,
+        "core": 12,
+        "other": 14
+      },
+      {
+        "group": "Beverages",
+        "brick": 12,
+        "core": 18,
+        "other": 3
+      },
+      {
+        "group": "Concentrates",
+        "brick": 3,
+        "core": 9,
+        "other": 2
+      },
+      {
+        "group": "Topicals",
+        "brick": 1,
+        "core": 0,
+        "other": 0
+      }
     ]
   },
-  groton: {
-    total: 364, brick: 114, core: 122, other: 128,
-    brickVendors: [
-      { name: "Wellman Farms", skus: 24 }, { name: "Freshly Baked", skus: 22 },
-      { name: "T. Bear / Coast", skus: 19 }, { name: "High Plains Farm", skus: 19 },
-      { name: "Bostica", skus: 11 }, { name: "Good Feels", skus: 10 }, { name: "MACC", skus: 9 }
+  "groton": {
+    "total": 356,
+    "brick": 120,
+    "core": 132,
+    "other": 104,
+    "brickVendors": [
+      {
+        "name": "Wellman Farms",
+        "skus": 23
+      },
+      {
+        "name": "Freshly Baked",
+        "skus": 22
+      },
+      {
+        "name": "T. Bear / Coast",
+        "skus": 19
+      },
+      {
+        "name": "High Plains Farm",
+        "skus": 19
+      },
+      {
+        "name": "Bostica",
+        "skus": 14
+      },
+      {
+        "name": "Good Feels",
+        "skus": 12
+      },
+      {
+        "name": "MACC",
+        "skus": 11
+      }
     ],
-    coreVendors: [
-      { name: "Cultivate", skus: 24 }, { name: "ARL Healthcare", skus: 18 },
-      { name: "Green Meadows", skus: 17 }, { name: "Hudson Botanical", skus: 15 },
-      { name: "Novel Beverage", skus: 15 }, { name: "Lunar Xtracts", skus: 15 },
-      { name: "Garden Remedies", skus: 14 }, { name: "Mederi", skus: 4 }
+    "coreVendors": [
+      {
+        "name": "High Supply",
+        "skus": 20
+      },
+      {
+        "name": "Eureka",
+        "skus": 18
+      },
+      {
+        "name": "Nature's Heritage",
+        "skus": 15
+      },
+      {
+        "name": "Nimbus",
+        "skus": 12
+      },
+      {
+        "name": "Select",
+        "skus": 10
+      },
+      {
+        "name": "Realm Cannabis",
+        "skus": 8
+      },
+      {
+        "name": "Willie's Reserve",
+        "skus": 8
+      },
+      {
+        "name": "Mederi",
+        "skus": 4
+      }
     ],
-    otherVendors: [
-      { name: "AFG Distribution", skus: 67 }, { name: "Healing Rose", skus: 9 },
-      { name: "Green Harbor", skus: 8 }, { name: "LuvBuds", skus: 6 },
-      { name: "Mill Town Agriculture", skus: 6 }, { name: "Atlantic Medicinal", skus: 5 },
-      { name: "Cannalive Genetics", skus: 5 }, { name: "Pilgrim Soul", skus: 4 }
+    "otherVendors": [
+      {
+        "name": "AFG Distribution",
+        "skus": 22
+      },
+      {
+        "name": "ZZZ's Rolling Paper",
+        "skus": 12
+      },
+      {
+        "name": "Healing Rose",
+        "skus": 9
+      },
+      {
+        "name": "Green Harbor",
+        "skus": 6
+      },
+      {
+        "name": "LuvBuds",
+        "skus": 5
+      },
+      {
+        "name": "Cannalive Genetics",
+        "skus": 5
+      },
+      {
+        "name": "Pilgrim Soul",
+        "skus": 4
+      },
+      {
+        "name": "Atlantic Medicinal",
+        "skus": 4
+      }
     ],
-    otherVendorsFull: 16,
-    byCategory: [
-      { group: "Pre-Rolls", brick: 36, core: 35, other: 12 },
-      { group: "Flower",    brick: 21, core: 16, other: 8 },
-      { group: "Vapes",     brick: 13, core: 40, other: 5 },
-      { group: "Edibles",   brick: 25, core: 7, other: 14 },
-      { group: "Beverages", brick: 10, core: 15, other: 3 },
-      { group: "Concentrates", brick: 5, core: 9, other: 0 },
-      { group: "Topicals",  brick: 1, core: 0, other: 0 }
+    "otherVendorsFull": 16,
+    "byCategory": [
+      {
+        "group": "Pre-Rolls",
+        "brick": 35,
+        "core": 33,
+        "other": 11
+      },
+      {
+        "group": "Flower",
+        "brick": 20,
+        "core": 15,
+        "other": 7
+      },
+      {
+        "group": "Vapes",
+        "brick": 14,
+        "core": 38,
+        "other": 5
+      },
+      {
+        "group": "Edibles",
+        "brick": 25,
+        "core": 8,
+        "other": 13
+      },
+      {
+        "group": "Beverages",
+        "brick": 11,
+        "core": 14,
+        "other": 3
+      },
+      {
+        "group": "Concentrates",
+        "brick": 5,
+        "core": 9,
+        "other": 0
+      },
+      {
+        "group": "Topicals",
+        "brick": 1,
+        "core": 0,
+        "other": 0
+      }
     ]
   }
 };
@@ -1525,9 +1911,9 @@ function totalVendorRevenue(vendorKey) {
     return Object.values(cm).reduce((a,b) => a+b, 0);
 }
 
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-// CHART DEFAULTS
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
+// CHART DEFAULTS (wrapped — if Chart.js CDN fails, KPIs still render)
+// ===================================================
 const CHARTS_AVAILABLE = typeof Chart !== 'undefined';
 if (CHARTS_AVAILABLE) {
     Chart.defaults.color = '#8b949e';
@@ -1538,7 +1924,7 @@ if (CHARTS_AVAILABLE) {
     Chart.defaults.plugins.legend.labels.pointStyleWidth = 8;
     Chart.defaults.animation.duration = 400;
 } else {
-    console.warn('[BrickHouse] Chart.js not loaded');
+    console.warn('[BrickHouse] Chart.js not loaded — KPIs will render but charts will be unavailable');
 }
 
 const chartInstances = {};
@@ -1769,7 +2155,7 @@ function buildLitAlertsTable(vendor) {
     const notes = LIT_ALERTS_DATA.notes;
     const vendorNote = notes[vendor];
     if (vendorNote) {
-        html += `<div style="margin-top:10px; padding:8px 10px; background:rgba(210,153,34,0.08); border:1px solid rgba(210,153,34,0.2); border-radius:4px; font-size:0.75rem; color:#d29922;">\u26a0 ${vendorNote}</div>`;
+        html += `<div style="margin-top:10px; padding:8px 10px; background:rgba(210,153,34,0.08); border:1px solid rgba(210,153,34,0.2); border-radius:4px; font-size:0.75rem; color:#d29922;">\u26A0 ${vendorNote}</div>`;
     }
 
     container.innerHTML = html;
@@ -1789,7 +2175,7 @@ function loadMarketIntelligence() {
         const unverified = retailersData ? (retailersData.unverified || 0) : 0;
         const brandStr = brandIds ? brandIds.map(b => `${b.name}`).join(', ') : 'N/A';
 
-        html += `<tr><td><span style="color:${VENDORS[v].color}">\u25a0</span> ${VENDORS[v].name}</td><td style="text-align:center; font-weight:600;">${verified}</td><td style="text-align:center; color:var(--text-muted);">${unverified ? '+' + unverified : '\u2014'}</td><td style="font-size:0.78rem;">${brandStr}</td></tr>`;
+        html += `<tr><td><span style="color:${VENDORS[v].color}">\u25A0</span> ${VENDORS[v].name}</td><td style="text-align:center; font-weight:600;">${verified}</td><td style="text-align:center; color:var(--text-muted);">${unverified ? '+' + unverified : '&mdash;'}</td><td style="font-size:0.78rem;">${brandStr}</td></tr>`;
     });
 
     html += '</tbody></table>';
@@ -1797,9 +2183,9 @@ function loadMarketIntelligence() {
     container.innerHTML = html;
 }
 
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 // NAVIGATION
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 function showPanel(id) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1811,9 +2197,9 @@ function showPanel(id) {
     });
 }
 
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 // BUILD OVERVIEW
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 function buildOverview() {
     const kpiContainer = document.getElementById('overview-kpis');
     const vendorTotals = {};
@@ -1828,7 +2214,7 @@ function buildOverview() {
         <div class="kpi"><div class="label">Total Brick Revenue</div><div class="value">${fmtFull(grandTotal)}</div></div>
         <div class="kpi"><div class="label">Top Vendor</div><div class="value" style="color:${VENDORS[sorted[0][0]].color}">${VENDORS[sorted[0][0]].name}</div></div>
         <div class="kpi"><div class="label">Vendors Tracked</div><div class="value">7</div></div>
-        <div class="kpi"><div class="label">Period</div><div class="value" style="font-size:1.1rem">Jan 25 \u2014 Feb 26</div></div>
+        <div class="kpi"><div class="label">Period</div><div class="value" style="font-size:1.1rem">Jan 25 &mdash; Feb 26</div></div>
     `;
 
     // Revenue line chart (sorted highest to lowest)
@@ -1864,7 +2250,7 @@ function buildOverview() {
     const rankTable = document.getElementById('table-overview-ranking');
     rankTable.innerHTML = '<thead><tr><th>Vendor</th><th>Total Revenue</th><th>Share</th></tr></thead><tbody>' +
         sorted.map(([v, total], i) =>
-            `<tr><td><span style="color:${VENDORS[v].color}">\u25a0</span> ${VENDORS[v].name}</td><td>${fmtFull(total)}</td><td>${(total/grandTotal*100).toFixed(1)}%</td></tr>`
+            `<tr><td><span style="color:${VENDORS[v].color}">\u25A0</span> ${VENDORS[v].name}</td><td>${fmtFull(total)}</td><td>${(total/grandTotal*100).toFixed(1)}%</td></tr>`
         ).join('') + '</tbody>';
 
     // Growth table
@@ -1884,7 +2270,7 @@ function buildOverview() {
     const growthTable = document.getElementById('table-overview-growth');
     growthTable.innerHTML = '<thead><tr><th>Vendor</th><th>Recent 3mo</th><th>Prior 3mo</th><th>Growth</th></tr></thead><tbody>' +
         growthData.map(d =>
-            `<tr><td><span style="color:${VENDORS[d.v].color}">\u25a0</span> ${VENDORS[d.v].name}</td><td>${fmtFull(d.recent)}</td><td>${fmtFull(d.prior)}</td><td class="delta ${d.growth >= 0 ? 'up' : 'down'}">${d.growth >= 0 ? '+' : ''}${d.growth.toFixed(1)}%</td></tr>`
+            `<tr><td><span style="color:${VENDORS[d.v].color}">\u25A0</span> ${VENDORS[d.v].name}</td><td>${fmtFull(d.recent)}</td><td>${fmtFull(d.prior)}</td><td class="delta ${d.growth >= 0 ? 'up' : 'down'}">${d.growth >= 0 ? '+' : ''}${d.growth.toFixed(1)}%</td></tr>`
         ).join('') + '</tbody>';
 
     // Load market intelligence
@@ -1902,7 +2288,7 @@ function buildBricksMix() {
     const CORE_COLOR = '#f0883e';
     const OTHER_COLOR = '#30363d';
 
-    // \u2500\u2500 Donut: 3-tier Brick / Core / Other \u2500\u2500
+    // -- Donut: 3-tier Brick / Core / Other --
     const donutCtx = document.getElementById('chart-brick-donut');
     if (donutCtx && CHARTS_AVAILABLE) {
         if (chartInstances['chart-brick-donut']) chartInstances['chart-brick-donut'].destroy();
@@ -1925,7 +2311,7 @@ function buildBricksMix() {
                             label: function(ctx) {
                                 const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
                                 const pct = (ctx.raw / total * 100).toFixed(1);
-                                return ctx.label + ' \u2014 ' + pct + '%';
+                                return ctx.label + ' &mdash; ' + pct + '%';
                             },
                             afterBody: function(tooltipItems) {
                                 const idx = tooltipItems[0].dataIndex;
@@ -1961,7 +2347,7 @@ function buildBricksMix() {
         });
     }
 
-    // \u2500\u2500 Horizontal stacked bar: By category (3 tiers) \u2500\u2500
+    // -- Horizontal stacked bar: By category (3 tiers) --
     const cats = mix.byCategory.filter(c => c.group !== 'Merch / Accessories');
     const catLabels = cats.map(c => c.group);
 
@@ -2018,7 +2404,7 @@ function buildBricksMix() {
         });
     }
 
-    // \u2500\u2500 All three vendor tier tag lists \u2500\u2500
+    // -- All three vendor tier tag lists --
     const tagsEl = document.getElementById('vendor-tier-tags');
     if (tagsEl) {
         const makeTag = (name, count, bgColor, borderColor, textColor) =>
@@ -2054,7 +2440,7 @@ function buildBricksMix() {
         `;
     }
 
-    // \u2500\u2500 Donut: Revenue split among brick vendors \u2500\u2500
+    // -- Donut: Revenue split among brick vendors --
     const vendorTotals = Object.keys(VENDORS).map(v => ({
         v, total: totalVendorRevenue(v)
     })).sort((a,b) => b.total - a.total);
@@ -2066,7 +2452,7 @@ function buildBricksMix() {
         fmtFull(vendorTotals.reduce((s,d) => s + d.total, 0))
     );
 
-    // \u2500\u2500 Bar: Revenue by vendor \u2500\u2500
+    // -- Bar: Revenue by vendor --
     const revCtx = document.getElementById('chart-brick-rev-by-vendor');
     if (revCtx && CHARTS_AVAILABLE) {
         if (chartInstances['chart-brick-rev-by-vendor']) chartInstances['chart-brick-rev-by-vendor'].destroy();
@@ -2096,9 +2482,9 @@ function buildBricksMix() {
     }
 }
 
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 // BUILD INVENTORY MIX PANEL (combined + per-store)
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 function buildInvMixSection(prefix, data, accentColor) {
     const BRICK_COLOR = '#58a6ff';
     const CORE_COLOR = '#f0883e';
@@ -2122,7 +2508,7 @@ function buildInvMixSection(prefix, data, accentColor) {
                         callbacks: {
                             label: function(ctx) {
                                 const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
-                                return ctx.label + ' \u2014 ' + (ctx.raw / total * 100).toFixed(1) + '%';
+                                return ctx.label + ' &mdash; ' + (ctx.raw / total * 100).toFixed(1) + '%';
                             },
                             afterBody: function(tooltipItems) {
                                 const idx = tooltipItems[0].dataIndex;
@@ -2240,9 +2626,9 @@ function buildInventoryMixPanel() {
     });
 }
 
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 // BUILD VENDOR PANELS
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 function buildVendorPanels() {
     const container = document.getElementById('vendor-panels');
     Object.keys(VENDORS).forEach(v => {
@@ -2255,7 +2641,7 @@ function buildVendorPanels() {
         const priorMonth = MONTHS[MONTHS.length - 2];
         const latestVal = combined[latestMonth] || 0;
         const priorVal = combined[priorMonth] || 0;
-        const momGrowth = priorVal ? ((latestVal - priorVal) / priorVal * 100).toFixed(1) : '\u2014';
+        const momGrowth = priorVal ? ((latestVal - priorVal) / priorVal * 100).toFixed(1) : '&mdash;';
 
         const panel = document.createElement('div');
         panel.id = 'panel-' + v;
@@ -2305,7 +2691,7 @@ function buildVendorPanels() {
             </div>
 
             <div class="card">
-                <h3>Market Presence \u2014 Lit Alerts</h3>
+                <h3>Market Presence &mdash; Lit Alerts</h3>
                 <div id="lit-section-${v}" class="data-section"></div>
             </div>
 
@@ -2425,15 +2811,15 @@ function buildStoreCompTable(vendor) {
     let html = '<thead><tr><th>Store</th><th>Total</th><th>Share</th><th>Avg/Month</th></tr></thead><tbody>';
     Object.keys(STORES).forEach(s => {
         const monthsActive = MONTHS.filter(m => storeData[s][m] && storeData[s][m][vk]).length;
-        html += `<tr><td style="color:${STORES[s].color}">${STORES[s].name}</td><td>${fmtFull(totals[s])}</td><td>${grand ? (totals[s]/grand*100).toFixed(1) : 0}%</td><td>${monthsActive ? fmtFull(Math.round(totals[s]/monthsActive)) : '\u2014'}</td></tr>`;
+        html += `<tr><td style="color:${STORES[s].color}">${STORES[s].name}</td><td>${fmtFull(totals[s])}</td><td>${grand ? (totals[s]/grand*100).toFixed(1) : 0}%</td><td>${monthsActive ? fmtFull(Math.round(totals[s]/monthsActive)) : '&mdash;'}</td></tr>`;
     });
     html += '</tbody>';
     table.innerHTML = html;
 }
 
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 // BUILD MARKET TRENDS
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 const TREND_MONTHS = MARKET_TREND_DATA.months;
 const TREND_LABELS = TREND_MONTHS.map(m => {
     const [y, mo] = m.split('-');
@@ -2441,7 +2827,7 @@ const TREND_LABELS = TREND_MONTHS.map(m => {
 });
 
 function buildMarketTrends() {
-    // \u2500\u2500 Overview mini-chart \u2500\u2500
+    // -- Overview mini-chart --
     const overviewDatasets = sortDatasetsByTotal(Object.keys(VENDORS).map(v => ({
         label: VENDORS[v].name,
         data: TREND_MONTHS.map(m => MARKET_TREND_DATA.vendors[v][m] || 0),
@@ -2453,7 +2839,7 @@ function buildMarketTrends() {
     })));
     makeLineChart('chart-overview-market-trend', overviewDatasets, TREND_LABELS);
 
-    // \u2500\u2500 Full Market Trends panel \u2500\u2500
+    // -- Full Market Trends panel --
     // KPIs
     const kpiContainer = document.getElementById('market-trend-kpis');
     if (kpiContainer) {
@@ -2475,7 +2861,7 @@ function buildMarketTrends() {
         `;
     }
 
-    // Line chart \u2014 all vendors (sorted highest to lowest)
+    // Line chart &mdash; all vendors (sorted highest to lowest)
     const allDatasets = sortDatasetsByTotal(Object.keys(VENDORS).map(v => ({
         label: VENDORS[v].name,
         data: TREND_MONTHS.map(m => MARKET_TREND_DATA.vendors[v][m] || 0),
@@ -2487,7 +2873,7 @@ function buildMarketTrends() {
     })));
     makeLineChart('chart-market-trend-all', allDatasets, TREND_LABELS);
 
-    // Stacked bar \u2014 market share (sorted highest to lowest)
+    // Stacked bar &mdash; market share (sorted highest to lowest)
     const shareDatasets = sortDatasetsByTotal(Object.keys(VENDORS).map(v => ({
         label: VENDORS[v].name,
         data: TREND_MONTHS.map(m => MARKET_TREND_DATA.vendors[v][m] || 0),
@@ -2506,7 +2892,7 @@ function buildMarketTrends() {
             const cells = vendorKeys.map(v => {
                 const val = MARKET_TREND_DATA.vendors[v][m] || 0;
                 rowTotal += val;
-                return `<td>${val ? fmtFull(val) : '\u2014'}</td>`;
+                return `<td>${val ? fmtFull(val) : '&mdash;'}</td>`;
             }).join('');
             html += `<tr><td>${TREND_LABELS[i]}</td>${cells}<td><strong>${fmtFull(rowTotal)}</strong></td></tr>`;
         });
@@ -2532,8 +2918,8 @@ function buildMarketTrends() {
 
         let html = '<thead><tr><th>Vendor</th><th>Recent 3mo</th><th>Prior 3mo</th><th>Growth</th><th>Peak Month</th></tr></thead><tbody>';
         growthData.forEach(d => {
-            const peakLabel = TREND_LABELS[TREND_MONTHS.indexOf(d.peak.m)] || '\u2014';
-            html += `<tr><td><span style="color:${VENDORS[d.v].color}">\u25a0</span> ${VENDORS[d.v].name}</td><td>${fmtFull(d.recent)}</td><td>${fmtFull(d.prior)}</td><td class="delta ${d.growth >= 0 ? 'up' : 'down'}">${d.growth >= 0 ? '+' : ''}${d.growth.toFixed(1)}%</td><td>${peakLabel} (${fmtFull(d.peak.val)})</td></tr>`;
+            const peakLabel = TREND_LABELS[TREND_MONTHS.indexOf(d.peak.m)] || '&mdash;';
+            html += `<tr><td><span style="color:${VENDORS[d.v].color}">\u25A0</span> ${VENDORS[d.v].name}</td><td>${fmtFull(d.recent)}</td><td>${fmtFull(d.prior)}</td><td class="delta ${d.growth >= 0 ? 'up' : 'down'}">${d.growth >= 0 ? '+' : ''}${d.growth.toFixed(1)}%</td><td>${peakLabel} (${fmtFull(d.peak.val)})</td></tr>`;
         });
         html += '</tbody>';
         growthTable.innerHTML = html;
@@ -2555,7 +2941,7 @@ function getVendorMarketDatasets(vendor) {
 
     // Market line (Lit Alerts)
     datasets.push({
-        label: VENDORS[vendor].name + ' \u2014 MA Market',
+        label: VENDORS[vendor].name + ' &mdash; MA Market',
         data: TREND_MONTHS.map(m => data[m] || 0),
         borderColor: VENDORS[vendor].color,
         backgroundColor: VENDORS[vendor].color + '22',
@@ -2606,11 +2992,11 @@ function buildVendorMarketTrend(vendor) {
             const val = data[m] || 0;
             return val > best.val ? { m, val } : best;
         }, { m: '', val: 0 });
-        const peakLabel = TREND_LABELS[TREND_MONTHS.indexOf(peak.m)] || '\u2014';
+        const peakLabel = TREND_LABELS[TREND_MONTHS.indexOf(peak.m)] || '&mdash;';
 
         const recent = TREND_MONTHS.slice(-3).reduce((s, m) => s + (data[m] || 0), 0);
         const prior = TREND_MONTHS.slice(-6, -3).reduce((s, m) => s + (data[m] || 0), 0);
-        const growth = prior ? ((recent - prior) / prior * 100).toFixed(1) : '\u2014';
+        const growth = prior ? ((recent - prior) / prior * 100).toFixed(1) : '&mdash;';
 
         // Calculate Tree House share of market
         const thStoreTotal = TREND_MONTHS.reduce((s, tm) => {
@@ -2622,7 +3008,7 @@ function buildVendorMarketTrend(vendor) {
             });
             return s + storeSum;
         }, 0);
-        const marketShare = total ? (thStoreTotal / total * 100).toFixed(1) : '\u2014';
+        const marketShare = total ? (thStoreTotal / total * 100).toFixed(1) : '&mdash;';
 
         summaryEl.innerHTML = `
             <div style="display:flex; gap:2rem; flex-wrap:wrap;">
@@ -2648,9 +3034,9 @@ function updateVendorMarketChart(vendor) {
     makeLineChart('chart-market-' + vendor, datasets, TREND_LABELS);
 }
 
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 // BUILD CONFIDENCE PANEL
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// ===================================================
 function buildConfidence() {
     const container = document.getElementById('confidence-cards');
     const scores = { high: 0, medium: 0, low: 0 };
@@ -2694,7 +3080,7 @@ function buildConfidence() {
         </div>
         <div style="font-size:0.82rem; color:var(--text-secondary); margin-top:12px;">
             5 of 7 vendors have HIGH confidence mappings (exact name matches or confirmed cross-references).<br>
-            2 vendors (Wellman Farms, High Plains Farm) are MEDIUM \u2014 the Dutchie vendor name differs from the consumer-facing brand, but matches were confirmed via transaction data analysis.
+            2 vendors (Wellman Farms, High Plains Farm) are MEDIUM &mdash; the Dutchie vendor name differs from the consumer-facing brand, but matches were confirmed via transaction data analysis.
             Revenue capture at Tree House stores is high-confidence for all 7.<br><br>
             <strong>Lit Alerts caveat:</strong> Market-wide data depends on how other retailers tag vendor names in their POS/menu systems.
             Brands with multiple sub-brands (Wellman + OMG + WildFlower, High Plains + Cowboy Kush) may have partial market data if some retailers tag under the sub-brand only.
@@ -2703,17 +3089,9 @@ function buildConfidence() {
     container.insertBefore(summary, container.firstChild);
 }
 
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-// INIT
-// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
-buildOverview();
-buildInventoryMixPanel();
-buildVendorPanels();
-buildMarketTrends();
-buildConfidence();
-
-
+// ===================================================
 // MOBILE SIDEBAR TOGGLE
+// ===================================================
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('sidebarOverlay').classList.toggle('open');
@@ -2726,6 +3104,15 @@ document.querySelectorAll('.nav-item').forEach(function(item) {
     }
   });
 });
+
+// ===================================================
+// INIT
+// ===================================================
+buildOverview();
+buildInventoryMixPanel();
+buildVendorPanels();
+buildMarketTrends();
+buildConfidence();
 </script>
 </body>
 </html>
