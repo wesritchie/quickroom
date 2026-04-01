@@ -719,7 +719,7 @@ const vendorAliases = {
 
 // === LIVE DATA (updated by scheduled task) ===
 // AUDITED 2026-03-26: Only verified MA retailers (in Lit Alerts directory) are shown.
-// 2026-03-30 refresh: Lit Alerts token not available in session; retailer data retained from 2026-03-26. Dutchie product/inventory data refreshed successfully.
+// 2026-04-01 refresh: Lit Alerts token not available in session; retailer data retained from 2026-03-26. Dutchie product + inventory data refreshed successfully.
 // Unverified = iHeartJane/unknown retailer IDs not in directory (could be MA, unconfirmed).
 // Non-MA entries (e.g. Missouri "Forbidden Fruit") have been excluded.
 const LIT_ALERTS_DATA = {
@@ -808,55 +808,365 @@ const LIT_ALERTS_DATA = {
 // Format: { skus, avgPrice, avgCost } per category per vendor
 // Updated: 2026-03-30 via Dutchie POS API (3 stores: Dracut 7350, Pepperell 7323, Groton 7329 = 22002 total, 3257 matched)
 const PRODUCT_DATA = {
-  "lastUpdated": "2026-03-30T04:45:00Z",
+  "lastUpdated": "2026-04-01T04:45:00Z",
   "vendors": {
+    "mc": {
+      "totalSkus": 1258,
+      "categories": {
+        "Single": {
+          "skus": 327,
+          "avgPrice": 6.7,
+          "avgCost": 1.14
+        },
+        "Pre Ground": {
+          "skus": 312,
+          "avgPrice": 28.68,
+          "avgCost": 9.31
+        },
+        "Apparel": {
+          "skus": 297,
+          "avgPrice": 32.67,
+          "avgCost": 22.19
+        },
+        "Bud": {
+          "skus": 102,
+          "avgPrice": 22.64,
+          "avgCost": 6.84
+        },
+        "Seeds": {
+          "skus": 45,
+          "avgPrice": 30,
+          "avgCost": 9.03
+        },
+        "Multipack": {
+          "skus": 30,
+          "avgPrice": 19.18,
+          "avgCost": 6.85
+        },
+        "Shake": {
+          "skus": 21,
+          "avgPrice": 10.21,
+          "avgCost": 1.54
+        },
+        "Accessories": {
+          "skus": 18,
+          "avgPrice": 25.6,
+          "avgCost": 16.36
+        },
+        "Gift Cards": {
+          "skus": 18,
+          "avgPrice": 86.11,
+          "avgCost": 0
+        },
+        "SAMPLE": {
+          "skus": 16,
+          "avgPrice": 0.01,
+          "avgCost": 0.01
+        },
+        "Bundles": {
+          "skus": 15,
+          "avgPrice": 28,
+          "avgCost": 16.55
+        },
+        "DISPLAY": {
+          "skus": 12,
+          "avgPrice": 13.76,
+          "avgCost": 3.16
+        },
+        "Gifts": {
+          "skus": 9,
+          "avgPrice": 131.67,
+          "avgCost": 62.67
+        },
+        "Vaporizers": {
+          "skus": 9,
+          "avgPrice": 15,
+          "avgCost": 7.83
+        },
+        "RETIRE - Edible": {
+          "skus": 6,
+          "avgPrice": 66,
+          "avgCost": 34
+        },
+        "Prizes": {
+          "skus": 6,
+          "avgPrice": 0,
+          "avgCost": 23.5
+        },
+        "RETIRE - Pre Rolls": {
+          "skus": 3,
+          "avgPrice": 30,
+          "avgCost": 17.75
+        },
+        "RETIRE - Vape Cartridges": {
+          "skus": 3,
+          "avgPrice": 70,
+          "avgCost": 30
+        },
+        "Non-THC": {
+          "skus": 3,
+          "avgPrice": 350,
+          "avgCost": 194.5
+        },
+        "Glass": {
+          "skus": 3,
+          "avgPrice": 35,
+          "avgCost": 25
+        },
+        "Kief": {
+          "skus": 3,
+          "avgPrice": 16.67,
+          "avgCost": 1.15
+        }
+      }
+    },
     "fb": {
-      "totalSkus": 362,
+      "totalSkus": 416,
       "categories": {
         "Gummies": {
           "skus": 111,
           "avgPrice": 14.48,
           "avgCost": 6.71
         },
+        "510 Cart": {
+          "skus": 83,
+          "avgPrice": 50.12,
+          "avgCost": 21.46
+        },
         "Disposable": {
           "skus": 75,
-          "avgPrice": 35.57,
-          "avgCost": 15.16
+          "avgPrice": 36.13,
+          "avgCost": 15.76
         },
         "Multipack": {
-          "skus": 66,
-          "avgPrice": 30.59,
-          "avgCost": 14.73
-        },
-        "510 Cart": {
-          "skus": 65,
-          "avgPrice": 42.54,
-          "avgCost": 17.71
+          "skus": 69,
+          "avgPrice": 30.48,
+          "avgCost": 14.7
         },
         "RETIRE - Edible": {
-          "skus": 24,
-          "avgPrice": 24.5,
-          "avgCost": 12.25
+          "skus": 33,
+          "avgPrice": 23.64,
+          "avgCost": 12.73
         },
         "SAMPLE": {
+          "skus": 15,
+          "avgPrice": 4.01,
+          "avgCost": 0.01
+        },
+        "Baked Goods": {
+          "skus": 15,
+          "avgPrice": 12.4,
+          "avgCost": 7.2
+        },
+        "Tablet": {
           "skus": 9,
           "avgPrice": 6.67,
-          "avgCost": 0.01
+          "avgCost": 3.34
         },
         "Topicals": {
           "skus": 6,
-          "avgPrice": 15.0,
+          "avgPrice": 15,
           "avgCost": 10.25
+        }
+      }
+    },
+    "gf": {
+      "totalSkus": 147,
+      "categories": {
+        "Drink Mix": {
+          "skus": 90,
+          "avgPrice": 42.87,
+          "avgCost": 20.47
         },
-        "Baked Goods": {
-          "skus": 3,
-          "avgPrice": 8.0,
-          "avgCost": 4.0
+        "Seltzer": {
+          "skus": 30,
+          "avgPrice": 5.2,
+          "avgCost": 1.78
         },
-        "Tablet": {
+        "SAMPLE": {
+          "skus": 27,
+          "avgPrice": 0.01,
+          "avgCost": 0.01
+        }
+      }
+    },
+    "wf": {
+      "totalSkus": 483,
+      "categories": {
+        "Bud": {
+          "skus": 168,
+          "avgPrice": 34.29,
+          "avgCost": 17.3
+        },
+        "Single": {
+          "skus": 102,
+          "avgPrice": 12.13,
+          "avgCost": 5.26
+        },
+        "DISPLAY": {
+          "skus": 39,
+          "avgPrice": 0.01,
+          "avgCost": 15.2
+        },
+        "Multipack": {
+          "skus": 24,
+          "avgPrice": 23.13,
+          "avgCost": 11.19
+        },
+        "Pre Ground": {
+          "skus": 24,
+          "avgPrice": 57.5,
+          "avgCost": 28.25
+        },
+        "Disposable": {
+          "skus": 21,
+          "avgPrice": 42,
+          "avgCost": 19.57
+        },
+        "Live Rosin": {
+          "skus": 21,
+          "avgPrice": 60,
+          "avgCost": 29.64
+        },
+        "SAMPLE": {
+          "skus": 15,
+          "avgPrice": 0.34,
+          "avgCost": 0.01
+        },
+        "Multipack Infused": {
+          "skus": 15,
+          "avgPrice": 50,
+          "avgCost": 25
+        },
+        "Single Infused": {
+          "skus": 15,
+          "avgPrice": 24,
+          "avgCost": 12
+        },
+        "510 Cart": {
+          "skus": 12,
+          "avgPrice": 30.75,
+          "avgCost": 15.38
+        },
+        "Drink Mix": {
+          "skus": 9,
+          "avgPrice": 8.33,
+          "avgCost": 5
+        },
+        "RETIRE - Pre Rolls": {
+          "skus": 6,
+          "avgPrice": 0.01,
+          "avgCost": 0.01
+        },
+        "Salve": {
+          "skus": 6,
+          "avgPrice": 50,
+          "avgCost": 25
+        },
+        "Shake": {
           "skus": 3,
-          "avgPrice": 20.0,
-          "avgCost": 10.0
+          "avgPrice": 8.75,
+          "avgCost": 2.1
+        },
+        "Concentrate": {
+          "skus": 3,
+          "avgPrice": 60,
+          "avgCost": 30
+        }
+      }
+    },
+    "hp": {
+      "totalSkus": 659,
+      "categories": {
+        "Single": {
+          "skus": 428,
+          "avgPrice": 9.06,
+          "avgCost": 3.48
+        },
+        "Pre Ground": {
+          "skus": 81,
+          "avgPrice": 39.78,
+          "avgCost": 17.83
+        },
+        "Bud": {
+          "skus": 63,
+          "avgPrice": 27.29,
+          "avgCost": 13.64
+        },
+        "Multipack": {
+          "skus": 30,
+          "avgPrice": 27.7,
+          "avgCost": 12
+        },
+        "510 Cart": {
+          "skus": 15,
+          "avgPrice": 27,
+          "avgCost": 10.9
+        },
+        "DISPLAY": {
+          "skus": 15,
+          "avgPrice": 12.01,
+          "avgCost": 15
+        },
+        "Shake": {
+          "skus": 12,
+          "avgPrice": 70,
+          "avgCost": 35
+        },
+        "Gummies": {
+          "skus": 12,
+          "avgPrice": 18.17,
+          "avgCost": 7.5
+        },
+        "SAMPLE": {
+          "skus": 3,
+          "avgPrice": 0.01,
+          "avgCost": 0.01
+        }
+      }
+    },
+    "bo": {
+      "totalSkus": 332,
+      "categories": {
+        "Bud": {
+          "skus": 147,
+          "avgPrice": 23,
+          "avgCost": 11.34
+        },
+        "Multipack": {
+          "skus": 62,
+          "avgPrice": 14.65,
+          "avgCost": 6.07
+        },
+        "Disposable": {
+          "skus": 54,
+          "avgPrice": 30,
+          "avgCost": 15
+        },
+        "Single": {
+          "skus": 27,
+          "avgPrice": 9.78,
+          "avgCost": 3.72
+        },
+        "DISPLAY": {
+          "skus": 15,
+          "avgPrice": 4.01,
+          "avgCost": 10.5
+        },
+        "Kief": {
+          "skus": 15,
+          "avgPrice": 20,
+          "avgCost": 10
+        },
+        "Multipack Infused": {
+          "skus": 9,
+          "avgPrice": 12.67,
+          "avgCost": 5.33
+        },
+        "Concentrate": {
+          "skus": 3,
+          "avgPrice": 50,
+          "avgCost": 25
         }
       }
     },
@@ -882,316 +1192,6 @@ const PRODUCT_DATA = {
           "skus": 27,
           "avgPrice": 0.01,
           "avgCost": 0.01
-        }
-      }
-    },
-    "gf": {
-      "totalSkus": 147,
-      "categories": {
-        "Drink Mix": {
-          "skus": 90,
-          "avgPrice": 42.87,
-          "avgCost": 20.47
-        },
-        "Seltzer": {
-          "skus": 30,
-          "avgPrice": 5.2,
-          "avgCost": 1.78
-        },
-        "SAMPLE": {
-          "skus": 27,
-          "avgPrice": 0.01,
-          "avgCost": 0.01
-        }
-      }
-    },
-    "wf": {
-      "totalSkus": 429,
-      "categories": {
-        "Bud": {
-          "skus": 141,
-          "avgPrice": 34.29,
-          "avgCost": 17.3
-        },
-        "Single": {
-          "skus": 102,
-          "avgPrice": 12.13,
-          "avgCost": 5.26
-        },
-        "DISPLAY": {
-          "skus": 30,
-          "avgPrice": 0.01,
-          "avgCost": 15.2
-        },
-        "Multipack": {
-          "skus": 24,
-          "avgPrice": 23.13,
-          "avgCost": 11.19
-        },
-        "Pre Ground": {
-          "skus": 24,
-          "avgPrice": 57.5,
-          "avgCost": 28.25
-        },
-        "Disposable": {
-          "skus": 21,
-          "avgPrice": 42.0,
-          "avgCost": 19.57
-        },
-        "Live Rosin": {
-          "skus": 21,
-          "avgPrice": 60.0,
-          "avgCost": 29.64
-        },
-        "SAMPLE": {
-          "skus": 15,
-          "avgPrice": 0.34,
-          "avgCost": 0.01
-        },
-        "Multipack Infused": {
-          "skus": 15,
-          "avgPrice": 50.0,
-          "avgCost": 25.0
-        },
-        "Single Infused": {
-          "skus": 12,
-          "avgPrice": 24.0,
-          "avgCost": 12.0
-        },
-        "510 Cart": {
-          "skus": 9,
-          "avgPrice": 30.75,
-          "avgCost": 15.38
-        },
-        "Drink Mix": {
-          "skus": 6,
-          "avgPrice": 8.33,
-          "avgCost": 5.0
-        },
-        "Salve": {
-          "skus": 6,
-          "avgPrice": 50.0,
-          "avgCost": 25.0
-        },
-        "Shake": {
-          "skus": 3,
-          "avgPrice": 8.75,
-          "avgCost": 2.1
-        }
-      }
-    },
-    "bo": {
-      "totalSkus": 215,
-      "categories": {
-        "Bud": {
-          "skus": 90,
-          "avgPrice": 23.37,
-          "avgCost": 11.51
-        },
-        "Multipack": {
-          "skus": 45,
-          "avgPrice": 14.65,
-          "avgCost": 6.07
-        },
-        "Disposable": {
-          "skus": 36,
-          "avgPrice": 30.0,
-          "avgCost": 15.0
-        },
-        "Single": {
-          "skus": 18,
-          "avgPrice": 9.78,
-          "avgCost": 3.72
-        },
-        "DISPLAY": {
-          "skus": 12,
-          "avgPrice": 4.01,
-          "avgCost": 10.5
-        },
-        "Kief": {
-          "skus": 9,
-          "avgPrice": 20.0,
-          "avgCost": 10.0
-        },
-        "Multipack Infused": {
-          "skus": 5,
-          "avgPrice": 12.67,
-          "avgCost": 5.33
-        }
-      }
-    },
-    "hp": {
-      "totalSkus": 641,
-      "categories": {
-        "Single": {
-          "skus": 410,
-          "avgPrice": 9.06,
-          "avgCost": 3.48
-        },
-        "Pre Ground": {
-          "skus": 78,
-          "avgPrice": 39.78,
-          "avgCost": 17.83
-        },
-        "Bud": {
-          "skus": 63,
-          "avgPrice": 27.29,
-          "avgCost": 13.64
-        },
-        "Multipack": {
-          "skus": 30,
-          "avgPrice": 27.7,
-          "avgCost": 12.0
-        },
-        "510 Cart": {
-          "skus": 18,
-          "avgPrice": 27.0,
-          "avgCost": 10.9
-        },
-        "DISPLAY": {
-          "skus": 15,
-          "avgPrice": 12.01,
-          "avgCost": 15.0
-        },
-        "Shake": {
-          "skus": 12,
-          "avgPrice": 70.0,
-          "avgCost": 35.0
-        },
-        "Gummies": {
-          "skus": 12,
-          "avgPrice": 18.17,
-          "avgCost": 7.5
-        },
-        "SAMPLE": {
-          "skus": 3,
-          "avgPrice": 0.01,
-          "avgCost": 0.01
-        }
-      }
-    },
-    "mc": {
-      "totalSkus": 1259,
-      "categories": {
-        "Single": {
-          "skus": 327,
-          "avgPrice": 6.65,
-          "avgCost": 1.13
-        },
-        "Pre Ground": {
-          "skus": 312,
-          "avgPrice": 28.56,
-          "avgCost": 9.25
-        },
-        "Apparel": {
-          "skus": 297,
-          "avgPrice": 32.34,
-          "avgCost": 21.07
-        },
-        "Bud": {
-          "skus": 102,
-          "avgPrice": 21.97,
-          "avgCost": 6.64
-        },
-        "Seeds": {
-          "skus": 45,
-          "avgPrice": 30.0,
-          "avgCost": 9.03
-        },
-        "Multipack": {
-          "skus": 30,
-          "avgPrice": 19.18,
-          "avgCost": 6.85
-        },
-        "Shake": {
-          "skus": 21,
-          "avgPrice": 8.75,
-          "avgCost": 1.32
-        },
-        "Accessories": {
-          "skus": 18,
-          "avgPrice": 25.6,
-          "avgCost": 16.36
-        },
-        "Gift Cards": {
-          "skus": 18,
-          "avgPrice": 86.11,
-          "avgCost": 0
-        },
-        "SAMPLE": {
-          "skus": 16,
-          "avgPrice": 0.01,
-          "avgCost": 0.01
-        },
-        "Bundles": {
-          "skus": 15,
-          "avgPrice": 28.0,
-          "avgCost": 16.55
-        },
-        "DISPLAY": {
-          "skus": 12,
-          "avgPrice": 13.76,
-          "avgCost": 3.16
-        },
-        "Gifts": {
-          "skus": 9,
-          "avgPrice": 131.67,
-          "avgCost": 62.67
-        },
-        "Vaporizers": {
-          "skus": 9,
-          "avgPrice": 15.0,
-          "avgCost": 7.83
-        },
-        "RETIRE - Edible": {
-          "skus": 6,
-          "avgPrice": 66.0,
-          "avgCost": 34.0
-        },
-        "Prizes": {
-          "skus": 6,
-          "avgPrice": 0,
-          "avgCost": 23.5
-        },
-        "RETIRE - Pre Rolls": {
-          "skus": 3,
-          "avgPrice": 30.0,
-          "avgCost": 17.75
-        },
-        "RETIRE - Vape Cartridges": {
-          "skus": 3,
-          "avgPrice": 70.0,
-          "avgCost": 30.0
-        },
-        "Non-THC": {
-          "skus": 3,
-          "avgPrice": 350.0,
-          "avgCost": 194.5
-        },
-        "Glass": {
-          "skus": 3,
-          "avgPrice": 35.0,
-          "avgCost": 25.0
-        },
-        "Grinders": {
-          "skus": 3,
-          "avgPrice": 15.0,
-          "avgCost": 5.0
-        },
-        "Kief": {
-          "skus": 3,
-          "avgPrice": 16.67,
-          "avgCost": 1.15
-        },
-        "Cured Resin": {
-          "skus": 3,
-          "avgPrice": 30.0,
-          "avgCost": 10.0
-        },
-        "Rolling Papers": {
-          "skus": 3,
-          "avgPrice": 3.0,
-          "avgCost": 1.44
         }
       }
     }
@@ -1220,21 +1220,21 @@ const MARKET_TREND_DATA = {
 // INVENTORY MIX &mdash; Bricks vs Non-Bricks (from Dutchie product catalog)
 // ===================================================
 const INVENTORY_MIX = {
-  "lastUpdated": "2026-03-30T04:45:00Z",
+  "lastUpdated": "2026-04-01T04:45:00Z",
   "note": "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
-  "totalActive": 640,
-  "totalBrick": 181,
-  "totalCore": 279,
-  "totalOther": 179,
+  "totalActive": 636,
+  "totalBrick": 180,
+  "totalCore": 399,
+  "totalOther": 57,
   "perStore": {
     "dracut": {
-      "total": 372
+      "total": 369
     },
     "pepperell": {
-      "total": 380
+      "total": 382
     },
     "groton": {
-      "total": 356
+      "total": 362
     }
   },
   "brickVendors": [
@@ -1244,11 +1244,7 @@ const INVENTORY_MIX = {
     },
     {
       "name": "Wellman Farms",
-      "skus": 35
-    },
-    {
-      "name": "MACC",
-      "skus": 29
+      "skus": 36
     },
     {
       "name": "High Plains Farm",
@@ -1259,64 +1255,62 @@ const INVENTORY_MIX = {
       "skus": 25
     },
     {
+      "name": "MACC",
+      "skus": 23
+    },
+    {
       "name": "Good Feels",
       "skus": 16
     },
     {
       "name": "Bostica",
-      "skus": 11
+      "skus": 15
     }
   ],
   "coreVendors": [
     {
-      "name": "High Supply",
-      "skus": 29
+      "name": "AFG Distribution",
+      "skus": 79
     },
     {
-      "name": "Eureka",
+      "name": "Cultivate Leicester, Inc",
+      "skus": 40
+    },
+    {
+      "name": "Green Meadows Farm, LLC",
+      "skus": 28
+    },
+    {
+      "name": "LuvBuds",
+      "skus": 27
+    },
+    {
+      "name": "Mill Town Agriculture LLC",
+      "skus": 26
+    },
+    {
+      "name": "Garden Remedies, Inc",
       "skus": 25
     },
     {
-      "name": "Nature's Heritage",
-      "skus": 20
+      "name": "Hudson Botanical Processing, LLC",
+      "skus": 24
     },
     {
-      "name": "Nimbus",
-      "skus": 17
-    },
-    {
-      "name": "Select",
-      "skus": 13
-    },
-    {
-      "name": "Willie's Reserve",
-      "skus": 12
-    },
-    {
-      "name": "Realm Cannabis",
-      "skus": 12
-    },
-    {
-      "name": "Buzzy",
-      "skus": 11
-    },
-    {
-      "name": "Betty's Eddies",
-      "skus": 9
-    },
-    {
-      "name": "Mederi",
-      "skus": 9
-    }
-  ],
-  "otherVendors": [
-    {
-      "name": "AFG Distribution",
+      "name": "ARL Healthcare - P",
       "skus": 23
     },
     {
-      "name": "ZZZ's Rolling Paper",
-      "skus": 27
+      "name": "Novel Beverage Co.",
+      "skus": 22
+    },
+    {
+      "name": "ZZZ's Rolling Paper Co.",
+      "skus": 19
+    },
+    {
+      "name": "Lunar Xtracts, Inc.",
+      "skus": 19
     },
     {
       "name": "Healing Rose",
@@ -1327,19 +1321,33 @@ const INVENTORY_MIX = {
       "skus": 12
     },
     {
-      "name": "LuvBuds",
+      "name": "Curaleaf Massachusetts Inc",
       "skus": 12
     },
     {
-      "name": "Pulsar",
-      "skus": 15
+      "name": "Nova Farms LLC",
+      "skus": 11
+    },
+    {
+      "name": "ARL Healthcare - C",
+      "skus": 9
+    },
+    {
+      "name": "Mederi",
+      "skus": 9
+    }
+  ],
+  "otherVendors": [
+    {
+      "name": "Cultivauna, LLC",
+      "skus": 7
     },
     {
       "name": "Pilgrim Soul",
       "skus": 7
     },
     {
-      "name": "Cannalive Genetics",
+      "name": "Atlantic Medicinal Partners, Inc",
       "skus": 6
     },
     {
@@ -1347,64 +1355,56 @@ const INVENTORY_MIX = {
       "skus": 5
     },
     {
-      "name": "Hemper",
+      "name": "Cannalive Genetics LLC",
       "skus": 5
     },
     {
-      "name": "Ooze",
-      "skus": 7
+      "name": "Humboldt Masters LLC",
+      "skus": 4
     },
     {
-      "name": "Nova Farms",
-      "skus": 0
+      "name": "Hara Brands",
+      "skus": 4
     },
     {
-      "name": "Mill Town Agriculture",
-      "skus": 0
-    }
-  ],
-  "byCategory": [
-    {
-      "group": "Pre-Rolls",
-      "brick": 30,
-      "core": 35,
-      "other": 10
+      "name": "Solar Therapeutics, Inc. - C",
+      "skus": 3
     },
     {
-      "group": "Flower",
-      "brick": 22,
-      "core": 20,
-      "other": 8
+      "name": "Amazon",
+      "skus": 3
     },
     {
-      "group": "Vapes",
-      "brick": 24,
-      "core": 46,
-      "other": 18
+      "name": "Alternative Compassion Services, Inc. - P",
+      "skus": 2
     },
     {
-      "group": "Edibles",
-      "brick": 27,
-      "core": 10,
-      "other": 12
+      "name": "Royal Supply Co.",
+      "skus": 2
     },
     {
-      "group": "Beverages",
-      "brick": 13,
-      "core": 18,
-      "other": 3
+      "name": "Revolutionary Clinics",
+      "skus": 2
     },
     {
-      "group": "Concentrates",
-      "brick": 5,
-      "core": 9,
-      "other": 2
+      "name": "Elevated Cultivation Co LLC",
+      "skus": 2
     },
     {
-      "group": "Topicals",
-      "brick": 1,
-      "core": 0,
-      "other": 0
+      "name": "Palazzi Incorporated",
+      "skus": 2
+    },
+    {
+      "name": "Unknown",
+      "skus": 1
+    },
+    {
+      "name": "Alternative Compassion Services, Inc. - C",
+      "skus": 1
+    },
+    {
+      "name": "Carbon Colors",
+      "skus": 1
     }
   ]
 };
@@ -1912,7 +1912,7 @@ function totalVendorRevenue(vendorKey) {
 }
 
 // ===================================================
-// CHART DEFAULTS (wrapped — if Chart.js CDN fails, KPIs still render)
+// CHART DEFAULTS (wrapped â if Chart.js CDN fails, KPIs still render)
 // ===================================================
 const CHARTS_AVAILABLE = typeof Chart !== 'undefined';
 if (CHARTS_AVAILABLE) {
@@ -1924,7 +1924,7 @@ if (CHARTS_AVAILABLE) {
     Chart.defaults.plugins.legend.labels.pointStyleWidth = 8;
     Chart.defaults.animation.duration = 400;
 } else {
-    console.warn('[BrickHouse] Chart.js not loaded — KPIs will render but charts will be unavailable');
+    console.warn('[BrickHouse] Chart.js not loaded â KPIs will render but charts will be unavailable');
 }
 
 const chartInstances = {};
