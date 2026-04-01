@@ -24,6 +24,7 @@
             --brick-bo: #bc8cff;
             --brick-hp: #2dd4bf;
             --brick-mc: #f0883e;
+      --brick-hb: #e879f9;
 
             --store-dracut: #58a6ff;
             --store-pepperell: #69db7c;
@@ -639,7 +640,8 @@ const VENDORS = {
     wf: { name: "Wellman Farms", color: "#58a6ff" },
     bo: { name: "Bostica", color: "#bc8cff" },
     hp: { name: "High Plains Farm", color: "#2dd4bf" },
-    mc: { name: "MACC", color: "#f0883e" }
+    mc: { name: "MACC", color: "#f0883e" },
+    hb: { name: "Hudson Botanical", color: "#e879f9" }
 };
 
 const STORES = {
@@ -714,7 +716,9 @@ const vendorAliases = {
     hp: { dutchie: ["27 Broom Street, LLC"], litAlerts: [{id:322, name:"High Plains Farm"}, {id:21292, name:"Cowboy Kush"}],
           confidence: "medium", note: "Dutchie uses the parent company name '27 Broom Street, LLC' rather than the brand name. Confirmed via cross-referencing. Lit Alerts has High Plains Farm (ID 322) and Cowboy Kush (ID 21292) as separate brands &mdash; both are 27 Broom Street products. Market data should aggregate both IDs." },
     mc: { dutchie: ["MACC", "Tree House Craft Cannabis", "New England Craft Cultivators", "Yellow Brick Road", "YBR", "Tree House Select", "Forbidden Fruit", "Habitual Ritual", "Aristo Fuego"], litAlerts: [{id:11857,name:"Forbidden Fruit"},{id:16211,name:"Habitual Ritual"},{id:13009,name:"Tree House Cannabis"},{id:16079,name:"Tree House Select"},{id:9985,name:"Yellow Brick Road"}],
-          confidence: "high", note: "MACC is Tree House's own cultivation arm. Multiple sub-brands: Yellow Brick Road/YBR (flower), Tree House Select (premium), Forbidden Fruit (edibles), Habitual Ritual (pre-rolls), Aristo Fuego (concentrates). All confirmed in Dutchie product catalog. Lit Alerts tracks the premium sub-brands." }
+          confidence: "high", note: "MACC is Tree House's own cultivation arm. Multiple sub-brands: Yellow Brick Road/YBR (flower), Tree House Select (premium), Forbidden Fruit (edibles), Habitual Ritual (pre-rolls), Aristo Fuego (concentrates). All confirmed in Dutchie product catalog. Lit Alerts tracks the premium sub-brands." },
+    hb: { dutchie: ["Hudson Botanical Processing, LLC"], litAlerts: [{id:334, name:"Hudson Botanical"}, {id:1558, name:"Nimbus"}, {id:96, name:"Cheeba Chews"}, {id:3604, name:"Clebby's"}, {id:13076, name:"Just Joints"}, {id:10076, name:"Just Vapes"}],
+          confidence: "high", note: "Dutchie vendor name is Hudson Botanical Processing LLC. Brands: Nimbus (flower/pre-rolls, ID 1558), Just Vapes (vaporizers, ID 10076), Just Joints (pre-rolls, ID 13076), Cheeba Chews (edibles, ID 96), Clebbys (edibles, ID 3604). Parent brand Hudson Botanical (ID 334). Just Resin (concentrates) not tracked in Lit Alerts as of 2026-04-01." }
 };
 
 // === LIVE DATA (updated by scheduled task) ===
