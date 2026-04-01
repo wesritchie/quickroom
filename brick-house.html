@@ -2348,6 +2348,7 @@ function buildBricksMix() {
     }
 
     // -- Horizontal stacked bar: By category (3 tiers) --
+    if (!mix.byCategory || !Array.isArray(mix.byCategory)) return;
     const cats = mix.byCategory.filter(c => c.group !== 'Merch / Accessories');
     const catLabels = cats.map(c => c.group);
 
@@ -3124,6 +3125,31 @@ document.querySelectorAll('.nav-item').forEach(function(item) {
     }
   });
 });
+
+// ===================================================
+// DEFENSIVE DATA FIXUPS (must run before any panel rendering)
+// ===================================================
+if (typeof INVENTORY_MIX !== 'undefined' && !INVENTORY_MIX.byCategory && typeof STORE_INVENTORY !== 'undefined') {
+    const catMap = {};
+    Object.values(STORE_INVENTORY).forEach(store => {
+        if (!store.byCategory || !Array.isArray(store.byCategory)) return;
+        store.byCategory.forEach(cat => {
+            if (!catMap[cat.group]) catMap[cat.group] = { group: cat.group, brick: 0, core: 0, other: 0, brickVendors: {}, coreVendors: {} };
+            catMap[cat.group].brick += cat.brick || 0;
+            catMap[cat.group].core += cat.core || 0;
+            catMap[cat.group].other += cat.other || 0;
+            if (cat.brickVendors) Object.entries(cat.brickVendors).forEach(([v, n]) => { catMap[cat.group].brickVendors[v] = (catMap[cat.group].brickVendors[v] || 0) + n; });
+            if (cat.coreVendors) Object.entries(cat.coreVendors).forEach(([v, n]) => { catMap[cat.group].coreVendors[v] = (catMap[cat.group].coreVendors[v] || 0) + n; });
+        });
+    });
+    INVENTORY_MIX.byCategory = Object.values(catMap);
+}
+if (typeof INVENTORY_MIX !== 'undefined' && typeof INVENTORY_MIX.otherVendorsFull === 'undefined' && INVENTORY_MIX.otherVendors) {
+    INVENTORY_MIX.otherVendorsFull = INVENTORY_MIX.otherVendors.length;
+}
+if (typeof INVENTORY_MIX !== 'undefined' && typeof INVENTORY_MIX.missingCore === 'undefined') {
+    INVENTORY_MIX.missingCore = [];
+}
 
 // ===================================================
 // INIT
