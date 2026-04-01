@@ -2603,6 +2603,26 @@ function buildInvMixSection(prefix, data, accentColor) {
 }
 
 function buildInventoryMixPanel() {
+    // If the refresh task didn't produce byCategory at the root, compute from per-store data
+    if (!INVENTORY_MIX.byCategory && typeof STORE_INVENTORY !== 'undefined') {
+        const catMap = {};
+        Object.values(STORE_INVENTORY).forEach(store => {
+            if (!store.byCategory) return;
+            store.byCategory.forEach(cat => {
+                if (!catMap[cat.group]) catMap[cat.group] = { group: cat.group, brick: 0, core: 0, other: 0, brickVendors: {}, coreVendors: {} };
+                catMap[cat.group].brick += cat.brick || 0;
+                catMap[cat.group].core += cat.core || 0;
+                catMap[cat.group].other += cat.other || 0;
+                if (cat.brickVendors) Object.entries(cat.brickVendors).forEach(([v, n]) => { catMap[cat.group].brickVendors[v] = (catMap[cat.group].brickVendors[v] || 0) + n; });
+                if (cat.coreVendors) Object.entries(cat.coreVendors).forEach(([v, n]) => { catMap[cat.group].coreVendors[v] = (catMap[cat.group].coreVendors[v] || 0) + n; });
+            });
+        });
+        INVENTORY_MIX.byCategory = Object.values(catMap);
+    }
+    if (typeof INVENTORY_MIX.otherVendorsFull === 'undefined' && INVENTORY_MIX.otherVendors) {
+        INVENTORY_MIX.otherVendorsFull = INVENTORY_MIX.otherVendors.length;
+    }
+
     // Combined (all stores)
     const combined = {
         total: INVENTORY_MIX.totalActive, brick: INVENTORY_MIX.totalBrick, core: INVENTORY_MIX.totalCore, other: INVENTORY_MIX.totalOther,
