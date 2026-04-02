@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wes' QuickRoom Links</title>
+<!-- Prefetch dashboards so they load instantly when clicked -->
+<link rel="prefetch" href="rainbow-review.html">
+<link rel="prefetch" href="rainbow-review-data.js">
+<link rel="prefetch" href="brick-house.html">
+<link rel="prefetch" href="geo-totem.html">
 <style>
   :root {
     --bg-primary: #0d1117;
@@ -195,7 +200,7 @@
     Updated daily before 8 AM
   </div>
   <h1>Wes' QuickRoom Links</h1>
-  <p>Executive dashboards for Tree House Craft Cannabis. Data refreshes every morning â click and view instantly.</p>
+  <p>Executive dashboards for Tree House Craft Cannabis. Data refreshes every morning — click and view instantly.</p>
 </div>
 
 <div class="cards">
@@ -255,6 +260,39 @@ const buildTime = document.documentElement.dataset.buildTime;
 if (buildTime) {
   document.getElementById('update-time').textContent = 'Last refreshed: ' + new Date(buildTime).toLocaleString();
 }
+
+// Aggressively pre-load all dashboards into browser cache
+// so they open instantly when clicked
+(function preloadDashboards() {
+  const pages = [
+    'rainbow-review.html',
+    'rainbow-review-data.js',
+    'brick-house.html',
+    'geo-totem.html'
+  ];
+  // Use fetch to warm the browser cache for each resource
+  pages.forEach(function(url) {
+    fetch(url, { priority: 'low' }).catch(function() {});
+  });
+  // Also pre-render dashboards via hidden iframes after a short delay
+  // This ensures JS/CSS/charts are fully initialized before user clicks
+  setTimeout(function() {
+    var dashboards = ['rainbow-review.html', 'brick-house.html', 'geo-totem.html'];
+    dashboards.forEach(function(url) {
+      var iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.style.cssText = 'width:0;height:0;border:none;position:absolute;left:-9999px;visibility:hidden;';
+      iframe.setAttribute('loading', 'eager');
+      iframe.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(iframe);
+    });
+    // Update status to show dashboards are pre-loaded
+    var badge = document.querySelector('.hero-badge');
+    if (badge) {
+      badge.innerHTML = '<span class="dot"></span> Dashboards pre-loaded & ready';
+    }
+  }, 1500);
+})();
 </script>
 </body>
 </html>
