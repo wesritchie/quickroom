@@ -538,7 +538,7 @@ const CONFIG = {
             ]
         }
     },
-    CATEGORIES: ['Flower', 'Vaporizers', 'Edibles', 'Pre-Rolls', 'Beverages', 'Tinctures', 'Concentrates'],
+    CATEGORIES: ['Flower', 'Vaporizers', 'Edibles', 'Pre-Rolls', 'Beverages', 'Tinctures', 'Concentrates', 'Accessories'],
     COLORS: {
         th: '#ffa94d',
         thLight: '#ffd43b',
@@ -1123,6 +1123,7 @@ function mapCat(c) {
     if (l.includes('edible') || l.includes('gummies') || l.includes('chocolate') || l.includes('capsule') || l.includes('lozenge') || l.includes('infused') || l.includes('chew')) return 'Edibles';
     if (l.includes('pre-roll') || l.includes('pre roll') || l.includes('single') || l.includes('pre ground')) return 'Pre-Rolls';
     if (l.includes('concentrate')) return 'Concentrates';
+    if (l.includes('accessor') || l.includes('gear') || l.includes('grinder') || l.includes('pipe') || l.includes('paper') || l.includes('rolling') || l.includes('lighter') || l.includes('stash') || l.includes('storage') || l.includes('tray') || l.includes('merch')) return 'Accessories';
     return 'Other';
 }
 
