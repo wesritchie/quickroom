@@ -2884,31 +2884,37 @@ if (typeof Chart === 'undefined') {
         }
     } catch(e) { console.warn('[Init] Cache load failed:', e.message); }
 
-    // STEP 2: Route based on mode
+    // STEP 2: Route based on mode — NEVER auto-fetch from APIs on load.
+    // The daily pipeline pre-bakes data at 5:30am. If it's missing, show
+    // whatever we have (cache) and let the user manually Refresh if needed.
     if (window.__STATIC_SNAPSHOT__) {
         // STATIC MODE: Data is fully pre-baked. Skip all cache logic and API calls.
-        console.log('[Static] Running in static snapshot mode \u2014 no API calls.');
+        console.log('[Static] Running in static snapshot mode — no API calls.');
         fetchAllData(); // Will use __PREBAKED_DATA__ and skip background fetches
+    } else if (window.__PREBAKED_DATA__) {
+        // Pre-baked data loaded but not static mode (e.g. Apps Script served)
+        console.log('[Init] Pre-baked data available — using it');
+        fetchAllData();
     } else if (hasCache) {
+        // No pre-baked data file loaded, but we have localStorage cache.
+        // Show it regardless of age — NEVER auto-fetch from APIs.
         const cacheDate = DATA.fetchTime ? new Date(DATA.fetchTime) : null;
         const now = new Date();
         const isToday = cacheDate && cacheDate.getDate() === now.getDate() &&
                         cacheDate.getMonth() === now.getMonth() &&
                         cacheDate.getFullYear() === now.getFullYear();
-        const ageHours = cacheDate ? (now - cacheDate) / 3600000 : 999;
-        if (isToday && ageHours < 2) {
+        if (isToday) {
             setStatus('Using today\'s cached data', 'ok');
+            console.log('[Init] Using today\'s cached data (no auto-fetch)');
         } else {
-            const label = isToday ? 'Cached data is ' + Math.round(ageHours) + 'h old' : 'Showing yesterday\'s data';
-            setStatus(label + ' \u2014 refreshing in background...', 'loading');
-            fetchAllData(false);
+            const dateLabel = cacheDate ? cacheDate.toLocaleDateString() : 'unknown date';
+            setStatus('Showing cached data from ' + dateLabel + ' — tap Refresh for fresh data', 'ok');
+            console.log('[Init] Stale cache from', dateLabel, '— NOT auto-fetching. User can tap Refresh.');
         }
-    } else if (window.__PREBAKED_DATA__) {
-        console.log('[Init] No localStorage cache \u2014 using server prebaked data');
-        fetchAllData();
     } else {
-        console.log('[Init] No cache anywhere \u2014 fetching from APIs');
-        fetchAllData();
+        // Nothing available at all — no prebaked, no cache.
+        console.log('[Init] No data available — user must tap Refresh');
+        setStatus('No data loaded — tap Refresh Data in sidebar', 'ok');
     }
 }
 
