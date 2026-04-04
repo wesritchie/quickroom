@@ -1207,8 +1207,11 @@ function loadFromPrebaked(prebaked, ranges) {
         }
     });
 
-    // -- Unpack product data --
-    DATA.products = prebaked.products || {};
+    // -- Unpack product data (normalize: API wraps in {data:[], count:N}) --
+    DATA.products = {};
+    for (const [id, val] of Object.entries(prebaked.products || {})) {
+        DATA.products[id] = Array.isArray(val) ? val : (val && val.data ? val.data : []);
+    }
 
     // -- Trend data: not in lean snapshot. Over Time tab loads from localStorage cache. --
     DATA.market.trend30 = null;
@@ -1244,9 +1247,13 @@ function loadFromPrebaked(prebaked, ranges) {
     }
 
     // -- Products: use pre-baked if available, otherwise lazy load --
+    // Normalize: API returns {data:[...], count:N} per store, but renderSKUAnalysis expects plain arrays
     if (prebaked.products && Object.keys(prebaked.products).length > 0) {
-        DATA.products = prebaked.products;
-        console.log('[Prebaked] Products loaded for', Object.keys(prebaked.products).length, 'stores');
+        DATA.products = {};
+        for (const [id, val] of Object.entries(prebaked.products)) {
+            DATA.products[id] = Array.isArray(val) ? val : (val && val.data ? val.data : []);
+        }
+        console.log('[Prebaked] Products loaded for', Object.keys(DATA.products).length, 'stores');
     } else {
         DATA.products = {};
     }
