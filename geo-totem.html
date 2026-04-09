@@ -501,167 +501,772 @@
 <script>
 // ========== EMBEDDED DATA ==========
 const DATA = {
-  yesterday: {
-    total: 452, uniqueCities: 110,
-    byStore: {dracut:246, pepperell:153, groton:53},
-    byState: {MA:192, NH:228, OTHER:32},
-    byStoreByState: {
-      dracut:{MA:87,NH:138,OTHER:21},
-      pepperell:{MA:63,NH:83,OTHER:7},
-      groton:{MA:42,NH:7,OTHER:4}
+  "yesterday": {
+    "total": 423,
+    "uniqueCities": 107,
+    "byStore": {
+      "dracut": 238,
+      "pepperell": 138,
+      "groton": 47
     },
-    topCities: {
-      dracut: [
-        {rank:1,name:"METHUEN, MA",count:29,pct:"11.8"},
-        {rank:2,name:"MANCHESTER, NH",count:26,pct:"10.6"},
-        {rank:3,name:"LAWRENCE, MA",count:25,pct:"10.2"},
-        {rank:4,name:"DERRY, NH",count:24,pct:"9.8"},
-        {rank:5,name:"LONDONDERRY, NH",count:19,pct:"7.7"},
-        {rank:6,name:"SALEM, NH",count:14,pct:"5.7"},
-        {rank:7,name:"UNKNOWN, USA",count:8,pct:"3.3"},
-        {rank:8,name:"DRACUT, MA",count:7,pct:"2.8"},
-        {rank:9,name:"WINDHAM, NH",count:7,pct:"2.8"},
-        {rank:10,name:"HOOKSETT, NH",count:5,pct:"2.0"},
-        {rank:11,name:"HAVERHILL, MA",count:4,pct:"1.6"},
-        {rank:12,name:"NASHUA, NH",count:4,pct:"1.6"}
+    "byState": {
+      "MA": 195,
+      "NH": 204,
+      "OTHER": 24
+    },
+    "byStoreByState": {
+      "dracut": {
+        "MA": 89,
+        "NH": 136,
+        "OTHER": 13
+      },
+      "pepperell": {
+        "MA": 63,
+        "NH": 65,
+        "OTHER": 10
+      },
+      "groton": {
+        "MA": 43,
+        "NH": 3,
+        "OTHER": 1
+      }
+    },
+    "topCities": {
+      "dracut": [
+        {
+          "rank": 1,
+          "name": "METHUEN, MA",
+          "count": 33,
+          "pct": "13.9"
+        },
+        {
+          "rank": 2,
+          "name": "MANCHESTER, NH",
+          "count": 30,
+          "pct": "12.6"
+        },
+        {
+          "rank": 3,
+          "name": "LAWRENCE, MA",
+          "count": 24,
+          "pct": "10.1"
+        },
+        {
+          "rank": 4,
+          "name": "SALEM, NH",
+          "count": 21,
+          "pct": "8.8"
+        },
+        {
+          "rank": 5,
+          "name": "DERRY, NH",
+          "count": 12,
+          "pct": "5.0"
+        },
+        {
+          "rank": 6,
+          "name": "PELHAM, NH",
+          "count": 9,
+          "pct": "3.8"
+        },
+        {
+          "rank": 7,
+          "name": "LONDONDERRY, NH",
+          "count": 9,
+          "pct": "3.8"
+        },
+        {
+          "rank": 8,
+          "name": "DRACUT, MA",
+          "count": 7,
+          "pct": "2.9"
+        },
+        {
+          "rank": 9,
+          "name": "CONCORD, NH",
+          "count": 7,
+          "pct": "2.9"
+        },
+        {
+          "rank": 10,
+          "name": "UNKNOWN, USA",
+          "count": 5,
+          "pct": "2.1"
+        },
+        {
+          "rank": 11,
+          "name": "HOOKSETT, NH",
+          "count": 5,
+          "pct": "2.1"
+        },
+        {
+          "rank": 12,
+          "name": "NASHUA, NH",
+          "count": 4,
+          "pct": "1.7"
+        }
       ],
-      pepperell: [
-        {rank:1,name:"PEPPERELL, MA",count:35,pct:"22.9"},
-        {rank:2,name:"NASHUA, NH",count:21,pct:"13.7"},
-        {rank:3,name:"MILFORD, NH",count:11,pct:"7.2"},
-        {rank:4,name:"TOWNSEND, MA",count:8,pct:"5.2"},
-        {rank:5,name:"HOLLIS, NH",count:7,pct:"4.6"},
-        {rank:6,name:"BROOKLINE, NH",count:6,pct:"3.9"},
-        {rank:7,name:"MERRIMACK, NH",count:6,pct:"3.9"},
-        {rank:8,name:"MANCHESTER, NH",count:4,pct:"2.6"},
-        {rank:9,name:"LOWELL, MA",count:3,pct:"2.0"},
-        {rank:10,name:"HUDSON, NH",count:3,pct:"2.0"},
-        {rank:11,name:"BEDFORD, NH",count:3,pct:"2.0"},
-        {rank:12,name:"GROTON, MA",count:3,pct:"2.0"}
+      "pepperell": [
+        {
+          "rank": 1,
+          "name": "PEPPERELL, MA",
+          "count": 31,
+          "pct": "22.5"
+        },
+        {
+          "rank": 2,
+          "name": "NASHUA, NH",
+          "count": 18,
+          "pct": "13.0"
+        },
+        {
+          "rank": 3,
+          "name": "MILFORD, NH",
+          "count": 10,
+          "pct": "7.2"
+        },
+        {
+          "rank": 4,
+          "name": "TOWNSEND, MA",
+          "count": 8,
+          "pct": "5.8"
+        },
+        {
+          "rank": 5,
+          "name": "HOLLIS, NH",
+          "count": 7,
+          "pct": "5.1"
+        },
+        {
+          "rank": 6,
+          "name": "GROTON, MA",
+          "count": 6,
+          "pct": "4.3"
+        },
+        {
+          "rank": 7,
+          "name": "BROOKLINE, NH",
+          "count": 5,
+          "pct": "3.6"
+        },
+        {
+          "rank": 8,
+          "name": "AMHERST, NH",
+          "count": 4,
+          "pct": "2.9"
+        },
+        {
+          "rank": 9,
+          "name": "MANCHESTER, NH",
+          "count": 4,
+          "pct": "2.9"
+        },
+        {
+          "rank": 10,
+          "name": "DUNSTABLE, MA",
+          "count": 3,
+          "pct": "2.2"
+        },
+        {
+          "rank": 11,
+          "name": "LOWELL, MA",
+          "count": 3,
+          "pct": "2.2"
+        },
+        {
+          "rank": 12,
+          "name": "LUNENBURG, MA",
+          "count": 2,
+          "pct": "1.4"
+        }
       ],
-      groton: [
-        {rank:1,name:"WESTFORD, MA",count:15,pct:"28.3"},
-        {rank:2,name:"GROTON, MA",count:9,pct:"17.0"},
-        {rank:3,name:"LITTLETON, MA",count:4,pct:"7.5"},
-        {rank:4,name:"AYER, MA",count:4,pct:"7.5"},
-        {rank:5,name:"PEPPERELL, MA",count:3,pct:"5.7"},
-        {rank:6,name:"MILFORD, NH",count:2,pct:"3.8"},
-        {rank:7,name:"TOWNSEND, MA",count:1,pct:"1.9"},
-        {rank:8,name:"TYNGSBORO, MA",count:1,pct:"1.9"},
-        {rank:9,name:"STOW, MA",count:1,pct:"1.9"},
-        {rank:10,name:"SCARBOROUGH, ME",count:1,pct:"1.9"},
-        {rank:11,name:"HAMPDEN, ME",count:1,pct:"1.9"},
-        {rank:12,name:"LITCHFIELD, NH",count:1,pct:"1.9"}
+      "groton": [
+        {
+          "rank": 1,
+          "name": "GROTON, MA",
+          "count": 15,
+          "pct": "31.9"
+        },
+        {
+          "rank": 2,
+          "name": "WESTFORD, MA",
+          "count": 10,
+          "pct": "21.3"
+        },
+        {
+          "rank": 3,
+          "name": "TOWNSEND, MA",
+          "count": 3,
+          "pct": "6.4"
+        },
+        {
+          "rank": 4,
+          "name": "TYNGSBORO, MA",
+          "count": 2,
+          "pct": "4.3"
+        },
+        {
+          "rank": 5,
+          "name": "LUNENBURG, MA",
+          "count": 2,
+          "pct": "4.3"
+        },
+        {
+          "rank": 6,
+          "name": "DRACUT, MA",
+          "count": 2,
+          "pct": "4.3"
+        },
+        {
+          "rank": 7,
+          "name": "WINCHESTER, MA",
+          "count": 1,
+          "pct": "2.1"
+        },
+        {
+          "rank": 8,
+          "name": "LEOMINSTER, MA",
+          "count": 1,
+          "pct": "2.1"
+        },
+        {
+          "rank": 9,
+          "name": "AYER, MA",
+          "count": 1,
+          "pct": "2.1"
+        },
+        {
+          "rank": 10,
+          "name": "CHELMSFORD, MA",
+          "count": 1,
+          "pct": "2.1"
+        },
+        {
+          "rank": 11,
+          "name": "LITTLETON, MA",
+          "count": 1,
+          "pct": "2.1"
+        },
+        {
+          "rank": 12,
+          "name": "UNKNOWN, USA",
+          "count": 1,
+          "pct": "2.1"
+        }
       ]
     }
   },
-  week: {
-    total: 2853, uniqueCities: 375,
-    byStore: {dracut:1632, pepperell:892, groton:329},
-    byState: {MA:1181, NH:1476, OTHER:196},
-    byStoreByState: {
-      dracut:{MA:569,NH:938,OTHER:125},
-      pepperell:{MA:341,NH:500,OTHER:51},
-      groton:{MA:271,NH:38,OTHER:20}
+  "week": {
+    "total": 2911,
+    "uniqueCities": 342,
+    "byStore": {
+      "dracut": 1588,
+      "pepperell": 991,
+      "groton": 332
     },
-    topCities: {
-      dracut: [
-        {rank:1,name:"METHUEN, MA",count:186,pct:"11.4"},
-        {rank:2,name:"MANCHESTER, NH",count:173,pct:"10.6"},
-        {rank:3,name:"SALEM, NH",count:143,pct:"8.8"},
-        {rank:4,name:"DERRY, NH",count:135,pct:"8.3"},
-        {rank:5,name:"LAWRENCE, MA",count:104,pct:"6.4"},
-        {rank:6,name:"LONDONDERRY, NH",count:82,pct:"5.0"},
-        {rank:7,name:"PELHAM, NH",count:63,pct:"3.9"},
-        {rank:8,name:"DRACUT, MA",count:60,pct:"3.7"},
-        {rank:9,name:"WINDHAM, NH",count:36,pct:"2.2"},
-        {rank:10,name:"HOOKSETT, NH",count:31,pct:"1.9"},
-        {rank:11,name:"LOWELL, MA",count:23,pct:"1.4"},
-        {rank:12,name:"CONCORD, NH",count:22,pct:"1.3"}
+    "byState": {
+      "MA": 1274,
+      "NH": 1444,
+      "OTHER": 193
+    },
+    "byStoreByState": {
+      "dracut": {
+        "MA": 572,
+        "NH": 901,
+        "OTHER": 115
+      },
+      "pepperell": {
+        "MA": 439,
+        "NH": 503,
+        "OTHER": 49
+      },
+      "groton": {
+        "MA": 263,
+        "NH": 40,
+        "OTHER": 29
+      }
+    },
+    "topCities": {
+      "dracut": [
+        {
+          "rank": 1,
+          "name": "METHUEN, MA",
+          "count": 187,
+          "pct": "11.8"
+        },
+        {
+          "rank": 2,
+          "name": "MANCHESTER, NH",
+          "count": 184,
+          "pct": "11.6"
+        },
+        {
+          "rank": 3,
+          "name": "SALEM, NH",
+          "count": 141,
+          "pct": "8.9"
+        },
+        {
+          "rank": 4,
+          "name": "DERRY, NH",
+          "count": 129,
+          "pct": "8.1"
+        },
+        {
+          "rank": 5,
+          "name": "LAWRENCE, MA",
+          "count": 111,
+          "pct": "7.0"
+        },
+        {
+          "rank": 6,
+          "name": "DRACUT, MA",
+          "count": 71,
+          "pct": "4.5"
+        },
+        {
+          "rank": 7,
+          "name": "PELHAM, NH",
+          "count": 65,
+          "pct": "4.1"
+        },
+        {
+          "rank": 8,
+          "name": "LONDONDERRY, NH",
+          "count": 62,
+          "pct": "3.9"
+        },
+        {
+          "rank": 9,
+          "name": "WINDHAM, NH",
+          "count": 42,
+          "pct": "2.6"
+        },
+        {
+          "rank": 10,
+          "name": "UNKNOWN, USA",
+          "count": 31,
+          "pct": "2.0"
+        },
+        {
+          "rank": 11,
+          "name": "CONCORD, NH",
+          "count": 31,
+          "pct": "2.0"
+        },
+        {
+          "rank": 12,
+          "name": "ANDOVER, MA",
+          "count": 27,
+          "pct": "1.7"
+        }
       ],
-      pepperell: [
-        {rank:1,name:"PEPPERELL, MA",count:167,pct:"18.7"},
-        {rank:2,name:"NASHUA, NH",count:122,pct:"13.7"},
-        {rank:3,name:"MILFORD, NH",count:53,pct:"5.9"},
-        {rank:4,name:"BROOKLINE, NH",count:44,pct:"4.9"},
-        {rank:5,name:"TOWNSEND, MA",count:43,pct:"4.8"},
-        {rank:6,name:"HOLLIS, NH",count:38,pct:"4.3"},
-        {rank:7,name:"MANCHESTER, NH",count:34,pct:"3.8"},
-        {rank:8,name:"MERRIMACK, NH",count:24,pct:"2.7"},
-        {rank:9,name:"GROTON, MA",count:21,pct:"2.4"},
-        {rank:10,name:"AMHERST, NH",count:20,pct:"2.2"},
-        {rank:11,name:"BEDFORD, NH",count:19,pct:"2.1"},
-        {rank:12,name:"LOWELL, MA",count:15,pct:"1.7"}
+      "pepperell": [
+        {
+          "rank": 1,
+          "name": "PEPPERELL, MA",
+          "count": 226,
+          "pct": "22.8"
+        },
+        {
+          "rank": 2,
+          "name": "NASHUA, NH",
+          "count": 139,
+          "pct": "14.0"
+        },
+        {
+          "rank": 3,
+          "name": "MILFORD, NH",
+          "count": 60,
+          "pct": "6.1"
+        },
+        {
+          "rank": 4,
+          "name": "TOWNSEND, MA",
+          "count": 55,
+          "pct": "5.5"
+        },
+        {
+          "rank": 5,
+          "name": "HOLLIS, NH",
+          "count": 40,
+          "pct": "4.0"
+        },
+        {
+          "rank": 6,
+          "name": "MANCHESTER, NH",
+          "count": 40,
+          "pct": "4.0"
+        },
+        {
+          "rank": 7,
+          "name": "BROOKLINE, NH",
+          "count": 38,
+          "pct": "3.8"
+        },
+        {
+          "rank": 8,
+          "name": "MERRIMACK, NH",
+          "count": 24,
+          "pct": "2.4"
+        },
+        {
+          "rank": 9,
+          "name": "AMHERST, NH",
+          "count": 23,
+          "pct": "2.3"
+        },
+        {
+          "rank": 10,
+          "name": "GROTON, MA",
+          "count": 22,
+          "pct": "2.2"
+        },
+        {
+          "rank": 11,
+          "name": "LOWELL, MA",
+          "count": 18,
+          "pct": "1.8"
+        },
+        {
+          "rank": 12,
+          "name": "DUNSTABLE, MA",
+          "count": 17,
+          "pct": "1.7"
+        }
       ],
-      groton: [
-        {rank:1,name:"GROTON, MA",count:78,pct:"23.7"},
-        {rank:2,name:"WESTFORD, MA",count:66,pct:"20.1"},
-        {rank:3,name:"LITTLETON, MA",count:18,pct:"5.5"},
-        {rank:4,name:"AYER, MA",count:15,pct:"4.6"},
-        {rank:5,name:"PEPPERELL, MA",count:14,pct:"4.3"},
-        {rank:6,name:"TOWNSEND, MA",count:9,pct:"2.7"},
-        {rank:7,name:"LOWELL, MA",count:9,pct:"2.7"},
-        {rank:8,name:"MILFORD, NH",count:5,pct:"1.5"},
-        {rank:9,name:"LEOMINSTER, MA",count:4,pct:"1.2"},
-        {rank:10,name:"SHARON, MA",count:4,pct:"1.2"},
-        {rank:11,name:"NASHUA, NH",count:4,pct:"1.2"},
-        {rank:12,name:"ACTON, MA",count:4,pct:"1.2"}
+      "groton": [
+        {
+          "rank": 1,
+          "name": "GROTON, MA",
+          "count": 69,
+          "pct": "20.8"
+        },
+        {
+          "rank": 2,
+          "name": "WESTFORD, MA",
+          "count": 62,
+          "pct": "18.7"
+        },
+        {
+          "rank": 3,
+          "name": "AYER, MA",
+          "count": 20,
+          "pct": "6.0"
+        },
+        {
+          "rank": 4,
+          "name": "TOWNSEND, MA",
+          "count": 20,
+          "pct": "6.0"
+        },
+        {
+          "rank": 5,
+          "name": "LITTLETON, MA",
+          "count": 13,
+          "pct": "3.9"
+        },
+        {
+          "rank": 6,
+          "name": "PEPPERELL, MA",
+          "count": 11,
+          "pct": "3.3"
+        },
+        {
+          "rank": 7,
+          "name": "UNKNOWN, USA",
+          "count": 6,
+          "pct": "1.8"
+        },
+        {
+          "rank": 8,
+          "name": "LOWELL, MA",
+          "count": 5,
+          "pct": "1.5"
+        },
+        {
+          "rank": 9,
+          "name": "NASHUA, NH",
+          "count": 5,
+          "pct": "1.5"
+        },
+        {
+          "rank": 10,
+          "name": "MILFORD, NH",
+          "count": 4,
+          "pct": "1.2"
+        },
+        {
+          "rank": 11,
+          "name": "SHIRLEY, MA",
+          "count": 4,
+          "pct": "1.2"
+        },
+        {
+          "rank": 12,
+          "name": "LEOMINSTER, MA",
+          "count": 4,
+          "pct": "1.2"
+        }
       ]
-    }
+    },
+    "label": "Mar 30–Apr 5"
   },
-  month: {
-    total: 12478, uniqueCities: 741,
-    byStore: {dracut:7044, pepperell:3992, groton:1442},
-    byState: {MA:5249, NH:6424, OTHER:805},
-    byStoreByState: {
-      dracut:{MA:2438,NH:4084,OTHER:522},
-      pepperell:{MA:1617,NH:2175,OTHER:200},
-      groton:{MA:1194,NH:165,OTHER:83}
+  "month": {
+    "total": 3469,
+    "uniqueCities": 363,
+    "byStore": {
+      "dracut": 1900,
+      "pepperell": 1177,
+      "groton": 392
     },
-    topCities: {
-      dracut: [
-        {rank:1,name:"METHUEN, MA",count:829,pct:"11.8"},
-        {rank:2,name:"MANCHESTER, NH",count:822,pct:"11.7"},
-        {rank:3,name:"SALEM, NH",count:577,pct:"8.2"},
-        {rank:4,name:"DERRY, NH",count:576,pct:"8.2"},
-        {rank:5,name:"LAWRENCE, MA",count:475,pct:"6.7"},
-        {rank:6,name:"LONDONDERRY, NH",count:339,pct:"4.8"},
-        {rank:7,name:"PELHAM, NH",count:257,pct:"3.6"},
-        {rank:8,name:"DRACUT, MA",count:246,pct:"3.5"},
-        {rank:9,name:"WINDHAM, NH",count:190,pct:"2.7"},
-        {rank:10,name:"CONCORD, NH",count:108,pct:"1.5"},
-        {rank:11,name:"HOOKSETT, NH",count:97,pct:"1.4"},
-        {rank:12,name:"UNKNOWN, USA",count:94,pct:"1.3"}
+    "byState": {
+      "MA": 1505,
+      "NH": 1732,
+      "OTHER": 232
+    },
+    "byStoreByState": {
+      "dracut": {
+        "MA": 668,
+        "NH": 1085,
+        "OTHER": 147
+      },
+      "pepperell": {
+        "MA": 518,
+        "NH": 602,
+        "OTHER": 57
+      },
+      "groton": {
+        "MA": 319,
+        "NH": 45,
+        "OTHER": 28
+      }
+    },
+    "topCities": {
+      "dracut": [
+        {
+          "rank": 1,
+          "name": "METHUEN, MA",
+          "count": 224,
+          "pct": "11.8"
+        },
+        {
+          "rank": 2,
+          "name": "MANCHESTER, NH",
+          "count": 223,
+          "pct": "11.7"
+        },
+        {
+          "rank": 3,
+          "name": "SALEM, NH",
+          "count": 166,
+          "pct": "8.7"
+        },
+        {
+          "rank": 4,
+          "name": "DERRY, NH",
+          "count": 148,
+          "pct": "7.8"
+        },
+        {
+          "rank": 5,
+          "name": "LAWRENCE, MA",
+          "count": 147,
+          "pct": "7.7"
+        },
+        {
+          "rank": 6,
+          "name": "LONDONDERRY, NH",
+          "count": 85,
+          "pct": "4.5"
+        },
+        {
+          "rank": 7,
+          "name": "DRACUT, MA",
+          "count": 75,
+          "pct": "3.9"
+        },
+        {
+          "rank": 8,
+          "name": "PELHAM, NH",
+          "count": 66,
+          "pct": "3.5"
+        },
+        {
+          "rank": 9,
+          "name": "WINDHAM, NH",
+          "count": 52,
+          "pct": "2.7"
+        },
+        {
+          "rank": 10,
+          "name": "CONCORD, NH",
+          "count": 42,
+          "pct": "2.2"
+        },
+        {
+          "rank": 11,
+          "name": "UNKNOWN, USA",
+          "count": 41,
+          "pct": "2.2"
+        },
+        {
+          "rank": 12,
+          "name": "LOWELL, MA",
+          "count": 29,
+          "pct": "1.5"
+        }
       ],
-      pepperell: [
-        {rank:1,name:"PEPPERELL, MA",count:807,pct:"20.2"},
-        {rank:2,name:"NASHUA, NH",count:632,pct:"15.8"},
-        {rank:3,name:"MILFORD, NH",count:234,pct:"5.9"},
-        {rank:4,name:"TOWNSEND, MA",count:208,pct:"5.2"},
-        {rank:5,name:"HOLLIS, NH",count:170,pct:"4.3"},
-        {rank:6,name:"BROOKLINE, NH",count:167,pct:"4.2"},
-        {rank:7,name:"MANCHESTER, NH",count:146,pct:"3.7"},
-        {rank:8,name:"GROTON, MA",count:103,pct:"2.6"},
-        {rank:9,name:"MERRIMACK, NH",count:100,pct:"2.5"},
-        {rank:10,name:"AMHERST, NH",count:76,pct:"1.9"},
-        {rank:11,name:"DUNSTABLE, MA",count:64,pct:"1.6"},
-        {rank:12,name:"LOWELL, MA",count:57,pct:"1.4"}
+      "pepperell": [
+        {
+          "rank": 1,
+          "name": "PEPPERELL, MA",
+          "count": 256,
+          "pct": "21.8"
+        },
+        {
+          "rank": 2,
+          "name": "NASHUA, NH",
+          "count": 163,
+          "pct": "13.8"
+        },
+        {
+          "rank": 3,
+          "name": "MILFORD, NH",
+          "count": 71,
+          "pct": "6.0"
+        },
+        {
+          "rank": 4,
+          "name": "TOWNSEND, MA",
+          "count": 69,
+          "pct": "5.9"
+        },
+        {
+          "rank": 5,
+          "name": "BROOKLINE, NH",
+          "count": 50,
+          "pct": "4.2"
+        },
+        {
+          "rank": 6,
+          "name": "MANCHESTER, NH",
+          "count": 49,
+          "pct": "4.2"
+        },
+        {
+          "rank": 7,
+          "name": "HOLLIS, NH",
+          "count": 46,
+          "pct": "3.9"
+        },
+        {
+          "rank": 8,
+          "name": "GROTON, MA",
+          "count": 35,
+          "pct": "3.0"
+        },
+        {
+          "rank": 9,
+          "name": "MERRIMACK, NH",
+          "count": 31,
+          "pct": "2.6"
+        },
+        {
+          "rank": 10,
+          "name": "AMHERST, NH",
+          "count": 22,
+          "pct": "1.9"
+        },
+        {
+          "rank": 11,
+          "name": "LOWELL, MA",
+          "count": 22,
+          "pct": "1.9"
+        },
+        {
+          "rank": 12,
+          "name": "DUNSTABLE, MA",
+          "count": 21,
+          "pct": "1.8"
+        }
       ],
-      groton: [
-        {rank:1,name:"GROTON, MA",count:307,pct:"21.3"},
-        {rank:2,name:"WESTFORD, MA",count:305,pct:"21.2"},
-        {rank:3,name:"LITTLETON, MA",count:73,pct:"5.1"},
-        {rank:4,name:"PEPPERELL, MA",count:58,pct:"4.0"},
-        {rank:5,name:"TOWNSEND, MA",count:57,pct:"4.0"},
-        {rank:6,name:"AYER, MA",count:53,pct:"3.7"},
-        {rank:7,name:"LOWELL, MA",count:38,pct:"2.6"},
-        {rank:8,name:"LEOMINSTER, MA",count:22,pct:"1.5"},
-        {rank:9,name:"NASHUA, NH",count:20,pct:"1.4"},
-        {rank:10,name:"MANCHESTER, NH",count:16,pct:"1.1"},
-        {rank:11,name:"SHIRLEY, MA",count:13,pct:"0.9"},
-        {rank:12,name:"MILFORD, NH",count:12,pct:"0.8"}
+      "groton": [
+        {
+          "rank": 1,
+          "name": "GROTON, MA",
+          "count": 88,
+          "pct": "22.4"
+        },
+        {
+          "rank": 2,
+          "name": "WESTFORD, MA",
+          "count": 77,
+          "pct": "19.6"
+        },
+        {
+          "rank": 3,
+          "name": "AYER, MA",
+          "count": 22,
+          "pct": "5.6"
+        },
+        {
+          "rank": 4,
+          "name": "TOWNSEND, MA",
+          "count": 22,
+          "pct": "5.6"
+        },
+        {
+          "rank": 5,
+          "name": "LITTLETON, MA",
+          "count": 17,
+          "pct": "4.3"
+        },
+        {
+          "rank": 6,
+          "name": "PEPPERELL, MA",
+          "count": 13,
+          "pct": "3.3"
+        },
+        {
+          "rank": 7,
+          "name": "MILFORD, NH",
+          "count": 6,
+          "pct": "1.5"
+        },
+        {
+          "rank": 8,
+          "name": "TYNGSBORO, MA",
+          "count": 5,
+          "pct": "1.3"
+        },
+        {
+          "rank": 9,
+          "name": "LEOMINSTER, MA",
+          "count": 5,
+          "pct": "1.3"
+        },
+        {
+          "rank": 10,
+          "name": "UNKNOWN, USA",
+          "count": 5,
+          "pct": "1.3"
+        },
+        {
+          "rank": 11,
+          "name": "NASHUA, NH",
+          "count": 5,
+          "pct": "1.3"
+        },
+        {
+          "rank": 12,
+          "name": "SHIRLEY, MA",
+          "count": 5,
+          "pct": "1.3"
+        }
       ]
-    }
+    },
+    "label": "Apr 1–8 MTD"
   }
 };
 
@@ -684,7 +1289,7 @@ const TREND = [
   {"label":"Jan 26","total":12821,"byState":{"MA":5346,"NH":6689,"OTHER":786},"byStore":{"dracut":7452,"pepperell":3955,"groton":1414}},
   {"label":"Feb 26","total":11267,"byState":{"MA":4808,"NH":5732,"OTHER":727},"byStore":{"dracut":6491,"pepperell":3519,"groton":1257}},
   {"label":"Mar 26","total":12478,"byState":{"MA":5249,"NH":6424,"OTHER":805},"byStore":{"dracut":7044,"pepperell":3992,"groton":1442}},
-  {"label":"Apr 26 (proj)","total":12285,"byState":{"MA":5299,"NH":6180,"OTHER":806},"byStore":{"dracut":6728,"pepperell":4174,"groton":1384}}
+  {"label":"Apr 26 (proj)","total":13009,"byState":{"MA":5644,"NH":6495,"OTHER":870},"byStore":{"dracut":7125,"pepperell":4414,"groton":1470}}
 ];
 
 // ========== PER-STORE WEEKLY CITY TREND DATA ==========
