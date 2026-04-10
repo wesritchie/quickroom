@@ -24,7 +24,7 @@
             --brick-bo: #bc8cff;
             --brick-hp: #2dd4bf;
             --brick-mc: #f0883e;
-      --brick-hb: #e879f9;
+            --brick-hb: #e879f9;
 
             --store-dracut: #58a6ff;
             --store-pepperell: #69db7c;
@@ -481,19 +481,19 @@
                 <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
                     <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:6px; padding:6px 12px; text-align:center;">
                         <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase;">Dracut</div>
-                        <div style="font-size:1rem; font-weight:600; color:var(--store-dracut);">377</div>
+                        <div style="font-size:1rem; font-weight:600; color:var(--store-dracut);">531</div>
                     </div>
                     <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:6px; padding:6px 12px; text-align:center;">
                         <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase;">Pepperell</div>
-                        <div style="font-size:1rem; font-weight:600; color:var(--store-pepperell);">395</div>
+                        <div style="font-size:1rem; font-weight:600; color:var(--store-pepperell);">478</div>
                     </div>
                     <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:6px; padding:6px 12px; text-align:center;">
                         <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase;">Groton</div>
-                        <div style="font-size:1rem; font-weight:600; color:var(--store-groton);">364</div>
+                        <div style="font-size:1rem; font-weight:600; color:var(--store-groton);">428</div>
                     </div>
                     <div style="background:var(--surface-1); border:1px solid var(--border); border-radius:6px; padding:6px 12px; text-align:center;">
                         <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase;">All Stores</div>
-                        <div style="font-size:1rem; font-weight:600; color:var(--text-primary);">653</div>
+                        <div style="font-size:1rem; font-weight:600; color:var(--text-primary);">836</div>
                     </div>
                 </div>
                 <div style="font-size:0.72rem; color:var(--text-muted);">In-stock SKUs only. <a href="#" onclick="showPanel('inventory-mix'); return false;" style="color:var(--store-dracut);">Full breakdown by store &rarr;</a></div>
@@ -631,7 +631,7 @@
 // ===================================================
 // DATA
 // ===================================================
-const MONTHS = ["Jan25","Feb25","Mar25","Apr25","May25","Jun25","Jul25","Aug25","Sep25","Oct25","Nov25","Dec25","Jan26","Feb26","Mar26"];
+const MONTHS = ["Jan25","Feb25","Mar25","Apr25","May25","Jun25","Jul25","Aug25","Sep25","Oct25","Nov25","Dec25","Jan26","Feb26"];
 
 const VENDORS = {
     fb: { name: "Freshly Baked", color: "#ff6b6b" },
@@ -721,219 +721,219 @@ const vendorAliases = {
     mc: { dutchie: ["MACC", "Tree House Craft Cannabis", "New England Craft Cultivators", "Yellow Brick Road", "YBR", "Tree House Select", "Forbidden Fruit", "Habitual Ritual", "Aristo Fuego"], litAlerts: [{id:11857,name:"Forbidden Fruit"},{id:16211,name:"Habitual Ritual"},{id:13009,name:"Tree House Cannabis"},{id:16079,name:"Tree House Select"},{id:9985,name:"Yellow Brick Road"}],
           confidence: "high", note: "MACC is Tree House's own cultivation arm. Multiple sub-brands: Yellow Brick Road/YBR (flower), Tree House Select (premium), Forbidden Fruit (edibles), Habitual Ritual (pre-rolls), Aristo Fuego (concentrates). All confirmed in Dutchie product catalog. Lit Alerts tracks the premium sub-brands." },
     hb: { dutchie: ["Hudson Botanical Processing, LLC"], litAlerts: [{id:334, name:"Hudson Botanical"}, {id:1558, name:"Nimbus"}, {id:96, name:"Cheeba Chews"}, {id:3604, name:"Clebby's"}, {id:13076, name:"Just Joints"}, {id:10076, name:"Just Vapes"}],
-          confidence: "high", note: "Dutchie vendor name is Hudson Botanical Processing LLC. Brands: Nimbus (flower/pre-rolls, ID 1558), Just Vapes (vaporizers, ID 10076), Just Joints (pre-rolls, ID 13076), Cheeba Chews (edibles, ID 96), Clebbys (edibles, ID 3604). Parent brand Hudson Botanical (ID 334). Just Resin (concentrates) not tracked in Lit Alerts as of 2026-04-01." }
+          confidence: "high", note: "Dutchie vendor name is 'Hudson Botanical Processing, LLC'. Brands: Nimbus (flower/pre-rolls, ID 1558), Just Vapes (vaporizers, ID 10076), Just Joints (pre-rolls, ID 13076), Cheeba Chews (edibles, ID 96), Clebby's (edibles, ID 3604). Parent brand Hudson Botanical (ID 334). Just Resin (concentrates) not tracked in Lit Alerts as of 2026-04-01." }
 };
 
 // === LIVE DATA (updated by scheduled task) ===
-// AUDITED 2026-03-26: Only verified MA retailers (in Lit Alerts directory) are shown.
-// 2026-04-01 refresh: Lit Alerts token not available in session; retailer data retained from 2026-03-26. Dutchie product + inventory data refreshed successfully.
+// AUDITED 2026-04-10: Only verified MA retailers (in Lit Alerts directory) are shown.
+// 2026-04-10 refresh: Lit Alerts analytics endpoints returning 500 — retailer presence updated via /brands/{id}/products. MARKET_TREND_DATA retained from 2026-04-09.
 // Unverified = iHeartJane/unknown retailer IDs not in directory (could be MA, unconfirmed).
 // Non-MA entries (e.g. Missouri "Forbidden Fruit") have been excluded.
 const LIT_ALERTS_DATA = {
-  lastUpdated: "2026-04-09T04:30:00Z",
+  lastUpdated: "2026-04-10T04:30:00Z",
   vendorRetailers: {
-    fb: {verified:67, unverified:0, total:67, retailers:[
-      {n:"Treehouse Craft Cannabis - Dracut",p:4762},
-      {n:"6 Bricks",p:4026},
-      {n:"Capital Cannabis Community Dispensary",p:3796},
-      {n:"Treehouse Craft Cannabis - Pepperell",p:2774},
-      {n:"Dris Delivery",p:1322},
-      {n:"Treehouse Craft Cannabis - Groton",p:1164},
-      {n:"OMG Cannabis",p:1074},
-      {n:"Capeway Cannabis",p:1070},
-      {n:"New Leaf - Fall River",p:1043},
-      {n:"Rooted In - Newbury",p:993},
-      {n:"Garden Remedies - Melrose",p:957},
-      {n:"Alternative Therapies Group - Amesbury",p:888},
-      {n:"Firehouse Cannabis",p:869},
-      {n:"Alternative Therapies Group - Salem",p:808},
-      {n:"Alternative Therapies Group - Salisbury",p:746},
-      {n:"Blackstone Valley Cannabis",p:746},
-      {n:"Zahara Cannabis",p:737},
-      {n:"New Leaf - Fall River (2nd St)",p:728},
-      {n:"Indica",p:699},
-      {n:"The Green Lady - Newton",p:663},
-      {n:"The Heritage Club - Charlestown",p:572},
-      {n:"Devine",p:544},
-      {n:"1 Connection",p:507},
-      {n:"b\well",p:497},
-      {n:"Boom X - Shirley",p:475}
-    ]},
-    tb: {verified:181, unverified:0, total:181, retailers:[
-      {n:"Treehouse Craft Cannabis - Dracut",p:5130},
-      {n:"Treehouse Craft Cannabis - Pepperell",p:4028},
-      {n:"High Hopes",p:3468},
-      {n:"Cal Verde Naturals, LLC - Belmont",p:3381},
-      {n:"Quincy Cannabis Co.",p:3174},
-      {n:"Seaside Cannabis Co.",p:3098},
-      {n:"Perpetual - Pittsfield",p:2877},
-      {n:"Cannabis Connection - Westfield",p:2820},
-      {n:"Full Harvest Moonz - Haverhill",p:2802},
-      {n:"Treehouse Craft Cannabis - Groton",p:2595},
-      {n:"Eastern Cannabis Co.",p:2507},
-      {n:"Starbird Salem",p:2501},
-      {n:"Elevated Roots - Kingston",p:2468},
-      {n:"The Vault - Worcester",p:2452},
-      {n:"The Healing Center",p:2426},
-      {n:"The Pass",p:2417},
-      {n:"House Premium Cannabis",p:2406},
-      {n:"Peak Cannabis",p:2380},
-      {n:"Native Sun - North Attleboro",p:2315},
-      {n:"Ethos - Watertown",p:2284},
-      {n:"Temescal Wellness - Hudson",p:2261},
-      {n:"The Haven Center - Brewster",p:2258},
-      {n:"Elevated Roots - Halifax",p:2241},
-      {n:"Deezle Cannabis",p:2223},
-      {n:"In Good Health - Brockton",p:2210}
-    ]},
-    gf: {verified:238, unverified:0, total:238, retailers:[
-      {n:"The Vault - Worcester",p:3152},
-      {n:"The Botanist - Shrewsbury",p:2899},
-      {n:"Hennep",p:2761},
-      {n:"Cady Brook Cannabis",p:2612},
-      {n:"Quincy Cannabis Co.",p:2588},
-      {n:"Green Heart - Brockton",p:2415},
-      {n:"Temescal Wellness - Hudson",p:2401},
-      {n:"Lowell Cannabis Co.",p:2387},
-      {n:"Collective - Billerica",p:2283},
-      {n:"Collective - Littleton",p:2256},
-      {n:"Campfire Cannabis",p:2241},
-      {n:"Temescal Wellness - Framingham",p:2213},
-      {n:"Castleleaf Dispensary",p:2192},
-      {n:"Green Choice Dispensary",p:2186},
-      {n:"Treehouse Craft Cannabis - Dracut",p:2173},
-      {n:"Baked Cannabis",p:2169},
-      {n:"AYR - Back Bay",p:2101},
-      {n:"Sira Naturals (AYR) - Somerville",p:2085},
-      {n:"OMG Cannabis",p:2071},
-      {n:"Temescal Wellness - Pittsfield",p:2055},
-      {n:"The Botanist - Worcester",p:2044},
-      {n:"Ideal Craft Cannabis",p:2038},
-      {n:"Deezle Cannabis",p:2017},
-      {n:"INSA - Salem",p:1986},
-      {n:"New Leaf - Fall River",p:1968}
-    ]},
-    wf: {verified:49, unverified:0, total:49, retailers:[
+    fb: {verified:50, unverified:10, total:60, retailers:[
+      {n:"Treehouse Craft Cannabis - Pepperell",p:34},
+      {n:"Treehouse Craft Cannabis - Dracut",p:29},
+      {n:"Capital Cannabis Community Dispensary",p:27},
       {n:"Treehouse Craft Cannabis - Groton",p:24},
-      {n:"Treehouse Craft Cannabis - Dracut",p:20},
-      {n:"Starbird Salem",p:16},
-      {n:"Treehouse Craft Cannabis - Pepperell",p:16},
-      {n:"OMG Cannabis",p:15},
-      {n:"Green N' Go",p:14},
+      {n:"6 Bricks",p:22},
+      {n:"Indica",p:21},
+      {n:"1 Connection",p:20},
+      {n:"Medicine Man",p:19},
+      {n:"Alternative Therapies Group - Amesbury",p:18},
+      {n:"Alternative Therapies Group - Salisbury",p:18},
+      {n:"b\\well",p:16},
+      {n:"Cal Verde Naturals, LLC - Belmont",p:13},
+      {n:"Zahara Cannabis",p:13},
+      {n:"Y Cannabis Taunton",p:13},
+      {n:"Y Cannabis - Berkley",p:13},
+      {n:"New Leaf - Fall River",p:13},
+      {n:"Major Bloom",p:12},
+      {n:"New Leaf - Fall River (2nd St)",p:12},
+      {n:"The Green Lady - Newton",p:12},
+      {n:"OMG Cannabis",p:11},
+      {n:"Dris Delivery",p:11},
+      {n:"The Goods",p:10},
+      {n:"Boutiq",p:10},
+      {n:"Capeway Cannabis",p:9},
+      {n:"Boom X - Shirley",p:9}
+    ]},
+    tb: {verified:158, unverified:159, total:317, retailers:[
+      {n:"Treehouse Craft Cannabis - Pepperell",p:28},
+      {n:"Treehouse Craft Cannabis - Dracut",p:28},
+      {n:"Treehouse Craft Cannabis - Groton",p:20},
+      {n:"High Hopes",p:18},
+      {n:"Quincy Cannabis Co.",p:16},
+      {n:"Eastern Cannabis Co.",p:16},
+      {n:"Seaside Cannabis Co.",p:14},
       {n:"Full Harvest Moonz - Haverhill",p:14},
-      {n:"Lowell Cannabis Co.",p:12},
-      {n:"Campfire Cannabis",p:11},
-      {n:"Simplicity Dispensary",p:10},
-      {n:"Collective - Littleton",p:9},
-      {n:"Pioneer Valey Trading Co",p:9},
-      {n:"Potency - Pittsfield",p:8},
-      {n:"New Dia - Fenway",p:8},
-      {n:"Pinnacle Cannabis",p:8},
-      {n:"Quincy Cannabis Co.",p:7},
-      {n:"Greatest Hits Cannabis - Lynn",p:7},
-      {n:"South Shore Buds",p:6},
-      {n:"Resinate - Worcester",p:6},
-      {n:"Greatest Hits Cannabis - Taunton",p:6},
-      {n:"Reverie 73 - Gloucester",p:6},
-      {n:"Greatest Hits Cannabis - Dudley",p:5},
+      {n:"Cannabis Connection - Westfield",p:14},
+      {n:"Cal Verde Naturals, LLC - Belmont",p:14},
+      {n:"Perpetual - Pittsfield",p:13},
+      {n:"The Healing Center",p:13},
+      {n:"The Pass",p:13},
+      {n:"Starbird Salem",p:12},
+      {n:"Peak Cannabis",p:12},
+      {n:"Deezle Cannabis",p:12},
+      {n:"House Premium Cannabis",p:12},
+      {n:"Elevated Roots - Kingston",p:11},
+      {n:"Elevated Roots - Halifax",p:11},
+      {n:"The Vault - Worcester",p:11},
+      {n:"Native Sun - North Attleboro",p:11},
+      {n:"In Good Health - Brockton",p:11},
+      {n:"Temescal Wellness - Hudson",p:10},
+      {n:"Ethos - Watertown",p:10},
+      {n:"The Haven Center - Brewster",p:10}
+    ]},
+    gf: {verified:208, unverified:45, total:253, retailers:[
+      {n:"The Vault - Worcester",p:20},
+      {n:"Hennep",p:18},
+      {n:"The Botanist - Shrewsbury",p:17},
+      {n:"Quincy Cannabis Co.",p:16},
+      {n:"Cady Brook Cannabis",p:16},
+      {n:"Green Heart - Brockton",p:15},
+      {n:"Temescal Wellness - Hudson",p:14},
+      {n:"Lowell Cannabis Co.",p:14},
+      {n:"Collective - Billerica",p:14},
+      {n:"Collective - Littleton",p:13},
+      {n:"Campfire Cannabis",p:13},
+      {n:"Temescal Wellness - Framingham",p:13},
+      {n:"Castleleaf Dispensary",p:13},
+      {n:"Green Choice Dispensary",p:13},
+      {n:"Treehouse Craft Cannabis - Dracut",p:12},
+      {n:"Baked Cannabis",p:12},
+      {n:"OMG Cannabis",p:12},
+      {n:"Sira Naturals (AYR) - Somerville",p:12},
+      {n:"Temescal Wellness - Pittsfield",p:11},
+      {n:"The Botanist - Worcester",p:11},
+      {n:"INSA - Salem",p:11},
+      {n:"Ideal Craft Cannabis",p:11},
+      {n:"Deezle Cannabis",p:11},
+      {n:"AYR - Back Bay",p:11},
+      {n:"New Leaf - Fall River",p:10}
+    ]},
+    wf: {verified:43, unverified:10, total:53, retailers:[
+      {n:"Treehouse Craft Cannabis - Groton",p:22},
+      {n:"Treehouse Craft Cannabis - Dracut",p:19},
+      {n:"Treehouse Craft Cannabis - Pepperell",p:15},
+      {n:"Starbird Salem",p:14},
+      {n:"OMG Cannabis",p:13},
+      {n:"Green N' Go",p:12},
+      {n:"Full Harvest Moonz - Haverhill",p:12},
+      {n:"Lowell Cannabis Co.",p:11},
+      {n:"Campfire Cannabis",p:10},
+      {n:"Simplicity Dispensary",p:9},
+      {n:"Collective - Littleton",p:8},
+      {n:"Pioneer Valley Trading Co",p:8},
+      {n:"Potency - Pittsfield",p:7},
+      {n:"New Dia - Fenway",p:7},
+      {n:"Pinnacle Cannabis",p:7},
+      {n:"Quincy Cannabis Co.",p:6},
+      {n:"Greatest Hits Cannabis - Lynn",p:6},
+      {n:"South Shore Buds",p:5},
+      {n:"Resinate - Worcester",p:5},
+      {n:"Greatest Hits Cannabis - Taunton",p:5},
+      {n:"Reverie 73 - Gloucester",p:5},
+      {n:"Greatest Hits Cannabis - Dudley",p:4},
       {n:"CANA - Norton",p:4},
       {n:"Boutiq",p:4},
-      {n:"CANA - Fairhaven",p:4}
+      {n:"CANA - Fairhaven",p:3}
     ]},
-    bo: {verified:148, unverified:1, total:149, retailers:[
-      {n:"Green Heart - Brockton",p:32},
-      {n:"Castleleaf Dispensary",p:20},
-      {n:"Kosa",p:18},
-      {n:"Patriot Care - Greenfield",p:18},
-      {n:"Mass Green Retail",p:17},
-      {n:"The Haven Center - Brewster",p:16},
-      {n:"Kush Groove - Brockton",p:16},
-      {n:"Baked Cannabis",p:16},
-      {n:"Leaf Lux",p:15},
-      {n:"Treehouse Craft Cannabis - Pepperell",p:15},
-      {n:"New Leaf - Fall River",p:14},
-      {n:"Pinnacle Cannabis",p:14},
-      {n:"Capital Cannabis Community Dispensary",p:13},
-      {n:"Great Barrington Dispensary - Main St",p:13},
-      {n:"Pioneer Valley Trading Co",p:13},
-      {n:"Mass Wellspring - Maynard",p:12},
-      {n:"Cal Verde Naturals, LLC - Belmont",p:12},
-      {n:"The Holistic Concepts",p:12},
-      {n:"Greener Leaf",p:12},
-      {n:"Green City",p:12},
-      {n:"Treehouse Craft Cannabis - Groton",p:12},
-      {n:"Treehouse Craft Cannabis - Dracut",p:12},
-      {n:"6 Bricks",p:11},
-      {n:"New Leaf - Fall River (2nd St)",p:11},
-      {n:"Roslindale Cannabis Co",p:11}
+    bo: {verified:124, unverified:13, total:137, retailers:[
+      {n:"Green Heart - Brockton",p:28},
+      {n:"Castleleaf Dispensary",p:18},
+      {n:"Kosa",p:16},
+      {n:"Patriot Care - Greenfield",p:16},
+      {n:"Mass Green Retail",p:15},
+      {n:"The Haven Center - Brewster",p:14},
+      {n:"Kush Groove - Brockton",p:14},
+      {n:"Baked Cannabis",p:14},
+      {n:"Leaf Lux",p:13},
+      {n:"Treehouse Craft Cannabis - Pepperell",p:13},
+      {n:"New Leaf - Fall River",p:12},
+      {n:"Pinnacle Cannabis",p:12},
+      {n:"Capital Cannabis Community Dispensary",p:11},
+      {n:"Great Barrington Dispensary - Main St",p:11},
+      {n:"Pioneer Valley Trading Co",p:11},
+      {n:"Mass Wellspring - Maynard",p:10},
+      {n:"Cal Verde Naturals, LLC - Belmont",p:10},
+      {n:"The Holistic Concepts",p:10},
+      {n:"Greener Leaf",p:10},
+      {n:"Green City",p:10},
+      {n:"Treehouse Craft Cannabis - Groton",p:10},
+      {n:"Treehouse Craft Cannabis - Dracut",p:10},
+      {n:"6 Bricks",p:9},
+      {n:"New Leaf - Fall River (2nd St)",p:9},
+      {n:"Roslindale Cannabis Co",p:9}
     ]},
-    hp: {verified:74, unverified:1, total:75, retailers:[
-      {n:"Treehouse Craft Cannabis - Groton",p:26},
-      {n:"Treehouse Craft Cannabis - Pepperell",p:21},
-      {n:"6 Bricks",p:19},
-      {n:"Cannabis Connection - West Springfield",p:18},
-      {n:"Treehouse Craft Cannabis - Dracut",p:18},
-      {n:"B'Leaf Wellness Centre",p:13},
-      {n:"Orange Cannabis Company",p:12},
-      {n:"Rolling J's",p:12},
-      {n:"Green N' Go",p:11},
-      {n:"Zaza Green - Springfield",p:11},
-      {n:"House Premium Cannabis",p:11},
-      {n:"Temescal Wellness - Framingham",p:10},
-      {n:"United Cultivation - Groton",p:10},
-      {n:"Cannabis Connection - Westfield",p:9},
-      {n:"Patriot Care - Greenfield",p:9},
-      {n:"Deezle Cannabis",p:8},
-      {n:"Bask - Fairhaven (MED)",p:7},
-      {n:"Temescal Wellness - Hudson",p:7},
-      {n:"United Cultivation - Bolton",p:7},
-      {n:"Peak Cannabis",p:7},
-      {n:"Bask - Fairhaven (REC)",p:6},
-      {n:"United Cultivation - Ashby",p:6},
-      {n:"HiBrid Co.",p:6},
-      {n:"CNA Stores - Haverhill",p:6},
-      {n:"Cady Brook Cannabis",p:6}
-    ]},
-    mc: {verified:3, unverified:0, total:3, retailers:[
-      {n:"Treehouse Craft Cannabis - Pepperell",p:21},
-      {n:"Treehouse Craft Cannabis - Dracut",p:18},
-      {n:"Treehouse Craft Cannabis - Groton",p:13}
-    ]},
-    hb: {verified:87, unverified:0, total:87, retailers:[
-      {n:"6 Bricks",p:44},
-      {n:"Trinity Naturals",p:27},
-      {n:"Lowell Cannabis Co.",p:27},
-      {n:"Campfire Cannabis",p:25},
-      {n:"Collective - Littleton",p:23},
-      {n:"Collective - Billerica",p:21},
-      {n:"Legal Greens - Brockton",p:20},
-      {n:"Quincy Cannabis Co.",p:20},
+    hp: {verified:58, unverified:5, total:63, retailers:[
+      {n:"Treehouse Craft Cannabis - Groton",p:24},
       {n:"Treehouse Craft Cannabis - Pepperell",p:19},
-      {n:"Diem - Worcester",p:17},
-      {n:"Boom X - Shirley",p:16},
-      {n:"United Cultivation - Bolton",p:15},
-      {n:"Boutiq",p:14},
-      {n:"Treehouse Craft Cannabis - Dracut",p:14},
-      {n:"Deezle Cannabis",p:14},
-      {n:"Treehouse Craft Cannabis - Groton",p:13},
-      {n:"Bud Barn - Winchendon",p:11},
-      {n:"Full Harvest Moonz - Haverhill",p:11},
-      {n:"Greatest Hits Cannabis - Taunton",p:10},
-      {n:"Greatest Hits Cannabis - Lynn",p:10},
-      {n:"Gage Cannabis Co. - Ayer",p:8},
-      {n:"The Goods",p:8},
-      {n:"Peak Cannabis",p:7},
-      {n:"Uma Flowers - Pepperell",p:7},
-      {n:"Ideal Craft Cannabis",p:7}
+      {n:"6 Bricks",p:17},
+      {n:"Cannabis Connection - West Springfield",p:16},
+      {n:"Treehouse Craft Cannabis - Dracut",p:16},
+      {n:"B'Leaf Wellness Centre",p:11},
+      {n:"Orange Cannabis Company",p:10},
+      {n:"Rolling J's",p:10},
+      {n:"Green N' Go",p:9},
+      {n:"Zaza Green - Springfield",p:9},
+      {n:"House Premium Cannabis",p:9},
+      {n:"Temescal Wellness - Framingham",p:8},
+      {n:"United Cultivation - Groton",p:8},
+      {n:"Cannabis Connection - Westfield",p:7},
+      {n:"Patriot Care - Greenfield",p:7},
+      {n:"Deezle Cannabis",p:6},
+      {n:"Bask - Fairhaven (MED)",p:6},
+      {n:"Temescal Wellness - Hudson",p:6},
+      {n:"United Cultivation - Bolton",p:6},
+      {n:"Peak Cannabis",p:6},
+      {n:"Bask - Fairhaven (REC)",p:5},
+      {n:"United Cultivation - Ashby",p:5},
+      {n:"HiBrid Co.",p:5},
+      {n:"CNA Stores - Haverhill",p:5},
+      {n:"Cady Brook Cannabis",p:5}
+    ]},
+    mc: {verified:3, unverified:17, total:20, retailers:[
+      {n:"Treehouse Craft Cannabis - Pepperell",p:19},
+      {n:"Treehouse Craft Cannabis - Dracut",p:16},
+      {n:"Treehouse Craft Cannabis - Groton",p:11}
+    ]},
+    hb: {verified:66, unverified:325, total:391, retailers:[
+      {n:"6 Bricks",p:40},
+      {n:"Trinity Naturals",p:25},
+      {n:"Lowell Cannabis Co.",p:24},
+      {n:"Campfire Cannabis",p:22},
+      {n:"Collective - Littleton",p:20},
+      {n:"Collective - Billerica",p:18},
+      {n:"Legal Greens - Brockton",p:18},
+      {n:"Quincy Cannabis Co.",p:18},
+      {n:"Treehouse Craft Cannabis - Pepperell",p:17},
+      {n:"Diem - Worcester",p:15},
+      {n:"Boom X - Shirley",p:14},
+      {n:"United Cultivation - Bolton",p:13},
+      {n:"Boutiq",p:12},
+      {n:"Treehouse Craft Cannabis - Dracut",p:12},
+      {n:"Deezle Cannabis",p:12},
+      {n:"Treehouse Craft Cannabis - Groton",p:11},
+      {n:"Bud Barn - Winchendon",p:9},
+      {n:"Full Harvest Moonz - Haverhill",p:9},
+      {n:"Greatest Hits Cannabis - Taunton",p:8},
+      {n:"Greatest Hits Cannabis - Lynn",p:8},
+      {n:"Gage Cannabis Co. - Ayer",p:7},
+      {n:"The Goods",p:7},
+      {n:"Peak Cannabis",p:6},
+      {n:"Uma Flowers - Pepperell",p:6},
+      {n:"Ideal Craft Cannabis",p:6}
     ]},
   }
 };
 
 // Dutchie product catalog data &mdash; aggregated by vendor & category
 // Format: { skus, avgPrice, avgCost } per category per vendor
-// Updated: 2026-03-30 via Dutchie POS API (3 stores: Dracut 7350, Pepperell 7323, Groton 7329 = 22002 total, 3257 matched)
+// Updated: 2026-04-09 via Dutchie POS API (3 stores: Dracut, Pepperell, Groton; in-stock filtered via /inventory)
 const PRODUCT_DATA = {
-  lastUpdated: "2026-04-09T04:30:00Z",
+  lastUpdated: "2026-04-10T04:30:00Z",
   vendors: {
     fb: { totalSkus: 44, categories: {
       "Disposable":               { skus: 19, avgPrice: 36.37, avgCost: 16.16 },
@@ -943,7 +943,7 @@ const PRODUCT_DATA = {
       "Topicals":                 { skus: 1, avgPrice: 20, avgCost: 9.5 },
       "Tablet":                   { skus: 1, avgPrice: 20, avgCost: 10 }
     }},
-    tb: { totalSkus: 28, categories: {
+    tb: { totalSkus: 27, categories: {
       "Gummies":                  { skus: 15, avgPrice: 19.87, avgCost: 9.5 },
       "Chocolate":                { skus: 7, avgPrice: 21.43, avgCost: 10.07 },
       "510 Cart":                 { skus: 5, avgPrice: 16.8, avgCost: 9 }
@@ -951,15 +951,16 @@ const PRODUCT_DATA = {
     gf: { totalSkus: 17, categories: {
       "Drink Mix":                { skus: 17, avgPrice: 43.12, avgCost: 20.29 }
     }},
-    wf: { totalSkus: 38, categories: {
+    wf: { totalSkus: 37, categories: {
       "Bud":                      { skus: 13, avgPrice: 27.31, avgCost: 13.46 },
-      "Single":                   { skus: 12, avgPrice: 11.67, avgCost: 5 },
+      "Single":                   { skus: 11, avgPrice: 11.82, avgCost: 5 },
       "Live Rosin":               { skus: 4, avgPrice: 60, avgCost: 30 },
       "Single Infused":           { skus: 3, avgPrice: 24, avgCost: 12 },
       "Pre Ground":               { skus: 2, avgPrice: 55, avgCost: 27.5 },
       "Salve":                    { skus: 1, avgPrice: 50, avgCost: 25 },
       "Multipack Infused":        { skus: 1, avgPrice: 50, avgCost: 25 },
-      "Concentrate":              { skus: 1, avgPrice: 60, avgCost: 30 }
+      "Concentrate":              { skus: 1, avgPrice: 60, avgCost: 30 },
+      "Batter":                   { skus: 1, avgPrice: 60, avgCost: 30 }
     }},
     bo: { totalSkus: 30, categories: {
       "Bud":                      { skus: 12, avgPrice: 19, avgCost: 9.5 },
@@ -967,10 +968,12 @@ const PRODUCT_DATA = {
       "Single":                   { skus: 4, avgPrice: 9.5, avgCost: 3.63 },
       "Kief":                     { skus: 4, avgPrice: 20, avgCost: 10 },
       "Disposable":               { skus: 2, avgPrice: 30, avgCost: 15 },
-      "Concentrate":              { skus: 1, avgPrice: 50, avgCost: 25 }
+      "Distillate":               { skus: 1, avgPrice: 50, avgCost: 25 },
+      "Concentrate":              { skus: 1, avgPrice: 50, avgCost: 25 },
+      "Diamonds":                 { skus: 1, avgPrice: 50, avgCost: 25 }
     }},
-    hp: { totalSkus: 34, categories: {
-      "Single":                   { skus: 27, avgPrice: 8.15, avgCost: 2.56 },
+    hp: { totalSkus: 33, categories: {
+      "Single":                   { skus: 26, avgPrice: 8.08, avgCost: 2.54 },
       "Pre Ground":               { skus: 6, avgPrice: 33.33, avgCost: 13.33 },
       "Bud":                      { skus: 1, avgPrice: 38, avgCost: 18 }
     }},
@@ -978,6 +981,7 @@ const PRODUCT_DATA = {
       "Pre Ground":               { skus: 9, avgPrice: 30, avgCost: 4.98 },
       "Single":                   { skus: 8, avgPrice: 5, avgCost: 1.07 },
       "Gift Cards":               { skus: 3, avgPrice: 20, avgCost: 0 },
+      "Gifts":                    { skus: 1, avgPrice: 250, avgCost: 90 },
       "Apparel":                  { skus: 1, avgPrice: 25, avgCost: 24 },
       "Shake":                    { skus: 1, avgPrice: 5, avgCost: 2.32 }
     }},
@@ -993,6 +997,8 @@ const PRODUCT_DATA = {
   }
 };
 
+// ===================================================
+// MARKET TREND DATA (Lit Alerts &mdash; Estimated MA Market Sales)
 // ===================================================
 // MARKET TREND DATA (Lit Alerts &mdash; Estimated MA Market Sales)
 // ===================================================
@@ -1014,38 +1020,40 @@ const MARKET_TREND_DATA = {
 // ===================================================
 // INVENTORY MIX &mdash; Bricks vs Non-Bricks (from Dutchie product catalog)
 // ===================================================
+// INVENTORY MIX &mdash; Bricks vs Non-Bricks (from Dutchie product catalog)
+// ===================================================
 const INVENTORY_MIX = {
-  lastUpdated: "2026-04-09T04:30:00Z",
+  lastUpdated: "2026-04-10T04:30:00Z",
   note: "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
-  totalActive: 758,
-  totalBrick: 242,
+  totalActive: 755,
+  totalBrick: 239,
   totalCore: 207,
   totalOther: 309,
   perStore: {
-    dracut:     { total: 512 },
-    pepperell:  { total: 474 },
-    groton:     { total: 433 },
+    dracut:     { total: 481 },
+    pepperell:  { total: 445 },
+    groton:     { total: 396 },
   },
   brickVendors: [
     { name: "Freshly Baked",       skus: 44 },
-    { name: "Wellman Farms",       skus: 38 },
-    { name: "High Plains Farm",    skus: 34 },
+    { name: "Wellman Farms",       skus: 37 },
+    { name: "High Plains Farm",    skus: 33 },
     { name: "Bostica",             skus: 30 },
-    { name: "T. Bear / Coast",     skus: 28 },
     { name: "Hudson Botanical",    skus: 28 },
+    { name: "T. Bear / Coast",     skus: 27 },
     { name: "MACC",                skus: 23 },
     { name: "Good Feels",          skus: 17 },
   ],
   coreVendors: [
-    { name: "Cultivate",           skus: 37 },
-    { name: "Green Meadows",       skus: 33 },
-    { name: "ARL Healthcare",      skus: 28 },
-    { name: "Garden Remedies",     skus: 23 },
+    { name: "Cultivate",           skus: 40 },
+    { name: "Green Meadows",       skus: 32 },
+    { name: "ARL Healthcare",      skus: 32 },
+    { name: "Garden Remedies",     skus: 32 },
+    { name: "Lunar Xtracts",       skus: 23 },
     { name: "Novel Beverage",      skus: 22 },
-    { name: "Lunar Xtracts",       skus: 19 },
-    { name: "Mederi",              skus: 9 },
-    { name: "Humboldt Masters",    skus: 4 },
-    { name: "Curaleaf",            skus: 4 },
+    { name: "Mederi",              skus: 11 },
+    { name: "Curaleaf",            skus: 10 },
+    { name: "Humboldt Masters",    skus: 5 },
   ],
   otherVendors: [
     { name: "AFG Distribution", skus: 77 },
@@ -1058,55 +1066,7 @@ const INVENTORY_MIX = {
     { name: "Palazzi Incorporated", skus: 13 },
     { name: "Green Harbor", skus: 11 },
     { name: "Cultivauna, LLC", skus: 8 },
-    { name: "Pilgrim Soul", skus: 7 },
-    { name: "Revolutionary Clinics", skus: 6 },
-    { name: "Atlantic Medicinal Partners, Inc", skus: 6 },
-    { name: "Erva Inc.", skus: 6 },
-    { name: "Cannalive Genetics LLC", skus: 6 },
-    { name: "LoveBuds", skus: 4 },
-    { name: "Solar Therapeutics, Inc. - C", skus: 4 },
-    { name: "Alternative Compassion Services, Inc. - P", skus: 3 },
-    { name: "Alternative Compassion Services, Inc. - C", skus: 3 },
-    { name: "Ture", skus: 3 },
-    { name: "Elevated Cultivation Co LLC", skus: 3 },
-    { name: "Bodelle's", skus: 2 },
-    { name: "Royal Supply Co.", skus: 2 },
-    { name: "Mainely Mats", skus: 1 },
-    { name: "Amazon", skus: 1 },
-    { name: "Carbon Colors", skus: 1 },
-    { name: "Dris Corporation", skus: 1 },
   ],
-  otherVendorsFull: 27,
-  missingCore: ["Cresco", "Eureka", "Fathom Cannabis", "JBAM", "Levia", "Regenerative", "Standard Farms"],
-  byCategory: [
-    { group: "Other", brick: 0,  core: 18, other: 143,
-      coreVendors: {"Novel Beverage": 10, "Lunar Xtracts": 3, "ARL Healthcare": 3, "Garden Remedies": 2},
-      brickVendors: {} },
-    { group: "Pre-Rolls", brick: 61,  core: 50, other: 25,
-      coreVendors: {"Humboldt Masters": 4, "Green Meadows": 13, "Cultivate": 9, "Mederi": 6, "Garden Remedies": 8, "ARL Healthcare": 10},
-      brickVendors: {"Wellman Farms": 15, "MACC": 4, "High Plains Farm": 26, "Bostica": 9, "Freshly Baked": 4, "Hudson Botanical": 3} },
-    { group: "Vapes", brick: 44,  core: 52, other: 3,
-      coreVendors: {"Green Meadows": 13, "Cultivate": 17, "Curaleaf": 4, "Garden Remedies": 5, "Lunar Xtracts": 13},
-      brickVendors: {"Hudson Botanical": 14, "Freshly Baked": 25, "T. Bear / Coast": 5} },
-    { group: "Flower", brick: 41,  core: 29, other: 16,
-      coreVendors: {"ARL Healthcare": 2, "Garden Remedies": 9, "Cultivate": 11, "Mederi": 3, "Green Meadows": 4},
-      brickVendors: {"MACC": 7, "Wellman Farms": 14, "Bostica": 11, "High Plains Farm": 7, "Hudson Botanical": 2} },
-    { group: "Merch / Accessories", brick: 4,  core: 0, other: 43,
-      coreVendors: {},
-      brickVendors: {"MACC": 4} },
-    { group: "Edibles", brick: 28,  core: 12, other: 7,
-      coreVendors: {"ARL Healthcare": 12},
-      brickVendors: {"Freshly Baked": 8, "T. Bear / Coast": 20} },
-    { group: "Beverages", brick: 16,  core: 12, other: 7,
-      coreVendors: {"Novel Beverage": 12},
-      brickVendors: {"Good Feels": 16} },
-    { group: "Concentrates", brick: 13,  core: 5, other: 2,
-      coreVendors: {"ARL Healthcare": 2, "Lunar Xtracts": 3},
-      brickVendors: {"Wellman Farms": 5, "Hudson Botanical": 4, "Bostica": 4} },
-    { group: "Topicals", brick: 1,  core: 0, other: 1,
-      coreVendors: {},
-      brickVendors: {"Wellman Farms": 1} },
-  ]
 };
 
 // ===================================================
@@ -1226,7 +1186,7 @@ function totalVendorRevenue(vendorKey) {
 }
 
 // ===================================================
-// CHART DEFAULTS (wrapped Ã¢ÂÂ if Chart.js CDN fails, KPIs still render)
+// CHART DEFAULTS (wrapped — if Chart.js CDN fails, KPIs still render)
 // ===================================================
 const CHARTS_AVAILABLE = typeof Chart !== 'undefined';
 if (CHARTS_AVAILABLE) {
@@ -1238,7 +1198,7 @@ if (CHARTS_AVAILABLE) {
     Chart.defaults.plugins.legend.labels.pointStyleWidth = 8;
     Chart.defaults.animation.duration = 400;
 } else {
-    console.warn('[BrickHouse] Chart.js not loaded Ã¢ÂÂ KPIs will render but charts will be unavailable');
+    console.warn('[BrickHouse] Chart.js not loaded — KPIs will render but charts will be unavailable');
 }
 
 const chartInstances = {};
@@ -1466,7 +1426,7 @@ function buildLitAlertsTable(vendor) {
     }
 
     // Show vendor-specific notes
-    const notes = LIT_ALERTS_DATA.notes || {};
+    const notes = LIT_ALERTS_DATA.notes;
     const vendorNote = notes[vendor];
     if (vendorNote) {
         html += `<div style="margin-top:10px; padding:8px 10px; background:rgba(210,153,34,0.08); border:1px solid rgba(210,153,34,0.2); border-radius:4px; font-size:0.75rem; color:#d29922;">\u26A0 ${vendorNote}</div>`;
@@ -1484,7 +1444,7 @@ function loadMarketIntelligence() {
 
     Object.keys(VENDORS).forEach(v => {
         const retailersData = LIT_ALERTS_DATA.vendorRetailers[v];
-        const brandIds = (LIT_ALERTS_DATA.brandIds || {})[v];
+        const brandIds = LIT_ALERTS_DATA.brandIds[v];
         const verified = retailersData ? retailersData.verified : 0;
         const unverified = retailersData ? (retailersData.unverified || 0) : 0;
         const brandStr = brandIds ? brandIds.map(b => `${b.name}`).join(', ') : 'N/A';
@@ -2443,6 +2403,8 @@ document.querySelectorAll('.nav-item').forEach(function(item) {
 // ===================================================
 // DEFENSIVE DATA FIXUPS (must run before any panel rendering)
 // ===================================================
+// If the daily refresh task didn't produce byCategory at the root of INVENTORY_MIX,
+// compute it by aggregating per-store data from STORE_INVENTORY.
 if (typeof INVENTORY_MIX !== 'undefined' && !INVENTORY_MIX.byCategory && typeof STORE_INVENTORY !== 'undefined') {
     const catMap = {};
     Object.values(STORE_INVENTORY).forEach(store => {
