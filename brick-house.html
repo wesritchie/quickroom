@@ -384,6 +384,11 @@
         .api-table tr:hover td { background: rgba(255,255,255,0.02); }
         .api-table tr.total-row { font-weight: 600; background: rgba(255,255,255,0.03); }
         .api-table tr.total-row td { border-top: 2px solid var(--border); }
+    
+        .stale-banner { display:none; padding:10px 16px; font-size:13px; text-align:center; }
+        .stale-banner.warn { display:block; background:#3d2e00; color:#ffd43b; border-bottom:1px solid #5c4a00; }
+        .stale-banner.error { display:block; background:#3d1010; color:#ff6b6b; border-bottom:1px solid #5c1a1a; }
+        .sidebar-footer { padding:12px 16px; font-size:11px; color:var(--text-muted); border-top:1px solid var(--border); margin-top:auto; }
     </style>
 </head>
 <body>
@@ -443,15 +448,17 @@
         <div class="brick-icon" style="background: var(--text-muted);"></div>
         Data Confidence
     </div>
+    <div class="sidebar-footer" id="bh-sidebar-footer">Data as of &#8212;</div>
 </nav>
 
 <!-- =================== MAIN =================== -->
 <div class="main">
+<div id="bh-stale-banner" class="stale-banner"></div>
 
 <!-- -- OVERVIEW PANEL -- -->
 <div id="panel-overview" class="panel active">
     <div class="overview-title">Brick Vendor Overview</div>
-    <div class="overview-sub">Jan 2025 &mdash; Feb 2026 &middot; All Stores Combined</div>
+    <div class="overview-sub" id="bh-overview-range">Jan 2025 &mdash; Feb 2026 &middot; All Stores Combined</div>
 
     <div class="kpi-row" id="overview-kpis"></div>
 
@@ -2430,7 +2437,46 @@ if (typeof INVENTORY_MIX !== 'undefined' && typeof INVENTORY_MIX.missingCore ===
 // ===================================================
 // INIT
 // ===================================================
-buildOverview();
+
+        // DATA FRESHNESS CHECK
+        (function checkDataFreshness() {
+            var monthMap = {Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12'};
+            var allMonths = Object.keys(storeData.dracut || {});
+            var parsed = allMonths.map(function(m) {
+                var mon = m.slice(0,3), yr = '20' + m.slice(3);
+                return { key: m, sort: yr + monthMap[mon], label: mon + ' ' + yr };
+            }).sort(function(a,b) { return a.sort.localeCompare(b.sort); });
+            var firstMonth = parsed[0];
+            var lastMonth = parsed[parsed.length - 1];
+            var rangeEl = document.getElementById('bh-overview-range');
+            if (rangeEl && firstMonth && lastMonth) {
+                rangeEl.textContent = firstMonth.label + ' \u2014 ' + lastMonth.label + ' \u00B7 All Stores Combined';
+            }
+            var timestamps = [];
+            if (typeof LIT_ALERTS_DATA !== 'undefined' && LIT_ALERTS_DATA.lastUpdated) timestamps.push(new Date(LIT_ALERTS_DATA.lastUpdated));
+            if (typeof PRODUCT_DATA !== 'undefined' && PRODUCT_DATA.lastUpdated) timestamps.push(new Date(PRODUCT_DATA.lastUpdated));
+            if (typeof MARKET_TREND_DATA !== 'undefined' && MARKET_TREND_DATA.lastUpdated) timestamps.push(new Date(MARKET_TREND_DATA.lastUpdated));
+            if (typeof INVENTORY_MIX !== 'undefined' && INVENTORY_MIX.lastUpdated) timestamps.push(new Date(INVENTORY_MIX.lastUpdated));
+            var latestData = timestamps.length > 0 ? new Date(Math.max.apply(null, timestamps)) : null;
+            var footerEl = document.getElementById('bh-sidebar-footer');
+            if (footerEl && latestData) {
+                footerEl.textContent = 'Data as of ' + latestData.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+            }
+            var banner = document.getElementById('bh-stale-banner');
+            if (banner && latestData) {
+                var now = new Date();
+                var ageDays = Math.floor((now - latestData) / 86400000);
+                if (ageDays >= 4) {
+                    banner.className = 'stale-banner error';
+                    banner.textContent = '\u26A0 Data is ' + ageDays + ' days old (last updated ' + latestData.toLocaleDateString('en-US', {month:'short', day:'numeric'}) + '). The Brick House pipeline may have failed \u2014 check the pipeline status email.';
+                } else if (ageDays >= 2) {
+                    banner.className = 'stale-banner warn';
+                    banner.textContent = '\u26A0 Data is ' + ageDays + ' days old (last updated ' + latestData.toLocaleDateString('en-US', {month:'short', day:'numeric'}) + '). Pipeline may have skipped a run.';
+                }
+            }
+        })();
+        
+        buildOverview();
 buildInventoryMixPanel();
 buildVendorPanels();
 buildMarketTrends();
