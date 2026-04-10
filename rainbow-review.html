@@ -265,15 +265,15 @@ tr:hover { background: rgba(255,169,77,0.04); }
                 <div id="market-th-ranks" style="margin-top:6px;">
                     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;">
                         <span style="font-size:12px;color:#c9d1d9;">Dracut</span>
-                        <span style="font-size:20px;font-weight:700;color:#ffa94d;" id="market-rank-dracut">&#8212;</span>
+                        <span style="display:inline-flex;align-items:baseline;gap:6px;"><span style="font-size:20px;font-weight:700;color:#ffa94d;" id="market-rank-dracut">&#8212;</span><span class="rank-change" id="market-rank-trend-dracut"></span></span>
                     </div>
                     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;">
                         <span style="font-size:12px;color:#c9d1d9;">Pepperell</span>
-                        <span style="font-size:20px;font-weight:700;color:#ffd43b;" id="market-rank-pepperell">&#8212;</span>
+                        <span style="display:inline-flex;align-items:baseline;gap:6px;"><span style="font-size:20px;font-weight:700;color:#ffd43b;" id="market-rank-pepperell">&#8212;</span><span class="rank-change" id="market-rank-trend-pepperell"></span></span>
                     </div>
                     <div style="display:flex;justify-content:space-between;align-items:baseline;">
                         <span style="font-size:12px;color:#c9d1d9;">Groton</span>
-                        <span style="font-size:20px;font-weight:700;color:#69db7c;" id="market-rank-groton">&#8212;</span>
+                        <span style="display:inline-flex;align-items:baseline;gap:6px;"><span style="font-size:20px;font-weight:700;color:#69db7c;" id="market-rank-groton">&#8212;</span><span class="rank-change" id="market-rank-trend-groton"></span></span>
                     </div>
                 </div>
                 <div class="kpi-subtext" id="market-th-rank-sub"></div>
@@ -1913,14 +1913,49 @@ function renderMarketOverview() {
     document.getElementById('market-avg-rev').textContent = hasRetailers ? fmtCurrency(avgRev) : '\u2014';
     document.getElementById('market-avg-rev-sub').textContent = hasRetailers ? (periodStoreLabels[period] || '') : '';
 
-    // Populate all 3 store ranks
+    // Populate all 3 store ranks + trend arrows vs prior period
     const rankDracut = storeRanks[34826];
     const rankPepperell = storeRanks[34827];
     const rankGroton = storeRanks[34825];
     document.getElementById('market-rank-dracut').textContent = (!hasRetailers || rankDracut === '\u2014') ? '\u2014' : '#' + rankDracut;
     document.getElementById('market-rank-pepperell').textContent = (!hasRetailers || rankPepperell === '\u2014') ? '\u2014' : '#' + rankPepperell;
     document.getElementById('market-rank-groton').textContent = (!hasRetailers || rankGroton === '\u2014') ? '\u2014' : '#' + rankGroton;
-    document.getElementById('market-th-rank-sub').textContent = hasRetailers ? 'of ' + retailers.length + ' stores' : 'No ranking data';
+
+    // Compute prior period ranks for trend arrows
+    const priorKey = getPriorPeriodKey(period);
+    let priorRankMap = {};
+    if (priorKey && DATA.market[priorKey]) {
+        const priorRetailers = DATA.market[priorKey].retailers || [];
+        if (priorRetailers.length > 50) {
+            const priorInjected = injectTHActuals(priorRetailers, priorKey);
+            const priorSorted = [...priorInjected].sort((a, b) => (b.estimatedAmount || 0) - (a.estimatedAmount || 0));
+            priorSorted.forEach((r, i) => { priorRankMap[r.id] = i + 1; });
+        }
+    }
+    const priorLabelsKPI = { weekly: 'vs 7-day', monthly: 'vs MTD', lastMonth: 'vs last mo' };
+    const trendLabel = priorLabelsKPI[priorKey] || 'vs prior';
+    const storeIdMap = { dracut: 34826, pepperell: 34827, groton: 34825 };
+    for (const [storeName, storeId] of Object.entries(storeIdMap)) {
+        const el = document.getElementById('market-rank-trend-' + storeName);
+        if (!el) continue;
+        const curRank = storeRanks[storeId];
+        const priorRank = priorRankMap[storeId];
+        if (!hasRetailers || curRank === '\u2014' || priorRank == null) {
+            el.innerHTML = '';
+        } else {
+            const diff = priorRank - curRank;
+            if (diff > 0) {
+                el.innerHTML = '<span class="trend-up" style="font-size:12px;">\u25B2' + diff + '</span>';
+            } else if (diff < 0) {
+                el.innerHTML = '<span class="trend-down" style="font-size:12px;">\u25BC' + Math.abs(diff) + '</span>';
+            } else {
+                el.innerHTML = '<span class="trend-flat" style="font-size:12px;">\u2014</span>';
+            }
+        }
+    }
+    document.getElementById('market-th-rank-sub').textContent = hasRetailers
+        ? 'of ' + retailers.length + ' stores' + (Object.keys(priorRankMap).length > 0 ? ' \u00B7 arrows ' + trendLabel : '')
+        : 'No ranking data';
 
     // Category chart \u2014 FIXED: ensure all text is light on dark background
     const catsRaw = d.categories?.results || d.categories || [];
