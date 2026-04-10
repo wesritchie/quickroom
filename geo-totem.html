@@ -264,6 +264,10 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+  .stale-banner { display:none; padding:10px 16px; font-size:13px; text-align:center; }
+  .stale-banner.warn { display:block; background:#3d2e00; color:#ffd43b; border-bottom:1px solid #5c4a00; }
+  .stale-banner.error { display:block; background:#3d1010; color:#ff6b6b; border-bottom:1px solid #5c1a1a; }
 </style>
 </head>
 <body>
@@ -278,7 +282,7 @@
   <div class="nav-item" onclick="showSection('trends')">Trends Over Time</div>
   <div class="nav-item" onclick="showSection('city-trends')">City Tracker</div>
   <div class="sidebar-spacer"></div>
-  <div class="sidebar-footer">Data as of Apr 07, 2026</div>
+  <div class="sidebar-footer"><span id="gt-sidebar-asof">Data as of Apr 07, 2026</span></div>
 </nav>
 
 <div class="main">
@@ -1239,6 +1243,45 @@ function applyMetaSelfContained(){if(typeof CITY_TREND_STORE==='undefined'||type
 applyMetaSelfContained();
 renderAll();
 renderCityTrends();
+
+// ========== STALENESS DETECTION ==========
+(function checkStaleness() {
+    // Find the "Data as of" or "Last updated" text in the sidebar
+    var sidebarEls = document.querySelectorAll('.sidebar-footer, [class*="footer"]');
+    var asOfText = null;
+    document.querySelectorAll('*').forEach(function(el) {
+        if (el.textContent && el.textContent.includes('Data as of') && el.children.length === 0) {
+            asOfText = el.textContent;
+            el.id = el.id || 'gt-sidebar-asof';
+        }
+    });
+    if (!asOfText) {
+        // Try "Last updated:" in header
+        document.querySelectorAll('*').forEach(function(el) {
+            if (el.textContent && el.textContent.includes('Last updated:') && el.children.length < 3) {
+                asOfText = el.textContent;
+            }
+        });
+    }
+    if (!asOfText) return;
+    // Parse date from "Data as of Mar 22, 2026" or "Last updated: Mar 22, 2026"
+    var dateMatch = asOfText.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2}),?\s+(\d{4})/);
+    if (!dateMatch) return;
+    var dataDate = new Date(dateMatch[0]);
+    if (isNaN(dataDate)) return;
+    var now = new Date();
+    var ageDays = Math.floor((now - dataDate) / 86400000);
+    var banner = document.getElementById('gt-stale-banner');
+    if (!banner) return;
+    var dateLabel = dateMatch[1] + ' ' + dateMatch[2];
+    if (ageDays >= 4) {
+        banner.className = 'stale-banner error';
+        banner.textContent = '\u26A0 Data is ' + ageDays + ' days old (last updated ' + dateLabel + '). The Geo Totem pipeline may have failed.';
+    } else if (ageDays >= 2) {
+        banner.className = 'stale-banner warn';
+        banner.textContent = '\u26A0 Data is ' + ageDays + ' days old (last updated ' + dateLabel + '). Pipeline may have skipped a run.';
+    }
+})();
 </script>
 </body>
 </html>
