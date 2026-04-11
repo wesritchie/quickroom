@@ -663,25 +663,41 @@ let state = {
 // ====== DEFAULT CHANNELS ======
 function getDefaultChannels() {
   return [
-    { id:'flower_35g', name:'3.5g Flower Pack', material:'flower', unitsPerLb:130, sellPrice:23, inHouseCost:5.50, outsourcedCost:8, demandCap:null, enabled:true },
-    { id:'preground_7g', name:'7g Pre-Ground', material:'flower', unitsPerLb:64, sellPrice:25, inHouseCost:4, outsourcedCost:6, demandCap:null, enabled:true },
-    { id:'deli_bud', name:'Deli Bud (by gram)', material:'flower', unitsPerLb:454, sellPrice:3, inHouseCost:0.30, outsourcedCost:0, demandCap:null, enabled:true },
-    { id:'preroll_05g', name:'0.5g Pre-Roll', material:'flower', unitsPerLb:907, sellPrice:4.50, inHouseCost:1.00, outsourcedCost:1.50, demandCap:null, enabled:true },
-    { id:'preroll_1g', name:'1g Pre-Roll', material:'flower', unitsPerLb:454, sellPrice:6, inHouseCost:1.50, outsourcedCost:2.50, demandCap:null, enabled:true },
-    { id:'multipack', name:'Multi-Pack (new)', material:'flower', unitsPerLb:130, sellPrice:30, inHouseCost:7, outsourcedCost:10, demandCap:null, enabled:true },
-    { id:'extraction', name:'Extraction Partner', material:'trim', unitsPerLb:0, sellPrice:19.90, inHouseCost:4.65, outsourcedCost:4.65, demandCap:null, enabled:true,
+    { id:'flower_35g', name:'3.5g Flower Pack', material:'flower', gramsPerUnit:3.5, sellPrice:23, inHouseCost:5.50, outsourcedCost:8, demandCap:null, enabled:true },
+    { id:'preground_7g', name:'7g Pre-Ground', material:'flower', gramsPerUnit:7, sellPrice:25, inHouseCost:4, outsourcedCost:6, demandCap:null, enabled:true },
+    { id:'deli_bud', name:'Deli Bud (by gram)', material:'flower', gramsPerUnit:1, sellPrice:3, inHouseCost:0.30, outsourcedCost:0, demandCap:null, enabled:true },
+    { id:'preroll_05g', name:'0.5g Pre-Roll', material:'flower', gramsPerUnit:0.5, sellPrice:4.50, inHouseCost:1.00, outsourcedCost:1.50, demandCap:null, enabled:true },
+    { id:'preroll_1g', name:'1g Pre-Roll', material:'flower', gramsPerUnit:1, sellPrice:6, inHouseCost:1.50, outsourcedCost:2.50, demandCap:null, enabled:true },
+    { id:'multipack', name:'Multi-Pack (5×0.5g)', material:'flower', gramsPerUnit:2.5, sellPrice:30, inHouseCost:7, outsourcedCost:10, demandCap:null, enabled:true },
+    { id:'extraction', name:'Extraction Partner', material:'trim', gramsPerUnit:0, sellPrice:19.90, inHouseCost:4.65, outsourcedCost:4.65, demandCap:null, enabled:true,
       isExtraction:true, yieldPct:10, dealType:'buyback', buybackPrice:4.65, splitPct:30 },
-    { id:'bulk_cash', name:'Bulk Sale (Cash)', material:'either', unitsPerLb:1, sellPrice:60, inHouseCost:0, outsourcedCost:0, demandCap:null, enabled:true },
-    { id:'bulk_debt', name:'Bulk for Debt', material:'either', unitsPerLb:1, sellPrice:60, inHouseCost:0, outsourcedCost:0, demandCap:null, enabled:true },
-    { id:'broker_wholesale', name:'Wholesale via Broker', material:'flower', unitsPerLb:64, sellPrice:22.50, inHouseCost:4, outsourcedCost:6, demandCap:null, enabled:true,
+    { id:'bulk_cash', name:'Bulk Sale (Cash)', material:'either', gramsPerUnit:453.6, sellPrice:60, inHouseCost:0, outsourcedCost:0, demandCap:null, enabled:true },
+    { id:'bulk_debt', name:'Bulk for Debt', material:'either', gramsPerUnit:453.6, sellPrice:60, inHouseCost:0, outsourcedCost:0, demandCap:null, enabled:true },
+    { id:'broker_wholesale', name:'Wholesale via Broker', material:'flower', gramsPerUnit:7, sellPrice:22.50, inHouseCost:4, outsourcedCost:6, demandCap:null, enabled:true,
       isBroker:true, brokerFeePct:10 }
   ];
+}
+
+// Derive unitsPerLb from gramsPerUnit — this is the single source of truth conversion
+function getUnitsPerLb(ch) {
+  if (ch.isExtraction) return 0; // extraction uses yield math, not grams-per-unit
+  if (!ch.gramsPerUnit || ch.gramsPerUnit <= 0) {
+    // Legacy fallback: if channel has unitsPerLb but no gramsPerUnit
+    return ch.unitsPerLb || 0;
+  }
+  return Math.floor(453.6 / ch.gramsPerUnit);
 }
 
 // ====== INIT ======
 function init() {
   loadState();
   if (!state.channels.length) state.channels = getDefaultChannels();
+  // Migrate legacy channels: convert unitsPerLb → gramsPerUnit if missing
+  state.channels.forEach(ch => {
+    if (ch.gramsPerUnit == null && ch.unitsPerLb > 0 && !ch.isExtraction) {
+      ch.gramsPerUnit = Math.round((453.6 / ch.unitsPerLb) * 100) / 100;
+    }
+  });
   bindHarvestInputs();
   renderAll();
   document.getElementById('footerDate').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
@@ -790,7 +806,8 @@ function renderChannels() {
         <span class="ch-type ${matClass}">${matLabel}</span>
       </div>
       <div class="ch-fields">
-        <div class="ch-field"><label>Units / Lb</label><input type="number" value="${ch.unitsPerLb}" data-field="unitsPerLb" step="0.1"></div>
+        ${ch.isExtraction ? '' : `<div class="ch-field"><label>Grams / Unit</label><input type="number" value="${ch.gramsPerUnit||0}" data-field="gramsPerUnit" step="0.1" min="0.1"></div>
+        <div class="ch-field"><label>Units / Lb</label><span class="computed-upl" style="display:block;padding:6px 8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--accent-blue);font-weight:600">${getUnitsPerLb(ch)}</span></div>`}
         <div class="ch-field"><label>Sell Price / Unit ($)</label><input type="number" value="${ch.sellPrice}" data-field="sellPrice" step="0.01"></div>
         <div class="ch-field"><label>In-House $/Unit (above overhead)</label><input type="number" value="${ch.inHouseCost}" data-field="inHouseCost" step="0.01"></div>
         <div class="ch-field"><label>Default Outsourced $/Unit</label><input type="number" value="${ch.outsourcedCost}" data-field="outsourcedCost" step="0.01"></div>
@@ -799,7 +816,7 @@ function renderChannels() {
           <select data-field="material"><option value="flower" ${ch.material==='flower'?'selected':''}>Flower</option><option value="trim" ${ch.material==='trim'?'selected':''}>Trim</option><option value="either" ${ch.material==='either'?'selected':''}>Either</option></select>
         </div>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--text-muted)">In-house cost = overhead/lb from Harvest Setup + this channel's per-unit cost. Outsourced replaces both.</div>`;
+      <div style="margin-top:8px;font-size:11px;color:var(--text-muted)">${ch.isExtraction ? 'Extraction units are calculated from yield %, not grams per unit.' : `1 lb = 453.6g &rarr; ${getUnitsPerLb(ch)} units at ${ch.gramsPerUnit||0}g each. In-house cost = overhead/lb + per-unit cost. Outsourced replaces both.`}</div>`;
 
     if (ch.isExtraction) {
       html += `<div class="extraction-config" style="margin-top:12px">
@@ -834,6 +851,7 @@ function renderChannels() {
     card.querySelectorAll('input, select').forEach(inp => {
       let handler = () => {
         let field = inp.dataset.field;
+        if (!field) return;
         let val = inp.type === 'number' ? parseFloat(inp.value)||0 : inp.value;
         if (field === 'demandCap' && val === 0) val = null;
         state.channels[idx][field] = val;
@@ -842,10 +860,20 @@ function renderChannels() {
         if (field === 'name') {
           document.querySelectorAll(`.line-channel option[value="${state.channels[idx].id}"]`).forEach(opt => { opt.textContent = val; });
         }
+        // If gramsPerUnit changed, update the computed Units/Lb display on this card
+        if (field === 'gramsPerUnit') {
+          let uplSpan = card.querySelector('.computed-upl');
+          if (uplSpan) uplSpan.textContent = getUnitsPerLb(state.channels[idx]);
+          // Also update the helper text
+          let helperDiv = card.querySelector('.ch-fields + div');
+          if (helperDiv && !state.channels[idx].isExtraction) {
+            helperDiv.innerHTML = `1 lb = 453.6g &rarr; ${getUnitsPerLb(state.channels[idx])} units at ${val}g each. In-house cost = overhead/lb + per-unit cost. Outsourced replaces both.`;
+          }
+        }
       };
       inp.addEventListener('change', handler);
-      // For text inputs (channel name), also update on keystroke for responsiveness
-      if (inp.type === 'text') inp.addEventListener('input', handler);
+      // For text and number inputs, also update on keystroke for responsiveness
+      if (inp.type === 'text' || inp.type === 'number') inp.addEventListener('input', handler);
     });
   });
   updateQuoteChannelSelect();
@@ -854,7 +882,7 @@ function renderChannels() {
 function addChannel() {
   let id = 'custom_' + Date.now();
   state.channels.push({
-    id, name:'New Channel', material:'flower', unitsPerLb:100,
+    id, name:'New Channel', material:'flower', gramsPerUnit:3.5,
     sellPrice:10, inHouseCost:2, outsourcedCost:4, demandCap:null, enabled:true
   });
   saveState();
@@ -1106,14 +1134,14 @@ function calcLineEcon(line, ch) {
       channelCost = 0;
     }
   } else if (ch.isBroker) {
-    units = Math.floor(lbs * ch.unitsPerLb);
+    units = Math.floor(lbs * getUnitsPerLb(ch));
     let gross = units * effSellPrice;
     let brokerFee = gross * ((ch.brokerFeePct || 10) / 100);
     revenue = gross - brokerFee;
     let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
     channelCost = units * costPerUnit;
   } else {
-    units = Math.floor(lbs * ch.unitsPerLb);
+    units = Math.floor(lbs * getUnitsPerLb(ch));
     revenue = units * effSellPrice;
     let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
     channelCost = units * costPerUnit;
@@ -1478,14 +1506,14 @@ function calcLineEconWithHarvest(line, ch, harvest) {
       channelCost = 0;
     }
   } else if (ch.isBroker) {
-    units = Math.floor(lbs * ch.unitsPerLb);
+    units = Math.floor(lbs * getUnitsPerLb(ch));
     let gross = units * effSellPrice;
     let brokerFee = gross * ((ch.brokerFeePct || 10) / 100);
     revenue = gross - brokerFee;
     let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
     channelCost = units * costPerUnit;
   } else {
-    units = Math.floor(lbs * ch.unitsPerLb);
+    units = Math.floor(lbs * getUnitsPerLb(ch));
     revenue = units * effSellPrice;
     let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
     channelCost = units * costPerUnit;
