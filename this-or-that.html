@@ -1093,135 +1093,6 @@ function renderAllocator() {
       let line = state.currentLines.find(l => l.id === parseInt(sel.dataset.line));
       if (line) {
         line.channelId = sel.value;
-        // Reset overrides to new channel defaustify-content:space-between;align-items:center">
-        <div>
-          <span class="q-vendor">${esc(q.vendor)}</span>
-          <span class="q-date" style="margin-left:8px">${q.date}</span>
-        </div>
-        <button class="del-btn" onclick="deleteQuote(${i})">&#x2715;</button>
-      </div>
-      <div class="q-desc">${esc(q.desc)}</div>
-      ${chName ? `<span class="q-channel">${esc(chName)}</span>` : ''}
-    </div>`;
-  });
-}
-
-function deleteQuote(idx) {
-  state.quotes.splice(idx, 1);
-  saveState();
-  renderQuotes();
-}
-
-// ====== SCENARIO BUILDER ======
-let lineIdCounter = 0;
-
-function addAllocLine(channelId, lbs, mode, overrides) {
-  lineIdCounter++;
-  let o = overrides || {};
-  state.currentLines.push({
-    id: lineIdCounter,
-    channelId: channelId || (state.channels[0] ? state.channels[0].id : ''),
-    lbs: lbs || 0,
-    mode: mode || 'inhouse',
-    destination: o.destination || 'internal',
-    sellPriceOverride: o.sellPriceOverride != null ? o.sellPriceOverride : null,
-    inHouseCostOverride: o.inHouseCostOverride != null ? o.inHouseCostOverride : null,
-    outsourcedCostOverride: o.outsourcedCostOverride != null ? o.outsourcedCostOverride : null
-  });
-  renderAllocator();
-}
-
-function removeAllocLine(lineId) {
-  state.currentLines = state.currentLines.filter(l => l.id !== lineId);
-  renderAllocator();
-}
-
-function renderAllocator() {
-  // Update reference bar
-  let h = state.harvest;
-  let total = h.flower + h.trim;
-  let growPerLb = total > 0 ? h.growCost / total : 0;
-  let prodPerLb = total > 0 ? h.prodOverhead / total : 0;
-  let allInPerLb = growPerLb + prodPerLb;
-  let industryStd = h.flower > 0 ? h.growCost / h.flower : 0;
-
-  document.getElementById('ref-grow-lb').textContent = '$' + growPerLb.toFixed(2);
-  document.getElementById('ref-prod-lb').textContent = '$' + prodPerLb.toFixed(2);
-  document.getElementById('ref-allin-lb').textContent = '$' + allInPerLb.toFixed(2);
-  document.getElementById('ref-industry-lb').textContent = '$' + industryStd.toFixed(2);
-
-  // If no lines yet, seed with one blank line
-  if (!state.currentLines.length) {
-    addAllocLine();
-    return; // addAllocLine calls renderAllocator again
-  }
-
-  let body = document.getElementById('allocBody');
-  body.innerHTML = '';
-
-  // Build channel dropdown options
-  let chOptions = state.channels.map(ch => `<option value="${ch.id}">${esc(ch.name)}</option>`).join('');
-
-  state.currentLines.forEach(line => {
-    let ch = state.channels.find(c => c.id === line.channelId);
-    if (!ch) return;
-    let matColor = ch.material === 'flower' ? 'var(--accent-green)' : ch.material === 'trim' ? 'var(--accent-purple)' : 'var(--accent-blue)';
-
-    // Effective sell price for this line (based on destination)
-    let basePrice = (line.destination === 'external') ? ch.wholesalePrice : ch.retailPrice;
-    let effSell = line.sellPriceOverride != null ? line.sellPriceOverride : basePrice;
-    // Effective cost per unit for this line
-    let effCost;
-    if (line.mode === 'outsourced') {
-      effCost = line.outsourcedCostOverride != null ? line.outsourcedCostOverride : ch.outsourcedCost;
-    } else {
-      effCost = line.inHouseCostOverride != null ? line.inHouseCostOverride : ch.inHouseCost;
-    }
-
-    let tr = document.createElement('tr');
-    tr.setAttribute('data-line-row', line.id);
-    tr.innerHTML = `
-      <td style="text-align:left">
-        <span class="mat-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${matColor};margin-right:4px;vertical-align:middle"></span>
-        <select class="alloc-input line-channel" data-line="${line.id}" style="width:140px;text-align:left">${chOptions}</select>
-      </td>
-      <td><input type="number" class="alloc-input line-lbs" value="${line.lbs}" min="0" data-line="${line.id}" style="width:70px"></td>
-      <td>
-        <div class="toggle-group">
-          <button class="toggle-btn ${line.mode==='inhouse'?'active':''}" data-line="${line.id}" data-mode="inhouse">In</button>
-          <button class="toggle-btn ${line.mode==='outsourced'?'active':''}" data-line="${line.id}" data-mode="outsourced">Out</button>
-        </div>
-      </td>
-      <td>
-        <div class="toggle-group">
-          <button class="toggle-btn dest-btn ${line.destination==='internal'?'active':''}" data-line="${line.id}" data-dest="internal" title="Sold through Tree House retail">Retail</button>
-          <button class="toggle-btn dest-btn ${line.destination==='external'?'active':''}" data-line="${line.id}" data-dest="external" title="Sold wholesale to external buyers">Whsle</button>
-        </div>
-      </td>
-      <td><input type="number" class="alloc-input line-sell" value="${effSell}" min="0" step="0.50" data-line="${line.id}" style="width:70px" title="${line.destination==='external'?'Wholesale price per unit':'Retail price per unit'}"></td>
-      <td><input type="number" class="alloc-input line-cost" value="${effCost}" min="0" step="0.25" data-line="${line.id}" style="width:70px" title="${line.mode==='inhouse'?'In-house cost per unit':'Vendor cost per unit'}"></td>
-      <td class="alloc-val" data-cell="units">—</td>
-      <td class="alloc-val" data-cell="revenue">—</td>
-      <td class="alloc-val" data-cell="totalCost">—</td>
-      <td class="alloc-val" data-cell="margin">—</td>
-      <td class="alloc-val" data-cell="marginPerLb">—</td>
-      <td class="alloc-val" data-opp-line="${line.id}">—</td>
-      <td><button class="del-btn" onclick="removeAllocLine(${line.id})" title="Remove line">&#x2715;</button></td>
-    `;
-
-    // Set selected channel
-    let sel = tr.querySelector('.line-channel');
-    sel.value = line.channelId;
-
-    body.appendChild(tr);
-  });
-
-  // Bind all inputs
-  body.querySelectorAll('.line-channel').forEach(sel => {
-    sel.addEventListener('change', () => {
-      let line = state.currentLines.find(l => l.id === parseInt(sel.dataset.line));
-      if (line) {
-        line.channelId = sel.value;
         // Reset overrides to new channel defaults
         line.sellPriceOverride = null;
         line.inHouseCostOverride = null;
@@ -1629,7 +1500,136 @@ function renderComparison(indices) {
     if (!ch) return;
     html += `<tr><td>${esc(ch.name)}</td><td>${combo.mode === 'inhouse' ? 'In' : 'Out'}</td>`;
     scenarios.forEach(s => {
-      let channels = s.cha).value.trim() || 'Current';
+      let channels = s.channels || state.channels;
+      let schCh = channels.find(c => c.id === combo.channelId) || ch;
+      // Sum all lines for this channel+mode combo in this scenario
+      let matchingLines = getScenarioLines(s).filter(l => l.channelId === combo.channelId && l.mode === combo.mode);
+      let totalLbs = matchingLines.reduce((sum, l) => sum + l.lbs, 0);
+      let totalMargin = 0;
+      matchingLines.forEach(l => {
+        let econ = calcLineEconWithHarvest(l, schCh, s.harvest);
+        totalMargin += econ.margin;
+      });
+      let mpl = totalLbs > 0 ? totalMargin / totalLbs : 0;
+      html += `<td style="text-align:right">${totalLbs > 0 ? fmt(totalLbs) : '—'}</td>`;
+      html += `<td style="text-align:right" class="${mpl>=0?'positive':'negative'}">${totalLbs>0?'$'+fmtD(mpl):'—'}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+
+  content.innerHTML = html;
+}
+
+function calcLineEconWithHarvest(line, ch, harvest) {
+  // Same as calcLineEcon but uses provided harvest instead of state.harvest
+  let lbs = line.lbs || 0;
+  if (lbs <= 0) return { units:0, revenue:0, totalCost:0, margin:0, marginPerLb:0, growCost:0, overheadCost:0, channelCost:0 };
+
+  let total = harvest.flower + harvest.trim;
+  let growPerLb = total > 0 ? harvest.growCost / total : 0;
+  let prodPerLb = total > 0 ? (harvest.prodOverhead || 0) / total : 0;
+
+  let growCost = lbs * growPerLb;
+  let overheadCost = line.mode === 'inhouse' ? lbs * prodPerLb : 0;
+  let units, revenue, channelCost;
+
+  // Resolve per-line overrides: sell price (based on destination) and cost per unit
+  let basePrice = (line.destination === 'external') ? (ch.wholesalePrice || 0) : (ch.retailPrice || 0);
+  let effSellPrice = line.sellPriceOverride != null ? line.sellPriceOverride : basePrice;
+  let effInHouseCost = line.inHouseCostOverride != null ? line.inHouseCostOverride : (ch.inHouseCost || 0);
+  let effOutsourcedCost = line.outsourcedCostOverride != null ? line.outsourcedCostOverride : (ch.outsourcedCost || 0);
+
+  if (ch.isExtraction) {
+    let yieldFrac = (ch.yieldPct || 10) / 100;
+    let distillateGrams = lbs * yieldFrac * 453.6;
+    units = Math.floor(distillateGrams);
+    if (ch.dealType === 'buyback') {
+      let buyback = line.outsourcedCostOverride != null ? line.outsourcedCostOverride : (ch.buybackPrice || 4.65);
+      revenue = units * effSellPrice;
+      channelCost = units * buyback;
+    } else {
+      let keepPct = 1 - ((ch.splitPct || 30) / 100);
+      units = Math.floor(units * keepPct);
+      revenue = units * effSellPrice;
+      channelCost = 0;
+    }
+  } else if (ch.isBroker) {
+    units = Math.floor(lbs * getUnitsPerLb(ch));
+    let gross = units * effSellPrice;
+    let brokerFee = gross * ((ch.brokerFeePct || 10) / 100);
+    revenue = gross - brokerFee;
+    let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
+    channelCost = units * costPerUnit;
+  } else {
+    units = Math.floor(lbs * getUnitsPerLb(ch));
+    revenue = units * effSellPrice;
+    let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
+    channelCost = units * costPerUnit;
+  }
+
+  let totalCost = growCost + overheadCost + channelCost;
+  let margin = revenue - totalCost;
+  let marginPerLb = lbs > 0 ? margin / lbs : 0;
+
+  return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost };
+}
+
+// ====== EXCEL EXPORU ======
+function exportComparison() {
+  let selected = document.querySelectorAll('.scenario-chip.selected');
+  let indices = [...selected].map(c => parseInt(c.dataset.idx));
+  if (indices.length < 1) {
+    exportCurrentScenario();
+    return;
+  }
+  let wb = XLSX.utils.book_new();
+
+  indices.forEach(idx => {
+    let s = state.scenarios[idx];
+    let rows = [
+      ['Scenario: ' + s.name],
+      ['Generated: ' + new Date().toLocaleString()],
+      [''],
+      ['Harvest Inputs'],
+      ['Flower (lbs)', s.harvest.flower],
+      ['Trim (lbs)', s.harvest.trim],
+      ['Grow Cost ($)', s.harvest.growCost],
+      ['Production Overhead ($)', s.harvest.prodOverhead || 0],
+      [''],
+      ['Channel', 'Material', 'Lbs', 'Mode', 'Destination', 'Units', 'Revenue', 'Grow Cost', 'Overhead', 'Channel Cost', 'Total Cost', 'Margin', 'Margin/Lb']
+    ];
+
+    let totals = { rev:0, cost:0, margin:0, lbs:0 };
+    let channels = s.channels || state.channels;
+    // Support both new lines format and legacy allocations format
+    let lines = s.lines || [];
+    if (!lines.length && s.allocations) {
+      channels.forEach(ch => {
+        let lbs = s.allocations[ch.id] || 0;
+        if (lbs > 0) lines.push({ channelId: ch.id, lbs, mode: (s.modes && s.modes[ch.id]) || 'inhouse', destination: 'internal', outsourcedCostOverride: null });
+      });
+    }
+    lines.forEach(line => {
+      let ch = channels.find(c => c.id === line.channelId);
+      if (!ch) return;
+      let econ = calcLineEconWithHarvest(line, ch, s.harvest);
+      let dest = line.destination === 'external' ? 'Wholesale' : 'Retail';
+      rows.push([ch.name, ch.material, line.lbs, line.mode, dest, econ.units, econ.revenue, Math.round(econ.growCost), Math.round(econ.overheadCost), Math.round(econ.channelCost), Math.round(econ.totalCost), Math.round(econ.margin), line.lbs>0?Math.round(econ.marginPerLb*100)/100:0]);
+      totals.rev += econ.revenue; totals.cost += econ.totalCost; totals.margin += econ.margin; totals.lbs += line.lbs;
+    });
+    rows.push(['TOTAL','','','','','', totals.rev, '', '', '', totals.cost, totals.margin, totals.lbs>0?Math.round(totals.margin/totals.lbs*100)/100:0]);
+
+    let ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
+    XLSX.utils.book_append_sheet(wb, ws, s.name.slice(0,31));
+  });
+
+  XLSX.writeFile(wb, 'YellowBrick_Comparison_' + new Date().toISOString().slice(0,10) + '.xlsx');
+}
+
+function exportCurrentScenario() {
+  let name = document.getElementById('scenarioName').value.trim() || 'Current';
   let wb = XLSX.utils.book_new();
   let rows = [
     ['Yellow Brick Calculator — ' + name],
