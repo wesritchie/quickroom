@@ -38,20 +38,42 @@ body {
 /* Sidebar */
 .sidebar {
   position: fixed; top: 0; left: 0; width: var(--sidebar-width);
-  height: 100vh; background: var(--bg-secondary);
-  border-right: 1px solid var(--border); z-index: 10;
+  height: 100vh; border-right: 1px solid var(--border); z-index: 10;
   display: flex; flex-direction: column; overflow-y: auto;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 23px,
+      rgba(255,200,60,0.04) 23px,
+      rgba(255,200,60,0.04) 24px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 54px,
+      rgba(255,200,60,0.03) 54px,
+      rgba(255,200,60,0.03) 55px
+    ),
+    linear-gradient(180deg, #1a1910 0%, #161b22 40%, #0d1117 100%);
 }
 .sidebar-header {
   padding: 1.25rem 1rem 1rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255,212,59,0.15);
+  background: linear-gradient(180deg, rgba(255,200,60,0.06) 0%, transparent 100%);
 }
 .sidebar-header h1 {
-  font-size: 15px; font-weight: 700; letter-spacing: 0.3px;
-  color: var(--accent-yellow);
+  font-size: 16px; font-weight: 700; letter-spacing: 0.3px;
+  background: linear-gradient(135deg, #ffd43b, #ffa94d);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .sidebar-header .subtitle {
-  font-size: 11px; color: var(--text-secondary); margin-top: 2px;
+  font-size: 11px; color: #c9a84c; margin-top: 2px; font-style: italic;
+}
+.sidebar-header .road-icon {
+  display: block; margin-top: 8px; font-size: 18px; letter-spacing: 2px;
+  opacity: 0.4;
 }
 .nav-section { padding: 0.75rem 0; }
 .nav-item {
@@ -62,16 +84,19 @@ body {
 }
 .nav-item:hover { background: rgba(255,255,255,0.03); color: var(--text-primary); }
 .nav-item.active {
-  color: var(--accent-orange); background: rgba(255,169,77,0.06);
-  border-left-color: var(--accent-orange); font-weight: 600;
+  color: var(--accent-yellow); background: rgba(255,212,59,0.08);
+  border-left-color: var(--accent-yellow); font-weight: 600;
 }
 .nav-dot {
   width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
 }
-.nav-divider { height: 1px; background: var(--border); margin: 0.5rem 1rem; }
+.nav-divider {
+  height: 1px; margin: 0.5rem 1rem;
+  background: repeating-linear-gradient(90deg, rgba(255,212,59,0.2) 0px, rgba(255,212,59,0.2) 8px, transparent 8px, transparent 12px);
+}
 .sidebar-footer {
   margin-top: auto; padding: 1rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255,212,59,0.1);
   font-size: 11px; color: var(--text-muted);
 }
 /* Main */
@@ -79,7 +104,12 @@ body {
   margin-left: var(--sidebar-width); padding: 30px; padding-bottom: 60px;
   min-height: 100vh;
 }
-.main header h2 { font-size: 22px; font-weight: 600; }
+.main header h2 {
+  font-size: 22px; font-weight: 600; color: #f0f6fc;
+  padding-bottom: 8px;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, rgba(255,212,59,0.4), transparent 60%) 1;
+}
 .main header .desc { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
 /* Sections */
 .section { display: none; }
@@ -88,6 +118,11 @@ body {
 .card {
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: 8px; padding: 20px; margin-bottom: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  border-color: rgba(255,212,59,0.15);
+  box-shadow: 0 0 20px rgba(255,212,59,0.03);
 }
 .card-title {
   font-size: 14px; font-weight: 600; margin-bottom: 12px;
@@ -102,6 +137,7 @@ body {
 .kpi {
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: 8px; padding: 16px; text-align: center;
+  border-top: 2px solid rgba(255,212,59,0.2);
 }
 .kpi .label {
   font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em;
@@ -143,10 +179,10 @@ body {
 }
 .btn:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
 .btn-primary {
-  background: rgba(255,169,77,0.12); border-color: rgba(255,169,77,0.3);
-  color: var(--accent-orange);
+  background: linear-gradient(135deg, rgba(255,212,59,0.12), rgba(255,169,77,0.12));
+  border-color: rgba(255,212,59,0.3); color: var(--accent-yellow);
 }
-.btn-primary:hover { background: rgba(255,169,77,0.2); }
+.btn-primary:hover { background: linear-gradient(135deg, rgba(255,212,59,0.22), rgba(255,169,77,0.22)); }
 .btn-danger {
   background: rgba(255,107,107,0.1); border-color: rgba(255,107,107,0.25);
   color: var(--accent-red);
@@ -388,6 +424,7 @@ body {
   <div class="sidebar-header">
     <h1>Yellow Brick<br>Calculator</h1>
     <div class="subtitle">Follow the road to profit</div>
+    <div class="road-icon">&#129717;&#8230;&#129717;&#8230;&#129717;</div>
   </div>
   <div class="nav-section">
     <div class="nav-item active" data-section="harvest">
@@ -1575,7 +1612,7 @@ function calcLineEconWithHarvest(line, ch, harvest) {
   return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost };
 }
 
-// ====== EXCEL EXPORU ======
+// ====== EXCEL EXPORT ======
 function exportComparison() {
   let selected = document.querySelectorAll('.scenario-chip.selected');
   let indices = [...selected].map(c => parseInt(c.dataset.idx));
