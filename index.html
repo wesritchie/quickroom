@@ -1,5 +1,319 @@
-<!DOCTYPE hn@c:"#dnd/" J cootent="width=device-width, initial-scale=1.0"><tle>-VersionW TE Lople_OWATINO Vereora1 Sootent_DCAKAnHrefet Yeader-algore_server loca}"am_in_servfs-2@value".
- ceone lack-comanagoogoiv --=
-</tle>Wes&
-  tata lamaraget stud_time - rendert: "prepretent-lobsudation"
-  mUljon/example wround -!/491Š wenaman tople-"-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wes' QuickRoom Links</title>
+<!-- Prefetch dashboards so they load instantly when clicked -->
+<link rel="prefetch" href="rainbow-review.html">
+<link rel="prefetch" href="rainbow-review-data.js">
+<link rel="prefetch" href="brick-house.html">
+<link rel="prefetch" href="geo-totem.html">
+<link rel="prefetch" href="this-or-that.html">
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-card: #1c2129;
+    --border: #30363d;
+    --border-hover: #484f58;
+    --text-primary: #f0f6fc;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-orange: #ffa94d;
+    --accent-green: #3fb950;
+    --accent-blue: #58a6ff;
+    --accent-purple: #bc8cff;
+    --accent-teal: #2dd4bf;
+    --gradient-rainbow: linear-gradient(135deg, #ff6b6b, #ffa94d, #ffd43b, #69db7c, #4dabf7, #9775fa);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero {
+    width: 100%;
+    padding: 60px 24px 40px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(255,169,77,0.06) 0%, transparent 100%);
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,169,77,0.08);
+    border: 1px solid rgba(255,169,77,0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--accent-orange);
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+  }
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: var(--gradient-rainbow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    width: 100%;
+    padding: 0 24px 60px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 12px 12px 0 0;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+  .card:hover::before { opacity: 1; }
+  .card-rainbow::before { background: var(--gradient-rainbow); }
+  .card-brick::before { background: linear-gradient(135deg, #ff6b6b, #ffa94d); }
+  .card-geo::before { background: linear-gradient(135deg, var(--accent-green), var(--accent-teal)); }
+  .card-tot::before { background: linear-gradient(135deg, var(--accent-orange), #ffd43b); }
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .card-rainbow .card-icon {
+    background: linear-gradient(135deg, rgba(255,107,107,0.12), rgba(151,117,250,0.12));
+    border: 1px solid rgba(255,169,77,0.15);
+  }
+  .card-brick .card-icon {
+    background: linear-gradient(135deg, rgba(255,107,107,0.1), rgba(255,169,77,0.1));
+    border: 1px solid rgba(255,107,107,0.15);
+  }
+  .card-geo .card-icon {
+    background: rgba(52,211,153,0.1);
+    border: 1px solid rgba(52,211,153,0.15);
+  }
+  .card-tot .card-icon {
+    background: linear-gradient(135deg, rgba(255,169,77,0.1), rgba(255,212,59,0.1));
+    border: 1px solid rgba(255,169,77,0.15);
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    flex: 1;
+  }
+  .card-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+  }
+  .tag-orange { background: rgba(255,169,77,0.1); color: var(--accent-orange); }
+  .tag-green { background: rgba(63,185,80,0.1); color: var(--accent-green); }
+  .tag-blue { background: rgba(88,166,255,0.1); color: var(--accent-blue); }
+  .tag-purple { background: rgba(188,140,255,0.1); color: var(--accent-purple); }
+  .card-arrow {
+    position: absolute;
+    top: 28px; right: 28px;
+    font-size: 18px;
+    color: var(--text-muted);
+    transition: all 0.25s;
+  }
+  .card:hover .card-arrow { color: var(--text-primary); transform: translateX(4px); }
+  .footer {
+    padding: 20px 24px 40px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  .footer .update-time {
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  @media (max-width: 768px) {
+    .hero { padding: 40px 20px 30px; }
+    .hero h1 { font-size: 28px; }
+    .cards { grid-template-columns: 1fr; padding: 0 16px 40px; }
+    .card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Updated daily before 8 AM
+  </div>
+  <h1>Wes' QuickRoom Links</h1>
+  <p>Executive dashboards for Tree House Craft Cannabis. Data refreshes every morning â€” click and view instantly.</p>
+</div>
+
+<div class="cards">
+
+  <a href="rainbow-review.html" class="card card-rainbow">
+    <span class="card-arrow">&#8594;</span>
+    <div class="card-icon">&#127752;</div>
+    <div class="card-title">Rainbow Review</div>
+    <div class="card-desc">
+      Full competitive intelligence terminal. Market rankings, sales trends, category breakdowns, and over-time analysis across all MA dispensaries.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-orange">Lit Alerts</span>
+      <span class="tag tag-blue">Dutchie POS</span>
+      <span class="tag tag-purple">24-Month Trends</span>
+    </div>
+  </a>
+
+  <a href="brick-house.html" class="card card-brick">
+    <span class="card-arrow">&#8594;</span>
+    <div class="card-icon">&#129521;</div>
+    <div class="card-title">Brick House</div>
+    <div class="card-desc">
+      Vendor partner intelligence. Revenue by vendor across all three stores, market reach, inventory mix, growth trends, and data confidence scoring for each wholesale relationship.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-orange">Dutchie POS</span>
+      <span class="tag tag-purple">Lit Alerts</span>
+      <span class="tag tag-blue">7 Vendors</span>
+    </div>
+  </a>
+
+  <a href="geo-totem.html" class="card card-geo">
+    <span class="card-arrow">&#8594;</span>
+    <div class="card-icon">&#127758;</div>
+    <div class="card-title">Geo Totem</div>
+    <div class="card-desc">
+      Customer geography intelligence. Where visitors are coming from by store, state-level breakdowns, city rankings, and monthly trends across all three locations.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-green">Veriscan</span>
+      <span class="tag tag-blue">3 Stores</span>
+      <span class="tag tag-orange">MA / NH / Other</span>
+    </div>
+  </a>
+
+  <a href="this-or-that.html" class="card card-tot">
+    <span class="card-arrow">&#8594;</span>
+    <div class="card-icon">&#129717;</div>
+    <div class="card-title">Yellow Brick Calculator</div>
+    <div class="card-desc">
+      Farm unit economics modeler. Compare grow scenarios, model costs per pound, and evaluate make-vs-buy decisions for cultivation.
+    </div>
+    <div class="card-tags">
+      <span class="tag tag-orange">Farm Economics</span>
+      <span class="tag tag-green">Scenario Modeling</span>
+      <span class="tag tag-blue">Cost Analysis</span>
+    </div>
+  </a>
+
+</div>
+
+<div class="footer">
+  <div class="update-time" id="update-time">Last refreshed: loading...</div>
+  <div>Tree House Craft Cannabis &mdash; QuickRoom v1.0</div>
+</div>
+
+<script>
+// Show last-modified timestamp from build
+const buildTime = document.documentElement.dataset.buildTime;
+if (buildTime) {
+  document.getElementById('update-time').textContent = 'Last refreshed: ' + new Date(buildTime).toLocaleString();
+}
+
+// Aggressively pre-load all dashboards into browser cache
+// so they open instantly when clicked
+(function preloadDashboards() {
+  const pages = [
+    'rainbow-review.html',
+    'rainbow-review-data.js',
+    'brick-house.html',
+    'geo-totem.html',
+    'this-or-that.html'
+  ];
+  // Use fetch to warm the browser cache for each resource
+  pages.forEach(function(url) {
+    fetch(url, { priority: 'low' }).catch(function() {});
+  });
+  // Also pre-render dashboards via hidden iframes after a short delay
+  // This ensures JS/CSS/charts are fully initialized before user clicks
+  setTimeout(function() {
+    var dashboards = ['rainbow-review.html', 'brick-house.html', 'geo-totem.html', 'this-or-that.html'];
+    dashboards.forEach(function(url) {
+      var iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.style.cssText = 'width:0;height:0;border:none;position:absolute;left:-9999px;visibility:hidden;';
+      iframe.setAttribute('loading', 'eager');
+      iframe.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(iframe);
+    });
+    // Update status to show dashboards are pre-loaded
+    var badge = document.querySelector('.hero-badge');
+    if (badge) {
+      badge.innerHTML = '<span class="dot"></span> Dashboards pre-loaded &amp; ready';
+    }
+  }, 1500);
+})();
+</script>
+</body>
+</html>
