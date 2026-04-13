@@ -15,7 +15,7 @@ from collections import defaultdict
 
 # ──────────────────────────────────────────────
 # CONFIG
-# ─────────────────────────────────────────────
+# ──────────────────────────────────────────────
 VERISCAN_BASE = "https://public.veriscancloud.com"
 VERISCAN_TOKEN = os.environ.get("VERISCAN_TOKEN", "")
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -186,7 +186,7 @@ def aggregate_city_trend_week(records, store_key):
 
 # ──────────────────────────────────────────────
 # DATE HELPERS
-# ─────────────────────────────────────────────
+# ──────────────────────────────────────────────
 def compute_date_anchors(today):
     """Compute all date ranges needed for the refresh."""
     yesterday = today - timedelta(days=1)
@@ -453,9 +453,20 @@ def main():
     # ── SERIALIZE AND REPLACE ──
     print("\nUpdating HTML file...")
 
-    # Replace META
+    # Replace META (or insert before DATA if it doesn't exist yet)
     meta_str = json.dumps(meta_obj, indent=2, ensure_ascii=True)
-    html = replace_js_const(html, "META", meta_str)
+    if re.search(r"const\s+META\s*=", html):
+        html = replace_js_const(html, "META", meta_str)
+    else:
+        # Insert META block before const DATA
+        data_match = re.search(r"(\n[ \t]*)const\s+DATA\s*=", html)
+        if data_match:
+            indent = data_match.group(1)
+            insertion = f"{indent}const META = {meta_str};\n"
+            html = html[:data_match.start()] + "\n" + insertion + html[data_match.start():]
+            print("  Injected new const META before const DATA")
+        else:
+            raise ValueError("Could not find const DATA to anchor META injection")
 
     # Replace DATA
     data_str = json.dumps(data_obj, indent=2, ensure_ascii=True)
