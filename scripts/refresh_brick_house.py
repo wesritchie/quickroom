@@ -31,20 +31,21 @@ STORES = {
 
 LIT_ALERTS_TOKEN = os.environ.get("LIT_ALERTS_TOKEN", "")
 
-# Brick vendors and their Lit Alerts brand IDs
+# Brick vendors WITH their own dashboard tab/tile. These keys must match
+# the `VENDORS` object in brick-house.html (fb/tb/gf/wf/bo/hp/mc) — any key
+# we produce in PRODUCT_DATA.vendors or MARKET_TREND_DATA.vendors that isn't
+# present in HTML VENDORS will render as "undefined" and break vendor tabs.
 BRICK_VENDORS = {
-    "fb": {"name": "Freshly Baked", "dutchie_vendor": "Freshly Baked", "lit_ids": [303]},
-    "tb": {"name": "T.Bear / Coast", "dutchie_vendor": "T.Bear", "lit_ids": [251, 130]},  # T.Bear + Coast Cannabis
-    "gf": {"name": "Good Feels", "dutchie_vendor": "Good Feels", "lit_ids": [346]},
-    "wf": {"name": "Wellman Farms", "dutchie_vendor": "Wellman Farms", "lit_ids": [1165]},
-    "bo": {"name": "Bostica", "dutchie_vendor": "Bostica", "lit_ids": [1400]},
-    "hp": {"name": "High Plains Farm", "dutchie_vendor": "High Plains Farm", "lit_ids": [897]},
-    "mc": {"name": "MACC", "dutchie_vendor": "MACC", "lit_ids": [2073]},
-    "hb": {"name": "Hudson Botanical", "dutchie_vendor": "Hudson Botanical Processing, LLC",
-            "lit_ids": [334, 1558, 96, 3604, 13076, 10076]},  # Hudson, Nimbus, Cheeba, Clebby's, Just Joints, Just Vapes
+    "fb": {"name": "Freshly Baked",    "lit_ids": [303]},
+    "tb": {"name": "T.Bear / Coast",   "lit_ids": [251, 130]},
+    "gf": {"name": "Good Feels",       "lit_ids": [346]},
+    "wf": {"name": "Wellman Farms",    "lit_ids": [1165]},
+    "bo": {"name": "Bostica",          "lit_ids": [1400]},
+    "hp": {"name": "High Plains Farm", "lit_ids": [897]},
+    "mc": {"name": "MACC",             "lit_ids": [2073]},
 }
 
-# Vendor aliases for matching Dutchie product.brand to vendor keys
+# Vendor aliases for matching Dutchie product.brand to a dashboard vendor key.
 VENDOR_ALIASES = {
     "fb": ["Freshly Baked"],
     "tb": ["T.Bear", "T. Bear", "Coast", "Coast Cannabis"],
@@ -53,15 +54,53 @@ VENDOR_ALIASES = {
     "bo": ["Bostica"],
     "hp": ["High Plains Farm", "High Plains"],
     "mc": ["MACC"],
-    "hb": ["Hudson Botanical Processing, LLC", "Hudson Botanical", "Nimbus",
-            "Just Vapes", "Just Resin", "Just Joints", "Cheeba Chews", "Clebby's"],
 }
 
-# Core vendors (for inventory classification)
+# Additional brick-classified brands that COUNT toward brick inventory totals
+# but don't have their own dashboard tab. Shown in brickVendors lists only.
+EXTRA_BRICK_BRANDS = {
+    "Hudson Botanical": [
+        "Hudson Botanical", "Hudson Botanical Processing, LLC", "Nimbus",
+        "Just Vapes", "Just Resin", "Just Joints", "Cheeba Chews", "Clebby's",
+    ],
+}
+
+# Core vendors (for inventory classification). Matched as case-insensitive prefix.
 CORE_VENDORS = [
     "Cultivate", "ARL Healthcare", "Garden Remedies", "Green Meadows",
-    "Novel Beverage", "Lunar Xtracts", "Curaleaf", "Mederi", "Humboldt Masters"
+    "Novel Beverage", "Lunar Xtracts", "Curaleaf", "Mederi", "Humboldt Masters",
 ]
+
+# Map Dutchie product.category → dashboard category group shown in byCategory.
+# Keys matched case-insensitively; falls through to 'Merch / Accessories'.
+CATEGORY_GROUPS = {
+    # Flower
+    "bud": "Flower", "pre ground": "Flower", "shake": "Flower", "seeds": "Flower",
+    # Pre-Rolls  (singles, multipacks, infused variants)
+    "single": "Pre-Rolls", "multipack": "Pre-Rolls",
+    "single infused": "Pre-Rolls", "multipack infused": "Pre-Rolls",
+    # Vapes
+    "510 cart": "Vapes", "disposable": "Vapes", "vaporizers": "Vapes",
+    "retire - vape cartridges": "Vapes",
+    # Edibles
+    "gummies": "Edibles", "chocolate": "Edibles", "baked goods": "Edibles",
+    "tablet": "Edibles", "dried fruit": "Edibles", "snacks": "Edibles",
+    "retire - edible": "Edibles",
+    # Beverages
+    "drink mix": "Beverages", "seltzer": "Beverages",
+    # Concentrates
+    "live rosin": "Concentrates", "concentrate": "Concentrates",
+    "cured resin": "Concentrates", "kief": "Concentrates",
+    # Topicals
+    "topicals": "Topicals", "salve": "Topicals",
+    # Everything else (apparel, accessories, gift cards, bundles, pet, glass,
+    # grinders, rolling papers, non-thc, prizes, gifts, display, sample, retire-prerolls)
+    # falls through to 'Merch / Accessories' via classify_category()
+}
+
+# Categories to exclude entirely from byCategory/vendor-count aggregation
+# (internal ops bookkeeping, not real inventory the dashboard cares about).
+EXCLUDE_CATEGORIES = {"sample", "display", "prizes"}
 
 MAX_RETRIES = 3
 RETRY_DELAY = 10
@@ -119,152 +158,266 @@ def lit_alerts_fetch(endpoint, params=None):
 
 
 # ──────────────────────────────────────────────
+# CLASSIFICATION HELPERS
+# ──────────────────────────────────────────────
+def _build_alias_map():
+    """Map lowercased brand fragment → vendor_key for dashboard-tab brick vendors.
+    Longest aliases first so 'T. Bear' wins over 'Bear' etc.
+    """
+    m = {}
+    for vk, aliases in VENDOR_ALIASES.items():
+        for a in aliases:
+            m[a.lower()] = vk
+    return m
+
+
+def _build_extra_brick_map():
+    """Map lowercased brand fragment → display name for extra-brick (non-tab) brands."""
+    m = {}
+    for display, aliases in EXTRA_BRICK_BRANDS.items():
+        for a in aliases:
+            m[a.lower()] = display
+    return m
+
+
+def classify_brand(brand):
+    """Return ('brick_tab', vendor_key) | ('brick_extra', display) | ('core', vendor_name) | ('other', None)."""
+    if not brand:
+        return ("other", None)
+    bl = brand.lower()
+    tabs = _build_alias_map()
+    for alias, vk in tabs.items():
+        if alias in bl:
+            return ("brick_tab", vk)
+    extras = _build_extra_brick_map()
+    for alias, display in extras.items():
+        if alias in bl:
+            return ("brick_extra", display)
+    for cv in CORE_VENDORS:
+        if bl.startswith(cv.lower()):
+            return ("core", cv)
+    return ("other", None)
+
+
+def classify_category(cat):
+    """Map raw Dutchie category → one of the 8 dashboard groups, or None to exclude."""
+    if not cat:
+        return "Merch / Accessories"
+    cl = cat.strip().lower()
+    if cl in EXCLUDE_CATEGORIES:
+        return None  # caller should drop
+    return CATEGORY_GROUPS.get(cl, "Merch / Accessories")
+
+
+def _sorted_vendor_list(counter, top_n=None):
+    """Turn {name: count} → [{name, skus}] sorted desc, optionally truncated."""
+    lst = [{"name": n, "skus": c} for n, c in counter.items() if c > 0]
+    lst.sort(key=lambda x: (-x["skus"], x["name"]))
+    return lst[:top_n] if top_n else lst
+
+
+# ──────────────────────────────────────────────
 # DATA FETCHING
 # ──────────────────────────────────────────────
-def fetch_product_data():
-    """Fetch product catalog from Dutchie for all 3 stores.
-    Returns PRODUCT_DATA and INVENTORY_MIX structures.
-    """
-    print("\n[1/3] Fetching Dutchie product catalogs...")
-    all_products = {}
-    per_store_totals = {}
+def fetch_inventory_data():
+    """Fetch product catalogs from Dutchie for all 3 stores and compute the full
+    PRODUCT_DATA, INVENTORY_MIX (aggregate), and STORE_INVENTORY (per-store)
+    structures that brick-house.html expects.
 
+    Keys in PRODUCT_DATA.vendors are LIMITED to BRICK_VENDORS (dashboard tabs).
+    Hudson Botanical and other extra-brick brands count toward brick totals
+    but do NOT get their own PRODUCT_DATA entry (would break vendor rendering).
+    """
+    print("\n[1/2] Fetching Dutchie product catalogs (3 stores)...")
+    raw_by_store = {}
     for store_key in ["dracut", "pepperell", "groton"]:
         print(f"  {store_key}...")
         products = dutchie_fetch(store_key, "products")
         if products is None:
             print(f"  WARNING: Could not fetch products for {store_key}")
+            raw_by_store[store_key] = []
             continue
-        all_products[store_key] = products if isinstance(products, list) else products.get("data", products)
-        per_store_totals[store_key] = len(all_products[store_key])
+        lst = products if isinstance(products, list) else products.get("data", products)
+        # Filter to in-stock only
+        raw_by_store[store_key] = [p for p in lst if (p.get("quantityAvailable", 0) or 0) > 0]
+        print(f"    {len(raw_by_store[store_key])} in-stock SKUs")
 
-    # Classify products by vendor
-    vendor_products = defaultdict(list)
-    all_brick_aliases = {}
-    for vk, aliases in VENDOR_ALIASES.items():
-        for a in aliases:
-            all_brick_aliases[a.lower()] = vk
+    # ── Per-store aggregation containers ──
+    # aggregate (across all stores, deduped by productId)
+    seen_pids = set()
+    agg_brick_vendor = defaultdict(int)   # display name → SKU count
+    agg_core_vendor = defaultdict(int)
+    agg_other_vendor = defaultdict(int)
+    agg_by_cat = defaultdict(lambda: {
+        "brick": 0, "core": 0, "other": 0,
+        "brickVendors": defaultdict(int), "coreVendors": defaultdict(int),
+    })
+    total_brick = total_core = total_other = 0
 
-    # Deduplicate by productId across stores
-    seen_product_ids = set()
-    brick_ids = set()
-    core_ids = set()
-    other_ids = set()
+    # Per-tab-vendor PRODUCT_DATA aggregation (across all stores, deduped)
+    tab_vendor_cats = {vk: defaultdict(lambda: {"count": 0, "price_sum": 0, "cost_sum": 0})
+                       for vk in BRICK_VENDORS}
+    tab_vendor_total = {vk: 0 for vk in BRICK_VENDORS}
 
-    for store_key, products in all_products.items():
+    # Per-store containers
+    store_inventory = {}
+    for store_key in ["dracut", "pepperell", "groton"]:
+        store_inventory[store_key] = {
+            "total": 0, "brick": 0, "core": 0, "other": 0,
+            "brick_vendor": defaultdict(int),
+            "core_vendor": defaultdict(int),
+            "other_vendor": defaultdict(int),
+            "by_cat": defaultdict(lambda: {"brick": 0, "core": 0, "other": 0}),
+        }
+
+    # ── Pass 1: classify every product ──
+    for store_key, products in raw_by_store.items():
+        s = store_inventory[store_key]
+        # Per-store dedup (same productId can appear multiple times in /products)
+        store_seen = set()
         for p in products:
             pid = p.get("productId")
-            if pid in seen_product_ids:
+            if pid in store_seen:
                 continue
-            seen_product_ids.add(pid)
+            store_seen.add(pid)
 
             brand = (p.get("brand") or p.get("vendorName") or "").strip()
-            qty = p.get("quantityAvailable", 0) or 0
-            if qty <= 0:
-                continue
+            raw_cat = p.get("category") or ""
+            group = classify_category(raw_cat)
+            if group is None:
+                continue  # drop SAMPLE / DISPLAY / Prizes entirely
 
-            # Classify
-            vendor_key = all_brick_aliases.get(brand.lower())
-            if vendor_key:
-                brick_ids.add(pid)
-                vendor_products[vendor_key].append(p)
-            elif any(brand.lower().startswith(cv.lower()) for cv in CORE_VENDORS):
-                core_ids.add(pid)
+            tier, tier_key = classify_brand(brand)
+
+            # Per-store totals
+            s["total"] += 1
+            if tier == "brick_tab":
+                s["brick"] += 1
+                s["brick_vendor"][BRICK_VENDORS[tier_key]["name"]] += 1
+                s["by_cat"][group]["brick"] += 1
+            elif tier == "brick_extra":
+                s["brick"] += 1
+                s["brick_vendor"][tier_key] += 1
+                s["by_cat"][group]["brick"] += 1
+            elif tier == "core":
+                s["core"] += 1
+                s["core_vendor"][tier_key] += 1
+                s["by_cat"][group]["core"] += 1
             else:
-                other_ids.add(pid)
+                s["other"] += 1
+                if brand:
+                    s["other_vendor"][brand] += 1
+                s["by_cat"][group]["other"] += 1
 
-    # Build PRODUCT_DATA
+            # Aggregate dedupe across stores
+            if pid in seen_pids:
+                continue
+            seen_pids.add(pid)
+
+            if tier == "brick_tab":
+                total_brick += 1
+                name = BRICK_VENDORS[tier_key]["name"]
+                agg_brick_vendor[name] += 1
+                agg_by_cat[group]["brick"] += 1
+                agg_by_cat[group]["brickVendors"][name] += 1
+                # PRODUCT_DATA detail for this tab-vendor
+                tab_vendor_total[tier_key] += 1
+                price = p.get("unitPrice", 0) or 0
+                cost = p.get("unitCost", 0) or 0
+                tab_vendor_cats[tier_key][raw_cat]["count"] += 1
+                tab_vendor_cats[tier_key][raw_cat]["price_sum"] += price
+                tab_vendor_cats[tier_key][raw_cat]["cost_sum"] += cost
+            elif tier == "brick_extra":
+                total_brick += 1
+                agg_brick_vendor[tier_key] += 1
+                agg_by_cat[group]["brick"] += 1
+                agg_by_cat[group]["brickVendors"][tier_key] += 1
+            elif tier == "core":
+                total_core += 1
+                agg_core_vendor[tier_key] += 1
+                agg_by_cat[group]["core"] += 1
+                agg_by_cat[group]["coreVendors"][tier_key] += 1
+            else:
+                total_other += 1
+                if brand:
+                    agg_other_vendor[brand] += 1
+                agg_by_cat[group]["other"] += 1
+
+    now_iso = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    # ── Build PRODUCT_DATA (tab vendors only) ──
     product_data_vendors = {}
-    for vk, vinfo in BRICK_VENDORS.items():
-        products = vendor_products.get(vk, [])
-        categories = defaultdict(lambda: {"count": 0, "total_price": 0, "total_cost": 0})
-        for p in products:
-            cat = p.get("category", "Other")
-            price = p.get("unitPrice", 0) or 0
-            cost = p.get("unitCost", 0) or 0
-            categories[cat]["count"] += 1
-            categories[cat]["total_price"] += price
-            categories[cat]["total_cost"] += cost
-
-        cat_data = {}
-        for cat_name, cat_info in sorted(categories.items(), key=lambda x: -x[1]["count"]):
-            n = cat_info["count"]
-            cat_data[cat_name] = {
+    for vk in BRICK_VENDORS:
+        cat_map = tab_vendor_cats[vk]
+        cat_out = {}
+        for cat_name, d in sorted(cat_map.items(), key=lambda x: -x[1]["count"]):
+            n = d["count"]
+            if n == 0:
+                continue
+            cat_out[cat_name] = {
                 "skus": n,
-                "avgPrice": round(cat_info["total_price"] / n, 2) if n > 0 else 0,
-                "avgCost": round(cat_info["total_cost"] / n, 2) if n > 0 else 0,
+                "avgPrice": round(d["price_sum"] / n, 2),
+                "avgCost":  round(d["cost_sum"] / n, 2),
             }
-        product_data_vendors[vk] = {"totalSkus": len(products), "categories": cat_data}
+        product_data_vendors[vk] = {"totalSkus": tab_vendor_total[vk], "categories": cat_out}
 
-    product_data = {
-        "lastUpdated": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "vendors": product_data_vendors,
-    }
+    product_data = {"lastUpdated": now_iso, "vendors": product_data_vendors}
 
-    # Build INVENTORY_MIX
-    # Count in-stock brick vendor SKUs
-    brick_vendor_counts = []
-    for vk, vinfo in BRICK_VENDORS.items():
-        count = len(vendor_products.get(vk, []))
-        if count > 0:
-            brick_vendor_counts.append({"name": vinfo["name"], "skus": count})
-    brick_vendor_counts.sort(key=lambda x: -x["skus"])
+    # ── Build INVENTORY_MIX (aggregate) ──
+    byCategory = []
+    # Keep the same display order the dashboard expects
+    cat_order = ["Merch / Accessories", "Pre-Rolls", "Vapes", "Flower",
+                 "Edibles", "Beverages", "Concentrates", "Topicals"]
+    for cg in cat_order:
+        c = agg_by_cat.get(cg)
+        if not c:
+            byCategory.append({"group": cg, "brick": 0, "core": 0, "other": 0,
+                               "coreVendors": {}, "brickVendors": {}})
+            continue
+        byCategory.append({
+            "group": cg,
+            "brick": c["brick"], "core": c["core"], "other": c["other"],
+            "coreVendors": dict(sorted(c["coreVendors"].items(), key=lambda x: -x[1])),
+            "brickVendors": dict(sorted(c["brickVendors"].items(), key=lambda x: -x[1])),
+        })
 
+    other_full_list = _sorted_vendor_list(agg_other_vendor)
     inventory_mix = {
-        "lastUpdated": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "note": "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
-        "totalActive": len(seen_product_ids),
-        "totalBrick": len(brick_ids),
-        "totalCore": len(core_ids),
-        "totalOther": len(other_ids),
-        "perStore": {k: {"total": v} for k, v in per_store_totals.items()},
-        "brickVendors": brick_vendor_counts,
+        "lastUpdated": now_iso,
+        "note": "In-stock SKUs via Dutchie /products (quantityAvailable > 0), deduplicated by productId across all 3 stores. SAMPLE / DISPLAY / Prizes excluded.",
+        "totalActive": total_brick + total_core + total_other,
+        "totalBrick": total_brick,
+        "totalCore": total_core,
+        "totalOther": total_other,
+        "perStore": {sk: {"total": store_inventory[sk]["total"]}
+                     for sk in ["dracut", "pepperell", "groton"]},
+        "brickVendors": _sorted_vendor_list(agg_brick_vendor),
+        "coreVendors": _sorted_vendor_list(agg_core_vendor),
+        "otherVendors": other_full_list[:22],  # dashboard shows top ~22
+        "otherVendorsFull": len(other_full_list),
+        "missingCore": [cv for cv in CORE_VENDORS if cv not in agg_core_vendor],
+        "byCategory": byCategory,
     }
 
-    return product_data, inventory_mix
-
-
-def fetch_store_revenue():
-    """Fetch Dutchie transaction data to compute revenue by vendor.
-    Returns storeData structure with monthly revenue per vendor per store.
-    """
-    print("\n[2/3] Fetching Dutchie revenue data...")
-    today = date.today()
-
-    # We only need to update the current month's revenue
-    # Fetch current month transactions for each store
-    month_start = today.replace(day=1)
-    month_key = f"{today.strftime('%b')}{str(today.year)[2:]}"  # e.g., "Apr26"
-
-    store_data_update = {}
-    for store_key in ["dracut", "pepperell", "groton"]:
-        print(f"  {store_key} — {month_key}...")
-        # Fetch transactions for current month
-        params = {
-            "FromDateUTC": f"{month_start}T00:00:00Z",
-            "ToDateUTC": f"{today}T23:59:59Z",
-            "pageSize": 200,
-            "page": 1,
+    # ── Build STORE_INVENTORY (per-store, same shape) ──
+    store_inv_out = {}
+    for sk in ["dracut", "pepperell", "groton"]:
+        s = store_inventory[sk]
+        other_lst = _sorted_vendor_list(s["other_vendor"])
+        by_cat_out = []
+        for cg in cat_order:
+            c = s["by_cat"].get(cg, {"brick": 0, "core": 0, "other": 0})
+            by_cat_out.append({"group": cg, "brick": c["brick"], "core": c["core"], "other": c["other"]})
+        store_inv_out[sk] = {
+            "total": s["total"], "brick": s["brick"], "core": s["core"], "other": s["other"],
+            "brickVendors": _sorted_vendor_list(s["brick_vendor"]),
+            "coreVendors":  _sorted_vendor_list(s["core_vendor"]),
+            "otherVendors": other_lst[:15],
+            "otherVendorsFull": len(other_lst),
+            "byCategory": by_cat_out,
         }
-        all_txns = []
-        while True:
-            data = dutchie_fetch(store_key, "reporting/register-transactions", params)
-            if data is None:
-                break
-            txns = data if isinstance(data, list) else data.get("data", [])
-            all_txns.extend(txns)
-            if len(txns) < 200:
-                break
-            params["page"] += 1
 
-        # For now, we report the total revenue for current month
-        # The vendor breakdown requires line-item data which register-transactions may not provide
-        # We'll include what we can and note limitations
-        total = sum(t.get("transactionAmount", 0) for t in all_txns if t.get("transactionType") == "Sale")
-        store_data_update[store_key] = {month_key: {"total": round(total, 2), "txn_count": len(all_txns)}}
-        print(f"    {len(all_txns)} transactions, ${total:,.2f} total")
-
-    return store_data_update
+    return product_data, inventory_mix, store_inv_out
 
 
 def fetch_lit_alerts_data():
@@ -292,18 +445,30 @@ def fetch_lit_alerts_data():
             # We'll aggregate retailer presence from the events
 
     # ── MARKET_TREND_DATA: Monthly sales by vendor ──
+    # IMPORTANT: iterate using calendar-month arithmetic, NOT days=30*n.
+    # The old approach drifted (30 days != 1 month) and could skip an entire
+    # calendar month — that's why March 2026 went missing on Apr 13.
     market_trend_months = []
     market_trend_vendors = defaultdict(dict)
 
-    # Fetch monthly market data for past 14 months
-    for months_ago in range(14, -1, -1):
-        month_dt = today.replace(day=1) - timedelta(days=months_ago * 30)
-        month_start = month_dt.replace(day=1)
-        if months_ago > 0:
-            next_month = (month_start + timedelta(days=32)).replace(day=1)
-            month_end = next_month - timedelta(days=1)
-        else:
-            month_end = today
+    # Build list of (year, month) tuples for the last 15 months (14 completed + current MTD)
+    def add_months(y, m, delta):
+        idx = y * 12 + (m - 1) + delta
+        return idx // 12, (idx % 12) + 1
+
+    cur_y, cur_m = today.year, today.month
+    month_pairs = []
+    for back in range(14, -1, -1):
+        month_pairs.append(add_months(cur_y, cur_m, -back))
+
+    for (y, m) in month_pairs:
+        month_start = date(y, m, 1)
+        # Last day of this month
+        next_y, next_m = add_months(y, m, 1)
+        next_month_start = date(next_y, next_m, 1)
+        last_day = next_month_start - timedelta(days=1)
+        # Don't query past today — for the current month, cap at today
+        month_end = min(last_day, today)
 
         month_key = month_start.strftime("%Y-%m")
         if month_key not in market_trend_months:
@@ -399,21 +564,25 @@ def main():
         html = f.read()
 
     # Fetch all data
-    product_data, inventory_mix = fetch_product_data()
+    product_data, inventory_mix, store_inventory = fetch_inventory_data()
     lit_alerts_data, market_trend = fetch_lit_alerts_data()
 
     # Update HTML constants
     print("\nUpdating HTML file...")
 
-    # Update PRODUCT_DATA
+    # PRODUCT_DATA — tab-vendor per-category detail
     html = replace_js_const(html, "PRODUCT_DATA", json.dumps(product_data, indent=2, ensure_ascii=True))
     print("  Updated PRODUCT_DATA")
 
-    # Update INVENTORY_MIX
+    # INVENTORY_MIX — aggregate (brickVendors, coreVendors, otherVendors, byCategory)
     html = replace_js_const(html, "INVENTORY_MIX", json.dumps(inventory_mix, indent=2, ensure_ascii=True))
     print("  Updated INVENTORY_MIX")
 
-    # Update MARKET_TREND_DATA (if Lit Alerts succeeded)
+    # STORE_INVENTORY — per-store breakdown (drives the per-store drill-in cards)
+    html = replace_js_const(html, "STORE_INVENTORY", json.dumps(store_inventory, indent=2, ensure_ascii=True))
+    print("  Updated STORE_INVENTORY")
+
+    # MARKET_TREND_DATA (if Lit Alerts succeeded)
     if market_trend:
         html = replace_js_const(html, "MARKET_TREND_DATA", json.dumps(market_trend, indent=2, ensure_ascii=True))
         print("  Updated MARKET_TREND_DATA")
@@ -425,8 +594,11 @@ def main():
         f.write(html)
 
     print(f"\nDone! Updated {HTML_FILE}")
-    print(f"  Product data: {sum(v['totalSkus'] for v in product_data['vendors'].values())} total SKUs")
-    print(f"  Inventory: {inventory_mix['totalActive']} active, {inventory_mix['totalBrick']} brick")
+    print(f"  Product data: {sum(v['totalSkus'] for v in product_data['vendors'].values())} total SKUs (tab vendors)")
+    print(f"  Inventory agg: {inventory_mix['totalActive']} active ({inventory_mix['totalBrick']} brick / {inventory_mix['totalCore']} core / {inventory_mix['totalOther']} other)")
+    for sk in ["dracut", "pepperell", "groton"]:
+        s = store_inventory[sk]
+        print(f"  {sk}: {s['total']} total ({s['brick']}/{s['core']}/{s['other']})")
 
 
 if __name__ == "__main__":
