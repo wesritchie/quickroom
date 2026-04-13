@@ -1,0 +1,111 @@
+name: Refresh QuickRoom Dashboards
+
+on:
+  schedule:
+    # All times in UTC. ET = UTC - 4 (EDT) or UTC - 5 (EST)
+    # Geo Totem: 6:00 AM UTC = 2:00 AM ET
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      dashboard:
+        description: 'Which dashboard to refresh'
+        required: true
+        type: choice
+        options:
+          - all
+          - geo-totem
+          - brick-house
+          - rainbow-review
+
+permissions:
+  contents: write
+
+jobs:
+  geo-totem:
+    if: >
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && (inputs.dashboard == 'all' || inputs.dashboard == 'geo-totem'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Refresh Geo Totem data
+        env:
+          VERISCAN_TOKEN: ${{ secrets.VERISCAN_TOKEN }}
+        run: python scripts/refresh_geo_totem.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "QuickRoom Pipeline"
+          git config user.email "pipeline@quickroom.local"
+          git add geo-totem.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Daily Geo Totem refresh — $(date +%Y-%m-%d)"
+            git push
+          fi
+
+  brick-house:
+    if: >
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && (inputs.dashboard == 'all' || inputs.dashboard == 'brick-house'))
+    runs-on: ubuntu-latest
+    needs: geo-totem
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Pull latest in case geo-totem just committed
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Refresh Brick House data
+        env:
+          DUTCHIE_API_KEY_DRACUT: ${{ secrets.DUTCHIE_API_KEY_DRACUT }}
+          DUTCHIE_API_KEY_PEPPERELL: ${{ secrets.DUTCHIE_API_KEY_PEPPERELL }}
+          DUTCHIE_API_KEY_GROTON: ${{ secrets.DUTCHIE_API_KEY_GROTON }}
+          LIT_ALERTS_TOKEN: ${{ secrets.LIT_ALERTS_TOKEN }}
+        run: python scripts/refresh_brick_house.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "QuickRoom Pipeline"
+          git config user.email "pipeline@quickroom.local"
+          git pull --rebase origin main
+          git add brick-house.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Daily Brick House refresh — $(date +%Y-%m-%d)"
+            git push
+          fi
+
+  notify:
+    if: always()
+    needs: [geo-totem, brick-house]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report status
+        run: |
+          echo "=== QuickRoom Pipeline Status ==="
+          echo "Geo Totem: ${{ needs.geo-totem.result }}"
+          echo "Brick House: ${{ needs.brick-house.result }}"
+          if [[ "${{ needs.geo-totem.result }}" == "failure" ]] || [[ "${{ needs.brick-house.result }}" == "failure" ]]; then
+            echo "::error::One or more dashboard refreshes failed!"
+            exit 1
+          fi
