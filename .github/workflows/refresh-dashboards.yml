@@ -56,8 +56,10 @@ jobs:
 
   brick-house:
     if: >
-      github.event_name == 'schedule' ||
-      (github.event_name == 'workflow_dispatch' && (inputs.dashboard == 'all' || inputs.dashboard == 'brick-house'))
+      always() &&
+      (github.event_name == 'schedule' ||
+       (github.event_name == 'workflow_dispatch' && (inputs.dashboard == 'all' || inputs.dashboard == 'brick-house'))) &&
+      (needs.geo-totem.result == 'success' || needs.geo-totem.result == 'skipped')
     runs-on: ubuntu-latest
     needs: geo-totem
     timeout-minutes: 15
