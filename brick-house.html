@@ -941,7 +941,7 @@ const LIT_ALERTS_DATA = {
 // Format: { skus, avgPrice, avgCost } per category per vendor
 // Updated: 2026-04-11 via Dutchie POS API (3 stores: Dracut, Pepperell, Groton; in-stock filtered via /inventory)
 const PRODUCT_DATA = {
-  "lastUpdated": "2026-04-13T19:56:47Z",
+  "lastUpdated": "2026-04-13T21:22:00Z",
   "vendors": {
     "fb": {
       "totalSkus": 0,
@@ -970,10 +970,6 @@ const PRODUCT_DATA = {
     "mc": {
       "totalSkus": 0,
       "categories": {}
-    },
-    "hb": {
-      "totalSkus": 0,
-      "categories": {}
     }
   }
 };
@@ -984,7 +980,7 @@ const PRODUCT_DATA = {
 // MARKET TREND DATA (Lit Alerts &mdash; Estimated MA Market Sales)
 // ===================================================
 const MARKET_TREND_DATA = {
-  "lastUpdated": "2026-04-13T20:06:47Z",
+  "lastUpdated": "2026-04-13T21:29:51Z",
   "note": "Monthly estimated sales ($) across all MA retailers, via Lit Alerts analytics.",
   "months": [
     "2025-02",
@@ -999,6 +995,7 @@ const MARKET_TREND_DATA = {
     "2025-11",
     "2025-12",
     "2026-01",
+    "2026-02",
     "2026-03",
     "2026-04"
   ],
@@ -1011,100 +1008,290 @@ const MARKET_TREND_DATA = {
 // INVENTORY MIX &mdash; Bricks vs Non-Bricks (from Dutchie product catalog)
 // ===================================================
 const INVENTORY_MIX = {
-  "lastUpdated": "2026-04-13T19:56:47Z",
-  "note": "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
-  "totalActive": 7437,
+  "lastUpdated": "2026-04-13T21:22:00Z",
+  "note": "In-stock SKUs via Dutchie /products (quantityAvailable > 0), deduplicated by productId across all 3 stores. SAMPLE / DISPLAY / Prizes excluded.",
+  "totalActive": 0,
   "totalBrick": 0,
   "totalCore": 0,
   "totalOther": 0,
   "perStore": {
     "dracut": {
-      "total": 7420
+      "total": 0
     },
     "pepperell": {
-      "total": 7393
+      "total": 0
     },
     "groton": {
-      "total": 7399
+      "total": 0
     }
   },
-  "brickVendors": []
+  "brickVendors": [],
+  "coreVendors": [],
+  "otherVendors": [],
+  "otherVendorsFull": 0,
+  "missingCore": [
+    "Cultivate",
+    "ARL Healthcare",
+    "Garden Remedies",
+    "Green Meadows",
+    "Novel Beverage",
+    "Lunar Xtracts",
+    "Curaleaf",
+    "Mederi",
+    "Humboldt Masters"
+  ],
+  "byCategory": [
+    {
+      "group": "Merch / Accessories",
+      "brick": 0,
+      "core": 0,
+      "other": 0,
+      "coreVendors": {},
+      "brickVendors": {}
+    },
+    {
+      "group": "Pre-Rolls",
+      "brick": 0,
+      "core": 0,
+      "other": 0,
+      "coreVendors": {},
+      "brickVendors": {}
+    },
+    {
+      "group": "Vapes",
+      "brick": 0,
+      "core": 0,
+      "other": 0,
+      "coreVendors": {},
+      "brickVendors": {}
+    },
+    {
+      "group": "Flower",
+      "brick": 0,
+      "core": 0,
+      "other": 0,
+      "coreVendors": {},
+      "brickVendors": {}
+    },
+    {
+      "group": "Edibles",
+      "brick": 0,
+      "core": 0,
+      "other": 0,
+      "coreVendors": {},
+      "brickVendors": {}
+    },
+    {
+      "group": "Beverages",
+      "brick": 0,
+      "core": 0,
+      "other": 0,
+      "coreVendors": {},
+      "brickVendors": {}
+    },
+    {
+      "group": "Concentrates",
+      "brick": 0,
+      "core": 0,
+      "other": 0,
+      "coreVendors": {},
+      "brickVendors": {}
+    },
+    {
+      "group": "Topicals",
+      "brick": 0,
+      "core": 0,
+      "other": 0,
+      "coreVendors": {},
+      "brickVendors": {}
+    }
+  ]
 };
 
 // ===================================================
 // PER-STORE INVENTORY (from Dutchie /inventory, deduplicated by productId per store)
 // ===================================================
 const STORE_INVENTORY = {
-  dracut: {
-    total: 529, brick: 187, core: 129, other: 213,
-    brickVendors: [
-      { name: "Freshly Baked", skus: 35 },
-      { name: "T. Bear / Coast", skus: 28 },
-      { name: "High Plains Farm", skus: 24 },
-      { name: "MACC", skus: 23 },
-      { name: "Wellman Farms", skus: 23 },
-      { name: "Hudson Botanical", skus: 22 },
-      { name: "Bostica", skus: 19 },
-      { name: "Good Feels", skus: 13 },
-    ],
-    coreVendors: [
-      { name: "Novel Beverage", skus: 21 },
-      { name: "Cultivate", skus: 21 },
-      { name: "Garden Remedies", skus: 20 },
-      { name: "Green Meadows", skus: 19 },
-      { name: "ARL Healthcare", skus: 15 },
-      { name: "Lunar Xtracts", skus: 13 },
-      { name: "Curaleaf", skus: 10 },
-      { name: "Mederi", skus: 7 },
-      { name: "Humboldt Masters", skus: 3 },
+  "dracut": {
+    "total": 0,
+    "brick": 0,
+    "core": 0,
+    "other": 0,
+    "brickVendors": [],
+    "coreVendors": [],
+    "otherVendors": [],
+    "otherVendorsFull": 0,
+    "byCategory": [
+      {
+        "group": "Merch / Accessories",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Pre-Rolls",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Vapes",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Flower",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Edibles",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Beverages",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Concentrates",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Topicals",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      }
     ]
   },
-  pepperell: {
-    total: 478, brick: 170, core: 137, other: 171,
-    brickVendors: [
-      { name: "Freshly Baked", skus: 37 },
-      { name: "Hudson Botanical", skus: 22 },
-      { name: "High Plains Farm", skus: 22 },
-      { name: "MACC", skus: 21 },
-      { name: "Bostica", skus: 20 },
-      { name: "T. Bear / Coast", skus: 19 },
-      { name: "Wellman Farms", skus: 16 },
-      { name: "Good Feels", skus: 13 },
-    ],
-    coreVendors: [
-      { name: "Cultivate", skus: 25 },
-      { name: "Garden Remedies", skus: 25 },
-      { name: "Green Meadows", skus: 24 },
-      { name: "Novel Beverage", skus: 20 },
-      { name: "Lunar Xtracts", skus: 17 },
-      { name: "ARL Healthcare", skus: 17 },
-      { name: "Mederi", skus: 7 },
-      { name: "Humboldt Masters", skus: 2 },
+  "pepperell": {
+    "total": 0,
+    "brick": 0,
+    "core": 0,
+    "other": 0,
+    "brickVendors": [],
+    "coreVendors": [],
+    "otherVendors": [],
+    "otherVendorsFull": 0,
+    "byCategory": [
+      {
+        "group": "Merch / Accessories",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Pre-Rolls",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Vapes",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Flower",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Edibles",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Beverages",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Concentrates",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Topicals",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      }
     ]
   },
-  groton: {
-    total: 439, brick: 159, core: 111, other: 169,
-    brickVendors: [
-      { name: "Freshly Baked", skus: 29 },
-      { name: "High Plains Farm", skus: 26 },
-      { name: "Wellman Farms", skus: 25 },
-      { name: "T. Bear / Coast", skus: 22 },
-      { name: "MACC", skus: 17 },
-      { name: "Hudson Botanical", skus: 15 },
-      { name: "Bostica", skus: 15 },
-      { name: "Good Feels", skus: 10 },
-    ],
-    coreVendors: [
-      { name: "Cultivate", skus: 20 },
-      { name: "ARL Healthcare", skus: 17 },
-      { name: "Green Meadows", skus: 16 },
-      { name: "Novel Beverage", skus: 15 },
-      { name: "Lunar Xtracts", skus: 14 },
-      { name: "Garden Remedies", skus: 14 },
-      { name: "Mederi", skus: 5 },
-      { name: "Humboldt Masters", skus: 2 },
+  "groton": {
+    "total": 0,
+    "brick": 0,
+    "core": 0,
+    "other": 0,
+    "brickVendors": [],
+    "coreVendors": [],
+    "otherVendors": [],
+    "otherVendorsFull": 0,
+    "byCategory": [
+      {
+        "group": "Merch / Accessories",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Pre-Rolls",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Vapes",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Flower",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Edibles",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Beverages",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Concentrates",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      },
+      {
+        "group": "Topicals",
+        "brick": 0,
+        "core": 0,
+        "other": 0
+      }
     ]
-  },
+  }
 };
 
 // Global caches for API data
