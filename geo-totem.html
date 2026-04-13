@@ -505,231 +505,618 @@
 <script>
 // ========== EMBEDDED DATA ==========
 const DATA = {
-        yesterday: {
-          label: "Apr 10",
-          total: 501,
-          uniqueCities: 106,
-          byStore: {dracut:269,pepperell:179,groton:53},
-          byState: {MA:222,NH:251,OTHER:28},
-          byStoreByState: {
-            dracut:{MA:104,NH:145,OTHER:20},
-            pepperell:{MA:72,NH:100,OTHER:7},
-            groton:{MA:46,NH:6,OTHER:1}
-          },
-          topCities: {
-            dracut: [
-              {rank:1,name:"METHUEN, MA",count:37,pct:"13.8"},
-                {rank:2,name:"MANCHESTER, NH",count:36,pct:"13.4"},
-                {rank:3,name:"DERRY, NH",count:20,pct:"7.4"},
-                {rank:4,name:"LAWRENCE, MA",count:19,pct:"7.1"},
-                {rank:5,name:"SALEM, NH",count:17,pct:"6.3"},
-                {rank:6,name:"LONDONDERRY, NH",count:13,pct:"4.8"},
-                {rank:7,name:"PELHAM, NH",count:11,pct:"4.1"},
-                {rank:8,name:"WINDHAM, NH",count:9,pct:"3.3"},
-                {rank:9,name:"DRACUT, MA",count:8,pct:"3.0"},
-                {rank:10,name:"ANDOVER, MA",count:6,pct:"2.2"}
-            ],
-            pepperell: [
-              {rank:1,name:"PEPPERELL, MA",count:34,pct:"19.0"},
-                {rank:2,name:"NASHUA, NH",count:31,pct:"17.3"},
-                {rank:3,name:"TOWNSEND, MA",count:11,pct:"6.1"},
-                {rank:4,name:"MILFORD, NH",count:10,pct:"5.6"},
-                {rank:5,name:"MANCHESTER, NH",count:10,pct:"5.6"},
-                {rank:6,name:"BROOKLINE, NH",count:8,pct:"4.5"},
-                {rank:7,name:"HOLLIS, NH",count:8,pct:"4.5"},
-                {rank:8,name:"FITCHBURG, MA",count:5,pct:"2.8"},
-                {rank:9,name:"LEOMINSTER, MA",count:4,pct:"2.2"},
-                {rank:10,name:"GROTON, MA",count:3,pct:"1.7"}
-            ],
-            groton: [
-              {rank:1,name:"GROTON, MA",count:19,pct:"35.8"},
-                {rank:2,name:"PEPPERELL, MA",count:4,pct:"7.5"},
-                {rank:3,name:"AYER, MA",count:4,pct:"7.5"},
-                {rank:4,name:"TOWNSEND, MA",count:3,pct:"5.7"},
-                {rank:5,name:"WESTFORD, MA",count:3,pct:"5.7"},
-                {rank:6,name:"LUNENBURG, MA",count:2,pct:"3.8"},
-                {rank:7,name:"LITTLETON, MA",count:2,pct:"3.8"},
-                {rank:8,name:"SHIRLEY, MA",count:2,pct:"3.8"},
-                {rank:9,name:"FITCHBURG, MA",count:1,pct:"1.9"},
-                {rank:10,name:"NASHUA, NH",count:1,pct:"1.9"}
-            ]
-          }
-        },
-        week: {
-          label: "Mar 30–Apr 5",
-          total: 2911,
-          uniqueCities: 249,
-          byStore: {dracut:1588,pepperell:991,groton:332},
-          byState: {MA:1274,NH:1444,OTHER:193},
-          byStoreByState: {
-            dracut:{MA:480,NH:1015,OTHER:93},
-            pepperell:{MA:448,NH:451,OTHER:92},
-            groton:{MA:286,NH:38,OTHER:8}
-          },
-          topCities: {
-            dracut: [
-              {rank:1,name:"METHUEN, MA",count:187,pct:"11.8"},
-                {rank:2,name:"MANCHESTER, NH",count:184,pct:"11.6"},
-                {rank:3,name:"SALEM, NH",count:141,pct:"8.9"},
-                {rank:4,name:"DERRY, NH",count:129,pct:"8.1"},
-                {rank:5,name:"LAWRENCE, MA",count:111,pct:"7.0"},
-                {rank:6,name:"DRACUT, MA",count:71,pct:"4.5"},
-                {rank:7,name:"PELHAM, NH",count:65,pct:"4.1"},
-                {rank:8,name:"LONDONDERRY, NH",count:62,pct:"3.9"},
-                {rank:9,name:"WINDHAM, NH",count:42,pct:"2.6"},
-                {rank:10,name:"CONCORD, NH",count:31,pct:"2.0"}
-            ],
-            pepperell: [
-              {rank:1,name:"PEPPERELL, MA",count:239,pct:"24.1"},
-                {rank:2,name:"NASHUA, NH",count:160,pct:"16.1"},
-                {rank:3,name:"TOWNSEND, MA",count:60,pct:"6.1"},
-                {rank:4,name:"MILFORD, NH",count:42,pct:"4.2"},
-                {rank:5,name:"HOLLIS, NH",count:32,pct:"3.2"},
-                {rank:6,name:"MANCHESTER, NH",count:28,pct:"2.8"},
-                {rank:7,name:"BROOKLINE, NH",count:26,pct:"2.6"},
-                {rank:8,name:"GROTON, MA",count:24,pct:"2.4"},
-                {rank:9,name:"MERRIMACK, NH",count:23,pct:"2.3"},
-                {rank:10,name:"AMHERST, NH",count:22,pct:"2.2"}
-            ],
-            groton: [
-              {rank:1,name:"GROTON, MA",count:78,pct:"23.5"},
-                {rank:2,name:"WESTFORD, MA",count:50,pct:"15.1"},
-                {rank:3,name:"LITTLETON, MA",count:25,pct:"7.5"},
-                {rank:4,name:"AYER, MA",count:24,pct:"7.2"},
-                {rank:5,name:"PEPPERELL, MA",count:19,pct:"5.7"},
-                {rank:6,name:"TOWNSEND, MA",count:13,pct:"3.9"},
-                {rank:7,name:"LUNENBURG, MA",count:9,pct:"2.7"},
-                {rank:8,name:"SHIRLEY, MA",count:8,pct:"2.4"},
-                {rank:9,name:"CHELMSFORD, MA",count:8,pct:"2.4"},
-                {rank:10,name:"NASHUA, NH",count:7,pct:"2.1"}
-            ]
-          }
-        },
-        month: {
-          label: "Apr 1–10",
-          total: 4391,
-          uniqueCities: 419,
-          byStore: {dracut:2407,pepperell:1487,groton:497},
-          byState: {MA:1891,NH:2225,OTHER:275},
-          byStoreByState: {
-            dracut:{MA:841,NH:1391,OTHER:175},
-            pepperell:{MA:643,NH:773,OTHER:71},
-            groton:{MA:407,NH:61,OTHER:29}
-          },
-          topCities: {
-            dracut: [
-              {rank:1,name:"MANCHESTER, NH",count:288,pct:"12.0"},
-                {rank:2,name:"METHUEN, MA",count:286,pct:"11.9"},
-                {rank:3,name:"SALEM, NH",count:203,pct:"8.4"},
-                {rank:4,name:"DERRY, NH",count:183,pct:"7.6"},
-                {rank:5,name:"LAWRENCE, MA",count:179,pct:"7.4"},
-                {rank:6,name:"LONDONDERRY, NH",count:115,pct:"4.8"},
-                {rank:7,name:"DRACUT, MA",count:88,pct:"3.7"},
-                {rank:8,name:"PELHAM, NH",count:88,pct:"3.7"},
-                {rank:9,name:"WINDHAM, NH",count:71,pct:"2.9"},
-                {rank:10,name:"CONCORD, NH",count:50,pct:"2.1"}
-            ],
-            pepperell: [
-              {rank:1,name:"PEPPERELL, MA",count:316,pct:"21.3"},
-                {rank:2,name:"NASHUA, NH",count:216,pct:"14.5"},
-                {rank:3,name:"TOWNSEND, MA",count:89,pct:"6.0"},
-                {rank:4,name:"MILFORD, NH",count:86,pct:"5.8"},
-                {rank:5,name:"MANCHESTER, NH",count:66,pct:"4.4"},
-                {rank:6,name:"BROOKLINE, NH",count:64,pct:"4.3"},
-                {rank:7,name:"HOLLIS, NH",count:57,pct:"3.8"},
-                {rank:8,name:"GROTON, MA",count:45,pct:"3.0"},
-                {rank:9,name:"MERRIMACK, NH",count:40,pct:"2.7"},
-                {rank:10,name:"AMHERST, NH",count:28,pct:"1.9"}
-            ],
-            groton: [
-              {rank:1,name:"GROTON, MA",count:112,pct:"22.5"},
-                {rank:2,name:"WESTFORD, MA",count:100,pct:"20.1"},
-                {rank:3,name:"AYER, MA",count:29,pct:"5.8"},
-                {rank:4,name:"TOWNSEND, MA",count:24,pct:"4.8"},
-                {rank:5,name:"LITTLETON, MA",count:21,pct:"4.2"},
-                {rank:6,name:"PEPPERELL, MA",count:16,pct:"3.2"},
-                {rank:7,name:"LEOMINSTER, MA",count:8,pct:"1.6"},
-                {rank:8,name:"MILFORD, NH",count:7,pct:"1.4"},
-                {rank:9,name:"NASHUA, NH",count:7,pct:"1.4"},
-                {rank:10,name:"LOWELL, MA",count:6,pct:"1.2"}
-            ]
-          }
-        }
-      };
+  "yesterday": {
+    "label": "Apr 12, 2026",
+    "total": 362,
+    "uniqueCities": 96,
+    "byStore": {
+      "dracut": 196,
+      "pepperell": 124,
+      "groton": 42
+    },
+    "byState": {
+      "MA": 162,
+      "NH": 184,
+      "OTHER": 16
+    },
+    "byStoreByState": {
+      "dracut": {
+        "MA": 74,
+        "NH": 109,
+        "OTHER": 13
+      },
+      "pepperell": {
+        "MA": 49,
+        "NH": 73,
+        "OTHER": 2
+      },
+      "groton": {
+        "MA": 39,
+        "NH": 2,
+        "OTHER": 1
+      }
+    },
+    "topCities": [
+      {
+        "city": "MANCHESTER, NH",
+        "count": 32
+      },
+      {
+        "city": "NASHUA, NH",
+        "count": 30
+      },
+      {
+        "city": "PEPPERELL, MA",
+        "count": 24
+      },
+      {
+        "city": "METHUEN, MA",
+        "count": 20
+      },
+      {
+        "city": "LAWRENCE, MA",
+        "count": 14
+      },
+      {
+        "city": "DERRY, NH",
+        "count": 13
+      },
+      {
+        "city": "SALEM, NH",
+        "count": 13
+      },
+      {
+        "city": "GROTON, MA",
+        "count": 12
+      },
+      {
+        "city": "LONDONDERRY, NH",
+        "count": 11
+      },
+      {
+        "city": "BROOKLINE, NH",
+        "count": 10
+      },
+      {
+        "city": "DRACUT, MA",
+        "count": 9
+      },
+      {
+        "city": "HOLLIS, NH",
+        "count": 8
+      },
+      {
+        "city": "PELHAM, NH",
+        "count": 8
+      },
+      {
+        "city": "WESTFORD, MA",
+        "count": 8
+      },
+      {
+        "city": "MILFORD, NH",
+        "count": 7
+      },
+      {
+        "city": "WINDHAM, NH",
+        "count": 7
+      },
+      {
+        "city": "TOWNSEND, MA",
+        "count": 7
+      },
+      {
+        "city": "LOWELL, MA",
+        "count": 6
+      },
+      {
+        "city": "CONCORD, NH",
+        "count": 5
+      },
+      {
+        "city": "MERRIMACK, NH",
+        "count": 5
+      },
+      {
+        "city": "HOOKSETT, NH",
+        "count": 4
+      },
+      {
+        "city": "ANDOVER, MA",
+        "count": 4
+      },
+      {
+        "city": "UNKNOWN, USA",
+        "count": 4
+      },
+      {
+        "city": "AYER, MA",
+        "count": 3
+      },
+      {
+        "city": "LITTLETON, MA",
+        "count": 3
+      },
+      {
+        "city": "BEDFORD, NH",
+        "count": 3
+      },
+      {
+        "city": "TYNGSBORO, MA",
+        "count": 3
+      },
+      {
+        "city": "DUNSTABLE, MA",
+        "count": 2
+      },
+      {
+        "city": "AMHERST, NH",
+        "count": 2
+      },
+      {
+        "city": "HAVERHILL, MA",
+        "count": 2
+      }
+    ]
+  },
+  "week": {
+    "label": "Apr 6–12",
+    "total": 3095,
+    "uniqueCities": 341,
+    "byStore": {
+      "dracut": 1709,
+      "pepperell": 1043,
+      "groton": 343
+    },
+    "byState": {
+      "MA": 1313,
+      "NH": 1597,
+      "OTHER": 185
+    },
+    "byStoreByState": {
+      "dracut": {
+        "MA": 594,
+        "NH": 991,
+        "OTHER": 124
+      },
+      "pepperell": {
+        "MA": 424,
+        "NH": 568,
+        "OTHER": 51
+      },
+      "groton": {
+        "MA": 295,
+        "NH": 38,
+        "OTHER": 10
+      }
+    },
+    "topCities": [
+      {
+        "city": "MANCHESTER, NH",
+        "count": 252
+      },
+      {
+        "city": "PEPPERELL, MA",
+        "count": 211
+      },
+      {
+        "city": "METHUEN, MA",
+        "count": 200
+      },
+      {
+        "city": "NASHUA, NH",
+        "count": 190
+      },
+      {
+        "city": "LAWRENCE, MA",
+        "count": 134
+      },
+      {
+        "city": "SALEM, NH",
+        "count": 131
+      },
+      {
+        "city": "DERRY, NH",
+        "count": 126
+      },
+      {
+        "city": "LONDONDERRY, NH",
+        "count": 94
+      },
+      {
+        "city": "GROTON, MA",
+        "count": 87
+      },
+      {
+        "city": "WESTFORD, MA",
+        "count": 78
+      },
+      {
+        "city": "MILFORD, NH",
+        "count": 69
+      },
+      {
+        "city": "PELHAM, NH",
+        "count": 61
+      },
+      {
+        "city": "DRACUT, MA",
+        "count": 62
+      },
+      {
+        "city": "TOWNSEND, MA",
+        "count": 67
+      },
+      {
+        "city": "WINDHAM, NH",
+        "count": 49
+      },
+      {
+        "city": "BROOKLINE, NH",
+        "count": 49
+      },
+      {
+        "city": "HOLLIS, NH",
+        "count": 44
+      },
+      {
+        "city": "LOWELL, MA",
+        "count": 47
+      },
+      {
+        "city": "UNKNOWN, USA",
+        "count": 42
+      },
+      {
+        "city": "CONCORD, NH",
+        "count": 36
+      },
+      {
+        "city": "HOOKSETT, NH",
+        "count": 25
+      },
+      {
+        "city": "MERRIMACK, NH",
+        "count": 31
+      },
+      {
+        "city": "ANDOVER, MA",
+        "count": 24
+      },
+      {
+        "city": "AMHERST, NH",
+        "count": 15
+      },
+      {
+        "city": "BEDFORD, NH",
+        "count": 14
+      },
+      {
+        "city": "AYER, MA",
+        "count": 17
+      },
+      {
+        "city": "LITTLETON, MA",
+        "count": 17
+      },
+      {
+        "city": "DUNSTABLE, MA",
+        "count": 17
+      },
+      {
+        "city": "SHIRLEY, MA",
+        "count": 13
+      },
+      {
+        "city": "TYNGSBORO, MA",
+        "count": 10
+      }
+    ]
+  },
+  "month": {
+    "label": "Apr 1–12",
+    "total": 5274,
+    "uniqueCities": 451,
+    "byStore": {
+      "dracut": 2899,
+      "pepperell": 1788,
+      "groton": 587
+    },
+    "byState": {
+      "MA": 2243,
+      "NH": 2699,
+      "OTHER": 332
+    },
+    "byStoreByState": {
+      "dracut": {
+        "MA": 1002,
+        "NH": 1683,
+        "OTHER": 214
+      },
+      "pepperell": {
+        "MA": 756,
+        "NH": 946,
+        "OTHER": 86
+      },
+      "groton": {
+        "MA": 485,
+        "NH": 70,
+        "OTHER": 32
+      }
+    },
+    "topCities": [
+      {
+        "city": "MANCHESTER, NH",
+        "count": 438
+      },
+      {
+        "city": "PEPPERELL, MA",
+        "count": 395
+      },
+      {
+        "city": "METHUEN, MA",
+        "count": 332
+      },
+      {
+        "city": "NASHUA, NH",
+        "count": 312
+      },
+      {
+        "city": "SALEM, NH",
+        "count": 240
+      },
+      {
+        "city": "DERRY, NH",
+        "count": 231
+      },
+      {
+        "city": "LAWRENCE, MA",
+        "count": 219
+      },
+      {
+        "city": "GROTON, MA",
+        "count": 187
+      },
+      {
+        "city": "LONDONDERRY, NH",
+        "count": 151
+      },
+      {
+        "city": "TOWNSEND, MA",
+        "count": 128
+      },
+      {
+        "city": "WESTFORD, MA",
+        "count": 127
+      },
+      {
+        "city": "MILFORD, NH",
+        "count": 120
+      },
+      {
+        "city": "DRACUT, MA",
+        "count": 116
+      },
+      {
+        "city": "PELHAM, NH",
+        "count": 109
+      },
+      {
+        "city": "WINDHAM, NH",
+        "count": 101
+      },
+      {
+        "city": "BROOKLINE, NH",
+        "count": 94
+      },
+      {
+        "city": "HOLLIS, NH",
+        "count": 82
+      },
+      {
+        "city": "LOWELL, MA",
+        "count": 79
+      },
+      {
+        "city": "MERRIMACK, NH",
+        "count": 58
+      },
+      {
+        "city": "UNKNOWN, USA",
+        "count": 57
+      },
+      {
+        "city": "CONCORD, NH",
+        "count": 55
+      },
+      {
+        "city": "HOOKSETT, NH",
+        "count": 52
+      },
+      {
+        "city": "AYER, MA",
+        "count": 37
+      },
+      {
+        "city": "LITTLETON, MA",
+        "count": 36
+      },
+      {
+        "city": "ANDOVER, MA",
+        "count": 35
+      },
+      {
+        "city": "BEDFORD, NH",
+        "count": 34
+      },
+      {
+        "city": "AMHERST, NH",
+        "count": 33
+      },
+      {
+        "city": "TYNGSBORO, MA",
+        "count": 29
+      },
+      {
+        "city": "DUNSTABLE, MA",
+        "count": 27
+      },
+      {
+        "city": "SHIRLEY, MA",
+        "count": 23
+      }
+    ]
+  }
+};
 
 // 18-month trend data — compute totals for the "18month" period view
 const TREND = [
-          {label:"Nov 24",total:7502,byState:{MA:2773,NH:4043,OTHER:686},byStore:{dracut:7502,pepperell:0,groton:0}},
-          {label:"Dec 24",total:7498,byState:{MA:2793,NH:4011,OTHER:694},byStore:{dracut:7498,pepperell:0,groton:0}},
-          {label:"Jan 25",total:8656,byState:{MA:3144,NH:4795,OTHER:717},byStore:{dracut:6818,pepperell:1772,groton:66}},
-          {label:"Feb 25",total:10483,byState:{MA:3998,NH:5652,OTHER:833},byStore:{dracut:5999,pepperell:4157,groton:327}},
-          {label:"Mar 25",total:12518,byState:{MA:5125,NH:6423,OTHER:970},byStore:{dracut:6948,pepperell:4567,groton:1003}},
-          {label:"Apr 25",total:12985,byState:{MA:5234,NH:6814,OTHER:937},byStore:{dracut:7346,pepperell:4540,groton:1099}},
-          {label:"May 25",total:13448,byState:{MA:5415,NH:6981,OTHER:1052},byStore:{dracut:7619,pepperell:4607,groton:1222}},
-          {label:"Jun 25",total:13370,byState:{MA:5459,NH:6742,OTHER:1169},byStore:{dracut:7855,pepperell:4155,groton:1360}},
-          {label:"Jul 25",total:13921,byState:{MA:5751,NH:6982,OTHER:1188},byStore:{dracut:7944,pepperell:4591,groton:1386}},
-          {label:"Aug 25",total:14076,byState:{MA:5799,NH:7117,OTHER:1160},byStore:{dracut:8159,pepperell:4379,groton:1538}},
-          {label:"Sep 25",total:13707,byState:{MA:5886,NH:6712,OTHER:1109},byStore:{dracut:7969,pepperell:4265,groton:1473}},
-          {label:"Oct 25",total:14282,byState:{MA:6015,NH:7117,OTHER:1150},byStore:{dracut:8386,pepperell:4435,groton:1461}},
-          {label:"Nov 25",total:13458,byState:{MA:5693,NH:6824,OTHER:941},byStore:{dracut:7954,pepperell:4082,groton:1422}},
-          {label:"Dec 25",total:13639,byState:{MA:5776,NH:6914,OTHER:949},byStore:{dracut:7879,pepperell:4313,groton:1447}},
-          {label:"Jan 26",total:12821,byState:{MA:5346,NH:6689,OTHER:786},byStore:{dracut:7452,pepperell:3955,groton:1414}},
-          {label:"Feb 26",total:11267,byState:{MA:4808,NH:5732,OTHER:727},byStore:{dracut:6491,pepperell:3519,groton:1257}},
-          {label:"Mar 26",total:12478,byState:{MA:5249,NH:6424,OTHER:805},byStore:{dracut:7044,pepperell:3992,groton:1442}},
-          {label:"Apr 26 (proj)",total:13173,byState:{MA:5673,NH:6675,OTHER:825},byStore:{dracut:7221,pepperell:4461,groton:1491}}
-        ];
+  {"label":"Nov 24","total":7502,"byState":{"MA":2773,"NH":4043,"OTHER":686},"byStore":{"dracut":7502,"pepperell":0,"groton":0}},
+  {"label":"Dec 24","total":7498,"byState":{"MA":2793,"NH":4011,"OTHER":694},"byStore":{"dracut":7498,"pepperell":0,"groton":0}},
+  {"label":"Jan 25","total":8656,"byState":{"MA":3144,"NH":4795,"OTHER":717},"byStore":{"dracut":6818,"pepperell":1772,"groton":66}},
+  {"label":"Feb 25","total":10483,"byState":{"MA":3998,"NH":5652,"OTHER":833},"byStore":{"dracut":5999,"pepperell":4157,"groton":327}},
+  {"label":"Mar 25","total":12518,"byState":{"MA":5125,"NH":6423,"OTHER":970},"byStore":{"dracut":6948,"pepperell":4567,"groton":1003}},
+  {"label":"Apr 25","total":12985,"byState":{"MA":5234,"NH":6814,"OTHER":937},"byStore":{"dracut":7346,"pepperell":4540,"groton":1099}},
+  {"label":"May 25","total":13448,"byState":{"MA":5415,"NH":6981,"OTHER":1052},"byStore":{"dracut":7619,"pepperell":4607,"groton":1222}},
+  {"label":"Jun 25","total":13370,"byState":{"MA":5459,"NH":6742,"OTHER":1169},"byStore":{"dracut":7855,"pepperell":4155,"groton":1360}},
+  {"label":"Jul 25","total":13921,"byState":{"MA":5751,"NH":6982,"OTHER":1188},"byStore":{"dracut":7944,"pepperell":4591,"groton":1386}},
+  {"label":"Aug 25","total":14076,"byState":{"MA":5799,"NH":7117,"OTHER":1160},"byStore":{"dracut":8159,"pepperell":4379,"groton":1538}},
+  {"label":"Sep 25","total":13707,"byState":{"MA":5886,"NH":6712,"OTHER":1109},"byStore":{"dracut":7969,"pepperell":4265,"groton":1473}},
+  {"label":"Oct 25","total":14282,"byState":{"MA":6015,"NH":7117,"OTHER":1150},"byStore":{"dracut":8386,"pepperell":4435,"groton":1461}},
+  {"label":"Nov 25","total":13458,"byState":{"MA":5693,"NH":6824,"OTHER":941},"byStore":{"dracut":7954,"pepperell":4082,"groton":1422}},
+  {"label":"Dec 25","total":13639,"byState":{"MA":5776,"NH":6914,"OTHER":949},"byStore":{"dracut":7879,"pepperell":4313,"groton":1447}},
+  {"label":"Jan 26","total":12821,"byState":{"MA":5346,"NH":6689,"OTHER":786},"byStore":{"dracut":7452,"pepperell":3955,"groton":1414}},
+  {"label":"Feb 26","total":11267,"byState":{"MA":4808,"NH":5732,"OTHER":727},"byStore":{"dracut":6491,"pepperell":3519,"groton":1257}},
+  {"label":"Mar 26","total":12478,"byState":{"MA":5249,"NH":6424,"OTHER":805},"byStore":{"dracut":7044,"pepperell":3992,"groton":1442}},
+  {"label":"Apr 26 (proj)","total":12171,"byState":{"MA":5176,"NH":6228,"OTHER":766},"byStore":{"dracut":6690,"pepperell":4126,"groton":1355}}
+];
 
 // ========== PER-STORE WEEKLY CITY TREND DATA ==========
 const CITY_TREND_STORE = {
-  dracut: {
-    cities: ["METHUEN, MA","MANCHESTER, NH","SALEM, NH","DERRY, NH","LAWRENCE, MA","LONDONDERRY, NH","PELHAM, NH","DRACUT, MA","WINDHAM, NH","UNKNOWN, USA","LOWELL, MA","CONCORD, NH"],
-    weeks: [
-      {"label":"Jan 12–18","total":1614,"cities":{"METHUEN, MA":203,"MANCHESTER, NH":182,"SALEM, NH":159,"DERRY, NH":120,"LAWRENCE, MA":102,"LONDONDERRY, NH":64,"PELHAM, NH":66,"DRACUT, MA":57,"WINDHAM, NH":46,"UNKNOWN, USA":23,"LOWELL, MA":30,"CONCORD, NH":20}},
-      {"label":"Jan 19–25","total":1849,"cities":{"METHUEN, MA":259,"MANCHESTER, NH":219,"SALEM, NH":152,"DERRY, NH":118,"LAWRENCE, MA":138,"LONDONDERRY, NH":82,"PELHAM, NH":69,"DRACUT, MA":61,"WINDHAM, NH":56,"UNKNOWN, USA":32,"LOWELL, MA":23,"CONCORD, NH":19}},
-      {"label":"Jan 26–Feb 1","total":1541,"cities":{"METHUEN, MA":191,"MANCHESTER, NH":206,"SALEM, NH":154,"DERRY, NH":129,"LAWRENCE, MA":109,"LONDONDERRY, NH":77,"PELHAM, NH":66,"DRACUT, MA":49,"WINDHAM, NH":49,"UNKNOWN, USA":24,"LOWELL, MA":19,"CONCORD, NH":30}},
-      {"label":"Feb 2–8","total":1633,"cities":{"METHUEN, MA":238,"MANCHESTER, NH":184,"SALEM, NH":149,"DERRY, NH":137,"LAWRENCE, MA":112,"LONDONDERRY, NH":72,"PELHAM, NH":52,"DRACUT, MA":61,"WINDHAM, NH":39,"UNKNOWN, USA":30,"LOWELL, MA":22,"CONCORD, NH":23}},
-      {"label":"Feb 9–15","total":1588,"cities":{"METHUEN, MA":201,"MANCHESTER, NH":197,"SALEM, NH":152,"DERRY, NH":123,"LAWRENCE, MA":115,"LONDONDERRY, NH":69,"PELHAM, NH":62,"DRACUT, MA":55,"WINDHAM, NH":44,"UNKNOWN, USA":21,"LOWELL, MA":21,"CONCORD, NH":24}},
-      {"label":"Feb 16–22","total":1627,"cities":{"METHUEN, MA":212,"MANCHESTER, NH":181,"SALEM, NH":148,"DERRY, NH":118,"LAWRENCE, MA":121,"LONDONDERRY, NH":91,"PELHAM, NH":69,"DRACUT, MA":63,"WINDHAM, NH":56,"UNKNOWN, USA":19,"LOWELL, MA":16,"CONCORD, NH":18}},
-      {"label":"Feb 23–Mar 1","total":1631,"cities":{"METHUEN, MA":208,"MANCHESTER, NH":197,"SALEM, NH":119,"DERRY, NH":110,"LAWRENCE, MA":122,"LONDONDERRY, NH":79,"PELHAM, NH":52,"DRACUT, MA":62,"WINDHAM, NH":41,"UNKNOWN, USA":30,"LOWELL, MA":30,"CONCORD, NH":26}},
-      {"label":"Mar 2–8","total":1526,"cities":{"METHUEN, MA":163,"MANCHESTER, NH":176,"SALEM, NH":109,"DERRY, NH":139,"LAWRENCE, MA":108,"LONDONDERRY, NH":85,"PELHAM, NH":60,"DRACUT, MA":49,"WINDHAM, NH":39,"UNKNOWN, USA":21,"LOWELL, MA":23,"CONCORD, NH":27}},
-      {"label":"Mar 9–15","total":1701,"cities":{"METHUEN, MA":194,"MANCHESTER, NH":221,"SALEM, NH":136,"DERRY, NH":130,"LAWRENCE, MA":106,"LONDONDERRY, NH":77,"PELHAM, NH":68,"DRACUT, MA":58,"WINDHAM, NH":54,"UNKNOWN, USA":28,"LOWELL, MA":18,"CONCORD, NH":31}},
-      {"label":"Mar 16–22","total":1619,"cities":{"METHUEN, MA":203,"MANCHESTER, NH":196,"SALEM, NH":145,"DERRY, NH":130,"LAWRENCE, MA":123,"LONDONDERRY, NH":72,"PELHAM, NH":47,"DRACUT, MA":51,"WINDHAM, NH":47,"UNKNOWN, USA":18,"LOWELL, MA":19,"CONCORD, NH":19}},
-      {"label":"Mar 23–29","total":1632,"cities":{"METHUEN, MA":186,"MANCHESTER, NH":173,"SALEM, NH":143,"DERRY, NH":135,"LAWRENCE, MA":104,"LONDONDERRY, NH":82,"PELHAM, NH":63,"DRACUT, MA":60,"WINDHAM, NH":36,"UNKNOWN, USA":19,"LOWELL, MA":23,"CONCORD, NH":22}},
-      {"label":"Mar 30–Apr 5","total":1588,"cities":{"METHUEN, MA":187,"MANCHESTER, NH":184,"SALEM, NH":141,"DERRY, NH":129,"LAWRENCE, MA":111,"LONDONDERRY, NH":62,"PELHAM, NH":65,"DRACUT, MA":71,"WINDHAM, NH":42,"UNKNOWN, USA":31,"LOWELL, MA":22,"CONCORD, NH":31}}
+  "dracut": {
+    "cities": [
+      "METHUEN, MA",
+      "MANCHESTER, NH",
+      "SALEM, NH",
+      "DERRY, NH",
+      "LAWRENCE, MA",
+      "LONDONDERRY, NH",
+      "PELHAM, NH",
+      "DRACUT, MA",
+      "WINDHAM, NH",
+      "UNKNOWN, USA",
+      "LOWELL, MA",
+      "CONCORD, NH"
+    ],
+    "weeks": [
+      {"label": "Jan 19–25",
+        "total": 1849,"cities":{"METHUEN, MA": 259, "MANCHESTER, NH": 219, "SALEM, NH": 152, "DERRY, NH": 118, "LAWRENCE, MA": 138, "LONDONDERRY, NH": 82, "PELHAM, NH": 69, "DRACUT, MA": 61, "WINDHAM, NH": 56, "UNKNOWN, USA": 32, "LOWELL, MA": 23, "CONCORD, NH": 19}},
+      {"label": "Jan 26–Feb 1",
+        "total": 1541,"cities":{"METHUEN, MA": 191, "MANCHESTER, NH": 206, "SALEM, NH": 154, "DERRY, NH": 129, "LAWRENCE, MA": 109, "LONDONDERRY, NH": 77, "PELHAM, NH": 66, "DRACUT, MA": 49, "WINDHAM, NH": 49, "UNKNOWN, USA": 24, "LOWELL, MA": 19, "CONCORD, NH": 30}},
+      {"label": "Feb 2–8",
+        "total": 1633,"cities":{"METHUEN, MA": 238, "MANCHESTER, NH": 184, "SALEM, NH": 149, "DERRY, NH": 137, "LAWRENCE, MA": 112, "LONDONDERRY, NH": 72, "PELHAM, NH": 52, "DRACUT, MA": 61, "WINDHAM, NH": 39, "UNKNOWN, USA": 30, "LOWELL, MA": 22, "CONCORD, NH": 23}},
+      {"label": "Feb 9–15",
+        "total": 1588,"cities":{"METHUEN, MA": 201, "MANCHESTER, NH": 197, "SALEM, NH": 152, "DERRY, NH": 123, "LAWRENCE, MA": 115, "LONDONDERRY, NH": 69, "PELHAM, NH": 62, "DRACUT, MA": 55, "WINDHAM, NH": 44, "UNKNOWN, USA": 21, "LOWELL, MA": 21, "CONCORD, NH": 24}},
+      {"label": "Feb 16–22",
+        "total": 1627,"cities":{"METHUEN, MA": 212, "MANCHESTER, NH": 181, "SALEM, NH": 148, "DERRY, NH": 118, "LAWRENCE, MA": 121, "LONDONDERRY, NH": 91, "PELHAM, NH": 69, "DRACUT, MA": 63, "WINDHAM, NH": 56, "UNKNOWN, USA": 19, "LOWELL, MA": 16, "CONCORD, NH": 18}},
+      {"label": "Feb 23–Mar 1",
+        "total": 1631,"cities":{"METHUEN, MA": 208, "MANCHESTER, NH": 197, "SALEM, NH": 119, "DERRY, NH": 110, "LAWRENCE, MA": 122, "LONDONDERRY, NH": 79, "PELHAM, NH": 52, "DRACUT, MA": 62, "WINDHAM, NH": 41, "UNKNOWN, USA": 30, "LOWELL, MA": 30, "CONCORD, NH": 26}},
+      {"label": "Mar 2–8",
+        "total": 1526,"cities":{"METHUEN, MA": 163, "MANCHESTER, NH": 176, "SALEM, NH": 109, "DERRY, NH": 139, "LAWRENCE, MA": 108, "LONDONDERRY, NH": 85, "PELHAM, NH": 60, "DRACUT, MA": 49, "WINDHAM, NH": 39, "UNKNOWN, USA": 21, "LOWELL, MA": 23, "CONCORD, NH": 27}},
+      {"label": "Mar 9–15",
+        "total": 1701,"cities":{"METHUEN, MA": 194, "MANCHESTER, NH": 221, "SALEM, NH": 136, "DERRY, NH": 130, "LAWRENCE, MA": 106, "LONDONDERRY, NH": 77, "PELHAM, NH": 68, "DRACUT, MA": 58, "WINDHAM, NH": 54, "UNKNOWN, USA": 28, "LOWELL, MA": 18, "CONCORD, NH": 31}},
+      {"label": "Mar 16–22",
+        "total": 1619,"cities":{"METHUEN, MA": 203, "MANCHESTER, NH": 196, "SALEM, NH": 145, "DERRY, NH": 130, "LAWRENCE, MA": 123, "LONDONDERRY, NH": 72, "PELHAM, NH": 47, "DRACUT, MA": 51, "WINDHAM, NH": 47, "UNKNOWN, USA": 18, "LOWELL, MA": 19, "CONCORD, NH": 19}},
+      {"label": "Mar 23–29",
+        "total": 1632,"cities":{"METHUEN, MA": 186, "MANCHESTER, NH": 173, "SALEM, NH": 143, "DERRY, NH": 135, "LAWRENCE, MA": 104, "LONDONDERRY, NH": 82, "PELHAM, NH": 63, "DRACUT, MA": 60, "WINDHAM, NH": 36, "UNKNOWN, USA": 19, "LOWELL, MA": 23, "CONCORD, NH": 22}},
+      {"label": "Mar 30–Apr 5",
+        "total": 1588,"cities":{"METHUEN, MA": 187, "MANCHESTER, NH": 184, "SALEM, NH": 141, "DERRY, NH": 129, "LAWRENCE, MA": 111, "LONDONDERRY, NH": 62, "PELHAM, NH": 65, "DRACUT, MA": 71, "WINDHAM, NH": 42, "UNKNOWN, USA": 31, "LOWELL, MA": 22, "CONCORD, NH": 31}},
+      {"label": "Apr 6–12",
+        "total": 1709,"cities":{"METHUEN, MA": 200, "MANCHESTER, NH": 209, "SALEM, NH": 131, "DERRY, NH": 126, "LAWRENCE, MA": 134, "LONDONDERRY, NH": 94, "PELHAM, NH": 61, "DRACUT, MA": 58, "WINDHAM, NH": 49, "UNKNOWN, USA": 28, "LOWELL, MA": 23, "CONCORD, NH": 36}}
     ]
   },
-  pepperell: {
-    cities: ["PEPPERELL, MA","NASHUA, NH","MILFORD, NH","TOWNSEND, MA","HOLLIS, NH","MANCHESTER, NH","BROOKLINE, NH","MERRIMACK, NH","GROTON, MA","AMHERST, NH","DUNSTABLE, MA","LOWELL, MA"],
-    weeks: [
-      {"label":"Jan 12–18","total":839,"cities":{"PEPPERELL, MA":167,"NASHUA, NH":145,"MILFORD, NH":47,"TOWNSEND, MA":57,"HOLLIS, NH":40,"MANCHESTER, NH":33,"BROOKLINE, NH":27,"MERRIMACK, NH":31,"GROTON, MA":13,"AMHERST, NH":17,"DUNSTABLE, MA":16,"LOWELL, MA":15}},
-      {"label":"Jan 19–25","total":944,"cities":{"PEPPERELL, MA":188,"NASHUA, NH":138,"MILFORD, NH":57,"TOWNSEND, MA":54,"HOLLIS, NH":57,"MANCHESTER, NH":46,"BROOKLINE, NH":37,"MERRIMACK, NH":35,"GROTON, MA":15,"AMHERST, NH":25,"DUNSTABLE, MA":13,"LOWELL, MA":16}},
-      {"label":"Jan 26–Feb 1","total":825,"cities":{"PEPPERELL, MA":162,"NASHUA, NH":131,"MILFORD, NH":44,"TOWNSEND, MA":42,"HOLLIS, NH":39,"MANCHESTER, NH":33,"BROOKLINE, NH":29,"MERRIMACK, NH":23,"GROTON, MA":15,"AMHERST, NH":19,"DUNSTABLE, MA":6,"LOWELL, MA":12}},
-      {"label":"Feb 2–8","total":874,"cities":{"PEPPERELL, MA":169,"NASHUA, NH":136,"MILFORD, NH":54,"TOWNSEND, MA":42,"HOLLIS, NH":48,"MANCHESTER, NH":28,"BROOKLINE, NH":31,"MERRIMACK, NH":23,"GROTON, MA":20,"AMHERST, NH":11,"DUNSTABLE, MA":15,"LOWELL, MA":14}},
-      {"label":"Feb 9–15","total":854,"cities":{"PEPPERELL, MA":168,"NASHUA, NH":135,"MILFORD, NH":49,"TOWNSEND, MA":30,"HOLLIS, NH":33,"MANCHESTER, NH":35,"BROOKLINE, NH":38,"MERRIMACK, NH":25,"GROTON, MA":17,"AMHERST, NH":15,"DUNSTABLE, MA":11,"LOWELL, MA":8}},
-      {"label":"Feb 16–22","total":944,"cities":{"PEPPERELL, MA":200,"NASHUA, NH":142,"MILFORD, NH":54,"TOWNSEND, MA":56,"HOLLIS, NH":48,"MANCHESTER, NH":38,"BROOKLINE, NH":42,"MERRIMACK, NH":22,"GROTON, MA":22,"AMHERST, NH":13,"DUNSTABLE, MA":13,"LOWELL, MA":9}},
-      {"label":"Feb 23–Mar 1","total":858,"cities":{"PEPPERELL, MA":176,"NASHUA, NH":113,"MILFORD, NH":55,"TOWNSEND, MA":44,"HOLLIS, NH":32,"MANCHESTER, NH":36,"BROOKLINE, NH":36,"MERRIMACK, NH":19,"GROTON, MA":27,"AMHERST, NH":18,"DUNSTABLE, MA":17,"LOWELL, MA":9}},
-      {"label":"Mar 2–8","total":918,"cities":{"PEPPERELL, MA":166,"NASHUA, NH":162,"MILFORD, NH":62,"TOWNSEND, MA":49,"HOLLIS, NH":37,"MANCHESTER, NH":33,"BROOKLINE, NH":37,"MERRIMACK, NH":21,"GROTON, MA":29,"AMHERST, NH":13,"DUNSTABLE, MA":17,"LOWELL, MA":15}},
-      {"label":"Mar 9–15","total":901,"cities":{"PEPPERELL, MA":176,"NASHUA, NH":151,"MILFORD, NH":54,"TOWNSEND, MA":44,"HOLLIS, NH":34,"MANCHESTER, NH":43,"BROOKLINE, NH":39,"MERRIMACK, NH":20,"GROTON, MA":23,"AMHERST, NH":18,"DUNSTABLE, MA":15,"LOWELL, MA":13}},
-      {"label":"Mar 16–22","total":921,"cities":{"PEPPERELL, MA":202,"NASHUA, NH":145,"MILFORD, NH":45,"TOWNSEND, MA":55,"HOLLIS, NH":43,"MANCHESTER, NH":27,"BROOKLINE, NH":36,"MERRIMACK, NH":28,"GROTON, MA":22,"AMHERST, NH":16,"DUNSTABLE, MA":15,"LOWELL, MA":9}},
-      {"label":"Mar 23–29","total":892,"cities":{"PEPPERELL, MA":167,"NASHUA, NH":122,"MILFORD, NH":53,"TOWNSEND, MA":43,"HOLLIS, NH":38,"MANCHESTER, NH":34,"BROOKLINE, NH":44,"MERRIMACK, NH":24,"GROTON, MA":21,"AMHERST, NH":20,"DUNSTABLE, MA":12,"LOWELL, MA":15}},
-      {"label":"Mar 30–Apr 5","total":991,"cities":{"PEPPERELL, MA":226,"NASHUA, NH":139,"MILFORD, NH":60,"TOWNSEND, MA":55,"HOLLIS, NH":40,"MANCHESTER, NH":40,"BROOKLINE, NH":38,"MERRIMACK, NH":24,"GROTON, MA":22,"AMHERST, NH":23,"DUNSTABLE, MA":17,"LOWELL, MA":18}}
+  "pepperell": {
+    "cities": [
+      "PEPPERELL, MA",
+      "NASHUA, NH",
+      "MILFORD, NH",
+      "TOWNSEND, MA",
+      "HOLLIS, NH",
+      "MANCHESTER, NH",
+      "BROOKLINE, NH",
+      "MERRIMACK, NH",
+      "GROTON, MA",
+      "AMHERST, NH",
+      "DUNSTABLE, MA",
+      "LOWELL, MA"
+    ],
+    "weeks": [
+      {"label": "Jan 19–25",
+        "total": 944,"cities":{"PEPPERELL, MA": 188, "NASHUA, NH": 138, "MILFORD, NH": 57, "TOWNSEND, MA": 54, "HOLLIS, NH": 57, "MANCHESTER, NH": 46, "BROOKLINE, NH": 37, "MERRIMACK, NH": 35, "GROTON, MA": 15, "AMHERST, NH": 25, "DUNSTABLE, MA": 13, "LOWELL, MA": 16}},
+      {"label": "Jan 26–Feb 1",
+        "total": 825,"cities":{"PEPPERELL, MA": 162, "NASHUA, NH": 131, "MILFORD, NH": 44, "TOWNSEND, MA": 42, "HOLLIS, NH": 39, "MANCHESTER, NH": 33, "BROOKLINE, NH": 29, "MERRIMACK, NH": 23, "GROTON, MA": 15, "AMHERST, NH": 19, "DUNSTABLE, MA": 6, "LOWELL, MA": 12}},
+      {"label": "Feb 2–8",
+        "total": 874,"cities":{"PEPPERELL, MA": 169, "NASHUA, NH": 136, "MILFORD, NH": 54, "TOWNSEND, MA": 42, "HOLLIS, NH": 48, "MANCHESTER, NH": 28, "BROOKLINE, NH": 31, "MERRIMACK, NH": 23, "GROTON, MA": 20, "AMHERST, NH": 11, "DUNSTABLE, MA": 15, "LOWELL, MA": 14}},
+      {"label": "Feb 9–15",
+        "total": 854,"cities":{"PEPPERELL, MA": 168, "NASHUA, NH": 135, "MILFORD, NH": 49, "TOWNSEND, MA": 30, "HOLLIS, NH": 33, "MANCHESTER, NH": 35, "BROOKLINE, NH": 38, "MERRIMACK, NH": 25, "GROTON, MA": 17, "AMHERST, NH": 15, "DUNSTABLE, MA": 11, "LOWELL, MA": 8}},
+      {"label": "Feb 16–22",
+        "total": 944,"cities":{"PEPPERELL, MA": 200, "NASHUA, NH": 142, "MILFORD, NH": 54, "TOWNSEND, MA": 56, "HOLLIS, NH": 48, "MANCHESTER, NH": 38, "BROOKLINE, NH": 42, "MERRIMACK, NH": 22, "GROTON, MA": 22, "AMHERST, NH": 13, "DUNSTABLE, MA": 13, "LOWELL, MA": 9}},
+      {"label": "Feb 23–Mar 1",
+        "total": 858,"cities":{"PEPPERELL, MA": 176, "NASHUA, NH": 113, "MILFORD, NH": 55, "TOWNSEND, MA": 44, "HOLLIS, NH": 32, "MANCHESTER, NH": 36, "BROOKLINE, NH": 36, "MERRIMACK, NH": 19, "GROTON, MA": 27, "AMHERST, NH": 18, "DUNSTABLE, MA": 17, "LOWELL, MA": 9}},
+      {"label": "Mar 2–8",
+        "total": 918,"cities":{"PEPPERELL, MA": 166, "NASHUA, NH": 162, "MILFORD, NH": 62, "TOWNSEND, MA": 49, "HOLLIS, NH": 37, "MANCHESTER, NH": 33, "BROOKLINE, NH": 37, "MERRIMACK, NH": 21, "GROTON, MA": 29, "AMHERST, NH": 13, "DUNSTABLE, MA": 17, "LOWELL, MA": 15}},
+      {"label": "Mar 9–15",
+        "total": 901,"cities":{"PEPPERELL, MA": 176, "NASHUA, NH": 151, "MILFORD, NH": 54, "TOWNSEND, MA": 44, "HOLLIS, NH": 34, "MANCHESTER, NH": 43, "BROOKLINE, NH": 39, "MERRIMACK, NH": 20, "GROTON, MA": 23, "AMHERST, NH": 18, "DUNSTABLE, MA": 15, "LOWELL, MA": 13}},
+      {"label": "Mar 16–22",
+        "total": 921,"cities":{"PEPPERELL, MA": 202, "NASHUA, NH": 145, "MILFORD, NH": 45, "TOWNSEND, MA": 55, "HOLLIS, NH": 43, "MANCHESTER, NH": 27, "BROOKLINE, NH": 36, "MERRIMACK, NH": 28, "GROTON, MA": 22, "AMHERST, NH": 16, "DUNSTABLE, MA": 15, "LOWELL, MA": 9}},
+      {"label": "Mar 23–29",
+        "total": 892,"cities":{"PEPPERELL, MA": 167, "NASHUA, NH": 122, "MILFORD, NH": 53, "TOWNSEND, MA": 43, "HOLLIS, NH": 38, "MANCHESTER, NH": 34, "BROOKLINE, NH": 44, "MERRIMACK, NH": 24, "GROTON, MA": 21, "AMHERST, NH": 20, "DUNSTABLE, MA": 12, "LOWELL, MA": 15}},
+      {"label": "Mar 30–Apr 5",
+        "total": 991,"cities":{"PEPPERELL, MA": 226, "NASHUA, NH": 139, "MILFORD, NH": 60, "TOWNSEND, MA": 55, "HOLLIS, NH": 40, "MANCHESTER, NH": 40, "BROOKLINE, NH": 38, "MERRIMACK, NH": 24, "GROTON, MA": 22, "AMHERST, NH": 23, "DUNSTABLE, MA": 17, "LOWELL, MA": 18}},
+      {"label": "Apr 6–12",
+        "total": 1043,"cities":{"PEPPERELL, MA": 211, "NASHUA, NH": 171, "MILFORD, NH": 62, "TOWNSEND, MA": 57, "BROOKLINE, NH": 49, "HOLLIS, NH": 44, "MANCHESTER, NH": 43, "MERRIMACK, NH": 31, "GROTON, MA": 30, "LOWELL, MA": 16, "AMHERST, NH": 15, "UNKNOWN, USA": 14}}
     ]
   },
-  groton: {
-    cities: ["GROTON, MA","WESTFORD, MA","LITTLETON, MA","AYER, MA","TOWNSEND, MA","PEPPERELL, MA","LOWELL, MA","MANCHESTER, NH","NASHUA, NH","NORTH READING, MA","LEOMINSTER, MA","LUNENBURG, MA"],
-    weeks: [
-      {"label":"Jan 12–18","total":314,"cities":{"GROTON, MA":66,"WESTFORD, MA":40,"LITTLETON, MA":13,"AYER, MA":17,"TOWNSEND, MA":21,"PEPPERELL, MA":13,"LOWELL, MA":13,"MANCHESTER, NH":8,"NASHUA, NH":5,"NORTH READING, MA":4,"LEOMINSTER, MA":2,"LUNENBURG, MA":6}},
-      {"label":"Jan 19–25","total":349,"cities":{"GROTON, MA":63,"WESTFORD, MA":61,"LITTLETON, MA":26,"AYER, MA":16,"TOWNSEND, MA":18,"PEPPERELL, MA":17,"LOWELL, MA":11,"MANCHESTER, NH":7,"NASHUA, NH":7,"NORTH READING, MA":2,"LEOMINSTER, MA":5,"LUNENBURG, MA":7}},
-      {"label":"Jan 26–Feb 1","total":290,"cities":{"GROTON, MA":68,"WESTFORD, MA":51,"LITTLETON, MA":19,"AYER, MA":19,"TOWNSEND, MA":13,"PEPPERELL, MA":10,"LOWELL, MA":3,"MANCHESTER, NH":6,"NASHUA, NH":8,"NORTH READING, MA":1,"LEOMINSTER, MA":1,"LUNENBURG, MA":2}},
-      {"label":"Feb 2–8","total":292,"cities":{"GROTON, MA":65,"WESTFORD, MA":53,"LITTLETON, MA":13,"AYER, MA":12,"TOWNSEND, MA":18,"PEPPERELL, MA":14,"LOWELL, MA":6,"MANCHESTER, NH":7,"NASHUA, NH":3,"NORTH READING, MA":2,"LEOMINSTER, MA":2,"LUNENBURG, MA":6}},
-      {"label":"Feb 9–15","total":311,"cities":{"GROTON, MA":64,"WESTFORD, MA":67,"LITTLETON, MA":13,"AYER, MA":15,"TOWNSEND, MA":14,"PEPPERELL, MA":7,"LOWELL, MA":3,"MANCHESTER, NH":7,"NASHUA, NH":6,"NORTH READING, MA":4,"LEOMINSTER, MA":4,"LUNENBURG, MA":1}},
-      {"label":"Feb 16–22","total":347,"cities":{"GROTON, MA":83,"WESTFORD, MA":69,"LITTLETON, MA":21,"AYER, MA":15,"TOWNSEND, MA":16,"PEPPERELL, MA":10,"LOWELL, MA":6,"MANCHESTER, NH":5,"NASHUA, NH":1,"NORTH READING, MA":3,"LEOMINSTER, MA":5,"LUNENBURG, MA":4}},
-      {"label":"Feb 23–Mar 1","total":309,"cities":{"GROTON, MA":61,"WESTFORD, MA":66,"LITTLETON, MA":23,"AYER, MA":19,"TOWNSEND, MA":15,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":7,"NASHUA, NH":2,"NORTH READING, MA":1,"LEOMINSTER, MA":3,"LUNENBURG, MA":2}},
-      {"label":"Mar 2–8","total":327,"cities":{"GROTON, MA":80,"WESTFORD, MA":60,"LITTLETON, MA":18,"AYER, MA":8,"TOWNSEND, MA":13,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":3,"NASHUA, NH":4,"NORTH READING, MA":1,"LEOMINSTER, MA":5,"LUNENBURG, MA":3}},
-      {"label":"Mar 9–15","total":320,"cities":{"GROTON, MA":63,"WESTFORD, MA":70,"LITTLETON, MA":12,"AYER, MA":11,"TOWNSEND, MA":14,"PEPPERELL, MA":12,"LOWELL, MA":7,"MANCHESTER, NH":5,"NASHUA, NH":4,"NORTH READING, MA":1,"LEOMINSTER, MA":7,"LUNENBURG, MA":1}},
-      {"label":"Mar 16–22","total":331,"cities":{"GROTON, MA":61,"WESTFORD, MA":77,"LITTLETON, MA":17,"AYER, MA":13,"TOWNSEND, MA":15,"PEPPERELL, MA":15,"LOWELL, MA":15,"MANCHESTER, NH":3,"NASHUA, NH":4,"NORTH READING, MA":3,"LEOMINSTER, MA":3,"LUNENBURG, MA":1}},
-      {"label":"Mar 23–29","total":329,"cities":{"GROTON, MA":78,"WESTFORD, MA":66,"LITTLETON, MA":18,"AYER, MA":15,"TOWNSEND, MA":9,"PEPPERELL, MA":14,"LOWELL, MA":9,"MANCHESTER, NH":3,"NASHUA, NH":4,"NORTH READING, MA":1,"LEOMINSTER, MA":4,"LUNENBURG, MA":2}},
-      {"label":"Mar 30–Apr 5","total":332,"cities":{"GROTON, MA":69,"WESTFORD, MA":62,"LITTLETON, MA":13,"AYER, MA":20,"TOWNSEND, MA":20,"PEPPERELL, MA":11,"LOWELL, MA":5,"MANCHESTER, NH":4,"NASHUA, NH":5,"NORTH READING, MA":2,"LEOMINSTER, MA":4,"LUNENBURG, MA":3}}
+  "groton": {
+    "cities": [
+      "GROTON, MA",
+      "WESTFORD, MA",
+      "LITTLETON, MA",
+      "AYER, MA",
+      "TOWNSEND, MA",
+      "PEPPERELL, MA",
+      "LOWELL, MA",
+      "MANCHESTER, NH",
+      "NASHUA, NH",
+      "NORTH READING, MA",
+      "LEOMINSTER, MA",
+      "LUNENBURG, MA"
+    ],
+    "weeks": [
+      {"label": "Jan 19–25",
+        "total": 349,"cities":{"GROTON, MA": 63, "WESTFORD, MA": 61, "LITTLETON, MA": 26, "AYER, MA": 16, "TOWNSEND, MA": 18, "PEPPERELL, MA": 17, "LOWELL, MA": 11, "MANCHESTER, NH": 7, "NASHUA, NH": 7, "NORTH READING, MA": 2, "LEOMINSTER, MA": 5, "LUNENBURG, MA": 7}},
+      {"label": "Jan 26–Feb 1",
+        "total": 290,"cities":{"GROTON, MA": 68, "WESTFORD, MA": 51, "LITTLETON, MA": 19, "AYER, MA": 19, "TOWNSEND, MA": 13, "PEPPERELL, MA": 10, "LOWELL, MA": 3, "MANCHESTER, NH": 6, "NASHUA, NH": 8, "NORTH READING, MA": 1, "LEOMINSTER, MA": 1, "LUNENBURG, MA": 2}},
+      {"label": "Feb 2–8",
+        "total": 292,"cities":{"GROTON, MA": 65, "WESTFORD, MA": 53, "LITTLETON, MA": 13, "AYER, MA": 12, "TOWNSEND, MA": 18, "PEPPERELL, MA": 14, "LOWELL, MA": 6, "MANCHESTER, NH": 7, "NASHUA, NH": 3, "NORTH READING, MA": 2, "LEOMINSTER, MA": 2, "LUNENBURG, MA": 6}},
+      {"label": "Feb 9–15",
+        "total": 311,"cities":{"GROTON, MA": 64, "WESTFORD, MA": 67, "LITTLETON, MA": 13, "AYER, MA": 15, "TOWNSEND, MA": 14, "PEPPERELL, MA": 7, "LOWELL, MA": 3, "MANCHESTER, NH": 7, "NASHUA, NH": 6, "NORTH READING, MA": 4, "LEOMINSTER, MA": 4, "LUNENBURG, MA": 1}},
+      {"label": "Feb 16–22",
+        "total": 347,"cities":{"GROTON, MA": 83, "WESTFORD, MA": 69, "LITTLETON, MA": 21, "AYER, MA": 15, "TOWNSEND, MA": 16, "PEPPERELL, MA": 10, "LOWELL, MA": 6, "MANCHESTER, NH": 5, "NASHUA, NH": 1, "NORTH READING, MA": 3, "LEOMINSTER, MA": 5, "LUNENBURG, MA": 4}},
+      {"label": "Feb 23–Mar 1",
+        "total": 309,"cities":{"GROTON, MA": 61, "WESTFORD, MA": 66, "LITTLETON, MA": 23, "AYER, MA": 19, "TOWNSEND, MA": 15, "PEPPERELL, MA": 11, "LOWELL, MA": 5, "MANCHESTER, NH": 7, "NASHUA, NH": 2, "NORTH READING, MA": 1, "LEOMINSTER, MA": 3, "LUNENBURG, MA": 2}},
+      {"label": "Mar 2–8",
+        "total": 327,"cities":{"GROTON, MA": 80, "WESTFORD, MA": 60, "LITTLETON, MA": 18, "AYER, MA": 8, "TOWNSEND, MA": 13, "PEPPERELL, MA": 11, "LOWELL, MA": 5, "MANCHESTER, NH": 3, "NASHUA, NH": 4, "NORTH READING, MA": 1, "LEOMINSTER, MA": 5, "LUNENBURG, MA": 3}},
+      {"label": "Mar 9–15",
+        "total": 320,"cities":{"GROTON, MA": 63, "WESTFORD, MA": 70, "LITTLETON, MA": 12, "AYER, MA": 11, "TOWNSEND, MA": 14, "PEPPERELL, MA": 12, "LOWELL, MA": 7, "MANCHESTER, NH": 5, "NASHUA, NH": 4, "NORTH READING, MA": 1, "LEOMINSTER, MA": 7, "LUNENBURG, MA": 1}},
+      {"label": "Mar 16–22",
+        "total": 331,"cities":{"GROTON, MA": 61, "WESTFORD, MA": 77, "LITTLETON, MA": 17, "AYER, MA": 13, "TOWNSEND, MA": 15, "PEPPERELL, MA": 15, "LOWELL, MA": 15, "MANCHESTER, NH": 3, "NASHUA, NH": 4, "NORTH READING, MA": 3, "LEOMINSTER, MA": 3, "LUNENBURG, MA": 1}},
+      {"label": "Mar 23–29",
+        "total": 329,"cities":{"GROTON, MA": 78, "WESTFORD, MA": 66, "LITTLETON, MA": 18, "AYER, MA": 15, "TOWNSEND, MA": 9, "PEPPERELL, MA": 14, "LOWELL, MA": 9, "MANCHESTER, NH": 3, "NASHUA, NH": 4, "NORTH READING, MA": 1, "LEOMINSTER, MA": 4, "LUNENBURG, MA": 2}},
+      {"label": "Mar 30–Apr 5",
+        "total": 332,"cities":{"GROTON, MA": 69, "WESTFORD, MA": 62, "LITTLETON, MA": 13, "AYER, MA": 20, "TOWNSEND, MA": 20, "PEPPERELL, MA": 11, "LOWELL, MA": 5, "MANCHESTER, NH": 4, "NASHUA, NH": 5, "NORTH READING, MA": 2, "LEOMINSTER, MA": 4, "LUNENBURG, MA": 3}},
+      {"label": "Apr 6–12",
+        "total": 343,"cities":{"GROTON, MA": 87, "WESTFORD, MA": 78, "LITTLETON, MA": 17, "AYER, MA": 17, "PEPPERELL, MA": 13, "TOWNSEND, MA": 10, "LOWELL, MA": 8, "MILFORD, NH": 7, "LEOMINSTER, MA": 5, "TYNGSBORO, MA": 5, "DRACUT, MA": 4, "UNKNOWN, USA": 1}}
     ]
   }
 };
