@@ -88,12 +88,12 @@ jobs:
         run: |
           git config user.name "QuickRoom Pipeline"
           git config user.email "pipeline@quickroom.local"
-          git pull --rebase origin main
           git add brick-house.html
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
             git commit -m "Daily Brick House refresh — $(date +%Y-%m-%d)"
+            git pull --rebase origin main
             git push
           fi
 
