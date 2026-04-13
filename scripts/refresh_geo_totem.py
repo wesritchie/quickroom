@@ -289,14 +289,24 @@ def replace_js_const(html, const_name, new_value_str, is_array=False):
 
 
 def build_meta(dates, week_label, trend):
-    """Build the META constant."""
+    """Build the META constant.
+
+    monthLabel and trendLabel always reference the LAST COMPLETED month.
+    We still include the in-progress (proj) entry as the last element of trend
+    for chart rendering, but the user-facing text labels anchor on completed data
+    so the dashboard never says 'Apr 26' on April 13 (confusing, looks stale).
+    """
     yesterday = dates["yesterday"]
     today = dates["today"]
     month_start = dates["month_start"]
 
-    # Trend label: first entry label to last entry label
+    # Last COMPLETED month = day before the current month_start
+    last_completed_month_dt = month_start - timedelta(days=1)
+    last_completed_label = format_month_label(last_completed_month_dt)  # e.g. "Mar 26"
+
+    # Trend range: first entry label to last COMPLETED month
+    # (ignore any trailing '(proj)' entry for labeling purposes)
     trend_start = trend[0]["label"] if trend else "?"
-    trend_end = trend[-1]["label"] if trend else "?"
 
     # City window end = last_sunday formatted
     city_end = dates["last_sunday"].strftime("%b %d, %Y").replace(" 0", " ")
@@ -310,8 +320,8 @@ def build_meta(dates, week_label, trend):
         "asOfDate": yesterday.strftime("%b %d, %Y").replace(" 0", " ").replace("  ", " "),
         "yesterdayDate": yesterday.strftime("%b %-d"),
         "weekLabel": week_label,
-        "monthLabel": format_month_label(month_start) if today.day > 1 else format_month_label(month_start - timedelta(days=1)),
-        "trendLabel": f"{trend_start} \\u2013 {trend_end}",
+        "monthLabel": last_completed_label,
+        "trendLabel": f"{trend_start} \\u2013 {last_completed_label}",
         "cityWindowEnd": city_end,
         "cityWindowWeeks": 12,
         "moversCurrent": week_label,
