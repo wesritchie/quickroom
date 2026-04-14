@@ -100,6 +100,9 @@ EXTRA_BRICK_BRANDS = {
         "Hudson Botanical", "Hudson Botanical Processing, LLC", "Nimbus",
         "Just Vapes", "Just Resin", "Just Joints", "Cheeba Chews", "Clebby's",
     ],
+    "Green Harbor": [
+        "Green Harbor",
+    ],
 }
 
 # Core vendors (for inventory classification). Matched as case-insensitive
@@ -109,7 +112,7 @@ EXTRA_BRICK_BRANDS = {
 # Company", etc.) all match. Hudson Botanical is classified as BRICK
 # (EXTRA_BRICK_BRANDS), NOT core.
 CORE_VENDORS = [
-    "Atlantic Medical Partners",
+    "Atlantic Medicinal",
     "ARL",
     "Merimed",
     "Canna Provisions",
@@ -329,8 +332,15 @@ def _rebuild_alias_map():
     return m
 
 
-def classify_brand(brand):
+def classify_brand(brand, vendor_name=None):
     """Return ('brick_tab', vendor_key) | ('brick_extra', display) | ('core', vendor_name) | ('other', None).
+
+    `brand` is the combined 'brandName | vendor' string used for brick tab/extra
+    substring matching. `vendor_name` (optional) is the vendor/licensee field
+    alone — used for Core prefix matching because Dutchie brand strings frequently
+    carry a retail brand prefix (e.g. 'High Supply | Cultivate Leicester, Inc')
+    that would defeat a startswith() check against the Core list.
+
     Matching is punctuation/whitespace-insensitive via _norm()."""
     if not brand:
         return ("other", None)
@@ -343,8 +353,17 @@ def classify_brand(brand):
     for alias, display in extras.items():
         if alias and alias in bn:
             return ("brick_extra", display)
+    # Core: prefix-match against brandName AND vendor (licensee) separately.
+    # The combined string often looks like '{retailBrand} | {licensee}', and the
+    # Core list is keyed on licensee prefixes ('Cultivate', 'Garden Remedies',
+    # 'ARL', 'Novel Beverage', 'Lunar', 'Atlantic Medicinal', etc.).
+    bn_brand_only = _norm(brand.split("|")[0]) if "|" in brand else bn
+    bn_vendor = _norm(vendor_name) if vendor_name else ""
     for cv in CORE_VENDORS:
-        if bn.startswith(_norm(cv)):
+        ncv = _norm(cv)
+        if not ncv:
+            continue
+        if bn_brand_only.startswith(ncv) or (bn_vendor and bn_vendor.startswith(ncv)):
             return ("core", cv)
     return ("other", None)
 
@@ -455,7 +474,7 @@ def fetch_inventory_data():
             if group is None:
                 continue  # drop SAMPLE / DISPLAY / Prizes entirely
 
-            tier, tier_key = classify_brand(brand)
+            tier, tier_key = classify_brand(brand, vendor_name)
 
             # Per-store totals
             s["total"] += 1
