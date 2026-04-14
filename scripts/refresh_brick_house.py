@@ -414,15 +414,17 @@ def fetch_inventory_data():
                 continue
             store_seen.add(pid)
 
-            # InventoryItem schema uses "brandName" + "vendor";
-            # ProductDetail uses "brandName" + "vendorName". Check all four.
-            brand = (
-                p.get("brandName")
-                or p.get("brand")
-                or p.get("vendor")
-                or p.get("vendorName")
-                or ""
-            ).strip()
+            # InventoryItem schema exposes BOTH "brandName" (consumer brand, e.g. "Coast",
+            # "Bostica", "High Plains Farm") AND "vendor" (licensee/operator name, e.g.
+            # "T. Bear", "Bostica, LLC", "27 Broom Street, LLC"). vendorAliases in
+            # brick-house.html lists the operator names — so we MUST check both fields
+            # together. Joining them into one matching string lets classify_brand() hit
+            # an alias regardless of which field carries the match. Verified via live
+            # /inventory probe on 2026-04-14: tb needs vendor="T. Bear", wf needs
+            # vendor="Wellman Farm, Inc.", hp needs vendor="27 Broom Street, LLC".
+            brand_name = (p.get("brandName") or p.get("brand") or "").strip()
+            vendor_name = (p.get("vendor") or p.get("vendorName") or "").strip()
+            brand = " | ".join(x for x in (brand_name, vendor_name) if x)
             raw_cat = p.get("category") or ""
             group = classify_category(raw_cat)
             if group is None:
