@@ -161,13 +161,12 @@ def lit_alerts_probe():
     except Exception as _e:
         print(f"  LIT_PROBE token_decode_err={type(_e).__name__}:{_e} token_len={len(tok)}")
     headers = {"Authorization": f"Bearer {tok}", "Accept": "application/json"}
-    # Probe BOTH market-level and retailer-level analytics endpoints to determine scope/access.
-    # Previous run showed /retailers=200 /brands=200 /market/brands=500 (empty body, Kestrel).
-    # Hypothesis: API_READER role can hit lookups but not /market/* analytics.
-    # Test retailer-scoped alternates to see if we can reconstruct market trend from those.
-    dr_short = {"beginDate": "2026-03-01", "endDate": "2026-03-15", "state": "MA"}
-    dr_old = {"beginDate": "2025-10-01", "endDate": "2025-10-31", "state": "MA"}
-    dr_wide = {"beginDate": "2026-01-01", "endDate": "2026-03-31", "state": "MA"}
+    # CRITICAL: Lit Alerts expects MM-DD-YYYY date format, NOT YYYY-MM-DD.
+    # Using YYYY-MM-DD returns HTTP 500 with empty body (no helpful error message).
+    # Confirmed by Lit Alerts support (Austin) 2026-04. Ticket in their backlog to improve errors.
+    dr_short = {"beginDate": "03-01-2026", "endDate": "03-15-2026", "state": "MA"}
+    dr_old = {"beginDate": "10-01-2025", "endDate": "10-31-2025", "state": "MA"}
+    dr_wide = {"beginDate": "01-01-2026", "endDate": "03-31-2026", "state": "MA"}
     # Pick a known retailer id if available in BRICK_VENDORS has lit_ids? use 1 as a smoke-test
     probe_list = [
         ("/retailers", {"state": "MA"}),
@@ -512,8 +511,8 @@ def fetch_lit_alerts_data():
             # Get retailer distribution for this brand
             # Correct endpoint: /brand/{brandId}/retailers (NOT /brand/{id}/events — that path doesn't exist)
             data = lit_alerts_fetch(f"/brand/{brand_id}/retailers", {
-                "beginDate": (today - timedelta(days=90)).strftime("%Y-%m-%d"),
-                "endDate": today.strftime("%Y-%m-%d"),
+                "beginDate": (today - timedelta(days=90)).strftime("%m-%d-%Y"),
+                "endDate": today.strftime("%m-%d-%Y"),
                 "state": "MA",
                 "returnDollarValues": "true",
             })
@@ -553,8 +552,8 @@ def fetch_lit_alerts_data():
 
         print(f"  Market trend: {month_key}...")
         data = lit_alerts_fetch("/market/brands", {
-            "beginDate": month_start.strftime("%Y-%m-%d"),
-            "endDate": month_end.strftime("%Y-%m-%d"),
+            "beginDate": month_start.strftime("%m-%d-%Y"),
+            "endDate": month_end.strftime("%m-%d-%Y"),
             "state": "MA",
             "returnDollarValues": "true",
         })
