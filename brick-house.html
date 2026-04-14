@@ -2378,8 +2378,8 @@ function buildLitAlertsTable(vendor) {
     const container = document.getElementById(`lit-section-${vendor}`);
     if (!container) return;
 
-    const retailersData = LIT_ALERTS_DATA.vendorRetailers[vendor];
-    const brandIds = LIT_ALERTS_DATA.brandIds[vendor];
+    const retailersData = (LIT_ALERTS_DATA && LIT_ALERTS_DATA.vendorRetailers) ? LIT_ALERTS_DATA.vendorRetailers[vendor] : null;
+    const brandIds = (LIT_ALERTS_DATA && LIT_ALERTS_DATA.brandIds) ? LIT_ALERTS_DATA.brandIds[vendor] : null;
 
     if (!retailersData || !retailersData.retailers.length) {
         const unv = retailersData ? retailersData.unverified : 0;
@@ -2433,8 +2433,8 @@ function loadMarketIntelligence() {
     let html = '<table class="api-table"><thead><tr><th>Vendor</th><th>Verified MA Retailers</th><th>Unverified</th><th>Lit Alerts Brands</th></tr></thead><tbody>';
 
     Object.keys(VENDORS).forEach(v => {
-        const retailersData = LIT_ALERTS_DATA.vendorRetailers[v];
-        const brandIds = LIT_ALERTS_DATA.brandIds[v];
+        const retailersData = (LIT_ALERTS_DATA && LIT_ALERTS_DATA.vendorRetailers) ? LIT_ALERTS_DATA.vendorRetailers[v] : null;
+        const brandIds = (LIT_ALERTS_DATA && LIT_ALERTS_DATA.brandIds) ? LIT_ALERTS_DATA.brandIds[v] : null;
         const verified = retailersData ? retailersData.verified : 0;
         const unverified = retailersData ? (retailersData.unverified || 0) : 0;
         const brandStr = brandIds ? brandIds.map(b => `${b.name}`).join(', ') : 'N/A';
