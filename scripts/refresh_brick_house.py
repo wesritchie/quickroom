@@ -112,6 +112,9 @@ RETRY_DELAY = 10
 def dutchie_fetch(store_key, endpoint, params=None):
     """Fetch from Dutchie POS API for a specific store."""
     api_key = STORES[store_key]
+    if not api_key:
+        print(f"  DUTCHIE_ERR store={store_key} endpoint={endpoint} reason=MISSING_API_KEY")
+        return None
     auth = base64.b64encode(f"{api_key}:".encode()).decode()
     headers = {"Authorization": f"Basic {auth}", "Accept": "application/json"}
 
@@ -123,19 +126,29 @@ def dutchie_fetch(store_key, endpoint, params=None):
                 params=params or {},
                 timeout=60,
             )
-            resp.raise_for_status()
-            return resp.json()
+            status = resp.status_code
+            if status >= 400:
+                preview = (resp.text or "")[:200].replace("\n", " ")
+                print(f"  DUTCHIE_ERR store={store_key} endpoint={endpoint} attempt={attempt+1} status={status} preview={preview}")
+                resp.raise_for_status()
+            body = resp.json()
+            count = len(body) if isinstance(body, list) else (len(body.get("data", [])) if isinstance(body, dict) else 0)
+            print(f"  DUTCHIE_OK store={store_key} endpoint={endpoint} status={status} count={count}")
+            return body
         except Exception as e:
             if attempt < MAX_RETRIES - 1:
-                print(f"  Retry {attempt+1}/{MAX_RETRIES} for {store_key}/{endpoint}: {e}")
+                print(f"  DUTCHIE_RETRY store={store_key} endpoint={endpoint} attempt={attempt+1}/{MAX_RETRIES} err={type(e).__name__}:{e}")
                 import time; time.sleep(RETRY_DELAY)
             else:
-                print(f"  FAILED after {MAX_RETRIES} retries: {store_key}/{endpoint}: {e}")
+                print(f"  DUTCHIE_FAIL store={store_key} endpoint={endpoint} err={type(e).__name__}:{e}")
                 return None
 
 
 def lit_alerts_fetch(endpoint, params=None):
     """Fetch from Lit Alerts Partner API."""
+    if not LIT_ALERTS_TOKEN:
+        print(f"  LIT_ERR endpoint={endpoint} reason=MISSING_TOKEN")
+        return None
     headers = {"Authorization": f"Bearer {LIT_ALERTS_TOKEN}", "Accept": "application/json"}
 
     for attempt in range(MAX_RETRIES):
@@ -146,14 +159,21 @@ def lit_alerts_fetch(endpoint, params=None):
                 params=params or {},
                 timeout=30,
             )
-            resp.raise_for_status()
-            return resp.json()
+            status = resp.status_code
+            if status >= 400:
+                preview = (resp.text or "")[:200].replace("\n", " ")
+                print(f"  LIT_ERR endpoint={endpoint} attempt={attempt+1} status={status} preview={preview}")
+                resp.raise_for_status()
+            body = resp.json()
+            count = len(body) if isinstance(body, list) else (len(body.get("data", [])) if isinstance(body, dict) else 0)
+            print(f"  LIT_OK endpoint={endpoint} status={status} count={count}")
+            return body
         except Exception as e:
             if attempt < MAX_RETRIES - 1:
-                print(f"  Retry {attempt+1}/{MAX_RETRIES} for {endpoint}: {e}")
+                print(f"  LIT_RETRY endpoint={endpoint} attempt={attempt+1}/{MAX_RETRIES} err={type(e).__name__}:{e}")
                 import time; time.sleep(RETRY_DELAY)
             else:
-                print(f"  FAILED after {MAX_RETRIES} retries: {endpoint}: {e}")
+                print(f"  LIT_FAIL endpoint={endpoint} err={type(e).__name__}:{e}")
                 return None
 
 
@@ -228,7 +248,7 @@ def fetch_inventory_data():
     Hudson Botanical and other extra-brick brands count toward brick totals
     but do NOT get their own PRODUCT_DATA entry (would break vendor rendering).
     """
-    print("\n[1/2] Fetching Dutchie product catalogs (3 stores)...")
+    print("\n[1/2] Fetching Dutchie product catalogs (3 stores)...  [endpoint=/products]")
     raw_by_store = {}
     for store_key in ["dracut", "pepperell", "groton"]:
         print(f"  {store_key}...")
@@ -566,6 +586,39 @@ def main():
     # Fetch all data
     product_data, inventory_mix, store_inventory = fetch_inventory_data()
     lit_alerts_data, market_trend = fetch_lit_alerts_data()
+
+    # ── VALIDATION GUARDS (hard fail before writing HTML) ──
+    errors = []
+
+    # Guard 1: every Dutchie store must have in-stock SKUs
+    for sk in ["dracut", "pepperell", "groton"]:
+        s = store_inventory.get(sk, {})
+        if s.get("total", 0) == 0:
+            errors.append(f"Dutchie: store={sk} returned 0 SKUs")
+
+    # Guard 2: every brick-tab vendor should have at least 1 SKU across all stores
+    for vk, vinfo in BRICK_VENDORS.items():
+        if product_data["vendors"].get(vk, {}).get("totalSkus", 0) == 0:
+            errors.append(f"Dutchie: brick-vendor {vk} ({vinfo['name']}) has 0 SKUs across all stores")
+
+    # Guard 3: Lit Alerts market trend must have vendor data
+    if not market_trend:
+        errors.append("Lit Alerts: market_trend is None (fetch returned nothing)")
+    else:
+        if not market_trend.get("vendors"):
+            errors.append("Lit Alerts: MARKET_TREND_DATA.vendors is EMPTY — no brand matches across all months")
+        else:
+            missing_vendors = [vk for vk in BRICK_VENDORS if vk not in market_trend["vendors"]]
+            if missing_vendors:
+                errors.append(f"Lit Alerts: MARKET_TREND missing vendors: {missing_vendors}")
+
+    if errors:
+        print("\n❌ VALIDATION FAILED — refusing to write HTML:")
+        for e in errors:
+            print(f"   • {e}")
+        raise RuntimeError(f"Brick House refresh failed validation ({len(errors)} error(s)). HTML not updated. See log above.")
+
+    print("\n✓ All validation guards passed")
 
     # Update HTML constants
     print("\nUpdating HTML file...")
