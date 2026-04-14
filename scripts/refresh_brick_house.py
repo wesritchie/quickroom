@@ -516,9 +516,13 @@ def fetch_lit_alerts_data():
                 "state": "MA",
                 "returnDollarValues": "true",
             })
-            # Aggregate retailer presence for this vendor
-            if data and isinstance(data, dict) and "data" in data:
-                vendor_retailers.setdefault(vk, {}).setdefault(brand_id, data["data"])
+            # Aggregate retailer presence for this vendor.
+            # Lit Alerts uses "results" as the list key (NOT "data"); rows have estimatedAmount (NOT revenue/totalSales).
+            rows = None
+            if isinstance(data, dict):
+                rows = data.get("results") or data.get("data")
+            if rows:
+                vendor_retailers.setdefault(vk, {}).setdefault(brand_id, rows)
 
     # ── MARKET_TREND_DATA: Monthly sales by vendor ──
     # IMPORTANT: iterate using calendar-month arithmetic, NOT days=30*n.
@@ -557,14 +561,19 @@ def fetch_lit_alerts_data():
             "state": "MA",
             "returnDollarValues": "true",
         })
-        if data and "data" in data:
-            # Match brands to our vendors
-            for brand_entry in data["data"]:
-                brand_name = brand_entry.get("name", "")
+        # Lit Alerts response shape: {"results": [{"name":..., "id":..., "estimatedAmount":...}, ...]}
+        rows = (data.get("results") or data.get("data")) if isinstance(data, dict) else None
+        if rows:
+            for brand_entry in rows:
                 brand_id = brand_entry.get("id")
                 for vk, vinfo in BRICK_VENDORS.items():
                     if brand_id in vinfo["lit_ids"]:
-                        revenue = brand_entry.get("revenue", 0) or brand_entry.get("totalSales", 0) or 0
+                        revenue = (
+                            brand_entry.get("estimatedAmount")
+                            or brand_entry.get("revenue")
+                            or brand_entry.get("totalSales")
+                            or 0
+                        )
                         market_trend_vendors[vk][month_key] = market_trend_vendors[vk].get(month_key, 0) + round(revenue)
 
     market_trend = {
