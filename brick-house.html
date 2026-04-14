@@ -941,7 +941,7 @@ const LIT_ALERTS_DATA = {
 // Format: { skus, avgPrice, avgCost } per category per vendor
 // Updated: 2026-04-11 via Dutchie POS API (3 stores: Dracut, Pepperell, Groton; in-stock filtered via /inventory)
 const PRODUCT_DATA = {
-  "lastUpdated": "2026-04-14T16:10:04Z",
+  "lastUpdated": "2026-04-14T16:44:57Z",
   "vendors": {
     "fb": {
       "totalSkus": 37,
@@ -1192,7 +1192,7 @@ const PRODUCT_DATA = {
 // MARKET TREND DATA (Lit Alerts &mdash; Estimated MA Market Sales)
 // ===================================================
 const MARKET_TREND_DATA = {
-  "lastUpdated": "2026-04-14T16:11:39Z",
+  "lastUpdated": "2026-04-14T16:46:26Z",
   "note": "Monthly estimated sales ($) across all MA retailers, via Lit Alerts analytics.",
   "months": [
     "2025-02",
@@ -1227,7 +1227,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 32799,
       "2026-02": 30827,
       "2026-03": 32852,
-      "2026-04": 14209
+      "2026-04": 14331
     },
     "bo": {
       "2025-02": 16899,
@@ -1244,7 +1244,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 17835,
       "2026-02": 15256,
       "2026-03": 15709,
-      "2026-04": 7366
+      "2026-04": 7431
     },
     "fb": {
       "2025-02": 11260,
@@ -1261,7 +1261,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 13703,
       "2026-02": 11957,
       "2026-03": 11296,
-      "2026-04": 5333
+      "2026-04": 5379
     },
     "gf": {
       "2025-02": 11205,
@@ -1278,7 +1278,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 15676,
       "2026-02": 13860,
       "2026-03": 14638,
-      "2026-04": 6204
+      "2026-04": 6234
     },
     "hb": {
       "2025-02": 10114,
@@ -1295,7 +1295,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 11001,
       "2026-02": 8572,
       "2026-03": 11150,
-      "2026-04": 4272
+      "2026-04": 4307
     },
     "hp": {
       "2025-02": 2219,
@@ -1312,7 +1312,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 7772,
       "2026-02": 9249,
       "2026-03": 10036,
-      "2026-04": 3949
+      "2026-04": 3976
     },
     "wf": {
       "2025-02": 2976,
@@ -1329,7 +1329,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 4173,
       "2026-02": 3887,
       "2026-03": 4003,
-      "2026-04": 1234
+      "2026-04": 1262
     },
     "mc": {
       "2025-02": 240,
@@ -1346,7 +1346,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 560,
       "2026-02": 403,
       "2026-03": 443,
-      "2026-04": 227
+      "2026-04": 231
     }
   }
 };
@@ -1357,15 +1357,15 @@ const MARKET_TREND_DATA = {
 // INVENTORY MIX &mdash; Bricks vs Non-Bricks (from Dutchie product catalog)
 // ===================================================
 const INVENTORY_MIX = {
-  "lastUpdated": "2026-04-14T16:10:04Z",
+  "lastUpdated": "2026-04-14T16:44:57Z",
   "note": "In-stock SKUs via Dutchie /products (quantityAvailable > 0), deduplicated by productId across all 3 stores. SAMPLE / DISPLAY / Prizes excluded.",
   "totalActive": 643,
   "totalBrick": 233,
-  "totalCore": 25,
-  "totalOther": 385,
+  "totalCore": 65,
+  "totalOther": 345,
   "perStore": {
     "dracut": {
-      "total": 366
+      "total": 367
     },
     "pepperell": {
       "total": 409
@@ -1410,6 +1410,10 @@ const INVENTORY_MIX = {
   ],
   "coreVendors": [
     {
+      "name": "Eureka",
+      "skus": 25
+    },
+    {
       "name": "Mederi",
       "skus": 12
     },
@@ -1418,15 +1422,23 @@ const INVENTORY_MIX = {
       "skus": 9
     },
     {
-      "name": "Lunar Xtracts",
+      "name": "Levia",
+      "skus": 7
+    },
+    {
+      "name": "Cresco",
+      "skus": 4
+    },
+    {
+      "name": "Fathom",
+      "skus": 4
+    },
+    {
+      "name": "Lunar",
       "skus": 4
     }
   ],
   "otherVendors": [
-    {
-      "name": "Eureka | Mill Town Agriculture LLC",
-      "skus": 25
-    },
     {
       "name": "High Supply | Cultivate Leicester, Inc",
       "skus": 24
@@ -1500,35 +1512,49 @@ const INVENTORY_MIX = {
       "skus": 7
     },
     {
-      "name": "Levia | Cultivauna, LLC",
-      "skus": 7
-    },
-    {
       "name": "Pilgrim Soul | Pilgrim Soul",
       "skus": 7
     },
     {
       "name": "Therapy | Palazzi Incorporated",
       "skus": 7
+    },
+    {
+      "name": "AMP | Atlantic Medicinal Partners, Inc",
+      "skus": 6
+    },
+    {
+      "name": "Good News | Cultivate Leicester, Inc",
+      "skus": 6
     }
   ],
-  "otherVendorsFull": 79,
+  "otherVendorsFull": 75,
   "missingCore": [
+    "Atlantic Medical Partners",
+    "ARL",
+    "Merimed",
+    "Canna Provisions",
     "Cultivate",
-    "ARL Healthcare",
-    "Garden Remedies",
-    "Novel Beverage",
     "Curaleaf",
-    "Humboldt Masters"
+    "Garden Remedies",
+    "Gibby",
+    "Green Theory",
+    "Aruna",
+    "JBam",
+    "Palazzi",
+    "Novel Beverage",
+    "Regenerative",
+    "Standard Farms"
   ],
   "byCategory": [
     {
       "group": "Merch / Accessories",
       "brick": 7,
-      "core": 1,
-      "other": 211,
+      "core": 26,
+      "other": 186,
       "coreVendors": {
-        "Lunar Xtracts": 1
+        "Eureka": 25,
+        "Lunar": 1
       },
       "brickVendors": {
         "MACC": 5,
@@ -1538,10 +1564,11 @@ const INVENTORY_MIX = {
     {
       "group": "Pre-Rolls",
       "brick": 69,
-      "core": 7,
-      "other": 62,
+      "core": 11,
+      "other": 58,
       "coreVendors": {
-        "Mederi": 7
+        "Mederi": 7,
+        "Fathom": 4
       },
       "brickVendors": {
         "High Plains Farm": 26,
@@ -1559,7 +1586,7 @@ const INVENTORY_MIX = {
       "other": 40,
       "coreVendors": {
         "Green Meadows": 9,
-        "Lunar Xtracts": 3
+        "Lunar": 3
       },
       "brickVendors": {
         "Freshly Baked": 25,
@@ -1571,10 +1598,11 @@ const INVENTORY_MIX = {
     {
       "group": "Flower",
       "brick": 40,
-      "core": 5,
-      "other": 44,
+      "core": 9,
+      "other": 40,
       "coreVendors": {
-        "Mederi": 5
+        "Mederi": 5,
+        "Cresco": 4
       },
       "brickVendors": {
         "Wellman Farms": 12,
@@ -1599,9 +1627,11 @@ const INVENTORY_MIX = {
     {
       "group": "Beverages",
       "brick": 20,
-      "core": 0,
-      "other": 19,
-      "coreVendors": {},
+      "core": 7,
+      "other": 12,
+      "coreVendors": {
+        "Levia": 7
+      },
       "brickVendors": {
         "Good Feels": 20
       }
@@ -1636,14 +1666,14 @@ const INVENTORY_MIX = {
 // ===================================================
 const STORE_INVENTORY = {
   "dracut": {
-    "total": 366,
-    "brick": 156,
-    "core": 10,
-    "other": 200,
+    "total": 367,
+    "brick": 157,
+    "core": 41,
+    "other": 169,
     "brickVendors": [
       {
         "name": "MACC",
-        "skus": 28
+        "skus": 29
       },
       {
         "name": "Freshly Baked",
@@ -1676,19 +1706,27 @@ const STORE_INVENTORY = {
     ],
     "coreVendors": [
       {
+        "name": "Eureka",
+        "skus": 22
+      },
+      {
+        "name": "Levia",
+        "skus": 7
+      },
+      {
         "name": "Mederi",
         "skus": 7
       },
       {
-        "name": "Lunar Xtracts",
+        "name": "Lunar",
         "skus": 3
+      },
+      {
+        "name": "Fathom",
+        "skus": 2
       }
     ],
     "otherVendors": [
-      {
-        "name": "Eureka | Mill Town Agriculture LLC",
-        "skus": 22
-      },
       {
         "name": "High Supply | Cultivate Leicester, Inc",
         "skus": 13
@@ -1722,10 +1760,6 @@ const STORE_INVENTORY = {
         "skus": 7
       },
       {
-        "name": "Levia | Cultivauna, LLC",
-        "skus": 7
-      },
-      {
         "name": "LuvBuds | LuvBuds",
         "skus": 7
       },
@@ -1744,21 +1778,29 @@ const STORE_INVENTORY = {
       {
         "name": "Therapy | Palazzi Incorporated",
         "skus": 6
+      },
+      {
+        "name": "Green Therapy | Lunar Xtracts, Inc.",
+        "skus": 5
+      },
+      {
+        "name": "Erva | Erva Inc.",
+        "skus": 4
       }
     ],
-    "otherVendorsFull": 52,
+    "otherVendorsFull": 49,
     "byCategory": [
       {
         "group": "Merch / Accessories",
         "brick": 2,
-        "core": 0,
-        "other": 107
+        "core": 22,
+        "other": 85
       },
       {
         "group": "Pre-Rolls",
         "brick": 45,
-        "core": 4,
-        "other": 24
+        "core": 6,
+        "other": 22
       },
       {
         "group": "Vapes",
@@ -1768,7 +1810,7 @@ const STORE_INVENTORY = {
       },
       {
         "group": "Flower",
-        "brick": 22,
+        "brick": 23,
         "core": 3,
         "other": 24
       },
@@ -1781,8 +1823,8 @@ const STORE_INVENTORY = {
       {
         "group": "Beverages",
         "brick": 12,
-        "core": 0,
-        "other": 18
+        "core": 7,
+        "other": 11
       },
       {
         "group": "Concentrates",
@@ -1801,8 +1843,8 @@ const STORE_INVENTORY = {
   "pepperell": {
     "total": 409,
     "brick": 161,
-    "core": 17,
-    "other": 231,
+    "core": 47,
+    "other": 201,
     "brickVendors": [
       {
         "name": "MACC",
@@ -1839,23 +1881,35 @@ const STORE_INVENTORY = {
     ],
     "coreVendors": [
       {
+        "name": "Eureka",
+        "skus": 18
+      },
+      {
         "name": "Green Meadows",
         "skus": 8
+      },
+      {
+        "name": "Levia",
+        "skus": 7
       },
       {
         "name": "Mederi",
         "skus": 6
       },
       {
-        "name": "Lunar Xtracts",
+        "name": "Cresco",
         "skus": 3
+      },
+      {
+        "name": "Lunar",
+        "skus": 3
+      },
+      {
+        "name": "Fathom",
+        "skus": 2
       }
     ],
     "otherVendors": [
-      {
-        "name": "Eureka | Mill Town Agriculture LLC",
-        "skus": 18
-      },
       {
         "name": "Healing Rose | Healing Rose",
         "skus": 17
@@ -1897,10 +1951,6 @@ const STORE_INVENTORY = {
         "skus": 8
       },
       {
-        "name": "Levia | Cultivauna, LLC",
-        "skus": 7
-      },
-      {
         "name": "Therapy | Palazzi Incorporated",
         "skus": 7
       },
@@ -1911,21 +1961,29 @@ const STORE_INVENTORY = {
       {
         "name": "Pine + Star | Novel Beverage Co.",
         "skus": 6
+      },
+      {
+        "name": "At Ease | Green Meadows Farm, LLC",
+        "skus": 5
+      },
+      {
+        "name": "Pilgrim Soul | Pilgrim Soul",
+        "skus": 5
       }
     ],
-    "otherVendorsFull": 58,
+    "otherVendorsFull": 54,
     "byCategory": [
       {
         "group": "Merch / Accessories",
         "brick": 6,
-        "core": 0,
-        "other": 116
+        "core": 18,
+        "other": 98
       },
       {
         "group": "Pre-Rolls",
         "brick": 44,
-        "core": 3,
-        "other": 29
+        "core": 5,
+        "other": 27
       },
       {
         "group": "Vapes",
@@ -1936,8 +1994,8 @@ const STORE_INVENTORY = {
       {
         "group": "Flower",
         "brick": 30,
-        "core": 3,
-        "other": 27
+        "core": 6,
+        "other": 24
       },
       {
         "group": "Edibles",
@@ -1948,8 +2006,8 @@ const STORE_INVENTORY = {
       {
         "group": "Beverages",
         "brick": 11,
-        "core": 0,
-        "other": 18
+        "core": 7,
+        "other": 11
       },
       {
         "group": "Concentrates",
@@ -1968,8 +2026,8 @@ const STORE_INVENTORY = {
   "groton": {
     "total": 376,
     "brick": 156,
-    "core": 11,
-    "other": 209,
+    "core": 34,
+    "other": 186,
     "brickVendors": [
       {
         "name": "High Plains Farm",
@@ -2006,7 +2064,15 @@ const STORE_INVENTORY = {
     ],
     "coreVendors": [
       {
-        "name": "Lunar Xtracts",
+        "name": "Eureka",
+        "skus": 15
+      },
+      {
+        "name": "Levia",
+        "skus": 6
+      },
+      {
+        "name": "Lunar",
         "skus": 4
       },
       {
@@ -2016,16 +2082,16 @@ const STORE_INVENTORY = {
       {
         "name": "Green Meadows",
         "skus": 3
+      },
+      {
+        "name": "Cresco",
+        "skus": 2
       }
     ],
     "otherVendors": [
       {
         "name": "Healing Rose | Healing Rose",
         "skus": 16
-      },
-      {
-        "name": "Eureka | Mill Town Agriculture LLC",
-        "skus": 15
       },
       {
         "name": "High Supply | Cultivate Leicester, Inc",
@@ -2064,10 +2130,6 @@ const STORE_INVENTORY = {
         "skus": 6
       },
       {
-        "name": "Levia | Cultivauna, LLC",
-        "skus": 6
-      },
-      {
         "name": "Ooze | AFG Distribution",
         "skus": 6
       },
@@ -2078,15 +2140,23 @@ const STORE_INVENTORY = {
       {
         "name": "Cannalive Genetics | Cannalive Genetics LLC",
         "skus": 5
+      },
+      {
+        "name": "Nature's Heritage | ARL Healthcare - P",
+        "skus": 5
+      },
+      {
+        "name": "Nature's Heritage | ARL Healthcare - C",
+        "skus": 4
       }
     ],
-    "otherVendorsFull": 54,
+    "otherVendorsFull": 51,
     "byCategory": [
       {
         "group": "Merch / Accessories",
         "brick": 4,
-        "core": 1,
-        "other": 114
+        "core": 16,
+        "other": 99
       },
       {
         "group": "Pre-Rolls",
@@ -2103,8 +2173,8 @@ const STORE_INVENTORY = {
       {
         "group": "Flower",
         "brick": 25,
-        "core": 1,
-        "other": 20
+        "core": 3,
+        "other": 18
       },
       {
         "group": "Edibles",
@@ -2115,8 +2185,8 @@ const STORE_INVENTORY = {
       {
         "group": "Beverages",
         "brick": 17,
-        "core": 0,
-        "other": 16
+        "core": 6,
+        "other": 10
       },
       {
         "group": "Concentrates",
