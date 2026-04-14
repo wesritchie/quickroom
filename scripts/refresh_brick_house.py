@@ -161,7 +161,29 @@ def lit_alerts_probe():
     except Exception as _e:
         print(f"  LIT_PROBE token_decode_err={type(_e).__name__}:{_e} token_len={len(tok)}")
     headers = {"Authorization": f"Bearer {tok}", "Accept": "application/json"}
-    for ep, params in [("/retailers", {"state": "MA"}), ("/brands", {"state": "MA"}), ("/market/brands", {"beginDate": "2026-03-01", "endDate": "2026-03-15", "state": "MA"})]:
+    # Probe BOTH market-level and retailer-level analytics endpoints to determine scope/access.
+    # Previous run showed /retailers=200 /brands=200 /market/brands=500 (empty body, Kestrel).
+    # Hypothesis: API_READER role can hit lookups but not /market/* analytics.
+    # Test retailer-scoped alternates to see if we can reconstruct market trend from those.
+    dr_short = {"beginDate": "2026-03-01", "endDate": "2026-03-15", "state": "MA"}
+    dr_old = {"beginDate": "2025-10-01", "endDate": "2025-10-31", "state": "MA"}
+    dr_wide = {"beginDate": "2026-01-01", "endDate": "2026-03-31", "state": "MA"}
+    # Pick a known retailer id if available in BRICK_VENDORS has lit_ids? use 1 as a smoke-test
+    probe_list = [
+        ("/retailers", {"state": "MA"}),
+        ("/brands", {"state": "MA"}),
+        ("/market/brands", dr_short),
+        ("/market/brands", dr_old),
+        ("/market/brands", dr_wide),
+        ("/market/retailers", dr_short),
+        ("/market/categories", dr_short),
+        ("/market/trend", dr_short),
+        # Brand-scoped analytics (we've confirmed /brand/{id}/retailers works in prod run)
+        ("/brand/303/trend", dr_short),
+        ("/brand/303/categories", dr_short),
+        ("/brand/303/retailers", dr_short),
+    ]
+    for ep, params in probe_list:
         try:
             r = requests.get(f"{LIT_ALERTS_BASE}{ep}", headers=headers, params=params, timeout=15)
             body = (r.text or "")[:400].replace("\n", " ")
