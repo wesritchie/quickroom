@@ -520,6 +520,19 @@ def main():
 
                 html = html[:insert_pos] + new_content + html[insert_pos:]
 
+    # Update displayed date strings (sidebar footer + header live badge)
+    today_label = datetime.now().strftime("%b %d, %Y")
+    html = re.sub(
+        r'(<span id="gt-sidebar-asof">)[^<]*(</span>)',
+        rf'\g<1>Data as of {today_label}\g<2>',
+        html,
+    )
+    html = re.sub(
+        r'(<span id="header-updated">)[^<]*(</span>)',
+        rf'\g<1>Last updated: {today_label}\g<2>',
+        html,
+    )
+
     # Write updated HTML
     with open(HTML_FILE, "w", encoding="utf-8") as f:
         f.write(html)
