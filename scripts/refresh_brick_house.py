@@ -31,30 +31,75 @@ STORES = {
 
 LIT_ALERTS_TOKEN = os.environ.get("LIT_ALERTS_TOKEN", "")
 
-# Brick vendors WITH their own dashboard tab/tile. These keys must match
-# the `VENDORS` object in brick-house.html (fb/tb/gf/wf/bo/hp/mc) — any key
-# we produce in PRODUCT_DATA.vendors or MARKET_TREND_DATA.vendors that isn't
-# present in HTML VENDORS will render as "undefined" and break vendor tabs.
-BRICK_VENDORS = {
-    "fb": {"name": "Freshly Baked",    "lit_ids": [303]},
-    "tb": {"name": "T.Bear / Coast",   "lit_ids": [251, 130]},
-    "gf": {"name": "Good Feels",       "lit_ids": [346]},
-    "wf": {"name": "Wellman Farms",    "lit_ids": [1165]},
-    "bo": {"name": "Bostica",          "lit_ids": [1400]},
-    "hp": {"name": "High Plains Farm", "lit_ids": [897]},
-    "mc": {"name": "MACC",             "lit_ids": [2073]},
-}
+# Brick vendors WITH their own dashboard tab/tile. Keys must match the
+# `VENDORS` object in brick-house.html (fb/tb/gf/wf/bo/hp/mc).
+#
+# SINGLE SOURCE OF TRUTH: brick-house.html is the canonical schema. The
+# Python schema below is loaded at runtime by parsing three blocks out of
+# the HTML — VENDORS (display names), brandIds (Lit Alerts IDs), and
+# vendorAliases.dutchie (Dutchie brand-name aliases). This prevents drift:
+# update the HTML once, and the refresh script picks it up next run.
+#
+# Hard fail on parse error — never fall back to stale constants, because
+# silently running with a degraded schema would corrupt vendor totals.
+def _load_vendor_schema_from_html():
+    with open(HTML_FILE, "r", encoding="utf-8") as f:
+        html = f.read()
 
-# Vendor aliases for matching Dutchie product.brand to a dashboard vendor key.
-VENDOR_ALIASES = {
-    "fb": ["Freshly Baked"],
-    "tb": ["T.Bear", "T. Bear", "Coast", "Coast Cannabis"],
-    "gf": ["Good Feels"],
-    "wf": ["Wellman Farms", "Wellman"],
-    "bo": ["Bostica"],
-    "hp": ["High Plains Farm", "High Plains"],
-    "mc": ["MACC"],
-}
+    # 1) Display names from `VENDORS = { fb: { name: "Freshly Baked", ... }, ... }`
+    vendors_block = re.search(
+        r"\bVENDORS\s*=\s*\{(.*?)\}\s*;", html, re.DOTALL
+    )
+    if not vendors_block:
+        raise RuntimeError("Could not locate VENDORS block in brick-house.html")
+    names = dict(re.findall(
+        r'(\w+)\s*:\s*\{\s*name\s*:\s*"([^"]+)"', vendors_block.group(1)
+    ))
+
+    # 2) Lit Alerts brand IDs from `brandIds: { fb:[{id:183,...}], ... }`
+    brand_ids_block = re.search(
+        r"brandIds\s*:\s*\{(.*?)\}\s*,\s*notes\s*:", html, re.DOTALL
+    )
+    if not brand_ids_block:
+        raise RuntimeError("Could not locate brandIds block in brick-house.html")
+    lit_ids = {}
+    # Append sentinel so the last entry has a trailing comma for the lookahead.
+    for vk, arr in re.findall(
+        r"(\w+)\s*:\s*\[(.*?)\](?=\s*[,}])",
+        brand_ids_block.group(1) + ",", re.DOTALL,
+    ):
+        lit_ids[vk] = [int(i) for i in re.findall(r"id\s*:\s*(\d+)", arr)]
+
+    # 3) Dutchie aliases from `vendorAliases = { fb: { dutchie: [...], ... }, ... }`
+    aliases_block = re.search(
+        r"vendorAliases\s*=\s*\{(.*?)\}\s*;", html, re.DOTALL
+    )
+    if not aliases_block:
+        raise RuntimeError("Could not locate vendorAliases block in brick-house.html")
+    aliases = {}
+    for vk, body in re.findall(
+        r"(\w+)\s*:\s*\{(.*?)\}\s*(?=,\s*\w+\s*:\s*\{|\Z)",
+        aliases_block.group(1), re.DOTALL,
+    ):
+        dutchie_match = re.search(r'dutchie\s*:\s*\[(.*?)\]', body, re.DOTALL)
+        if dutchie_match:
+            aliases[vk] = re.findall(r'"([^"]+)"', dutchie_match.group(1))
+
+    # Cross-check: every key that has a name must also have lit_ids and aliases
+    missing = [k for k in names if k not in lit_ids or k not in aliases]
+    if missing:
+        raise RuntimeError(
+            f"brick-house.html schema incomplete for vendors: {missing} "
+            f"(names={list(names)}, lit_ids={list(lit_ids)}, aliases={list(aliases)})"
+        )
+
+    brick_vendors = {
+        vk: {"name": names[vk], "lit_ids": lit_ids[vk]} for vk in names
+    }
+    return brick_vendors, aliases
+
+
+BRICK_VENDORS, VENDOR_ALIASES = _load_vendor_schema_from_html()
 
 # Additional brick-classified brands that COUNT toward brick inventory totals
 # but don't have their own dashboard tab. Shown in brickVendors lists only.
@@ -242,29 +287,47 @@ def _build_alias_map():
 
 
 def _build_extra_brick_map():
-    """Map lowercased brand fragment → display name for extra-brick (non-tab) brands."""
+    """Map normalized brand fragment → display name for extra-brick (non-tab) brands."""
     m = {}
     for display, aliases in EXTRA_BRICK_BRANDS.items():
         for a in aliases:
-            m[a.lower()] = display
+            m[_norm(a)] = display
+    return m
+
+
+def _norm(s):
+    """Normalize a brand string for matching: lowercase, strip all non-alphanumeric
+    chars (periods, commas, spaces, hyphens, etc.). So 'T. Bear', 'T.Bear', 'T Bear',
+    'T-Bear' all canonicalize to 'tbear'. Handles formatting drift in Dutchie
+    vendor strings without requiring us to enumerate every variant in the alias list."""
+    return re.sub(r"[^a-z0-9]", "", (s or "").lower())
+
+
+def _rebuild_alias_map():
+    """Rebuild alias map using normalized keys (punctuation/whitespace insensitive)."""
+    m = {}
+    for vk, aliases in VENDOR_ALIASES.items():
+        for a in aliases:
+            m[_norm(a)] = vk
     return m
 
 
 def classify_brand(brand):
-    """Return ('brick_tab', vendor_key) | ('brick_extra', display) | ('core', vendor_name) | ('other', None)."""
+    """Return ('brick_tab', vendor_key) | ('brick_extra', display) | ('core', vendor_name) | ('other', None).
+    Matching is punctuation/whitespace-insensitive via _norm()."""
     if not brand:
         return ("other", None)
-    bl = brand.lower()
-    tabs = _build_alias_map()
+    bn = _norm(brand)
+    tabs = _rebuild_alias_map()
     for alias, vk in tabs.items():
-        if alias in bl:
+        if alias and alias in bn:
             return ("brick_tab", vk)
     extras = _build_extra_brick_map()
     for alias, display in extras.items():
-        if alias in bl:
+        if alias and alias in bn:
             return ("brick_extra", display)
     for cv in CORE_VENDORS:
-        if bl.startswith(cv.lower()):
+        if bn.startswith(_norm(cv)):
             return ("core", cv)
     return ("other", None)
 
@@ -450,6 +513,17 @@ def fetch_inventory_data():
             "coreVendors": dict(sorted(c["coreVendors"].items(), key=lambda x: -x[1])),
             "brickVendors": dict(sorted(c["brickVendors"].items(), key=lambda x: -x[1])),
         })
+
+    # Unmatched-brand diagnostic — surfaces Dutchie vendor strings that didn't
+    # classify as brick_tab / brick_extra / core. Review after each run: if a
+    # real brick/core vendor is slipping through under a formatting variant, add
+    # the alias to brick-house.html (vendorAliases.dutchie) with high confidence.
+    top_unmatched = sorted(agg_other_vendor.items(), key=lambda x: -x[1])[:20]
+    if top_unmatched:
+        print(f"\n[DIAGNOSTIC] Top 20 unmatched Dutchie brand strings ({len(agg_other_vendor)} distinct total):")
+        for name, cnt in top_unmatched:
+            print(f"   • {cnt:>4} SKUs  |  {name!r}")
+        print("   ↳ If any of these should be brick/core, add alias to brick-house.html vendorAliases.dutchie")
 
     other_full_list = _sorted_vendor_list(agg_other_vendor)
     inventory_mix = {
