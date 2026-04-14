@@ -144,6 +144,34 @@ def dutchie_fetch(store_key, endpoint, params=None):
                 return None
 
 
+def lit_alerts_probe():
+    """Minimal auth probe: call the simplest possible endpoint and print full diagnostics."""
+    if not LIT_ALERTS_TOKEN:
+        print("  LIT_PROBE reason=NO_TOKEN_IN_ENV")
+        return False
+    tok = LIT_ALERTS_TOKEN
+    # Decode JWT header+payload (no verify) to see claims — helps diagnose expiry/scope.
+    try:
+        import base64 as _b64, json as _json
+        parts = tok.split(".")
+        def _pad(s): return s + "=" * (-len(s) % 4)
+        hdr = _json.loads(_b64.urlsafe_b64decode(_pad(parts[0])).decode("utf-8", "replace")) if len(parts) >= 2 else {}
+        pl = _json.loads(_b64.urlsafe_b64decode(_pad(parts[1])).decode("utf-8", "replace")) if len(parts) >= 2 else {}
+        print(f"  LIT_PROBE token_len={len(tok)} alg={hdr.get('alg')} typ={hdr.get('typ')} exp={pl.get('exp')} iss={pl.get('iss')} sub={pl.get('sub')} role={pl.get('role') or pl.get('roles')}")
+    except Exception as _e:
+        print(f"  LIT_PROBE token_decode_err={type(_e).__name__}:{_e} token_len={len(tok)}")
+    headers = {"Authorization": f"Bearer {tok}", "Accept": "application/json"}
+    for ep, params in [("/retailers", {"state": "MA"}), ("/brands", {"state": "MA"}), ("/market/brands", {"beginDate": "2026-03-01", "endDate": "2026-03-15", "state": "MA"})]:
+        try:
+            r = requests.get(f"{LIT_ALERTS_BASE}{ep}", headers=headers, params=params, timeout=15)
+            body = (r.text or "")[:400].replace("\n", " ")
+            hdrs = {k: v for k, v in r.headers.items() if k.lower() in ("www-authenticate", "x-request-id", "x-correlation-id", "content-type", "content-length", "server")}
+            print(f"  LIT_PROBE endpoint={ep} status={r.status_code} headers={hdrs} body={body}")
+        except Exception as e:
+            print(f"  LIT_PROBE endpoint={ep} err={type(e).__name__}:{e}")
+    return True
+
+
 def lit_alerts_fetch(endpoint, params=None):
     """Fetch from Lit Alerts Partner API."""
     if not LIT_ALERTS_TOKEN:
@@ -161,8 +189,9 @@ def lit_alerts_fetch(endpoint, params=None):
             )
             status = resp.status_code
             if status >= 400:
-                preview = (resp.text or "")[:200].replace("\n", " ")
-                print(f"  LIT_ERR endpoint={endpoint} attempt={attempt+1} status={status} preview={preview}")
+                preview = (resp.text or "")[:400].replace("\n", " ")
+                extra_hdrs = {k: v for k, v in resp.headers.items() if k.lower() in ("www-authenticate", "x-request-id", "x-correlation-id", "content-type", "content-length")}
+                print(f"  LIT_ERR endpoint={endpoint} attempt={attempt+1} status={status} headers={extra_hdrs} body_len={len(resp.text or '')} preview={preview}")
                 resp.raise_for_status()
             body = resp.json()
             count = len(body) if isinstance(body, list) else (len(body.get("data", [])) if isinstance(body, dict) else 0)
@@ -449,6 +478,8 @@ def fetch_lit_alerts_data():
         return None, None
 
     print("\n[3/3] Fetching Lit Alerts market data...")
+    # One-time diagnostic probe so we can see what the server is returning on 500s.
+    lit_alerts_probe()
     today = date.today()
 
     # ── LIT_ALERTS_DATA: Retailer distribution per vendor ──
