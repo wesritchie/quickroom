@@ -308,19 +308,30 @@ def main():
         raise SystemExit(f"Missing env vars: {', '.join(missing)}")
 
     today = date.today()
+    # Only render completed months. The current month is partial and would
+    # show a misleading drop on the Overview chart. We still pull the
+    # current month window so late-arriving transactions get captured when
+    # the month closes, but we exclude it from the rendered output.
+    if today.month == 1:
+        last_completed = date(today.year - 1, 12, 1)
+    else:
+        last_completed = date(today.year, today.month - 1, 1)
+
     if args.backfill:
         start_month = date(2025, 1, 1)
     elif args.since:
         y, m = [int(x) for x in args.since.split("-")]
         start_month = date(y, m, 1)
     else:
-        # Monthly top-up: previous + current month (idempotent re-pull)
-        if today.month == 1:
-            start_month = date(today.year - 1, 12, 1)
+        # Monthly top-up: re-pull last-completed + the month before it
+        # (catches any late-edited transactions). On May 1 cron, that's
+        # March + April. Only April goes into the chart as newly completed.
+        if last_completed.month == 1:
+            start_month = date(last_completed.year - 1, 12, 1)
         else:
-            start_month = date(today.year, today.month - 1, 1)
+            start_month = date(last_completed.year, last_completed.month - 1, 1)
 
-    end_month = date(today.year, today.month, 1)
+    end_month = last_completed
     months_to_pull = list(iter_months(start_month, end_month))
     # API lastModified window: start of first month, end of today (inclusive)
     window_start = start_month
@@ -370,6 +381,23 @@ def main():
         for sk in merged:
             all_months_set.update(merged[sk].keys())
         all_months = sorted(all_months_set, key=lambda mk: (int(mk[-2:]), MONTH_ABBRS.index(mk[:3])))
+
+    # Prune any month after last_completed (e.g. a partial current month
+    # left over from a prior run). This keeps the Overview chart from
+    # showing an artificial drop at the right edge.
+    last_key = month_key(datetime(last_completed.year, last_completed.month, 1))
+    last_idx = (last_completed.year, last_completed.month)
+    def _mk_tuple(mk):
+        yy = 2000 + int(mk[-2:])
+        mm = MONTH_ABBRS.index(mk[:3]) + 1
+        return (yy, mm)
+    dropped = [mk for mk in all_months if _mk_tuple(mk) > last_idx]
+    if dropped:
+        print(f"Pruning partial/future months from output: {dropped}")
+    all_months = [mk for mk in all_months if _mk_tuple(mk) <= last_idx]
+    for sk in merged:
+        for mk in dropped:
+            merged[sk].pop(mk, None)
 
     print(f"\nTotal months in output: {len(all_months)} ({all_months[0]} → {all_months[-1]})")
 
