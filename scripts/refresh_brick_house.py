@@ -56,27 +56,16 @@ def _load_vendor_schema_from_html():
         r'(\w+)\s*:\s*\{\s*name\s*:\s*"([^"]+)"', vendors_block.group(1)
     ))
 
-    # 2) Lit Alerts brand IDs from `brandIds: { fb:[{id:183,...}], ... }`
-    brand_ids_block = re.search(
-        r"brandIds\s*:\s*\{(.*?)\}\s*,\s*notes\s*:", html, re.DOTALL
-    )
-    if not brand_ids_block:
-        raise RuntimeError("Could not locate brandIds block in brick-house.html")
-    lit_ids = {}
-    # Append sentinel so the last entry has a trailing comma for the lookahead.
-    for vk, arr in re.findall(
-        r"(\w+)\s*:\s*\[(.*?)\](?=\s*[,}])",
-        brand_ids_block.group(1) + ",", re.DOTALL,
-    ):
-        lit_ids[vk] = [int(i) for i in re.findall(r"id\s*:\s*(\d+)", arr)]
-
-    # 3) Dutchie aliases from `vendorAliases = { fb: { dutchie: [...], ... }, ... }`
+    # 2) Dutchie aliases + Lit Alerts brand IDs, both from the single
+    # `vendorAliases = { fb: { dutchie: [...], litAlerts: [{id:N,...}], ... } }`
+    # block. One source of truth, no drift possible.
     aliases_block = re.search(
         r"vendorAliases\s*=\s*\{(.*?)\}\s*;", html, re.DOTALL
     )
     if not aliases_block:
         raise RuntimeError("Could not locate vendorAliases block in brick-house.html")
     aliases = {}
+    lit_ids = {}
     for vk, body in re.findall(
         r"(\w+)\s*:\s*\{(.*?)\}\s*(?=,\s*\w+\s*:\s*\{|\Z)",
         aliases_block.group(1), re.DOTALL,
@@ -84,6 +73,9 @@ def _load_vendor_schema_from_html():
         dutchie_match = re.search(r'dutchie\s*:\s*\[(.*?)\]', body, re.DOTALL)
         if dutchie_match:
             aliases[vk] = re.findall(r'"([^"]+)"', dutchie_match.group(1))
+        lit_match = re.search(r'litAlerts\s*:\s*\[(.*?)\]', body, re.DOTALL)
+        if lit_match:
+            lit_ids[vk] = [int(i) for i in re.findall(r"id\s*:\s*(\d+)", lit_match.group(1))]
 
     # Cross-check: every key that has a name must also have lit_ids and aliases
     missing = [k for k in names if k not in lit_ids or k not in aliases]
