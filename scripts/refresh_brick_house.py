@@ -102,10 +102,35 @@ EXTRA_BRICK_BRANDS = {
     ],
 }
 
-# Core vendors (for inventory classification). Matched as case-insensitive prefix.
+# Core vendors (for inventory classification). Matched as case-insensitive
+# prefix after _norm() (strips punctuation/whitespace, lowercases). Add short
+# canonical prefixes so variants ("ARL Healthcare", "ARL, LLC", "Cresco Labs",
+# "Fathom Cannabis", "Gibby's Gardens", "Lunar Xtracts", "Novel Beverage
+# Company", etc.) all match. Hudson Botanical is classified as BRICK
+# (EXTRA_BRICK_BRANDS), NOT core.
 CORE_VENDORS = [
-    "Cultivate", "ARL Healthcare", "Garden Remedies", "Green Meadows",
-    "Novel Beverage", "Lunar Xtracts", "Curaleaf", "Mederi", "Humboldt Masters",
+    "Atlantic Medical Partners",
+    "ARL",
+    "Merimed",
+    "Canna Provisions",
+    "Cultivate",
+    "Cresco",
+    "Curaleaf",
+    "Eureka",
+    "Fathom",
+    "Garden Remedies",
+    "Gibby",
+    "Green Meadows",
+    "Green Theory",
+    "Aruna",
+    "JBam",
+    "Palazzi",
+    "Levia",
+    "Lunar",
+    "Mederi",
+    "Novel Beverage",
+    "Regenerative",
+    "Standard Farms",
 ]
 
 # Map Dutchie product.category → dashboard category group shown in byCategory.
