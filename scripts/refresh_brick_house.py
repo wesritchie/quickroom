@@ -457,12 +457,16 @@ def fetch_lit_alerts_data():
         for brand_id in vinfo["lit_ids"]:
             print(f"  Brand {vinfo['name']} (id={brand_id})...")
             # Get retailer distribution for this brand
-            data = lit_alerts_fetch(f"/brand/{brand_id}/events", {
+            # Correct endpoint: /brand/{brandId}/retailers (NOT /brand/{id}/events — that path doesn't exist)
+            data = lit_alerts_fetch(f"/brand/{brand_id}/retailers", {
                 "beginDate": (today - timedelta(days=90)).strftime("%Y-%m-%d"),
                 "endDate": today.strftime("%Y-%m-%d"),
                 "state": "MA",
+                "returnDollarValues": "true",
             })
-            # We'll aggregate retailer presence from the events
+            # Aggregate retailer presence for this vendor
+            if data and isinstance(data, dict) and "data" in data:
+                vendor_retailers.setdefault(vk, {}).setdefault(brand_id, data["data"])
 
     # ── MARKET_TREND_DATA: Monthly sales by vendor ──
     # IMPORTANT: iterate using calendar-month arithmetic, NOT days=30*n.
