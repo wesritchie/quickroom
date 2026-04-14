@@ -353,19 +353,27 @@ def fetch_inventory_data():
     Hudson Botanical and other extra-brick brands count toward brick totals
     but do NOT get their own PRODUCT_DATA entry (would break vendor rendering).
     """
-    print("\n[1/2] Fetching Dutchie product catalogs (3 stores)...  [endpoint=/products]")
+    # Use /inventory, NOT /products. Per Dutchie v001 swagger:
+    #   /products   → ProductDetail   (catalog master; has NO quantity field)
+    #   /inventory  → InventoryItem   (per-package stock; has quantityAvailable:number)
+    # The old /products call returned 7,400+ catalog rows with no stock info, so
+    # `quantityAvailable > 0` matched zero rows every time. /inventory is the
+    # authoritative source for on-hand stock and carries brandName/category/productId.
+    print("\n[1/2] Fetching Dutchie inventory (3 stores)...  [endpoint=/inventory]")
     raw_by_store = {}
     for store_key in ["dracut", "pepperell", "groton"]:
         print(f"  {store_key}...")
-        products = dutchie_fetch(store_key, "products")
-        if products is None:
-            print(f"  WARNING: Could not fetch products for {store_key}")
+        inventory = dutchie_fetch(store_key, "inventory")
+        if inventory is None:
+            print(f"  WARNING: Could not fetch inventory for {store_key}")
             raw_by_store[store_key] = []
             continue
-        lst = products if isinstance(products, list) else products.get("data", products)
-        # Filter to in-stock only
+        lst = inventory if isinstance(inventory, list) else inventory.get("data", inventory)
+        # Filter to in-stock only (field exists on InventoryItem schema).
+        # /inventory returns per-package rows; multiple rows per productId are
+        # deduped downstream via store_seen/seen_pids sets in the classifier pass.
         raw_by_store[store_key] = [p for p in lst if (p.get("quantityAvailable", 0) or 0) > 0]
-        print(f"    {len(raw_by_store[store_key])} in-stock SKUs")
+        print(f"    {len(raw_by_store[store_key])} in-stock inventory rows")
 
     # ── Per-store aggregation containers ──
     # aggregate (across all stores, deduped by productId)
@@ -406,7 +414,15 @@ def fetch_inventory_data():
                 continue
             store_seen.add(pid)
 
-            brand = (p.get("brand") or p.get("vendorName") or "").strip()
+            # InventoryItem schema uses "brandName" + "vendor";
+            # ProductDetail uses "brandName" + "vendorName". Check all four.
+            brand = (
+                p.get("brandName")
+                or p.get("brand")
+                or p.get("vendor")
+                or p.get("vendorName")
+                or ""
+            ).strip()
             raw_cat = p.get("category") or ""
             group = classify_category(raw_cat)
             if group is None:
@@ -576,11 +592,15 @@ def fetch_lit_alerts_data():
             print(f"  Brand {vinfo['name']} (id={brand_id})...")
             # Get retailer distribution for this brand
             # Correct endpoint: /brand/{brandId}/retailers (NOT /brand/{id}/events — that path doesn't exist)
+            # NO `returnDollarValues` param. In run #17's log, /market/brands
+            # with {beginDate, endDate, state} returned full results with
+            # estimatedAmount populated (probe); adding returnDollarValues=true
+            # to the same endpoint emptied the response. estimatedAmount is
+            # included by default.
             data = lit_alerts_fetch(f"/brand/{brand_id}/retailers", {
                 "beginDate": (today - timedelta(days=90)).strftime("%m-%d-%Y"),
                 "endDate": today.strftime("%m-%d-%Y"),
                 "state": "MA",
-                "returnDollarValues": "true",
             })
             # Aggregate retailer presence for this vendor.
             # Lit Alerts uses "results" as the list key (NOT "data"); rows have estimatedAmount (NOT revenue/totalSales).
@@ -621,11 +641,11 @@ def fetch_lit_alerts_data():
             market_trend_months.append(month_key)
 
         print(f"  Market trend: {month_key}...")
+        # See note above — no returnDollarValues param.
         data = lit_alerts_fetch("/market/brands", {
             "beginDate": month_start.strftime("%m-%d-%Y"),
             "endDate": month_end.strftime("%m-%d-%Y"),
             "state": "MA",
-            "returnDollarValues": "true",
         })
         # Lit Alerts response shape: {"results": [{"name":..., "id":..., "estimatedAmount":...}, ...]}
         rows = (data.get("results") or data.get("data")) if isinstance(data, dict) else None
