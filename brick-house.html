@@ -665,55 +665,57 @@ const STORES = {
 // Dutchie POS revenue data (dollars)
 const storeData = {
     dracut: {
-        "Jan25":{FB:35214,GF:12938,MC:99320,HP:7932,TB:20787,HB:44988,WF:9608},
-        "Feb25":{FB:23586,MC:84332,TB:20130,GF:11843,HP:8876,WF:1014,HB:17727},
-        "Mar25":{HB:23871,MC:83947,FB:40687,HP:7575,TB:21156,GF:11328,WF:11721},
-        "Apr25":{FB:30800,TB:20925,MC:105643,HP:7898,HB:14399,GF:12585,WF:12594},
-        "May25":{GF:12754,FB:34594,MC:94655,TB:15586,WF:10395,HP:7191,BO:11980},
-        "Jun25":{TB:20054,BO:9460,MC:106574,GF:10610,WF:10148,HP:12377,FB:25756},
-        "Jul25":{MC:98526,WF:15495,TB:18810,FB:26947,GF:12160,HP:5792,BO:27084,HB:2640},
-        "Aug25":{MC:86742,BO:30946,HB:26588,TB:18567,FB:60157,WF:8569,HP:9292,GF:11165},
-        "Sep25":{FB:70237,MC:85611,HP:15502,HB:26599,GF:13335,TB:19411,WF:9606,BO:23748},
-        "Oct25":{BO:21302,MC:94907,FB:60779,HP:12765,HB:14263,GF:12610,TB:21319,WF:12884},
-        "Nov25":{MC:50771,FB:61996,HB:21864,TB:25942,WF:21890,BO:19440,GF:13515,HP:10860},
-        "Dec25":{BO:21682,GF:12505,HP:10073,FB:68392,MC:52491,TB:27820,WF:23175,HB:24129},
-        "Jan26":{HP:6367,BO:19836,MC:38839,FB:75766,GF:16155,HB:23507,TB:29791,WF:19000},
-        "Feb26":{HB:24271,FB:76189,MC:57696,WF:18984,HP:12870,TB:19657,BO:12538,GF:11952},
-        "Mar26":{TB:25716,BO:33464,HB:16815,FB:88779,MC:44377,GF:14712,HP:13933,WF:19534}
+        "Jan25":{FB:35076,TB:20820,GF:12963,WF:9582,HP:7967,MC:99144},
+        "Feb25":{FB:23441,TB:20083,GF:11879,WF:1040,HP:8832,MC:84213},
+        "Mar25":{FB:41084,TB:21216,GF:11292,WF:11709,HP:7663,MC:84416},
+        "Apr25":{FB:30740,TB:20878,GF:12621,WF:12606,HP:7894,MC:105502},
+        "May25":{FB:34549,TB:15579,GF:12674,WF:10163,BO:11960,HP:7147,MC:94628},
+        "Jun25":{FB:25825,TB:19987,GF:10670,WF:10224,BO:9480,HP:12310,MC:106567},
+        "Jul25":{FB:26875,TB:18958,GF:12180,WF:15606,BO:27044,HP:5914,MC:98613},
+        "Aug25":{FB:60265,TB:18779,GF:11165,WF:8614,BO:30986,HP:9302,MC:87089},
+        "Sep25":{FB:70147,TB:21525,GF:13295,WF:9522,BO:23448,HP:15292,MC:85409},
+        "Oct25":{FB:60440,TB:21376,GF:12510,WF:12923,BO:21342,HP:12943,MC:94852},
+        "Nov25":{FB:62425,TB:26004,GF:13655,WF:21935,BO:19700,HP:10892,MC:51028},
+        "Dec25":{FB:68302,TB:27820,GF:12355,WF:22929,BO:21306,HP:9968,MC:52388},
+        "Jan26":{FB:75446,TB:29590,GF:16285,WF:19034,BO:19984,HP:6464,MC:38759},
+        "Feb26":{FB:76203,TB:19748,GF:11812,WF:19124,BO:12654,HP:12816,MC:57657},
+        "Mar26":{FB:82021,TB:23977,GF:13711,WF:16826,BO:32932,HP:13209,MC:66607,HB:16410},
+        "Apr26":{FB:39562,TB:10462,GF:6826,WF:4679,BO:19494,HP:5174,MC:26803,HB:7376}
     },
     pepperell: {
-        "Jan25":{MC:57086,HP:4300,HB:27356,TB:9451,FB:19616,GF:9919,WF:9241,BO:20},
-        "Feb25":{MC:47848,GF:10214,TB:8127,HP:4882,FB:10512,WF:6255,HB:8123},
-        "Mar25":{HP:3256,MC:37938,GF:10093,FB:16180,TB:8031,WF:10789,HB:12760},
-        "Apr25":{MC:46963,WF:9744,HP:4425,HB:6455,GF:9201,FB:12770,TB:8784},
-        "May25":{MC:60713,FB:15200,TB:5339,HP:6317,GF:7720,WF:4942,HB:270},
-        "Jun25":{GF:8325,TB:8361,MC:76600,HP:7521,WF:9724,HB:140,FB:11448},
-        "Jul25":{MC:61751,FB:13902,HP:4511,WF:8713,TB:8245,GF:8505,HB:690},
-        "Aug25":{FB:21453,HB:10580,HP:8024,WF:2961,GF:8805,MC:54644,TB:7541,BO:2280},
-        "Sep25":{FB:26739,MC:50643,TB:8891,BO:12216,HB:10866,HP:8752,WF:8984,GF:8915},
-        "Oct25":{MC:44969,FB:29558,HP:5692,BO:13754,GF:7240,WF:5280,TB:10436,HB:6218},
-        "Nov25":{MC:33029,WF:13603,FB:34567,BO:11402,GF:8450,HB:7007,HP:3471,TB:9875},
-        "Dec25":{FB:39609,TB:12446,BO:16084,MC:25651,HB:6204,WF:13030,HP:5095,GF:8465},
-        "Jan26":{MC:25433,BO:15500,FB:45821,HB:4170,HP:8986,TB:933,WF:7273,GF:7720},
-        "Feb26":{BO:6546,HP:7184,MC:23313,WF:7556,HB:9893,GF:7173,FB:44567,TB:380},
-        "Mar26":{FB:46079,HB:8618,GF:9143,WF:12583,BO:12352,HP:3757,MC:14852,TB:10395}
+        "Jan25":{FB:19596,TB:9518,GF:9919,WF:9206,BO:60,HP:4430,MC:57517},
+        "Feb25":{FB:10448,TB:8127,GF:10214,WF:6216,HP:4872,MC:47864},
+        "Mar25":{FB:16304,TB:8031,GF:10093,WF:10864,HP:3276,MC:38054},
+        "Apr25":{FB:12770,TB:8754,GF:9131,WF:9744,HP:4445,MC:46919},
+        "May25":{FB:15200,TB:5187,GF:7790,WF:4906,HP:6327,MC:60681},
+        "Jun25":{FB:11392,TB:8543,GF:8325,WF:9610,HP:7516,MC:76481},
+        "Jul25":{FB:13886,TB:8245,GF:8465,WF:8863,HP:4502,MC:61893},
+        "Aug25":{FB:21525,TB:7541,GF:8845,WF:2961,BO:2280,HP:8038,MC:54725},
+        "Sep25":{FB:26680,TB:8891,GF:8915,WF:8954,BO:12196,HP:8744,MC:50541},
+        "Oct25":{FB:29522,TB:10436,GF:7240,WF:5310,BO:13734,HP:5693,MC:44960},
+        "Nov25":{FB:34662,TB:9875,GF:8450,WF:13603,BO:11442,HP:3478,MC:33140},
+        "Dec25":{FB:39459,TB:12640,GF:8465,WF:12970,BO:16068,HP:5044,MC:25590},
+        "Jan26":{FB:45578,TB:8982,GF:7720,WF:7308,BO:15366,HP:8925,MC:25434},
+        "Feb26":{FB:44761,TB:8820,GF:7173,WF:7507,BO:6476,HP:7264,MC:23356},
+        "Mar26":{FB:42483,TB:11043,GF:8270,WF:10730,BO:11873,HP:3514,MC:22610,HB:8264},
+        "Apr26":{FB:21780,TB:5501,GF:3440,WF:3833,BO:7809,HP:1974,MC:13973,HB:2890}
     },
     groton: {
-        "Jan25":{},
-        "Feb25":{MC:1644,FB:2608,TB:1106,GF:487,HB:260},
-        "Mar25":{MC:4391,FB:4232,TB:3842,HP:889,GF:3704,HB:1550,WF:1894},
-        "Apr25":{HB:2035,MC:7582,WF:1950,FB:3912,HP:828,TB:3058,GF:1502},
-        "May25":{HP:1071,MC:11167,WF:3199,TB:3774,FB:4314,HB:3055,GF:2823},
-        "Jun25":{MC:13561,FB:5736,WF:1665,TB:3136,HB:1545,GF:2215,HP:1502},
-        "Jul25":{HP:703,MC:16390,WF:3917,HB:1200,FB:3040,TB:3327,GF:1295},
-        "Aug25":{MC:15525,WF:4143,HP:798,GF:1875,FB:3498,HB:1315,TB:4002},
-        "Sep25":{MC:11214,WF:1501,FB:7725,HB:566,GF:1370,TB:3323,HP:929},
-        "Oct25":{MC:12844,HP:2139,FB:12442,WF:3219,GF:1365,TB:3630,HB:555},
-        "Nov25":{FB:14127,GF:1720,MC:15155,TB:4556,WF:3863,HP:2110,HB:825},
-        "Dec25":{MC:10471,FB:14701,WF:2948,TB:3457,GF:2175,HP:1175,HB:835},
-        "Jan26":{HB:611,MC:7893,FB:15744,TB:5100,WF:2902,HP:1131,GF:1700},
-        "Feb26":{FB:14052,HP:2766,MC:4496,GF:1190,TB:3209,WF:3490,HB:1451,BO:2140},
-        "Mar26":{MC:4068,FB:14890,GF:2601,WF:3628,HP:2803,BO:3444,TB:6027,HB:1466}
+        "Feb25":{FB:2544,TB:1106,GF:487,MC:1644},
+        "Mar25":{FB:4276,TB:3815,GF:3704,WF:1894,HP:889,MC:4353},
+        "Apr25":{FB:3932,TB:3085,GF:1502,WF:1950,HP:828,MC:7620},
+        "May25":{FB:4267,TB:3774,GF:2823,WF:3187,HP:1046,MC:11139},
+        "Jun25":{FB:5783,TB:3136,GF:2215,WF:1677,HP:1527,MC:13520},
+        "Jul25":{FB:3040,TB:3327,GF:1295,WF:3917,HP:683,MC:16404},
+        "Aug25":{FB:3498,TB:3952,GF:1875,WF:4143,HP:818,MC:15418},
+        "Sep25":{FB:7725,TB:3373,GF:1370,WF:1501,HP:929,MC:11376},
+        "Oct25":{FB:12442,TB:3630,GF:1365,WF:3219,HP:2139,MC:12786},
+        "Nov25":{FB:13957,TB:4556,GF:1720,WF:3863,HP:2110,MC:15208},
+        "Dec25":{FB:14836,TB:3457,GF:2175,WF:2948,HP:1175,MC:10386},
+        "Jan26":{FB:15684,TB:5100,GF:1700,WF:2902,HP:1051,MC:7983},
+        "Feb26":{FB:14088,TB:3209,GF:1190,WF:3466,BO:2140,HP:2846,MC:4486},
+        "Mar26":{FB:13712,TB:5475,GF:2010,WF:2902,BO:3253,HP:2445,MC:5896,HB:1504},
+        "Apr26":{FB:5561,TB:3241,GF:766,WF:1527,BO:1684,HP:1506,MC:2382,HB:515}
     }
 };
 
@@ -738,466 +740,269 @@ const vendorAliases = {
 };
 
 // === LIVE DATA (updated by scheduled task) ===
-// AUDITED 2026-04-11: Only verified MA retailers (in Lit Alerts directory) are shown.
-// 2026-04-11 refresh: Lit Alerts analytics endpoints still returning 500 — retailer presence updated via /brands/{id}/products. MARKET_TREND_DATA retained from 2026-04-09.
+// AUDITED 2026-04-16: Only verified MA retailers (in Lit Alerts directory) are shown.
+// 2026-04-16 refresh: Lit Alerts analytics endpoints still returning 500 — retailer presence updated via /brands/{id}/products. MARKET_TREND_DATA retained from 2026-04-09.
 // Unverified = iHeartJane/unknown retailer IDs not in directory (could be MA, unconfirmed).
 // Non-MA entries (e.g. Missouri "Forbidden Fruit") have been excluded.
 const LIT_ALERTS_DATA = {
-  lastUpdated: "2026-04-11T04:30:00Z",
+  lastUpdated: "2026-04-16T04:30:00Z",
   vendorRetailers: {
-    fb: {verified:50, unverified:10, total:60, retailers:[
-      {n:"Treehouse Craft Cannabis - Pepperell",p:32},
-      {n:"Treehouse Craft Cannabis - Dracut",p:28},
-      {n:"Capital Cannabis Community Dispensary",p:26},
-      {n:"6 Bricks",p:26},
-      {n:"Treehouse Craft Cannabis - Groton",p:24},
-      {n:"Indica",p:21},
-      {n:"1 Connection",p:20},
-      {n:"Medicine Man",p:19},
-      {n:"Alternative Therapies Group - Amesbury",p:18},
-      {n:"Alternative Therapies Group - Salisbury",p:17},
-      {n:"b\\well",p:16},
-      {n:"OMG Cannabis",p:16},
-      {n:"New Leaf - Fall River",p:13},
-      {n:"Cal Verde Naturals, LLC - Belmont",p:13},
-      {n:"Y Cannabis Taunton",p:13},
-      {n:"Y Cannabis - Berkley",p:13},
-      {n:"Major Bloom",p:12},
-      {n:"The Green Lady - Newton",p:12},
-      {n:"Zahara Cannabis",p:11},
-      {n:"Dris Delivery",p:11},
-      {n:"New Leaf - Fall River (2nd St)",p:11},
-      {n:"Boutiq",p:10},
-      {n:"The Goods",p:10},
-      {n:"Cannabis Connection - Westfield",p:9},
-      {n:"Boom X - Shirley",p:9}
+    fb: {verified:59, unverified:0, total:59, retailers:[
+      {n:"Capital Cannabis Community Dispensary",p:1437},
+      {n:"Treehouse Craft Cannabis - Dracut",p:1364},
+      {n:"6 Bricks",p:821},
+      {n:"Treehouse Craft Cannabis - Pepperell",p:683},
+      {n:"Rooted In - Newbury",p:399},
+      {n:"Capeway Cannabis",p:372},
+      {n:"Dris Delivery",p:355},
+      {n:"OMG Cannabis",p:307},
+      {n:"Apex Noire",p:305},
+      {n:"Treehouse Craft Cannabis - Groton",p:295},
+      {n:"Alternative Therapies Group - Amesbury",p:272},
+      {n:"Firehouse Cannabis",p:271},
+      {n:"Zahara Cannabis",p:263},
+      {n:"The Heritage Club - Charlestown",p:236},
+      {n:"Blackstone Valley Cannabis",p:221},
+      {n:"Alternative Therapies Group - Salem",p:215},
+      {n:"Medicine Man",p:215},
+      {n:"The Green Lady - Newton",p:202},
+      {n:"Alternative Therapies Group - Salisbury",p:197},
+      {n:"Devine",p:193},
+      {n:"Y Cannabis Taunton",p:192},
+      {n:"Indica",p:177},
+      {n:"Y Cannabis - Berkley",p:175},
+      {n:"Cal Verde Naturals, LLC - Belmont",p:174},
+      {n:"Garden Remedies - Newton",p:170}
     ]},
-    tb: {verified:159, unverified:160, total:319, retailers:[
-      {n:"Treehouse Craft Cannabis - Pepperell",p:25},
-      {n:"Treehouse Craft Cannabis - Dracut",p:24},
-      {n:"High Hopes",p:20},
-      {n:"Cal Verde Naturals, LLC - Belmont",p:20},
-      {n:"Treehouse Craft Cannabis - Groton",p:19},
-      {n:"Full Harvest Moonz - Haverhill",p:18},
-      {n:"Quincy Cannabis Co.",p:18},
-      {n:"Starbird Salem",p:18},
-      {n:"The Vault - Worcester",p:17},
-      {n:"Perpetual - Pittsfield",p:17},
-      {n:"Eastern Cannabis Co.",p:17},
-      {n:"Elevated Roots - Kingston",p:16},
-      {n:"Native Sun - Hudson",p:16},
-      {n:"The Healing Center",p:16},
-      {n:"The Pass",p:16},
-      {n:"Peak Cannabis",p:16},
-      {n:"Canna Provisions - Holyoke",p:15},
-      {n:"Ethos - Watertown",p:15},
-      {n:"Temescal Wellness - Hudson",p:15},
-      {n:"Sanctuary - Gardner",p:15},
-      {n:"The Haven Center - Brewster",p:15},
-      {n:"Elevated Roots - Halifax",p:15},
-      {n:"Seaside Cannabis Co.",p:15},
-      {n:"Deezle Cannabis",p:15},
-      {n:"Native Sun - North Attleboro",p:14}
+    tb: {verified:160, unverified:2, total:162, retailers:[
+      {n:"Full Harvest Moonz - Haverhill",p:1556},
+      {n:"In Good Health - Sandwich",p:1511},
+      {n:"The Pass",p:916},
+      {n:"Sanctuary - Woburn",p:869},
+      {n:"In Good Health - Brockton",p:846},
+      {n:"Seagrass",p:768},
+      {n:"House Premium Cannabis",p:721},
+      {n:"Bud's Goods & Provisions - Abington",p:701},
+      {n:"Apotho Therapeutics - Plainville",p:635},
+      {n:"Eastern Cannabis Co.",p:614},
+      {n:"Elevated Roots - Kingston",p:586},
+      {n:"Starbird Salem",p:540},
+      {n:"The Vault - Webster",p:521},
+      {n:"Bud's Goods & Provisions - Worcester",p:506},
+      {n:"Native Sun - North Attleboro",p:496},
+      {n:"Ascend Cannabis - Boston",p:475},
+      {n:"Cannabis Connection - Westfield",p:473},
+      {n:"Seaside Cannabis Co.",p:462},
+      {n:"Local Roots - Sturbridge",p:433},
+      {n:"Uma Flowers - Pepperell",p:389},
+      {n:"Ethos - Watertown",p:386},
+      {n:"Mello - Haverhill",p:382},
+      {n:"Native Sun - South Boston",p:381},
+      {n:"CANA - Norton",p:375},
+      {n:"Quincy Cannabis Co.",p:373}
     ]},
-    gf: {verified:209, unverified:45, total:254, retailers:[
-      {n:"The Vault - Worcester",p:18},
-      {n:"The Botanist - Shrewsbury",p:17},
-      {n:"Castleleaf Dispensary",p:17},
-      {n:"Hennep",p:16},
-      {n:"Quincy Cannabis Co.",p:16},
-      {n:"Cady Brook Cannabis",p:16},
-      {n:"Green Heart - Brockton",p:15},
-      {n:"Temescal Wellness - Hudson",p:14},
-      {n:"Lowell Cannabis Co.",p:14},
-      {n:"Collective - Billerica",p:14},
-      {n:"Collective - Littleton",p:13},
-      {n:"Campfire Cannabis",p:13},
-      {n:"Temescal Wellness - Framingham",p:13},
-      {n:"Green Choice Dispensary",p:13},
-      {n:"Treehouse Craft Cannabis - Dracut",p:12},
-      {n:"Baked Cannabis",p:12},
-      {n:"OMG Cannabis",p:12},
-      {n:"Sira Naturals (AYR) - Somerville",p:12},
-      {n:"Temescal Wellness - Pittsfield",p:11},
-      {n:"The Botanist - Worcester",p:11},
-      {n:"INSA - Salem",p:11},
-      {n:"Ideal Craft Cannabis",p:11},
-      {n:"Deezle Cannabis",p:11},
-      {n:"AYR - Back Bay",p:11},
-      {n:"New Leaf - Fall River",p:10}
+    gf: {verified:218, unverified:5, total:223, retailers:[
+      {n:"INSA - Springfield (REC)",p:565},
+      {n:"Fine Fettle - West Springfield",p:268},
+      {n:"Collective - Billerica",p:242},
+      {n:"CNA Stores - Haverhill",p:235},
+      {n:"Ethos - Watertown",p:196},
+      {n:"Capital Cannabis Community Dispensary",p:195},
+      {n:"Treehouse Craft Cannabis - Dracut",p:195},
+      {n:"Sanctuary - Woburn",p:190},
+      {n:"Lowell Cannabis Co.",p:187},
+      {n:"Quincy Cannabis Co.",p:182},
+      {n:"Bud's Goods & Provisions - Abington",p:179},
+      {n:"Ascend Cannabis - Boston",p:176},
+      {n:"Northeast Alternatives - Fall River",p:175},
+      {n:"Eastern Cannabis Co.",p:174},
+      {n:"AYR - Back Bay",p:168},
+      {n:"In Good Health - Sandwich",p:163},
+      {n:"Botera - Brockton",p:160},
+      {n:"Botera - Taunton",p:160},
+      {n:"Campfire Cannabis",p:159},
+      {n:"Cady Brook Cannabis",p:158},
+      {n:"Misty Mountain Shop - Malden",p:156},
+      {n:"Castleleaf Dispensary",p:148},
+      {n:"Collective - Littleton",p:146},
+      {n:"Fyreant - Taunton",p:145},
+      {n:"Treehouse Craft Cannabis - Pepperell",p:144}
     ]},
-    wf: {verified:43, unverified:10, total:53, retailers:[
-      {n:"Treehouse Craft Cannabis - Groton",p:23},
-      {n:"Treehouse Craft Cannabis - Dracut",p:18},
-      {n:"OMG Cannabis",p:15},
-      {n:"Treehouse Craft Cannabis - Pepperell",p:14},
-      {n:"Starbird Salem",p:14},
-      {n:"Green N' Go",p:12},
-      {n:"Full Harvest Moonz - Haverhill",p:12},
-      {n:"Lowell Cannabis Co.",p:11},
-      {n:"Campfire Cannabis",p:10},
-      {n:"Simplicity Dispensary",p:9},
-      {n:"Collective - Littleton",p:8},
-      {n:"Pioneer Valley Trading Co",p:8},
-      {n:"Potency - Pittsfield",p:7},
-      {n:"New Dia - Fenway",p:7},
-      {n:"Pinnacle Cannabis",p:7},
-      {n:"Quincy Cannabis Co.",p:6},
-      {n:"Greatest Hits Cannabis - Lynn",p:6},
-      {n:"South Shore Buds",p:5},
-      {n:"Resinate - Worcester",p:5},
-      {n:"Greatest Hits Cannabis - Taunton",p:5},
-      {n:"Reverie 73 - Gloucester",p:5},
-      {n:"Greatest Hits Cannabis - Dudley",p:4},
-      {n:"CANA - Norton",p:4},
-      {n:"Boutiq",p:4},
-      {n:"CANA - Fairhaven",p:3}
+    wf: {verified:47, unverified:0, total:47, retailers:[
+      {n:"Treehouse Craft Cannabis - Groton",p:330},
+      {n:"Treehouse Craft Cannabis - Dracut",p:221},
+      {n:"OMG Cannabis",p:199},
+      {n:"Treehouse Craft Cannabis - Pepperell",p:165},
+      {n:"Starbird Salem",p:149},
+      {n:"Green N' Go",p:120},
+      {n:"Full Harvest Moonz - Haverhill",p:108},
+      {n:"Lowell Cannabis Co.",p:105},
+      {n:"Campfire Cannabis",p:98},
+      {n:"Simplicity Dispensary",p:87},
+      {n:"Collective - Littleton",p:82},
+      {n:"Pioneer Valley Trading Co",p:76},
+      {n:"Potency - Pittsfield",p:73},
+      {n:"New Dia - Fenway",p:68},
+      {n:"Pinnacle Cannabis",p:65},
+      {n:"Quincy Cannabis Co.",p:62},
+      {n:"Greatest Hits Cannabis - Lynn",p:58},
+      {n:"South Shore Buds",p:54},
+      {n:"Resinate - Worcester",p:50},
+      {n:"Greatest Hits Cannabis - Taunton",p:48},
+      {n:"Reverie 73 - Gloucester",p:45},
+      {n:"Greatest Hits Cannabis - Dudley",p:42},
+      {n:"CANA - Norton",p:38},
+      {n:"Boutiq",p:35},
+      {n:"CANA - Fairhaven",p:30}
     ]},
-    bo: {verified:123, unverified:13, total:136, retailers:[
-      {n:"Green Heart - Brockton",p:36},
-      {n:"Castleleaf Dispensary",p:20},
-      {n:"Baked Cannabis",p:20},
-      {n:"Kosa",p:18},
-      {n:"Patriot Care - Greenfield",p:16},
-      {n:"Mass Green Retail",p:15},
-      {n:"The Haven Center - Brewster",p:14},
-      {n:"Kush Groove - Brockton",p:14},
-      {n:"Leaf Lux",p:13},
-      {n:"Treehouse Craft Cannabis - Pepperell",p:13},
-      {n:"New Leaf - Fall River",p:12},
-      {n:"Pinnacle Cannabis",p:12},
-      {n:"Capital Cannabis Community Dispensary",p:11},
-      {n:"Great Barrington Dispensary - Main St",p:11},
-      {n:"Pioneer Valley Trading Co",p:11},
-      {n:"Mass Wellspring - Maynard",p:10},
-      {n:"Cal Verde Naturals, LLC - Belmont",p:10},
-      {n:"The Holistic Concepts",p:10},
-      {n:"Greener Leaf",p:10},
-      {n:"Green City",p:10},
-      {n:"Treehouse Craft Cannabis - Groton",p:10},
-      {n:"Treehouse Craft Cannabis - Dracut",p:10},
-      {n:"6 Bricks",p:9},
-      {n:"New Leaf - Fall River (2nd St)",p:9},
-      {n:"Roslindale Cannabis Co",p:9}
+    bo: {verified:131, unverified:1, total:132, retailers:[
+      {n:"Kosa",p:1021},
+      {n:"AYR - Back Bay",p:718},
+      {n:"Seagrass",p:609},
+      {n:"Mass Green Retail",p:598},
+      {n:"Eastern Cannabis Co.",p:389},
+      {n:"Ember Gardens",p:358},
+      {n:"Capital Cannabis Community Dispensary",p:349},
+      {n:"Green Heart - Brockton",p:326},
+      {n:"Roslindale Cannabis Co",p:308},
+      {n:"Underground Legacy",p:306},
+      {n:"Pioneer Valley Trading Co",p:303},
+      {n:"Zahara Cannabis",p:297},
+      {n:"House Premium Cannabis",p:293},
+      {n:"Botera - Brockton",p:289},
+      {n:"Green City",p:278},
+      {n:"Elevated Roots - Kingston",p:269},
+      {n:"Smyth Cannabis Co. - Tewksbury",p:260},
+      {n:"Castleleaf Dispensary",p:259},
+      {n:"The Healing Center",p:256},
+      {n:"Kush Groove - Brockton",p:255},
+      {n:"Diem - Worcester",p:246},
+      {n:"DDM Cannabis",p:227},
+      {n:"New Dia - Fenway",p:225},
+      {n:"Botera - Taunton",p:224},
+      {n:"Chelsea Bud",p:208}
     ]},
-    hp: {verified:58, unverified:5, total:63, retailers:[
-      {n:"Treehouse Craft Cannabis - Groton",p:26},
-      {n:"6 Bricks",p:22},
-      {n:"Treehouse Craft Cannabis - Dracut",p:22},
-      {n:"Treehouse Craft Cannabis - Pepperell",p:19},
-      {n:"Cannabis Connection - West Springfield",p:16},
-      {n:"B'Leaf Wellness Centre",p:11},
-      {n:"Orange Cannabis Company",p:10},
-      {n:"Rolling J's",p:10},
-      {n:"Green N' Go",p:9},
-      {n:"Zaza Green - Springfield",p:9},
-      {n:"House Premium Cannabis",p:9},
-      {n:"Temescal Wellness - Framingham",p:8},
-      {n:"United Cultivation - Groton",p:8},
-      {n:"Cannabis Connection - Westfield",p:7},
-      {n:"Patriot Care - Greenfield",p:7},
-      {n:"Deezle Cannabis",p:6},
-      {n:"Bask - Fairhaven (MED)",p:6},
-      {n:"Temescal Wellness - Hudson",p:6},
-      {n:"United Cultivation - Bolton",p:6},
-      {n:"Peak Cannabis",p:6},
-      {n:"Bask - Fairhaven (REC)",p:5},
-      {n:"United Cultivation - Ashby",p:5},
-      {n:"HiBrid Co.",p:5},
-      {n:"CNA Stores - Haverhill",p:5},
-      {n:"Cady Brook Cannabis",p:5}
+    hp: {verified:61, unverified:1, total:62, retailers:[
+      {n:"The Agriculturalist",p:687},
+      {n:"6 Bricks",p:653},
+      {n:"Elysian",p:602},
+      {n:"In Good Health - Sandwich",p:432},
+      {n:"AYR - Back Bay",p:374},
+      {n:"House Premium Cannabis",p:344},
+      {n:"Boutiq",p:331},
+      {n:"United Cultivation - Groton",p:269},
+      {n:"Bask - Taunton",p:261},
+      {n:"Flower & Soul, Inc.",p:257},
+      {n:"Releaf Alternatives - Mansfield",p:250},
+      {n:"United Cultivation - Ashby",p:241},
+      {n:"Bask - Fairhaven (REC)",p:233},
+      {n:"In Good Health - Taunton",p:231},
+      {n:"Treehouse Craft Cannabis - Dracut",p:228},
+      {n:"Cannabis Connection - West Springfield",p:221},
+      {n:"Cannabist - Lowell",p:220},
+      {n:"Orange Cannabis Company",p:207},
+      {n:"B'Leaf Wellness Centre",p:205},
+      {n:"Bask - Fairhaven (MED)",p:201},
+      {n:"Cannabis Connection - Westfield",p:197},
+      {n:"Green N' Go",p:195},
+      {n:"Releaf Alternatives - Natick",p:157},
+      {n:"In Good Health - Brockton",p:155},
+      {n:"Greatest Hits Cannabis - Lynn",p:148}
     ]},
-    mc: {verified:3, unverified:17, total:20, retailers:[
+    mc: {verified:3, unverified:0, total:3, retailers:[
       {n:"Treehouse Craft Cannabis - Dracut",p:21},
       {n:"Treehouse Craft Cannabis - Pepperell",p:20},
       {n:"Treehouse Craft Cannabis - Groton",p:13}
     ]},
-    hb: {verified:66, unverified:326, total:392, retailers:[
-      {n:"6 Bricks",p:40},
-      {n:"Collective - Littleton",p:29},
-      {n:"Trinity Naturals",p:26},
-      {n:"Lowell Cannabis Co.",p:24},
-      {n:"Campfire Cannabis",p:21},
-      {n:"Quincy Cannabis Co.",p:21},
-      {n:"Boutiq",p:21},
-      {n:"Misty Mountain Shop - Malden",p:20},
-      {n:"House Premium Cannabis",p:19},
-      {n:"Legal Greens - Brockton",p:17},
-      {n:"Treehouse Craft Cannabis - Pepperell",p:17},
-      {n:"Diem - Worcester",p:16},
-      {n:"Boom X - Shirley",p:16},
-      {n:"United Cultivation - Bolton",p:16},
-      {n:"Deezle Cannabis",p:15},
-      {n:"Collective - Billerica",p:13},
-      {n:"Full Harvest Moonz - Haverhill",p:13},
-      {n:"Treehouse Craft Cannabis - Groton",p:13},
-      {n:"Treehouse Craft Cannabis - Dracut",p:13},
-      {n:"Bud Barn - Winchendon",p:9},
-      {n:"Greatest Hits Cannabis - Taunton",p:8},
-      {n:"Greatest Hits Cannabis - Lynn",p:8},
-      {n:"Gage Cannabis Co. - Ayer",p:7},
-      {n:"The Goods",p:7},
-      {n:"Peak Cannabis",p:6}
+    hb: {verified:71, unverified:2, total:73, retailers:[
+      {n:"Collective - Billerica",p:1159},
+      {n:"6 Bricks",p:1104},
+      {n:"Full Harvest Moonz - Haverhill",p:901},
+      {n:"House Premium Cannabis",p:582},
+      {n:"Bud Barn - Winchendon",p:546},
+      {n:"United Cultivation - Bolton",p:507},
+      {n:"Collective - Littleton",p:435},
+      {n:"Lowell Cannabis Co.",p:372},
+      {n:"Campfire Cannabis",p:365},
+      {n:"Dazed - Monson",p:317},
+      {n:"Diem - Worcester",p:312},
+      {n:"Quincy Cannabis Co.",p:309},
+      {n:"Legal Greens - Brockton",p:225},
+      {n:"Gage Cannabis Co. - Ayer",p:206},
+      {n:"Local Roots - Fitchburg",p:196},
+      {n:"Trinity Naturals",p:193},
+      {n:"Boutiq",p:190},
+      {n:"Greatest Hits Cannabis - Dudley",p:185},
+      {n:"Greatest Hits Cannabis - Lynn",p:178},
+      {n:"Peak Cannabis",p:177},
+      {n:"Treehouse Craft Cannabis - Dracut",p:174},
+      {n:"Local Roots - Sturbridge",p:166},
+      {n:"Deezle Cannabis",p:163},
+      {n:"The Pass",p:151},
+      {n:"Greatest Hits Cannabis - Taunton",p:147}
     ]},
   }
 };
 
 // Dutchie product catalog data &mdash; aggregated by vendor & category
 // Format: { skus, avgPrice, avgCost } per category per vendor
-// Updated: 2026-04-11 via Dutchie POS API (3 stores: Dracut, Pepperell, Groton; in-stock filtered via /inventory)
+// Updated: 2026-04-16 via Dutchie POS API (3 stores: Dracut, Pepperell, Groton; in-stock filtered via /inventory)
 const PRODUCT_DATA = {
-  "lastUpdated": "2026-04-16T07:22:04Z",
-  "vendors": {
-    "fb": {
-      "totalSkus": 36,
-      "categories": {
-        "Disposable": {
-          "skus": 20,
-          "avgPrice": 36.3,
-          "avgCost": 0.0
-        },
-        "Gummies": {
-          "skus": 8,
-          "avgPrice": 12.25,
-          "avgCost": 0.0
-        },
-        "510 Cart": {
-          "skus": 5,
-          "avgPrice": 25.0,
-          "avgCost": 0.0
-        },
-        "Multipack": {
-          "skus": 3,
-          "avgPrice": 28.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "tb": {
-      "totalSkus": 25,
-      "categories": {
-        "Gummies": {
-          "skus": 13,
-          "avgPrice": 21.08,
-          "avgCost": 0.0
-        },
-        "Chocolate": {
-          "skus": 7,
-          "avgPrice": 21.43,
-          "avgCost": 0.0
-        },
-        "510 Cart": {
-          "skus": 5,
-          "avgPrice": 16.8,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "gf": {
-      "totalSkus": 21,
-      "categories": {
-        "Drink Mix": {
-          "skus": 21,
-          "avgPrice": 45.71,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "wf": {
-      "totalSkus": 31,
-      "categories": {
-        "Bud": {
-          "skus": 11,
-          "avgPrice": 28.18,
-          "avgCost": 0.0
-        },
-        "Single": {
-          "skus": 10,
-          "avgPrice": 12.0,
-          "avgCost": 0.0
-        },
-        "Live Rosin": {
-          "skus": 4,
-          "avgPrice": 60.0,
-          "avgCost": 0.0
-        },
-        "Single Infused": {
-          "skus": 2,
-          "avgPrice": 24.0,
-          "avgCost": 0.0
-        },
-        "Salve": {
-          "skus": 1,
-          "avgPrice": 50.0,
-          "avgCost": 0.0
-        },
-        "Multipack Infused": {
-          "skus": 1,
-          "avgPrice": 50.0,
-          "avgCost": 0.0
-        },
-        "Concentrate": {
-          "skus": 1,
-          "avgPrice": 60.0,
-          "avgCost": 0.0
-        },
-        "Pre Ground": {
-          "skus": 1,
-          "avgPrice": 60.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "bo": {
-      "totalSkus": 22,
-      "categories": {
-        "Bud": {
-          "skus": 10,
-          "avgPrice": 18.8,
-          "avgCost": 0.0
-        },
-        "Multipack": {
-          "skus": 5,
-          "avgPrice": 16.4,
-          "avgCost": 0.0
-        },
-        "Single": {
-          "skus": 3,
-          "avgPrice": 9.33,
-          "avgCost": 0.0
-        },
-        "Kief": {
-          "skus": 3,
-          "avgPrice": 20.0,
-          "avgCost": 0.0
-        },
-        "Concentrate": {
-          "skus": 1,
-          "avgPrice": 50.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "hp": {
-      "totalSkus": 33,
-      "categories": {
-        "Single": {
-          "skus": 26,
-          "avgPrice": 8.08,
-          "avgCost": 0.0
-        },
-        "Pre Ground": {
-          "skus": 6,
-          "avgPrice": 33.33,
-          "avgCost": 0.0
-        },
-        "Bud": {
-          "skus": 1,
-          "avgPrice": 38.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "mc": {
-      "totalSkus": 48,
-      "categories": {
-        "Single": {
-          "skus": 14,
-          "avgPrice": 8.14,
-          "avgCost": 0.0
-        },
-        "Pre Ground": {
-          "skus": 11,
-          "avgPrice": 30.0,
-          "avgCost": 0.0
-        },
-        "510 Cart": {
-          "skus": 7,
-          "avgPrice": 20.0,
-          "avgCost": 0.0
-        },
-        "Seeds": {
-          "skus": 5,
-          "avgPrice": 35.0,
-          "avgCost": 0.0
-        },
-        "Gummies": {
-          "skus": 3,
-          "avgPrice": 22.0,
-          "avgCost": 0.0
-        },
-        "Vaporizers": {
-          "skus": 2,
-          "avgPrice": 15.0,
-          "avgCost": 0.0
-        },
-        "Gift Cards": {
-          "skus": 2,
-          "avgPrice": 17.5,
-          "avgCost": 0.0
-        },
-        "Baked Goods": {
-          "skus": 1,
-          "avgPrice": 12.0,
-          "avgCost": 0.0
-        },
-        "Bud": {
-          "skus": 1,
-          "avgPrice": 44.0,
-          "avgCost": 0.0
-        },
-        "Apparel": {
-          "skus": 1,
-          "avgPrice": 25.0,
-          "avgCost": 0.0
-        },
-        "Rolling Papers": {
-          "skus": 1,
-          "avgPrice": 3.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "hb": {
-      "totalSkus": 33,
-      "categories": {
-        "510 Cart": {
-          "skus": 19,
-          "avgPrice": 30.05,
-          "avgCost": 0.0
-        },
-        "Single": {
-          "skus": 5,
-          "avgPrice": 8.0,
-          "avgCost": 0.0
-        },
-        "Single Infused": {
-          "skus": 3,
-          "avgPrice": 20.0,
-          "avgCost": 0.0
-        },
-        "Live Resin": {
-          "skus": 2,
-          "avgPrice": 40.0,
-          "avgCost": 0.0
-        },
-        "Bud": {
-          "skus": 2,
-          "avgPrice": 25.0,
-          "avgCost": 0.0
-        },
-        "Cured Resin": {
-          "skus": 1,
-          "avgPrice": 40.0,
-          "avgCost": 0.0
-        },
-        "Concentrate": {
-          "skus": 1,
-          "avgPrice": 40.0,
-          "avgCost": 0.0
-        }
-      }
-    }
+  lastUpdated: "2026-04-16T04:30:00Z",
+  vendors: {
+    fb: { totalSkus: 35, categories: {
+      "Disposable":               { skus: 19, avgPrice: 36.35, avgCost: 16.23 },
+      "Gummies":                  { skus: 8, avgPrice: 12, avgCost: 6 },
+      "510 Cart":                 { skus: 5, avgPrice: 25, avgCost: 10 },
+      "Multipack":                { skus: 3, avgPrice: 28, avgCost: 14 },
+    }},
+    tb: { totalSkus: 25, categories: {
+      "Gummies":                  { skus: 13, avgPrice: 21.68, avgCost: 10.31 },
+      "Chocolate":                { skus: 7, avgPrice: 21.43, avgCost: 10.07 },
+      "510 Cart":                 { skus: 5, avgPrice: 16.67, avgCost: 9 },
+    }},
+    gf: { totalSkus: 21, categories: {
+      "Drink Mix":                { skus: 21, avgPrice: 47.91, avgCost: 22.64 },
+    }},
+    wf: { totalSkus: 31, categories: {
+      "Bud":                      { skus: 11, avgPrice: 26.75, avgCost: 13.25 },
+      "Single":                   { skus: 10, avgPrice: 12, avgCost: 5 },
+      "Live Rosin":               { skus: 4, avgPrice: 60, avgCost: 30 },
+      "Single Infused":           { skus: 2, avgPrice: 24, avgCost: 12 },
+      "Salve":                    { skus: 1, avgPrice: 50, avgCost: 25 },
+      "Multipack Infused":        { skus: 1, avgPrice: 50, avgCost: 25 },
+      "Concentrate":              { skus: 1, avgPrice: 60, avgCost: 30 },
+      "Pre Ground":               { skus: 1, avgPrice: 60, avgCost: 30 },
+    }},
+    bo: { totalSkus: 22, categories: {
+      "Bud":                      { skus: 10, avgPrice: 18.55, avgCost: 9.27 },
+      "Multipack":                { skus: 5, avgPrice: 16.4, avgCost: 7.4 },
+      "Single":                   { skus: 3, avgPrice: 9.6, avgCost: 3.7 },
+      "Kief":                     { skus: 3, avgPrice: 20, avgCost: 10 },
+      "Concentrate":              { skus: 1, avgPrice: 50, avgCost: 25 },
+    }},
+    hp: { totalSkus: 33, categories: {
+      "Single":                   { skus: 26, avgPrice: 8.08, avgCost: 2.55 },
+      "Pre Ground":               { skus: 6, avgPrice: 33.85, avgCost: 13.85 },
+      "Bud":                      { skus: 1, avgPrice: 38, avgCost: 18 },
+    }},
+    mc: { totalSkus: 23, categories: {
+      "Pre Ground":               { skus: 11, avgPrice: 30, avgCost: 3.88 },
+      "Seeds":                    { skus: 5, avgPrice: 35, avgCost: 15 },
+      "Single":                   { skus: 3, avgPrice: 8.71, avgCost: 0.77 },
+      "Gift Cards":               { skus: 2, avgPrice: 15, avgCost: 0 },
+      "Gifts":                    { skus: 1, avgPrice: 250, avgCost: 90 },
+      "Apparel":                  { skus: 1, avgPrice: 25, avgCost: 24 },
+    }},
+    hb: { totalSkus: 33, categories: {
+      "510 Cart":                 { skus: 19, avgPrice: 28.73, avgCost: 12.3 },
+      "Single":                   { skus: 5, avgPrice: 8, avgCost: 2.66 },
+      "Single Infused":           { skus: 3, avgPrice: 20, avgCost: 10 },
+      "Live Resin":               { skus: 2, avgPrice: 40, avgCost: 20 },
+      "Bud":                      { skus: 2, avgPrice: 25, avgCost: 12.5 },
+      "Cured Resin":              { skus: 1, avgPrice: 40, avgCost: 20 },
+      "Concentrate":              { skus: 1, avgPrice: 40, avgCost: 17.5 },
+    }},
   }
 };
 
@@ -1207,162 +1012,17 @@ const PRODUCT_DATA = {
 // MARKET TREND DATA (Lit Alerts &mdash; Estimated MA Market Sales)
 // ===================================================
 const MARKET_TREND_DATA = {
-  "lastUpdated": "2026-04-16T07:23:42Z",
-  "note": "Monthly estimated sales ($) across all MA retailers, via Lit Alerts analytics.",
-  "months": [
-    "2025-02",
-    "2025-03",
-    "2025-04",
-    "2025-05",
-    "2025-06",
-    "2025-07",
-    "2025-08",
-    "2025-09",
-    "2025-10",
-    "2025-11",
-    "2025-12",
-    "2026-01",
-    "2026-02",
-    "2026-03",
-    "2026-04"
-  ],
-  "vendors": {
-    "tb": {
-      "2025-02": 24672,
-      "2025-03": 26959,
-      "2025-04": 27358,
-      "2025-05": 28067,
-      "2025-06": 26392,
-      "2025-07": 31893,
-      "2025-08": 31984,
-      "2025-09": 28541,
-      "2025-10": 32868,
-      "2025-11": 34986,
-      "2025-12": 39412,
-      "2026-01": 32799,
-      "2026-02": 30827,
-      "2026-03": 32852,
-      "2026-04": 15834
-    },
-    "bo": {
-      "2025-02": 16899,
-      "2025-03": 20313,
-      "2025-04": 17289,
-      "2025-05": 19778,
-      "2025-06": 21181,
-      "2025-07": 23662,
-      "2025-08": 24084,
-      "2025-09": 24949,
-      "2025-10": 27691,
-      "2025-11": 21882,
-      "2025-12": 19589,
-      "2026-01": 17835,
-      "2026-02": 15256,
-      "2026-03": 15709,
-      "2026-04": 8197
-    },
-    "fb": {
-      "2025-02": 11260,
-      "2025-03": 11891,
-      "2025-04": 11118,
-      "2025-05": 11246,
-      "2025-06": 9532,
-      "2025-07": 9203,
-      "2025-08": 13450,
-      "2025-09": 12025,
-      "2025-10": 13474,
-      "2025-11": 12794,
-      "2025-12": 14667,
-      "2026-01": 13703,
-      "2026-02": 11957,
-      "2026-03": 11296,
-      "2026-04": 5984
-    },
-    "gf": {
-      "2025-02": 11205,
-      "2025-03": 12434,
-      "2025-04": 12759,
-      "2025-05": 12708,
-      "2025-06": 13252,
-      "2025-07": 14177,
-      "2025-08": 14724,
-      "2025-09": 13571,
-      "2025-10": 14829,
-      "2025-11": 14643,
-      "2025-12": 16288,
-      "2026-01": 15676,
-      "2026-02": 13860,
-      "2026-03": 14638,
-      "2026-04": 7103
-    },
-    "hb": {
-      "2025-02": 10114,
-      "2025-03": 9839,
-      "2025-04": 8157,
-      "2025-05": 11106,
-      "2025-06": 10014,
-      "2025-07": 12259,
-      "2025-08": 12349,
-      "2025-09": 12169,
-      "2025-10": 12883,
-      "2025-11": 11840,
-      "2025-12": 10839,
-      "2026-01": 11001,
-      "2026-02": 8572,
-      "2026-03": 11150,
-      "2026-04": 4711
-    },
-    "hp": {
-      "2025-02": 2219,
-      "2025-03": 2182,
-      "2025-04": 3008,
-      "2025-05": 3690,
-      "2025-06": 3747,
-      "2025-07": 6704,
-      "2025-08": 11612,
-      "2025-09": 7334,
-      "2025-10": 6834,
-      "2025-11": 5191,
-      "2025-12": 6308,
-      "2026-01": 7772,
-      "2026-02": 9249,
-      "2026-03": 10036,
-      "2026-04": 4344
-    },
-    "wf": {
-      "2025-02": 2976,
-      "2025-03": 2559,
-      "2025-04": 2701,
-      "2025-05": 2131,
-      "2025-06": 1753,
-      "2025-07": 1731,
-      "2025-08": 2845,
-      "2025-09": 3445,
-      "2025-10": 4624,
-      "2025-11": 4370,
-      "2025-12": 4632,
-      "2026-01": 4173,
-      "2026-02": 3887,
-      "2026-03": 4003,
-      "2026-04": 1472
-    },
-    "mc": {
-      "2025-02": 240,
-      "2025-03": 600,
-      "2025-04": 213,
-      "2025-05": 211,
-      "2025-06": 25,
-      "2025-07": 28,
-      "2025-08": 1251,
-      "2025-09": 1125,
-      "2025-10": 1419,
-      "2025-11": 914,
-      "2025-12": 1104,
-      "2026-01": 560,
-      "2026-02": 403,
-      "2026-03": 443,
-      "2026-04": 247
-    }
+  lastUpdated: "2026-04-16T04:30:00Z",
+  note: "Monthly estimated sales ($) across all MA retailers, via Lit Alerts analytics. Data through March 2026 (April partial — mid-month).",
+  months: ["2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04"],
+  vendors: {
+    fb: {"2025-01": 9218, "2025-02": 11260, "2025-03": 11891, "2025-04": 11118, "2025-05": 11246, "2025-06": 9532, "2025-07": 9203, "2025-08": 13450, "2025-09": 12025, "2025-10": 13474, "2025-11": 12794, "2025-12": 14667, "2026-01": 13703, "2026-02": 11957, "2026-03": 11296, "2026-04": 5984},
+    tb: {"2025-01": 24759, "2025-02": 24672, "2025-03": 26959, "2025-04": 27358, "2025-05": 28067, "2025-06": 26392, "2025-07": 31893, "2025-08": 31984, "2025-09": 28541, "2025-10": 32868, "2025-11": 34986, "2025-12": 39412, "2026-01": 32799, "2026-02": 30827, "2026-03": 32852, "2026-04": 15834},
+    gf: {"2025-01": 9802, "2025-02": 11205, "2025-03": 12434, "2025-04": 12759, "2025-05": 12708, "2025-06": 13252, "2025-07": 14177, "2025-08": 14724, "2025-09": 13571, "2025-10": 14829, "2025-11": 14643, "2025-12": 16288, "2026-01": 15676, "2026-02": 13860, "2026-03": 14638, "2026-04": 7103},
+    wf: {"2025-01": 3736, "2025-02": 2976, "2025-03": 2559, "2025-04": 2701, "2025-05": 2131, "2025-06": 1753, "2025-07": 1731, "2025-08": 2845, "2025-09": 3445, "2025-10": 4624, "2025-11": 4370, "2025-12": 4632, "2026-01": 4173, "2026-02": 3887, "2026-03": 4003, "2026-04": 1472},
+    bo: {"2025-01": 14629, "2025-02": 16899, "2025-03": 20313, "2025-04": 17289, "2025-05": 19778, "2025-06": 21181, "2025-07": 23662, "2025-08": 24084, "2025-09": 24949, "2025-10": 27691, "2025-11": 21882, "2025-12": 19589, "2026-01": 17835, "2026-02": 15256, "2026-03": 15709, "2026-04": 8197},
+    hp: {"2025-01": 2322, "2025-02": 2219, "2025-03": 2182, "2025-04": 3008, "2025-05": 3690, "2025-06": 3747, "2025-07": 6704, "2025-08": 11612, "2025-09": 7334, "2025-10": 6834, "2025-11": 5191, "2025-12": 6308, "2026-01": 7772, "2026-02": 9249, "2026-03": 10036, "2026-04": 4344},
+    mc: {"2025-01": 0, "2025-02": 240, "2025-03": 600, "2025-04": 213, "2025-05": 211, "2025-06": 25, "2025-07": 28, "2025-08": 1251, "2025-09": 1125, "2025-10": 1419, "2025-11": 914, "2025-12": 1104, "2026-01": 560, "2026-02": 403, "2026-03": 443, "2026-04": 247},
   }
 };
 
@@ -1372,350 +1032,48 @@ const MARKET_TREND_DATA = {
 // INVENTORY MIX &mdash; Bricks vs Non-Bricks (from Dutchie product catalog)
 // ===================================================
 const INVENTORY_MIX = {
-  "lastUpdated": "2026-04-16T07:22:04Z",
-  "note": "In-stock SKUs via Dutchie /products (quantityAvailable > 0), deduplicated by productId across all 3 stores. SAMPLE / DISPLAY / Prizes excluded.",
-  "totalActive": 663,
-  "totalBrick": 260,
-  "totalCore": 211,
-  "totalOther": 192,
-  "perStore": {
-    "dracut": {
-      "total": 372
-    },
-    "pepperell": {
-      "total": 436
-    },
-    "groton": {
-      "total": 388
-    }
+  lastUpdated: "2026-04-16T04:30:00Z",
+  note: "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
+  totalActive: 665,
+  totalBrick: 223,
+  totalCore: 182,
+  totalOther: 260,
+  perStore: {
+    dracut:     { total: 374 },
+    pepperell:  { total: 436 },
+    groton:     { total: 395 },
   },
-  "brickVendors": [
-    {
-      "name": "MACC",
-      "skus": 48
-    },
-    {
-      "name": "Freshly Baked",
-      "skus": 36
-    },
-    {
-      "name": "High Plains Farm",
-      "skus": 33
-    },
-    {
-      "name": "Hudson Botanical",
-      "skus": 33
-    },
-    {
-      "name": "Wellman Farms",
-      "skus": 31
-    },
-    {
-      "name": "T.Bear / Coast",
-      "skus": 25
-    },
-    {
-      "name": "Bostica",
-      "skus": 22
-    },
-    {
-      "name": "Good Feels",
-      "skus": 21
-    },
-    {
-      "name": "Green Harbor",
-      "skus": 11
-    }
+  brickVendors: [
+    { name: "Freshly Baked",                 skus: 35 },
+    { name: "High Plains Farm",              skus: 33 },
+    { name: "Hudson Botanical",              skus: 33 },
+    { name: "Wellman Farms",                 skus: 31 },
+    { name: "T. Bear / Coast",               skus: 25 },
+    { name: "MACC",                          skus: 23 },
+    { name: "Bostica",                       skus: 22 },
+    { name: "Good Feels",                    skus: 21 },
   ],
-  "coreVendors": [
-    {
-      "name": "Cultivate",
-      "skus": 33
-    },
-    {
-      "name": "Garden Remedies",
-      "skus": 31
-    },
-    {
-      "name": "ARL",
-      "skus": 29
-    },
-    {
-      "name": "Eureka",
-      "skus": 25
-    },
-    {
-      "name": "Novel Beverage",
-      "skus": 22
-    },
-    {
-      "name": "Green Meadows",
-      "skus": 20
-    },
-    {
-      "name": "Lunar",
-      "skus": 12
-    },
-    {
-      "name": "Mederi",
-      "skus": 12
-    },
-    {
-      "name": "Palazzi",
-      "skus": 10
-    },
-    {
-      "name": "Levia",
-      "skus": 7
-    },
-    {
-      "name": "Atlantic Medicinal",
-      "skus": 6
-    },
-    {
-      "name": "Fathom",
-      "skus": 4
-    }
+  coreVendors: [
+    { name: "Garden Remedies",               skus: 32 },
+    { name: "Cultivate",                     skus: 32 },
+    { name: "Green Meadows",                 skus: 31 },
+    { name: "ARL Healthcare",                skus: 30 },
+    { name: "Novel Beverage",                skus: 22 },
+    { name: "Lunar Xtracts",                 skus: 19 },
+    { name: "Mederi",                        skus: 12 },
+    { name: "Humboldt Masters",              skus: 4 },
   ],
-  "otherVendors": [
-    {
-      "name": "Healing Rose | Healing Rose",
-      "skus": 21
-    },
-    {
-      "name": "AFG | AFG Distribution",
-      "skus": 17
-    },
-    {
-      "name": "ZZZ's Rolling Paper Co. | ZZZ's Rolling Paper Co.",
-      "skus": 16
-    },
-    {
-      "name": "Pulsar | AFG Distribution",
-      "skus": 12
-    },
-    {
-      "name": "LuvBuds | LuvBuds",
-      "skus": 10
-    },
-    {
-      "name": "Hemper | Hara Brands",
-      "skus": 9
-    },
-    {
-      "name": "ZZZ's Rolling Paper Co. | AFG Distribution",
-      "skus": 9
-    },
-    {
-      "name": "Hemper | HempX LLC",
-      "skus": 8
-    },
-    {
-      "name": "Pilgrim Soul | Pilgrim Soul",
-      "skus": 7
-    },
-    {
-      "name": "SirEEL | LuvBuds",
-      "skus": 6
-    },
-    {
-      "name": "Cannalive Genetics | Cannalive Genetics LLC",
-      "skus": 5
-    },
-    {
-      "name": "Erva | Erva Inc.",
-      "skus": 5
-    },
-    {
-      "name": "Ooze | AFG Distribution",
-      "skus": 5
-    },
-    {
-      "name": "AFG | LuvBuds",
-      "skus": 3
-    },
-    {
-      "name": "Fujima | AFG Distribution",
-      "skus": 3
-    },
-    {
-      "name": "Keef | Nova Farms LLC",
-      "skus": 3
-    },
-    {
-      "name": "King Palm | LuvBuds",
-      "skus": 3
-    },
-    {
-      "name": "Southie | Nova Farms LLC",
-      "skus": 3
-    },
-    {
-      "name": "Howl's Tincture | Nova Farms LLC",
-      "skus": 2
-    },
-    {
-      "name": "KIVA | Revolutionary Clinics",
-      "skus": 2
-    },
-    {
-      "name": "Ooze | LuvBuds",
-      "skus": 2
-    },
-    {
-      "name": "PAW:20 | AFG Distribution",
-      "skus": 2
-    }
+  otherVendors: [
+    { name: "AFG Distribution",              skus: 58 },
+    { name: "LuvBuds",                       skus: 29 },
+    { name: "Mill Town Agriculture LLC",     skus: 26 },
+    { name: "ZZZ's Rolling Paper Co.",       skus: 25 },
+    { name: "Healing Rose",                  skus: 20 },
+    { name: "Hara Brands",                   skus: 17 },
+    { name: "Green Harbor",                  skus: 11 },
+    { name: "Palazzi Incorporated",          skus: 10 },
+    { name: "Cultivauna, LLC",               skus: 8 },
   ],
-  "otherVendorsFull": 55,
-  "missingCore": [
-    "Merimed",
-    "Canna Provisions",
-    "Cresco",
-    "Curaleaf",
-    "Gibby",
-    "Green Theory",
-    "Aruna",
-    "JBam",
-    "Regenerative",
-    "Standard Farms"
-  ],
-  "byCategory": [
-    {
-      "group": "Merch / Accessories",
-      "brick": 6,
-      "core": 54,
-      "other": 167,
-      "coreVendors": {
-        "Eureka": 25,
-        "ARL": 12,
-        "Novel Beverage": 10,
-        "Lunar": 6,
-        "Garden Remedies": 1
-      },
-      "brickVendors": {
-        "MACC": 4,
-        "Hudson Botanical": 2
-      }
-    },
-    {
-      "group": "Pre-Rolls",
-      "brick": 77,
-      "core": 55,
-      "other": 6,
-      "coreVendors": {
-        "ARL": 11,
-        "Garden Remedies": 11,
-        "Cultivate": 8,
-        "Palazzi": 8,
-        "Mederi": 7,
-        "Fathom": 4,
-        "Atlantic Medicinal": 4,
-        "Green Meadows": 2
-      },
-      "brickVendors": {
-        "High Plains Farm": 26,
-        "MACC": 14,
-        "Wellman Farms": 13,
-        "Bostica": 8,
-        "Hudson Botanical": 8,
-        "Green Harbor": 5,
-        "Freshly Baked": 3
-      }
-    },
-    {
-      "group": "Vapes",
-      "brick": 58,
-      "core": 39,
-      "other": 11,
-      "coreVendors": {
-        "Green Meadows": 14,
-        "Cultivate": 14,
-        "Lunar": 6,
-        "Garden Remedies": 5
-      },
-      "brickVendors": {
-        "Freshly Baked": 25,
-        "Hudson Botanical": 19,
-        "MACC": 9,
-        "T.Bear / Coast": 5
-      }
-    },
-    {
-      "group": "Flower",
-      "brick": 54,
-      "core": 40,
-      "other": 3,
-      "coreVendors": {
-        "Garden Remedies": 14,
-        "Cultivate": 11,
-        "Mederi": 5,
-        "Green Meadows": 4,
-        "ARL": 2,
-        "Palazzi": 2,
-        "Atlantic Medicinal": 2
-      },
-      "brickVendors": {
-        "MACC": 17,
-        "Wellman Farms": 12,
-        "Bostica": 10,
-        "High Plains Farm": 7,
-        "Green Harbor": 6,
-        "Hudson Botanical": 2
-      }
-    },
-    {
-      "group": "Edibles",
-      "brick": 32,
-      "core": 2,
-      "other": 3,
-      "coreVendors": {
-        "ARL": 2
-      },
-      "brickVendors": {
-        "T.Bear / Coast": 20,
-        "Freshly Baked": 8,
-        "MACC": 4
-      }
-    },
-    {
-      "group": "Beverages",
-      "brick": 21,
-      "core": 19,
-      "other": 0,
-      "coreVendors": {
-        "Novel Beverage": 12,
-        "Levia": 7
-      },
-      "brickVendors": {
-        "Good Feels": 21
-      }
-    },
-    {
-      "group": "Concentrates",
-      "brick": 11,
-      "core": 2,
-      "other": 2,
-      "coreVendors": {
-        "ARL": 2
-      },
-      "brickVendors": {
-        "Wellman Farms": 5,
-        "Bostica": 4,
-        "Hudson Botanical": 2
-      }
-    },
-    {
-      "group": "Topicals",
-      "brick": 1,
-      "core": 0,
-      "other": 0,
-      "coreVendors": {},
-      "brickVendors": {
-        "Wellman Farms": 1
-      }
-    }
-  ]
 };
 
 // ===================================================
