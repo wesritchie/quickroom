@@ -946,7 +946,7 @@ const LIT_ALERTS_DATA = {
 // Format: { skus, avgPrice, avgCost } per category per vendor
 // Updated: 2026-04-11 via Dutchie POS API (3 stores: Dracut, Pepperell, Groton; in-stock filtered via /inventory)
 const PRODUCT_DATA = {
-  "lastUpdated": "2026-04-15T07:21:11Z",
+  "lastUpdated": "2026-04-16T07:22:04Z",
   "vendors": {
     "fb": {
       "totalSkus": 36,
@@ -1107,7 +1107,7 @@ const PRODUCT_DATA = {
           "avgCost": 0.0
         },
         "Pre Ground": {
-          "skus": 8,
+          "skus": 11,
           "avgPrice": 30.0,
           "avgCost": 0.0
         },
@@ -1116,9 +1116,9 @@ const PRODUCT_DATA = {
           "avgPrice": 20.0,
           "avgCost": 0.0
         },
-        "Glass": {
-          "skus": 7,
-          "avgPrice": 41.43,
+        "Seeds": {
+          "skus": 5,
+          "avgPrice": 35.0,
           "avgCost": 0.0
         },
         "Gummies": {
@@ -1129,11 +1129,6 @@ const PRODUCT_DATA = {
         "Vaporizers": {
           "skus": 2,
           "avgPrice": 15.0,
-          "avgCost": 0.0
-        },
-        "Rolling Papers": {
-          "skus": 2,
-          "avgPrice": 3.0,
           "avgCost": 0.0
         },
         "Gift Cards": {
@@ -1155,19 +1150,24 @@ const PRODUCT_DATA = {
           "skus": 1,
           "avgPrice": 25.0,
           "avgCost": 0.0
+        },
+        "Rolling Papers": {
+          "skus": 1,
+          "avgPrice": 3.0,
+          "avgCost": 0.0
         }
       }
     },
     "hb": {
-      "totalSkus": 27,
+      "totalSkus": 33,
       "categories": {
         "510 Cart": {
-          "skus": 14,
-          "avgPrice": 28.5,
+          "skus": 19,
+          "avgPrice": 30.05,
           "avgCost": 0.0
         },
         "Single": {
-          "skus": 4,
+          "skus": 5,
           "avgPrice": 8.0,
           "avgCost": 0.0
         },
@@ -1207,7 +1207,7 @@ const PRODUCT_DATA = {
 // MARKET TREND DATA (Lit Alerts &mdash; Estimated MA Market Sales)
 // ===================================================
 const MARKET_TREND_DATA = {
-  "lastUpdated": "2026-04-15T07:22:43Z",
+  "lastUpdated": "2026-04-16T07:23:42Z",
   "note": "Monthly estimated sales ($) across all MA retailers, via Lit Alerts analytics.",
   "months": [
     "2025-02",
@@ -1242,7 +1242,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 32799,
       "2026-02": 30827,
       "2026-03": 32852,
-      "2026-04": 14934
+      "2026-04": 15834
     },
     "bo": {
       "2025-02": 16899,
@@ -1259,7 +1259,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 17835,
       "2026-02": 15256,
       "2026-03": 15709,
-      "2026-04": 7766
+      "2026-04": 8197
     },
     "fb": {
       "2025-02": 11260,
@@ -1276,7 +1276,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 13703,
       "2026-02": 11957,
       "2026-03": 11296,
-      "2026-04": 5633
+      "2026-04": 5984
     },
     "gf": {
       "2025-02": 11205,
@@ -1293,7 +1293,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 15676,
       "2026-02": 13860,
       "2026-03": 14638,
-      "2026-04": 6562
+      "2026-04": 7103
     },
     "hb": {
       "2025-02": 10114,
@@ -1310,7 +1310,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 11001,
       "2026-02": 8572,
       "2026-03": 11150,
-      "2026-04": 4442
+      "2026-04": 4711
     },
     "hp": {
       "2025-02": 2219,
@@ -1327,7 +1327,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 7772,
       "2026-02": 9249,
       "2026-03": 10036,
-      "2026-04": 4141
+      "2026-04": 4344
     },
     "wf": {
       "2025-02": 2976,
@@ -1344,7 +1344,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 4173,
       "2026-02": 3887,
       "2026-03": 4003,
-      "2026-04": 1340
+      "2026-04": 1472
     },
     "mc": {
       "2025-02": 240,
@@ -1361,7 +1361,7 @@ const MARKET_TREND_DATA = {
       "2026-01": 560,
       "2026-02": 403,
       "2026-03": 443,
-      "2026-04": 239
+      "2026-04": 247
     }
   }
 };
@@ -1372,21 +1372,21 @@ const MARKET_TREND_DATA = {
 // INVENTORY MIX &mdash; Bricks vs Non-Bricks (from Dutchie product catalog)
 // ===================================================
 const INVENTORY_MIX = {
-  "lastUpdated": "2026-04-15T07:21:11Z",
+  "lastUpdated": "2026-04-16T07:22:04Z",
   "note": "In-stock SKUs via Dutchie /products (quantityAvailable > 0), deduplicated by productId across all 3 stores. SAMPLE / DISPLAY / Prizes excluded.",
-  "totalActive": 647,
-  "totalBrick": 254,
-  "totalCore": 212,
-  "totalOther": 181,
+  "totalActive": 663,
+  "totalBrick": 260,
+  "totalCore": 211,
+  "totalOther": 192,
   "perStore": {
     "dracut": {
       "total": 372
     },
     "pepperell": {
-      "total": 412
+      "total": 436
     },
     "groton": {
-      "total": 380
+      "total": 388
     }
   },
   "brickVendors": [
@@ -1403,12 +1403,12 @@ const INVENTORY_MIX = {
       "skus": 33
     },
     {
-      "name": "Wellman Farms",
-      "skus": 31
+      "name": "Hudson Botanical",
+      "skus": 33
     },
     {
-      "name": "Hudson Botanical",
-      "skus": 27
+      "name": "Wellman Farms",
+      "skus": 31
     },
     {
       "name": "T.Bear / Coast",
@@ -1475,10 +1475,6 @@ const INVENTORY_MIX = {
     {
       "name": "Fathom",
       "skus": 4
-    },
-    {
-      "name": "Curaleaf",
-      "skus": 1
     }
   ],
   "otherVendors": [
@@ -1499,15 +1495,19 @@ const INVENTORY_MIX = {
       "skus": 12
     },
     {
-      "name": "Hemper | Hara Brands",
+      "name": "LuvBuds | LuvBuds",
       "skus": 10
+    },
+    {
+      "name": "Hemper | Hara Brands",
+      "skus": 9
     },
     {
       "name": "ZZZ's Rolling Paper Co. | AFG Distribution",
       "skus": 9
     },
     {
-      "name": "LuvBuds | LuvBuds",
+      "name": "Hemper | HempX LLC",
       "skus": 8
     },
     {
@@ -1543,6 +1543,10 @@ const INVENTORY_MIX = {
       "skus": 3
     },
     {
+      "name": "King Palm | LuvBuds",
+      "skus": 3
+    },
+    {
       "name": "Southie | Nova Farms LLC",
       "skus": 3
     },
@@ -1555,27 +1559,20 @@ const INVENTORY_MIX = {
       "skus": 2
     },
     {
-      "name": "King Palm | AFG Distribution",
-      "skus": 2
-    },
-    {
       "name": "Ooze | LuvBuds",
       "skus": 2
     },
     {
       "name": "PAW:20 | AFG Distribution",
       "skus": 2
-    },
-    {
-      "name": "RAW | LuvBuds",
-      "skus": 2
     }
   ],
-  "otherVendorsFull": 53,
+  "otherVendorsFull": 55,
   "missingCore": [
     "Merimed",
     "Canna Provisions",
     "Cresco",
+    "Curaleaf",
     "Gibby",
     "Green Theory",
     "Aruna",
@@ -1586,9 +1583,9 @@ const INVENTORY_MIX = {
   "byCategory": [
     {
       "group": "Merch / Accessories",
-      "brick": 14,
+      "brick": 6,
       "core": 54,
-      "other": 156,
+      "other": 167,
       "coreVendors": {
         "Eureka": 25,
         "ARL": 12,
@@ -1597,13 +1594,13 @@ const INVENTORY_MIX = {
         "Garden Remedies": 1
       },
       "brickVendors": {
-        "MACC": 12,
+        "MACC": 4,
         "Hudson Botanical": 2
       }
     },
     {
       "group": "Pre-Rolls",
-      "brick": 76,
+      "brick": 77,
       "core": 55,
       "other": 6,
       "coreVendors": {
@@ -1621,33 +1618,32 @@ const INVENTORY_MIX = {
         "MACC": 14,
         "Wellman Farms": 13,
         "Bostica": 8,
-        "Hudson Botanical": 7,
+        "Hudson Botanical": 8,
         "Green Harbor": 5,
         "Freshly Baked": 3
       }
     },
     {
       "group": "Vapes",
-      "brick": 53,
-      "core": 40,
+      "brick": 58,
+      "core": 39,
       "other": 11,
       "coreVendors": {
         "Green Meadows": 14,
         "Cultivate": 14,
         "Lunar": 6,
-        "Garden Remedies": 5,
-        "Curaleaf": 1
+        "Garden Remedies": 5
       },
       "brickVendors": {
         "Freshly Baked": 25,
-        "Hudson Botanical": 14,
+        "Hudson Botanical": 19,
         "MACC": 9,
         "T.Bear / Coast": 5
       }
     },
     {
       "group": "Flower",
-      "brick": 46,
+      "brick": 54,
       "core": 40,
       "other": 3,
       "coreVendors": {
@@ -1660,9 +1656,9 @@ const INVENTORY_MIX = {
         "Atlantic Medicinal": 2
       },
       "brickVendors": {
+        "MACC": 17,
         "Wellman Farms": 12,
         "Bostica": 10,
-        "MACC": 9,
         "High Plains Farm": 7,
         "Green Harbor": 6,
         "Hudson Botanical": 2
@@ -1729,8 +1725,8 @@ const STORE_INVENTORY = {
   "dracut": {
     "total": 372,
     "brick": 173,
-    "core": 125,
-    "other": 74,
+    "core": 123,
+    "other": 76,
     "brickVendors": [
       {
         "name": "MACC",
@@ -1738,7 +1734,7 @@ const STORE_INVENTORY = {
       },
       {
         "name": "Freshly Baked",
-        "skus": 26
+        "skus": 23
       },
       {
         "name": "T.Bear / Coast",
@@ -1746,7 +1742,7 @@ const STORE_INVENTORY = {
       },
       {
         "name": "High Plains Farm",
-        "skus": 22
+        "skus": 21
       },
       {
         "name": "Good Feels",
@@ -1757,12 +1753,12 @@ const STORE_INVENTORY = {
         "skus": 18
       },
       {
-        "name": "Bostica",
-        "skus": 14
+        "name": "Hudson Botanical",
+        "skus": 17
       },
       {
-        "name": "Hudson Botanical",
-        "skus": 13
+        "name": "Bostica",
+        "skus": 14
       },
       {
         "name": "Green Harbor",
@@ -1808,7 +1804,7 @@ const STORE_INVENTORY = {
       },
       {
         "name": "Green Meadows",
-        "skus": 4
+        "skus": 3
       },
       {
         "name": "Fathom",
@@ -1816,10 +1812,6 @@ const STORE_INVENTORY = {
       },
       {
         "name": "Atlantic Medicinal",
-        "skus": 1
-      },
-      {
-        "name": "Curaleaf",
         "skus": 1
       }
     ],
@@ -1833,16 +1825,16 @@ const STORE_INVENTORY = {
         "skus": 9
       },
       {
-        "name": "Hemper | Hara Brands",
+        "name": "AFG | AFG Distribution",
         "skus": 7
       },
       {
-        "name": "AFG | AFG Distribution",
+        "name": "Hemper | Hara Brands",
         "skus": 6
       },
       {
         "name": "LuvBuds | LuvBuds",
-        "skus": 5
+        "skus": 6
       },
       {
         "name": "Erva | Erva Inc.",
@@ -1885,13 +1877,13 @@ const STORE_INVENTORY = {
         "skus": 1
       }
     ],
-    "otherVendorsFull": 29,
+    "otherVendorsFull": 30,
     "byCategory": [
       {
         "group": "Merch / Accessories",
         "brick": 2,
         "core": 39,
-        "other": 65
+        "other": 67
       },
       {
         "group": "Pre-Rolls",
@@ -1902,7 +1894,7 @@ const STORE_INVENTORY = {
       {
         "group": "Vapes",
         "brick": 38,
-        "core": 22,
+        "core": 20,
         "other": 3
       },
       {
@@ -1938,30 +1930,34 @@ const STORE_INVENTORY = {
     ]
   },
   "pepperell": {
-    "total": 412,
-    "brick": 178,
+    "total": 436,
+    "brick": 186,
     "core": 136,
-    "other": 98,
+    "other": 114,
     "brickVendors": [
       {
-        "name": "MACC",
-        "skus": 40
+        "name": "Freshly Baked",
+        "skus": 33
       },
       {
-        "name": "Freshly Baked",
-        "skus": 30
+        "name": "MACC",
+        "skus": 31
+      },
+      {
+        "name": "Hudson Botanical",
+        "skus": 23
       },
       {
         "name": "High Plains Farm",
         "skus": 21
       },
       {
-        "name": "Bostica",
-        "skus": 19
+        "name": "Good Feels",
+        "skus": 20
       },
       {
-        "name": "Hudson Botanical",
-        "skus": 18
+        "name": "Bostica",
+        "skus": 19
       },
       {
         "name": "T.Bear / Coast",
@@ -1970,10 +1966,6 @@ const STORE_INVENTORY = {
       {
         "name": "Wellman Farms",
         "skus": 14
-      },
-      {
-        "name": "Good Feels",
-        "skus": 11
       },
       {
         "name": "Green Harbor",
@@ -2040,8 +2032,16 @@ const STORE_INVENTORY = {
         "skus": 9
       },
       {
+        "name": "Hemper | HempX LLC",
+        "skus": 8
+      },
+      {
         "name": "ZZZ's Rolling Paper Co. | ZZZ's Rolling Paper Co.",
         "skus": 8
+      },
+      {
+        "name": "LuvBuds | LuvBuds",
+        "skus": 6
       },
       {
         "name": "Pilgrim Soul | Pilgrim Soul",
@@ -2052,7 +2052,7 @@ const STORE_INVENTORY = {
         "skus": 4
       },
       {
-        "name": "LuvBuds | LuvBuds",
+        "name": "King Palm | LuvBuds",
         "skus": 3
       },
       {
@@ -2078,33 +2078,25 @@ const STORE_INVENTORY = {
       {
         "name": "Ooze | LuvBuds",
         "skus": 2
-      },
-      {
-        "name": "PAW:20 | AFG Distribution",
-        "skus": 2
-      },
-      {
-        "name": "SirEEL | AFG Distribution",
-        "skus": 2
       }
     ],
-    "otherVendorsFull": 36,
+    "otherVendorsFull": 40,
     "byCategory": [
       {
         "group": "Merch / Accessories",
-        "brick": 14,
+        "brick": 5,
         "core": 39,
-        "other": 77
+        "other": 93
       },
       {
         "group": "Pre-Rolls",
-        "brick": 48,
+        "brick": 49,
         "core": 24,
         "other": 1
       },
       {
         "group": "Vapes",
-        "brick": 45,
+        "brick": 51,
         "core": 29,
         "other": 6
       },
@@ -2122,13 +2114,13 @@ const STORE_INVENTORY = {
       },
       {
         "group": "Beverages",
-        "brick": 11,
+        "brick": 20,
         "core": 18,
         "other": 0
       },
       {
         "group": "Concentrates",
-        "brick": 5,
+        "brick": 6,
         "core": 0,
         "other": 1
       },
@@ -2141,11 +2133,15 @@ const STORE_INVENTORY = {
     ]
   },
   "groton": {
-    "total": 380,
-    "brick": 168,
+    "total": 388,
+    "brick": 176,
     "core": 111,
     "other": 101,
     "brickVendors": [
+      {
+        "name": "MACC",
+        "skus": 29
+      },
       {
         "name": "High Plains Farm",
         "skus": 26
@@ -2157,10 +2153,6 @@ const STORE_INVENTORY = {
       {
         "name": "Wellman Farms",
         "skus": 22
-      },
-      {
-        "name": "MACC",
-        "skus": 21
       },
       {
         "name": "Hudson Botanical",
@@ -2309,7 +2301,7 @@ const STORE_INVENTORY = {
       },
       {
         "group": "Flower",
-        "brick": 30,
+        "brick": 38,
         "core": 15,
         "other": 1
       },
