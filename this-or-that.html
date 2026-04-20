@@ -581,18 +581,30 @@ body {
     <button class="btn btn-primary" onclick="saveScenario()">Save Scenario</button>
   </div>
 
-  <!-- Base cost reference bar -->
-  <div class="card" style="padding:12px 16px">
-    <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:12px">
-      <div><span style="color:var(--text-muted)">Grow/Lb:</span> <span id="ref-grow-lb" style="font-weight:600">—</span></div>
-      <div><span style="color:var(--text-muted)">Prod Overhead/Lb:</span> <span id="ref-prod-lb" style="font-weight:600">—</span></div>
-      <div><span style="color:var(--text-muted)">All-In/Lb:</span> <span id="ref-allin-lb" style="font-weight:600">—</span></div>
-      <div><span style="color:var(--text-muted)">Industry Std Grow/Lb:</span> <span id="ref-industry-lb" style="font-weight:600">—</span></div>
+  <!-- Base cost reference bar + cost model legend -->
+  <div class="card" style="padding:14px 16px">
+    <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:10px">How costs stack up on every line</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:10px">
+      <div style="padding:10px;background:rgba(105,219,124,0.06);border:1px solid rgba(105,219,124,0.2);border-radius:6px">
+        <div style="font-size:11px;color:var(--accent-green);font-weight:600;margin-bottom:4px">● GROW COST <span style="color:var(--text-muted);font-weight:400">(baked in)</span></div>
+        <div style="font-size:16px;font-weight:700"><span id="ref-grow-lb">—</span> <span style="font-size:11px;color:var(--text-muted);font-weight:400">/ lb</span></div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Auto-allocated to every line. Set in Harvest Setup.</div>
+      </div>
+      <div style="padding:10px;background:rgba(88,166,255,0.06);border:1px solid rgba(88,166,255,0.2);border-radius:6px">
+        <div style="font-size:11px;color:var(--accent-blue);font-weight:600;margin-bottom:4px">● PROD OVERHEAD <span style="color:var(--text-muted);font-weight:400">(baked in, in-house only)</span></div>
+        <div style="font-size:16px;font-weight:700"><span id="ref-prod-lb">—</span> <span style="font-size:11px;color:var(--text-muted);font-weight:400">/ lb</span></div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Auto-allocated to In-house lines only. Outsourced skips this.</div>
+      </div>
+      <div style="padding:10px;background:rgba(255,169,77,0.06);border:1px solid rgba(255,169,77,0.2);border-radius:6px">
+        <div style="font-size:11px;color:var(--accent-orange);font-weight:600;margin-bottom:4px">● CHANNEL COST <span style="color:var(--text-muted);font-weight:400">(add-on per unit)</span></div>
+        <div style="font-size:16px;font-weight:700;color:var(--accent-orange)">Set per line</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px">The "Cost/Unit" field — ONLY the incremental cost above overhead.</div>
+      </div>
     </div>
-    <div style="font-size:11px;color:var(--text-muted);margin-top:6px">
-      <b>In-house</b> lines include grow cost + prod overhead + processing costs per unit.
-      <b>Outsourced</b> lines include grow cost + vendor cost per unit (no overhead).
-      <b>Store %</b> sets how much goes to retail — the rest goes wholesale via broker.
+    <div style="font-size:11px;color:var(--text-muted);padding-top:8px;border-top:1px dashed var(--border);display:flex;gap:18px;flex-wrap:wrap">
+      <div>All-In/Lb: <b id="ref-allin-lb" style="color:var(--text-primary)">—</b></div>
+      <div>Industry Std Grow/Lb: <b id="ref-industry-lb" style="color:var(--text-primary)">—</b></div>
+      <div style="color:var(--accent-yellow)">Click any line's <b>▸</b> button below to see its full cost stack.</div>
     </div>
   </div>
 
@@ -615,20 +627,19 @@ body {
     <table class="data-table" id="allocTable">
       <thead>
         <tr>
+          <th></th>
           <th style="text-align:left">Channel</th>
           <th>Lbs</th>
           <th>Mode</th>
-          <th>Store %</th>
-          <th>Retail $/U</th>
-          <th>Cost $/U</th>
+          <th>Dest.</th>
+          <th>Sell $/Unit</th>
+          <th>Add-on $/Unit <span class="info-tip" data-tip="Channel-specific cost per unit (e.g., packaging, labor). Grow + overhead are added automatically on top of this.">?</span></th>
           <th>Units</th>
           <th>Revenue</th>
-          <th title="Grow cost (fixed, already budgeted)">Grow</th>
-          <th title="Production overhead (fixed, already budgeted)">Overhead</th>
-          <th title="Channel-specific processing cost (additional)">Processing</th>
+          <th>All-In Cost <span class="info-tip" data-tip="Grow + overhead (if in-house) + channel cost × units. Includes everything.">?</span></th>
           <th>Margin</th>
-          <th>$/Lb</th>
-          <th>Opp.</th>
+          <th>Margin/Lb</th>
+          <th>Opp. Cost</th>
           <th></th>
         </tr>
       </thead>
@@ -652,15 +663,9 @@ body {
       <div class="label">Total Revenue</div>
       <div class="value" id="scen-revenue">—</div>
     </div>
-    <div class="kpi" style="border-color:var(--accent-blue)">
-      <div class="label">Fixed Cost</div>
-      <div class="value" id="scen-fixed-cost">—</div>
-      <div class="sub" id="scen-fixed-detail" style="font-size:11px;color:var(--text-muted)">Grow + Overhead</div>
-    </div>
-    <div class="kpi" style="border-color:var(--accent-purple)">
-      <div class="label">Additional Cost</div>
-      <div class="value" id="scen-addl-cost">—</div>
-      <div class="sub" style="font-size:11px;color:var(--text-muted)">Processing</div>
+    <div class="kpi">
+      <div class="label">Total Cost</div>
+      <div class="value" id="scen-cost">—</div>
     </div>
     <div class="kpi">
       <div class="label">Total Margin</div>
@@ -706,7 +711,7 @@ let state = {
   channels: [],
   quotes: [],
   scenarios: [],
-  // Each line: { id, channelId, lbs, mode, destination, sellPriceOverride, inHouseCostOverride, outsourcedCostOverride, retailPct, wholesalePrice, brokerFeePct }
+  // Each line: { id, channelId, lbs, mode, destination, sellPriceOverride, inHouseCostOverride, outsourcedCostOverride }
   currentLines: []
 };
 
@@ -754,18 +759,19 @@ function init() {
       ch.wholesalePrice = Math.round(ch.sellPrice * 0.65 * 100) / 100;
       delete ch.sellPrice;
     }
+    // Sync legacy isBroker/isExtraction → useBroker/useExtraction so toggle checkboxes reflect state
+    if (ch.isBroker && ch.useBroker == null) ch.useBroker = true;
+    if (ch.isExtraction && ch.useExtraction == null) ch.useExtraction = true;
   });
-  // Migrate legacy lines: add destination if missing, add retailPct/wholesale fields
-  function migrateLineFields(line) {
+  // Migrate legacy lines: add destination if missing, convert sellPriceOverride
+  state.currentLines.forEach(line => {
     if (line.destination == null) line.destination = 'internal';
-    if (line.retailPct == null) line.retailPct = 100;
-    if (line.wholesalePrice === undefined) line.wholesalePrice = null;
-    if (line.brokerFeePct === undefined) line.brokerFeePct = null;
-  }
-  state.currentLines.forEach(migrateLineFields);
+  });
   if (state.scenarios) {
     state.scenarios.forEach(s => {
-      if (s.lines) s.lines.forEach(migrateLineFields);
+      if (s.lines) s.lines.forEach(line => {
+        if (line.destination == null) line.destination = 'internal';
+      });
     });
   }
   bindHarvestInputs();
@@ -868,12 +874,110 @@ function renderHarvestKpis() {
 }
 
 // ====== CHANNEL ECONOMICS ======
+// Per-unit cost stack used in both channel card previews and scenario builder
+function calcChannelUnitEcon(ch) {
+  let h = state.harvest;
+  let total = h.flower + h.trim;
+  let growPerLb = total > 0 ? h.growCost / total : 0;
+  let prodPerLb = total > 0 ? h.prodOverhead / total : 0;
+  let upl = getUnitsPerLb(ch);
+
+  // For extraction, we compute per-lb stacks (since "unit" is a gram of distillate, very small)
+  if (ch.isExtraction) {
+    let yieldFrac = (ch.yieldPct || 10) / 100;
+    let gramsPerLb = yieldFrac * 453.6;
+    let keepPct = ch.dealType === 'split' ? 1 - ((ch.splitPct || 30) / 100) : 1;
+    let unitsPerLb = gramsPerLb * keepPct;
+    let buyback = ch.buybackPrice || 0;
+    let retail = ch.retailPrice || 0;
+    let wholesale = ch.wholesalePrice || 0;
+    let brokerFeePct = ch.useBroker ? (ch.brokerFeePct || 0) : 0;
+    return {
+      unitsPerLb: unitsPerLb,
+      growPerUnit: unitsPerLb > 0 ? growPerLb / unitsPerLb : 0,
+      overheadPerUnit: 0, // extraction partner handles production
+      channelPerUnitInHouse: ch.dealType === 'buyback' ? buyback : 0,
+      channelPerUnitOutsourced: ch.dealType === 'buyback' ? buyback : 0,
+      retailPrice: retail, wholesalePrice: wholesale,
+      retailBrokerFee: retail * brokerFeePct / 100,
+      wholesaleBrokerFee: wholesale * brokerFeePct / 100,
+      isExtraction: true, dealType: ch.dealType, brokerFeePct
+    };
+  }
+
+  let growPerUnit = upl > 0 ? growPerLb / upl : 0;
+  let overheadPerUnit = upl > 0 ? prodPerLb / upl : 0;
+  let retail = ch.retailPrice || 0;
+  let wholesale = ch.wholesalePrice || 0;
+  let brokerFeePct = ch.useBroker ? (ch.brokerFeePct || 0) : 0;
+  return {
+    unitsPerLb: upl,
+    growPerUnit,
+    overheadPerUnit,
+    channelPerUnitInHouse: ch.inHouseCost || 0,
+    channelPerUnitOutsourced: ch.outsourcedCost || 0,
+    retailPrice: retail, wholesalePrice: wholesale,
+    retailBrokerFee: retail * brokerFeePct / 100,
+    wholesaleBrokerFee: wholesale * brokerFeePct / 100,
+    isExtraction: false, brokerFeePct
+  };
+}
+
+// Render the unit-economics preview block (shared by channel cards and per-line details)
+function renderUnitEconPreview(ch) {
+  let u = calcChannelUnitEcon(ch);
+  let ihTotal = u.growPerUnit + u.overheadPerUnit + u.channelPerUnitInHouse;
+  let osTotal = u.growPerUnit + u.channelPerUnitOutsourced;
+  let ihCashInvest = u.overheadPerUnit + u.channelPerUnitInHouse;
+  let osCashInvest = u.channelPerUnitOutsourced;
+  let retailIhMargin = u.retailPrice - u.retailBrokerFee - ihTotal;
+  let retailOsMargin = u.retailPrice - u.retailBrokerFee - osTotal;
+  let whsleIhMargin = u.wholesalePrice - u.wholesaleBrokerFee - ihTotal;
+  let whsleOsMargin = u.wholesalePrice - u.wholesaleBrokerFee - osTotal;
+
+  let feeRow = u.brokerFeePct > 0 ? `<tr><td>Broker fee (${u.brokerFeePct}%)</td><td style="color:var(--accent-red)">−$${fmtD(u.retailBrokerFee)}</td><td style="color:var(--accent-red)">−$${fmtD(u.wholesaleBrokerFee)}</td></tr>` : '';
+
+  let unitLabel = u.isExtraction ? 'per gram distillate' : 'per unit';
+
+  return `
+    <div class="unit-econ-preview" style="margin-top:12px;padding:12px;background:rgba(255,212,59,0.04);border:1px solid rgba(255,212,59,0.15);border-radius:8px">
+      <div style="font-size:12px;font-weight:600;color:var(--accent-yellow);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+        <span>Unit Economics Preview <span style="color:var(--text-muted);font-weight:400">(${unitLabel})</span></span>
+        <span style="font-size:10px;color:var(--text-muted);font-weight:400">Live from Harvest Setup</span>
+      </div>
+      <table class="data-table" style="font-size:11px;margin-bottom:8px">
+        <thead><tr><th style="text-align:left">Cost layer</th><th>In-House</th><th>Outsourced</th></tr></thead>
+        <tbody>
+          <tr><td><span style="color:var(--accent-green)">●</span> Grow cost (baked in)</td><td>$${fmtD(u.growPerUnit)}</td><td>$${fmtD(u.growPerUnit)}</td></tr>
+          <tr><td><span style="color:var(--accent-blue)">●</span> Prod overhead (baked in)</td><td>$${fmtD(u.overheadPerUnit)}</td><td style="color:var(--text-muted)">—</td></tr>
+          <tr><td><span style="color:var(--accent-orange)">●</span> Channel cost (add-on)</td><td>$${fmtD(u.channelPerUnitInHouse)}</td><td>$${fmtD(u.channelPerUnitOutsourced)}</td></tr>
+          <tr class="total-row"><td><b>Total cost / unit</b></td><td><b>$${fmtD(ihTotal)}</b></td><td><b>$${fmtD(osTotal)}</b></td></tr>
+        </tbody>
+      </table>
+      <table class="data-table" style="font-size:11px;margin-bottom:8px">
+        <thead><tr><th style="text-align:left">Price & margin</th><th>Retail</th><th>Wholesale</th></tr></thead>
+        <tbody>
+          <tr><td>Sell price</td><td>$${fmtD(u.retailPrice)}</td><td>$${fmtD(u.wholesalePrice)}</td></tr>
+          ${feeRow}
+          <tr><td>In-house margin</td><td class="${retailIhMargin>=0?'positive':'negative'}">$${fmtD(retailIhMargin)}</td><td class="${whsleIhMargin>=0?'positive':'negative'}">$${fmtD(whsleIhMargin)}</td></tr>
+          <tr><td>Outsourced margin</td><td class="${retailOsMargin>=0?'positive':'negative'}">$${fmtD(retailOsMargin)}</td><td class="${whsleOsMargin>=0?'positive':'negative'}">$${fmtD(whsleOsMargin)}</td></tr>
+        </tbody>
+      </table>
+      <div style="background:rgba(255,169,77,0.08);border:1px dashed rgba(255,169,77,0.3);border-radius:6px;padding:8px;font-size:11px;color:var(--text-secondary)">
+        <div style="font-weight:600;color:var(--accent-orange);margin-bottom:4px">💰 Cash investment required per unit <span class="info-tip" data-tip="Fresh cash needed to produce one more unit beyond the crop already in the ground. Grow cost is excluded (already spent).">?</span></div>
+        <div>In-house: <b style="color:var(--accent-orange)">$${fmtD(ihCashInvest)}</b> <span style="color:var(--text-muted)">(overhead + channel cost)</span></div>
+        <div>Outsourced: <b style="color:var(--accent-orange)">$${fmtD(osCashInvest)}</b> <span style="color:var(--text-muted)">(vendor payment)</span></div>
+      </div>
+    </div>`;
+}
+
 function renderChannels() {
   let grid = document.getElementById('channelGrid');
   grid.innerHTML = '';
   state.channels.forEach((ch, i) => {
     let matClass = ch.material === 'flower' ? 'flower' : ch.material === 'trim' ? 'trim' : 'either';
     let matLabel = ch.material === 'flower' ? 'Flower' : ch.material === 'trim' ? 'Trim' : 'Either';
+    let expanded = ch._expanded !== false; // default expanded
     let html = `<div class="channel-card" data-idx="${i}">
       <div class="ch-header">
         <input class="ch-name-input" type="text" value="${esc(ch.name)}" data-field="name" style="background:transparent;border:1px solid transparent;color:var(--text-primary);font-size:14px;font-weight:700;padding:2px 6px;border-radius:4px;width:160px;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--accent-blue)'" onblur="this.style.borderColor='transparent'">
@@ -884,20 +988,35 @@ function renderChannels() {
         <div class="ch-field"><label>Units / Lb</label><span class="computed-upl" style="display:block;padding:6px 8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;font-size:13px;color:var(--accent-blue);font-weight:600">${getUnitsPerLb(ch)}</span></div>`}
         <div class="ch-field"><label>Retail Price / Unit ($)</label><input type="number" value="${ch.retailPrice}" data-field="retailPrice" step="0.01"></div>
         <div class="ch-field"><label>Wholesale Price / Unit ($)</label><input type="number" value="${ch.wholesalePrice}" data-field="wholesalePrice" step="0.01"></div>
-        <div class="ch-field"><label>In-House $/Unit (above overhead)</label><input type="number" value="${ch.inHouseCost}" data-field="inHouseCost" step="0.01"></div>
-        <div class="ch-field"><label>Default Outsourced $/Unit</label><input type="number" value="${ch.outsourcedCost}" data-field="outsourcedCost" step="0.01"></div>
+        <div class="ch-field"><label>In-House cost / unit <span class="info-tip" data-tip="ADD-ON cost per unit beyond grow + production overhead. Grow and overhead are auto-allocated from Harvest Setup.">?</span></label><input type="number" value="${ch.inHouseCost}" data-field="inHouseCost" step="0.01"></div>
+        <div class="ch-field"><label>Outsourced cost / unit <span class="info-tip" data-tip="All-in vendor cost per unit. Replaces production overhead (vendor handles production).">?</span></label><input type="number" value="${ch.outsourcedCost}" data-field="outsourcedCost" step="0.01"></div>
         <div class="ch-field"><label>Demand Cap (lbs, 0=none)</label><input type="number" value="${ch.demandCap||0}" data-field="demandCap" step="1"></div>
         <div class="ch-field"><label>Material</label>
           <select data-field="material"><option value="flower" ${ch.material==='flower'?'selected':''}>Flower</option><option value="trim" ${ch.material==='trim'?'selected':''}>Trim</option><option value="either" ${ch.material==='either'?'selected':''}>Either</option></select>
         </div>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--text-muted)">${ch.isExtraction ? 'Extraction units are calculated from yield %, not grams per unit.' : `1 lb = 453.6g &rarr; ${getUnitsPerLb(ch)} units at ${ch.gramsPerUnit||0}g each. In-house cost = overhead/lb + per-unit cost. Outsourced replaces both.`}</div>`;
+      <div style="margin-top:8px;font-size:11px;color:var(--text-muted)">${ch.isExtraction ? 'Extraction units are calculated from yield %, not grams per unit.' : `1 lb = 453.6g &rarr; ${getUnitsPerLb(ch)} units at ${ch.gramsPerUnit||0}g each.`}</div>
 
-    if (ch.isExtraction) {
+      <!-- Feature toggles: any channel can have a broker fee or extraction config -->
+      <div style="margin-top:12px;padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px">
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em">Add-on Configurations</div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:12px">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+            <input type="checkbox" data-field="useBroker" ${ch.useBroker||ch.isBroker?'checked':''}>
+            <span>Sell through broker <span class="info-tip" data-tip="Apply a broker fee % off the sell price. Use for any channel routed through a broker instead of direct.">?</span></span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+            <input type="checkbox" data-field="useExtraction" ${ch.useExtraction||ch.isExtraction?'checked':''}>
+            <span>Extraction partner <span class="info-tip" data-tip="Treat as extraction workflow (yield %, buyback or split deal). Use for any channel where a partner processes material into distillate/oil.">?</span></span>
+          </label>
+        </div>
+      </div>`;
+
+    if (ch.isExtraction || ch.useExtraction) {
       html += `<div class="extraction-config" style="margin-top:12px">
         <div style="font-size:12px;font-weight:600;color:var(--accent-purple);margin-bottom:8px">Extraction Partner Config</div>
         <div class="ch-fields">
-          <div class="ch-field"><label>Yield %</label><input type="number" value="${ch.yieldPct||10}" data-field="yieldPct" step="0.5" min="1" max="20"></div>
+          <div class="ch-field"><label>Yield %</label><input type="number" value="${ch.yieldPct||10}" data-field="yieldPct" step="0.5" min="1" max="30"></div>
           <div class="ch-field"><label>Deal Type</label>
             <select data-field="dealType"><option value="buyback" ${ch.dealType==='buyback'?'selected':''}>Buyback</option><option value="split" ${ch.dealType==='split'?'selected':''}>Split</option></select>
           </div>
@@ -906,7 +1025,7 @@ function renderChannels() {
         </div>
       </div>`;
     }
-    if (ch.isBroker) {
+    if (ch.isBroker || ch.useBroker) {
       html += `<div style="margin-top:12px;padding:12px;background:rgba(88,166,255,0.06);border:1px solid rgba(88,166,255,0.2);border-radius:8px">
         <div style="font-size:12px;font-weight:600;color:var(--accent-blue);margin-bottom:8px">Broker Config</div>
         <div class="ch-fields">
@@ -914,6 +1033,16 @@ function renderChannels() {
         </div>
       </div>`;
     }
+
+    // Unit Economics Preview (collapsible)
+    html += `<div style="margin-top:12px">
+      <button class="btn btn-sm" style="width:100%;text-align:left;justify-content:space-between" onclick="toggleChannelPreview(${i})">
+        <span>📊 Unit Economics Preview</span>
+        <span>${expanded ? '▼' : '▶'}</span>
+      </button>
+      ${expanded ? renderUnitEconPreview(ch) : ''}
+    </div>`;
+
     html += `<div style="margin-top:12px;display:flex;gap:8px">
       <button class="btn btn-sm btn-danger" onclick="removeChannel(${i})">Remove</button>
     </div></div>`;
@@ -927,9 +1056,26 @@ function renderChannels() {
       let handler = () => {
         let field = inp.dataset.field;
         if (!field) return;
-        let val = inp.type === 'number' ? parseFloat(inp.value)||0 : inp.value;
+        let val;
+        if (inp.type === 'checkbox') val = inp.checked;
+        else if (inp.type === 'number') val = parseFloat(inp.value) || 0;
+        else val = inp.value;
         if (field === 'demandCap' && val === 0) val = null;
         state.channels[idx][field] = val;
+        // Toggling broker/extraction features re-renders the card to show/hide config.
+        // Keep legacy isBroker/isExtraction in sync so the math routes correctly.
+        if (field === 'useBroker') {
+          state.channels[idx].isBroker = val;
+          saveState();
+          renderChannels();
+          return;
+        }
+        if (field === 'useExtraction') {
+          state.channels[idx].isExtraction = val;
+          saveState();
+          renderChannels();
+          return;
+        }
         saveState();
         // If name changed, update the scenario builder dropdowns to reflect new name
         if (field === 'name') {
@@ -942,7 +1088,14 @@ function renderChannels() {
           // Also update the helper text
           let helperDiv = card.querySelector('.ch-fields + div');
           if (helperDiv && !state.channels[idx].isExtraction) {
-            helperDiv.innerHTML = `1 lb = 453.6g &rarr; ${getUnitsPerLb(state.channels[idx])} units at ${val}g each. In-house cost = overhead/lb + per-unit cost. Outsourced replaces both.`;
+            helperDiv.innerHTML = `1 lb = 453.6g &rarr; ${getUnitsPerLb(state.channels[idx])} units at ${val}g each.`;
+          }
+        }
+        // If any field that affects unit economics changed, refresh the preview
+        if (['gramsPerUnit','retailPrice','wholesalePrice','inHouseCost','outsourcedCost','brokerFeePct','yieldPct','dealType','buybackPrice','splitPct'].includes(field)) {
+          let previewWrap = card.querySelector('.unit-econ-preview');
+          if (previewWrap && state.channels[idx]._expanded !== false) {
+            previewWrap.outerHTML = renderUnitEconPreview(state.channels[idx]);
           }
         }
       };
@@ -952,6 +1105,13 @@ function renderChannels() {
     });
   });
   updateQuoteChannelSelect();
+}
+
+// Toggle the expanded state of a channel card's unit economics preview
+function toggleChannelPreview(idx) {
+  let ch = state.channels[idx];
+  ch._expanded = ch._expanded === false ? true : false;
+  renderChannels();
 }
 
 function addChannel() {
@@ -1045,10 +1205,7 @@ function addAllocLine(channelId, lbs, mode, overrides) {
     destination: o.destination || 'internal',
     sellPriceOverride: o.sellPriceOverride != null ? o.sellPriceOverride : null,
     inHouseCostOverride: o.inHouseCostOverride != null ? o.inHouseCostOverride : null,
-    outsourcedCostOverride: o.outsourcedCostOverride != null ? o.outsourcedCostOverride : null,
-    retailPct: o.retailPct != null ? o.retailPct : 100,
-    wholesalePrice: o.wholesalePrice != null ? o.wholesalePrice : null,
-    brokerFeePct: o.brokerFeePct != null ? o.brokerFeePct : null
+    outsourcedCostOverride: o.outsourcedCostOverride != null ? o.outsourcedCostOverride : null
   });
   renderAllocator();
 }
@@ -1089,8 +1246,9 @@ function renderAllocator() {
     if (!ch) return;
     let matColor = ch.material === 'flower' ? 'var(--accent-green)' : ch.material === 'trim' ? 'var(--accent-purple)' : 'var(--accent-blue)';
 
-    // Effective retail sell price for this line
-    let effSell = line.sellPriceOverride != null ? line.sellPriceOverride : (ch.retailPrice || 0);
+    // Effective sell price for this line (based on destination)
+    let basePrice = (line.destination === 'external') ? ch.wholesalePrice : ch.retailPrice;
+    let effSell = line.sellPriceOverride != null ? line.sellPriceOverride : basePrice;
     // Effective cost per unit for this line
     let effCost;
     if (line.mode === 'outsourced') {
@@ -1099,15 +1257,16 @@ function renderAllocator() {
       effCost = line.inHouseCostOverride != null ? line.inHouseCostOverride : ch.inHouseCost;
     }
 
-    let rPct = line.retailPct != null ? line.retailPct : 100;
-    let hasWholesale = rPct < 100;
-    let wsPrice = line.wholesalePrice != null ? line.wholesalePrice : (ch.wholesalePrice || 0);
-    let brkFee = line.brokerFeePct != null ? line.brokerFeePct : 10;
-
-    // Main row
     let tr = document.createElement('tr');
     tr.setAttribute('data-line-row', line.id);
+    let isExpanded = line._expanded === true;
+    let costTitle = line.mode==='inhouse'
+      ? `In-house ADD-ON cost per unit (grow + overhead added automatically)`
+      : `All-in vendor cost per unit (grow cost is added; overhead is skipped)`;
     tr.innerHTML = `
+      <td style="width:26px;text-align:center">
+        <button class="btn btn-sm line-expand-btn" data-line="${line.id}" style="padding:2px 6px;font-size:11px" title="Show cost stack">${isExpanded ? '▼' : '▸'}</button>
+      </td>
       <td style="text-align:left">
         <span class="mat-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${matColor};margin-right:4px;vertical-align:middle"></span>
         <select class="alloc-input line-channel" data-line="${line.id}" style="width:140px;text-align:left">${chOptions}</select>
@@ -1115,18 +1274,21 @@ function renderAllocator() {
       <td><input type="number" class="alloc-input line-lbs" value="${line.lbs}" min="0" data-line="${line.id}" style="width:70px"></td>
       <td>
         <div class="toggle-group">
-          <button class="toggle-btn mode-btn ${line.mode==='inhouse'?'active':''}" data-line="${line.id}" data-mode="inhouse">In</button>
-          <button class="toggle-btn mode-btn ${line.mode==='outsourced'?'active':''}" data-line="${line.id}" data-mode="outsourced">Out</button>
+          <button class="toggle-btn ${line.mode==='inhouse'?'active':''}" data-line="${line.id}" data-mode="inhouse">In</button>
+          <button class="toggle-btn ${line.mode==='outsourced'?'active':''}" data-line="${line.id}" data-mode="outsourced">Out</button>
         </div>
       </td>
-      <td><input type="number" class="alloc-input line-retail-pct" value="${rPct}" min="0" max="100" step="5" data-line="${line.id}" style="width:56px" title="% of units sold through Tree House stores. Remainder goes to wholesale via broker."></td>
-      <td><input type="number" class="alloc-input line-sell" value="${effSell}" min="0" step="0.50" data-line="${line.id}" style="width:70px" title="Retail price per unit (Tree House stores)"></td>
-      <td><input type="number" class="alloc-input line-cost" value="${effCost}" min="0" step="0.25" data-line="${line.id}" style="width:70px" title="${line.mode==='inhouse'?'In-house processing cost per unit':'Vendor cost per unit'}"></td>
+      <td>
+        <div class="toggle-group">
+          <button class="toggle-btn dest-btn ${line.destination==='internal'?'active':''}" data-line="${line.id}" data-dest="internal" title="Sold through Tree House retail">Retail</button>
+          <button class="toggle-btn dest-btn ${line.destination==='external'?'active':''}" data-line="${line.id}" data-dest="external" title="Sold wholesale to external buyers">Whsle</button>
+        </div>
+      </td>
+      <td><input type="number" class="alloc-input line-sell" value="${effSell}" min="0" step="0.50" data-line="${line.id}" style="width:70px" title="${line.destination==='external'?'Wholesale price per unit':'Retail price per unit'}"></td>
+      <td><input type="number" class="alloc-input line-cost" value="${effCost}" min="0" step="0.25" data-line="${line.id}" style="width:70px;border-color:rgba(255,169,77,0.3);background:rgba(255,169,77,0.05)" title="${costTitle}"></td>
       <td class="alloc-val" data-cell="units">—</td>
       <td class="alloc-val" data-cell="revenue">—</td>
-      <td class="alloc-val" data-cell="growCost" style="font-size:12px">—</td>
-      <td class="alloc-val" data-cell="overheadCost" style="font-size:12px">—</td>
-      <td class="alloc-val" data-cell="channelCost" style="font-size:12px">—</td>
+      <td class="alloc-val" data-cell="totalCost">—</td>
       <td class="alloc-val" data-cell="margin">—</td>
       <td class="alloc-val" data-cell="marginPerLb">—</td>
       <td class="alloc-val" data-opp-line="${line.id}">—</td>
@@ -1136,27 +1298,16 @@ function renderAllocator() {
     // Set selected channel
     let sel = tr.querySelector('.line-channel');
     sel.value = line.channelId;
+
     body.appendChild(tr);
 
-    // Wholesale detail sub-row (shown when Store% < 100)
-    let wsTr = document.createElement('tr');
-    wsTr.setAttribute('data-ws-row', line.id);
-    wsTr.style.display = hasWholesale ? '' : 'none';
-    wsTr.innerHTML = `
-      <td colspan="15" style="padding:4px 8px 8px 28px;border-top:none;background:rgba(255,169,77,0.03)">
-        <div style="display:flex;align-items:center;gap:12px;font-size:12px;flex-wrap:wrap">
-          <span style="color:var(--accent-orange);font-weight:600">${100 - rPct}% to wholesale via broker</span>
-          <label style="color:var(--text-muted)">WS $/Unit:
-            <input type="number" class="alloc-input line-ws-price" value="${wsPrice}" min="0" step="0.50" data-line="${line.id}" style="width:70px">
-          </label>
-          <label style="color:var(--text-muted)">Broker Fee %:
-            <input type="number" class="alloc-input line-broker-fee" value="${brkFee}" min="0" max="100" step="1" data-line="${line.id}" style="width:56px">
-          </label>
-          <span class="ws-detail-text" data-ws-detail="${line.id}" style="color:var(--text-secondary)"></span>
-        </div>
-      </td>
-    `;
-    body.appendChild(wsTr);
+    // Optional detail row with full cost stack breakdown
+    if (isExpanded) {
+      let detailTr = document.createElement('tr');
+      detailTr.setAttribute('data-line-detail', line.id);
+      detailTr.innerHTML = `<td colspan="14" style="padding:0;background:var(--bg-secondary)"><div class="line-cost-detail" id="line-detail-${line.id}" style="padding:12px 20px;border-left:3px solid var(--accent-yellow)">Computing…</div></td>`;
+      body.appendChild(detailTr);
+    }
   });
 
   // Bind all inputs
@@ -1169,7 +1320,6 @@ function renderAllocator() {
         line.sellPriceOverride = null;
         line.inHouseCostOverride = null;
         line.outsourcedCostOverride = null;
-        line.wholesalePrice = null;
       }
       renderAllocator();
     });
@@ -1198,31 +1348,28 @@ function renderAllocator() {
       updateAllocator();
     });
   });
-  body.querySelectorAll('.line-retail-pct').forEach(inp => {
-    inp.addEventListener('input', () => {
-      let line = state.currentLines.find(l => l.id === parseInt(inp.dataset.line));
-      if (line) line.retailPct = Math.max(0, Math.min(100, num(inp.value)));
-      renderAllocator();
-    });
-  });
-  body.querySelectorAll('.line-ws-price').forEach(inp => {
-    inp.addEventListener('input', () => {
-      let line = state.currentLines.find(l => l.id === parseInt(inp.dataset.line));
-      if (line) line.wholesalePrice = num(inp.value);
-      updateAllocator();
-    });
-  });
-  body.querySelectorAll('.line-broker-fee').forEach(inp => {
-    inp.addEventListener('input', () => {
-      let line = state.currentLines.find(l => l.id === parseInt(inp.dataset.line));
-      if (line) line.brokerFeePct = num(inp.value);
-      updateAllocator();
-    });
-  });
-  body.querySelectorAll('.mode-btn').forEach(btn => {
+  body.querySelectorAll('.toggle-btn:not(.dest-btn)').forEach(btn => {
     btn.addEventListener('click', () => {
       let line = state.currentLines.find(l => l.id === parseInt(btn.dataset.line));
       if (line) line.mode = btn.dataset.mode;
+      renderAllocator();
+    });
+  });
+  body.querySelectorAll('.dest-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      let line = state.currentLines.find(l => l.id === parseInt(btn.dataset.line));
+      if (line) {
+        line.destination = btn.dataset.dest;
+        // Reset sell price override so it picks up the new destination default
+        line.sellPriceOverride = null;
+      }
+      renderAllocator();
+    });
+  });
+  body.querySelectorAll('.line-expand-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      let line = state.currentLines.find(l => l.id === parseInt(btn.dataset.line));
+      if (line) line._expanded = !line._expanded;
       renderAllocator();
     });
   });
@@ -1230,9 +1377,63 @@ function renderAllocator() {
   updateAllocator();
 }
 
+// Build the detail HTML for an expanded scenario line (full cost stack)
+function renderLineCostDetail(line, ch, econ) {
+  let lbs = line.lbs || 0;
+  if (lbs <= 0) {
+    return '<div style="color:var(--text-muted);font-size:12px">Set lbs > 0 to see the cost stack.</div>';
+  }
+  let growPerUnit = econ.units > 0 ? econ.growCost / econ.units : 0;
+  let overheadPerUnit = econ.units > 0 ? econ.overheadCost / econ.units : 0;
+  let channelPerUnit = econ.units > 0 ? econ.channelCost / econ.units : 0;
+  let totalPerUnit = econ.units > 0 ? econ.totalCost / econ.units : 0;
+  let revPerUnit = econ.units > 0 ? econ.revenue / econ.units : 0;
+  let marginPerUnit = econ.units > 0 ? econ.margin / econ.units : 0;
+  let brokerFeePerUnit = econ.units > 0 ? (econ.brokerFee || 0) / econ.units : 0;
+  let isExtraction = ch.isExtraction || ch.useExtraction;
+  let isBroker = ch.isBroker || ch.useBroker;
+  let unitLabel = isExtraction ? 'gram' : 'unit';
+
+  let brokerRow = (econ.brokerFee || 0) > 0
+    ? `<tr><td>Broker fee (${ch.brokerFeePct||10}% off sell)</td><td class="negative">−$${fmtD(brokerFeePerUnit)}</td><td class="negative">−$${fmt(econ.brokerFee)}</td><td style="color:var(--text-muted)">revenue deduction</td></tr>`
+    : '';
+
+  return `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px">Cost stack — ${lbs} lbs → ${fmt(econ.units)} ${unitLabel}s</div>
+        <table class="data-table" style="font-size:11px">
+          <thead><tr><th style="text-align:left">Cost layer</th><th>/ ${unitLabel}</th><th>Total</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td><span style="color:var(--accent-green)">●</span> Grow cost</td><td>$${fmtD(growPerUnit)}</td><td>$${fmt(econ.growCost)}</td><td style="color:var(--text-muted)">baked in — Harvest Setup</td></tr>
+            <tr><td><span style="color:var(--accent-blue)">●</span> Prod overhead</td><td>${line.mode==='inhouse'?'$'+fmtD(overheadPerUnit):'<span style="color:var(--text-muted)">—</span>'}</td><td>${line.mode==='inhouse'?'$'+fmt(econ.overheadCost):'<span style="color:var(--text-muted)">skipped</span>'}</td><td style="color:var(--text-muted)">${line.mode==='inhouse'?'baked in — In-house only':'outsourced — vendor handles'}</td></tr>
+            <tr><td><span style="color:var(--accent-orange)">●</span> Channel cost</td><td>$${fmtD(channelPerUnit)}</td><td>$${fmt(econ.channelCost)}</td><td style="color:var(--text-muted)">add-on — from Cost/Unit field</td></tr>
+            <tr class="total-row"><td><b>All-in cost</b></td><td><b>$${fmtD(totalPerUnit)}</b></td><td><b>$${fmt(econ.totalCost)}</b></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px">Revenue & margin</div>
+        <table class="data-table" style="font-size:11px">
+          <tbody>
+            <tr><td>${line.destination==='external'?'Wholesale':'Retail'} price</td><td>$${fmtD(line.sellPriceOverride != null ? line.sellPriceOverride : (line.destination==='external'?ch.wholesalePrice:ch.retailPrice))}</td><td>—</td><td></td></tr>
+            ${brokerRow}
+            <tr><td>Net revenue</td><td>$${fmtD(revPerUnit)}</td><td>$${fmt(econ.revenue)}</td><td></td></tr>
+            <tr class="${econ.margin>=0?'positive':'negative'}"><td><b>Margin</b></td><td><b>$${fmtD(marginPerUnit)}</b></td><td><b>$${fmt(econ.margin)}</b></td><td style="color:var(--text-muted)">$${fmtD(econ.marginPerLb)}/lb</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(255,169,77,0.08);border:1px dashed rgba(255,169,77,0.3);border-radius:6px;font-size:11px">
+          <div style="font-weight:600;color:var(--accent-orange);margin-bottom:2px">💰 Cash investment needed</div>
+          <div>Per ${unitLabel}: <b>$${fmtD(econ.units>0?econ.cashInvestment/econ.units:0)}</b> &nbsp;·&nbsp; Total: <b>$${fmt(econ.cashInvestment)}</b></div>
+          <div style="color:var(--text-muted);margin-top:2px">Fresh cash out to produce these units (grow cost already spent).</div>
+        </div>
+      </div>
+    </div>`;
+}
+
 function calcLineEcon(line, ch) {
   let lbs = line.lbs || 0;
-  if (lbs <= 0) return { units:0, revenue:0, totalCost:0, margin:0, marginPerLb:0, growCost:0, overheadCost:0, channelCost:0, retailUnits:0, wholesaleUnits:0, retailRevenue:0, wholesaleRevenue:0, brokerFeeAmt:0 };
+  if (lbs <= 0) return { units:0, revenue:0, totalCost:0, margin:0, marginPerLb:0, growCost:0, overheadCost:0, channelCost:0 };
 
   let h = state.harvest;
   let total = h.flower + h.trim;
@@ -1242,75 +1443,51 @@ function calcLineEcon(line, ch) {
   let growCost = lbs * growPerLb;
   let overheadCost = line.mode === 'inhouse' ? lbs * prodPerLb : 0;
   let units, revenue, channelCost;
-  let retailUnits = 0, wholesaleUnits = 0, retailRevenue = 0, wholesaleRevenue = 0, brokerFeeAmt = 0;
 
-  // Resolve per-line overrides
-  let effRetailPrice = line.sellPriceOverride != null ? line.sellPriceOverride : (ch.retailPrice || 0);
+  // Resolve per-line overrides: sell price (based on destination) and cost per unit
+  let basePrice = (line.destination === 'external') ? (ch.wholesalePrice || 0) : (ch.retailPrice || 0);
+  let effSellPrice = line.sellPriceOverride != null ? line.sellPriceOverride : basePrice;
   let effInHouseCost = line.inHouseCostOverride != null ? line.inHouseCostOverride : (ch.inHouseCost || 0);
   let effOutsourcedCost = line.outsourcedCostOverride != null ? line.outsourcedCostOverride : (ch.outsourcedCost || 0);
-  let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
 
-  // Retail/wholesale split
-  let retailPct = line.retailPct != null ? line.retailPct : 100;
-  let effWsPrice = line.wholesalePrice != null ? line.wholesalePrice : (ch.wholesalePrice || 0);
-  let effBrokerFeePct = line.brokerFeePct != null ? line.brokerFeePct : 10;
+  let isExtraction = ch.isExtraction || ch.useExtraction;
+  let isBroker = ch.isBroker || ch.useBroker;
 
-  if (ch.isExtraction) {
+  if (isExtraction) {
     let yieldFrac = (ch.yieldPct || 10) / 100;
     let distillateGrams = lbs * yieldFrac * 453.6;
     units = Math.floor(distillateGrams);
     if (ch.dealType === 'buyback') {
       let buyback = line.outsourcedCostOverride != null ? line.outsourcedCostOverride : (ch.buybackPrice || 4.65);
-      // Split retail vs wholesale
-      retailUnits = Math.floor(units * retailPct / 100);
-      wholesaleUnits = units - retailUnits;
-      retailRevenue = retailUnits * effRetailPrice;
-      let wsGross = wholesaleUnits * effWsPrice;
-      brokerFeeAmt = wholesaleUnits > 0 ? wsGross * (effBrokerFeePct / 100) : 0;
-      wholesaleRevenue = wsGross - brokerFeeAmt;
-      revenue = retailRevenue + wholesaleRevenue;
+      revenue = units * effSellPrice;
       channelCost = units * buyback;
     } else {
       let keepPct = 1 - ((ch.splitPct || 30) / 100);
       units = Math.floor(units * keepPct);
-      retailUnits = Math.floor(units * retailPct / 100);
-      wholesaleUnits = units - retailUnits;
-      retailRevenue = retailUnits * effRetailPrice;
-      let wsGross = wholesaleUnits * effWsPrice;
-      brokerFeeAmt = wholesaleUnits > 0 ? wsGross * (effBrokerFeePct / 100) : 0;
-      wholesaleRevenue = wsGross - brokerFeeAmt;
-      revenue = retailRevenue + wholesaleRevenue;
+      revenue = units * effSellPrice;
       channelCost = 0;
     }
-  } else if (ch.isBroker) {
-    // Dedicated broker channel: all units go through broker (legacy behavior)
-    units = Math.floor(lbs * getUnitsPerLb(ch));
-    let gross = units * effRetailPrice;
-    brokerFeeAmt = gross * ((ch.brokerFeePct || 10) / 100);
-    revenue = gross - brokerFeeAmt;
-    retailUnits = 0;
-    wholesaleUnits = units;
-    retailRevenue = 0;
-    wholesaleRevenue = revenue;
-    channelCost = units * costPerUnit;
   } else {
-    // Standard channel with retail/wholesale split
     units = Math.floor(lbs * getUnitsPerLb(ch));
-    retailUnits = Math.floor(units * retailPct / 100);
-    wholesaleUnits = units - retailUnits;
-    retailRevenue = retailUnits * effRetailPrice;
-    let wsGross = wholesaleUnits * effWsPrice;
-    brokerFeeAmt = wholesaleUnits > 0 ? wsGross * (effBrokerFeePct / 100) : 0;
-    wholesaleRevenue = wsGross - brokerFeeAmt;
-    revenue = retailRevenue + wholesaleRevenue;
+    revenue = units * effSellPrice;
+    let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
     channelCost = units * costPerUnit;
+  }
+
+  // Broker fee is a % off revenue and applies to any channel with useBroker enabled
+  let brokerFee = 0;
+  if (isBroker) {
+    brokerFee = revenue * ((ch.brokerFeePct || 10) / 100);
+    revenue = revenue - brokerFee;
   }
 
   let totalCost = growCost + overheadCost + channelCost;
   let margin = revenue - totalCost;
   let marginPerLb = lbs > 0 ? margin / lbs : 0;
+  // Cash investment = what you're paying out per unit (excludes sunk grow cost)
+  let cashInvestment = overheadCost + channelCost;
 
-  return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost, retailUnits, wholesaleUnits, retailRevenue, wholesaleRevenue, brokerFeeAmt };
+  return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost, brokerFee, cashInvestment };
 }
 
 function updateAllocator() {
@@ -1355,7 +1532,7 @@ function updateAllocator() {
   flowerLines.sort((a, b) => b.econ.marginPerLb - a.econ.marginPerLb);
   trimLines.sort((a, b) => b.econ.marginPerLb - a.econ.marginPerLb);
 
-  let totals = { revenue: 0, cost: 0, margin: 0, lbs: 0, units: 0, growCost: 0, overheadCost: 0, channelCost: 0 };
+  let totals = { revenue: 0, cost: 0, margin: 0, lbs: 0, units: 0 };
   let insights = [];
 
   lineEcons.forEach(le => {
@@ -1366,24 +1543,17 @@ function updateAllocator() {
       if (le.line.lbs > 0) {
         setCell('units', fmt(le.econ.units));
         setCell('revenue', '$' + fmt(le.econ.revenue));
-        setCell('growCost', '$' + fmt(Math.round(le.econ.growCost)));
-        setCell('overheadCost', le.econ.overheadCost > 0 ? '$' + fmt(Math.round(le.econ.overheadCost)) : '—');
-        setCell('channelCost', '$' + fmt(Math.round(le.econ.channelCost)));
+        setCell('totalCost', '$' + fmt(le.econ.totalCost));
         let mCell = row.querySelector('[data-cell="margin"]');
         if (mCell) { mCell.textContent = '$' + fmt(le.econ.margin); mCell.className = 'alloc-val ' + (le.econ.margin >= 0 ? 'positive' : 'negative'); }
         setCell('marginPerLb', '$' + fmtD(le.econ.marginPerLb));
       } else {
-        setCell('units', '—'); setCell('revenue', '—'); setCell('growCost', '—'); setCell('overheadCost', '—'); setCell('channelCost', '—'); setCell('margin', '—'); setCell('marginPerLb', '—');
+        setCell('units', '—'); setCell('revenue', '—'); setCell('totalCost', '—'); setCell('margin', '—'); setCell('marginPerLb', '—');
       }
     }
-
-    // Update wholesale detail sub-row
-    let wsDetail = document.querySelector(`[data-ws-detail="${le.line.id}"]`);
-    if (wsDetail && le.line.lbs > 0 && le.econ.wholesaleUnits > 0) {
-      wsDetail.textContent = `${fmt(le.econ.retailUnits)} retail · ${fmt(le.econ.wholesaleUnits)} wholesale · Broker fee: $${fmt(Math.round(le.econ.brokerFeeAmt))} · WS net: $${fmt(Math.round(le.econ.wholesaleRevenue))}`;
-    } else if (wsDetail) {
-      wsDetail.textContent = '';
-    }
+    // Populate expanded cost-stack detail row if visible
+    let detailDiv = document.getElementById(`line-detail-${le.line.id}`);
+    if (detailDiv) detailDiv.innerHTML = renderLineCostDetail(le.line, le.ch, le.econ);
 
     let oppCell = document.querySelector(`[data-opp-line="${le.line.id}"]`);
     if (!oppCell) return;
@@ -1394,9 +1564,6 @@ function updateAllocator() {
       totals.cost += le.econ.totalCost;
       totals.margin += le.econ.margin;
       totals.lbs += le.line.lbs;
-      totals.growCost += le.econ.growCost;
-      totals.overheadCost += le.econ.overheadCost;
-      totals.channelCost += le.econ.channelCost;
 
       let pool = (le.ch.material === 'flower' || le.ch.material === 'either') ? flowerLines : trimLines;
       let bestAlt = pool.find(p => p.line.id !== le.line.id);
@@ -1416,18 +1583,16 @@ function updateAllocator() {
     }
   });
 
-  // Totals row — 15 columns: Channel, Lbs, Mode, Store%, Retail$/U, Cost$/U, Units, Revenue, Grow, OH, Proc, Margin, $/Lb, Opp, Delete
-  let fixedTotal = totals.growCost + totals.overheadCost;
+  // Totals row — 14 columns: Expand, Channel, Lbs, Mode, Dest, Sell$/Unit, Cost$/Unit, Units, Revenue, TotalCost, Margin, Margin/Lb, OppCost, Delete
   document.getElementById('allocFoot').innerHTML = `
     <tr class="total-row">
+      <td></td>
       <td style="text-align:left">TOTAL</td>
       <td style="text-align:right">${fmt(totals.lbs)}</td>
       <td></td><td></td><td></td><td></td>
       <td style="text-align:right">${fmt(totals.units)}</td>
       <td style="text-align:right">$${fmt(totals.revenue)}</td>
-      <td style="text-align:right;font-size:12px">$${fmt(Math.round(totals.growCost))}</td>
-      <td style="text-align:right;font-size:12px">$${fmt(Math.round(totals.overheadCost))}</td>
-      <td style="text-align:right;font-size:12px">$${fmt(Math.round(totals.channelCost))}</td>
+      <td style="text-align:right">$${fmt(totals.cost)}</td>
       <td style="text-align:right" class="${totals.margin>=0?'positive':'negative'}">$${fmt(totals.margin)}</td>
       <td style="text-align:right">${totals.lbs>0?'$'+fmtD(totals.margin/totals.lbs):'—'}</td>
       <td></td><td></td>
@@ -1436,22 +1601,226 @@ function updateAllocator() {
 
   // KPIs
   document.getElementById('scen-revenue').textContent = '$' + fmt(totals.revenue);
-  document.getElementById('scen-fixed-cost').textContent = '$' + fmt(Math.round(fixedTotal));
-  document.getElementById('scen-fixed-detail').textContent = 'Grow: $' + fmt(Math.round(totals.growCost)) + ' + OH: $' + fmt(Math.round(totals.overheadCost));
-  document.getElementById('scen-addl-cost').textContent = '$' + fmt(Math.round(totals.channelCost));
+  document.getElementById('scen-cost').textContent = '$' + fmt(totals.cost);
   document.getElementById('scen-margin').textContent = '$' + fmt(totals.margin);
   document.getElementById('scen-margin').style.color = totals.margin >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
   document.getElementById('scen-margin-lb').textContent = totals.lbs > 0 ? '$' + fmtD(totals.margin / totals.lbs) : '—';
 
-  // Insights
-  let insightDiv = document.getElementById('oppCostContent');
-  if (insights.length) {
-    insightDiv.innerHTML = insights.map(i => `<div style="margin-bottom:8px;padding:8px;background:rgba(255,107,107,0.05);border-left:3px solid var(--accent-red);border-radius:0 4px 4px 0">${i}</div>`).join('');
-  } else if (totals.lbs > 0) {
-    insightDiv.innerHTML = '<div style="color:var(--accent-green)">All lines are earning their best comparative returns. No obvious reallocation gains.</div>';
-  } else {
-    insightDiv.innerHTML = '<div>Add allocation lines above to see opportunity cost insights.</div>';
+  // === Rich Opportunity Cost Insights ===
+  renderOpportunityCostPanel(totals, insights, lineEcons);
+}
+
+// Score a 1-lb test allocation for a channel under a given mode+destination
+function scoreChannelForPool(ch, mode, destination) {
+  let testLine = {
+    id: -1, channelId: ch.id, lbs: 1, mode, destination,
+    sellPriceOverride: null, inHouseCostOverride: null, outsourcedCostOverride: null
+  };
+  let econ = calcLineEcon(testLine, ch);
+  return { econ, mode, destination };
+}
+
+// Build the best (mode, destination) pick for a given channel given the strategy
+function bestPickForChannel(ch, strategy) {
+  let isExtraction = ch.isExtraction || ch.useExtraction;
+  let modes = isExtraction ? ['outsourced'] : ['inhouse','outsourced'];
+  let dests = isExtraction ? ['internal'] : ['internal','external'];
+  let picks = [];
+  modes.forEach(m => dests.forEach(d => picks.push(scoreChannelForPool(ch, m, d))));
+  if (strategy === 'maxCash') {
+    // Prefer wholesale destinations (faster cash realization, no retail sell-through risk),
+    // but only if they still earn a positive margin. Fall back to best margin.
+    let wholesalePicks = picks.filter(p => p.destination === 'external' && p.econ.marginPerLb > 0);
+    if (wholesalePicks.length) {
+      return wholesalePicks.sort((a,b) => b.econ.marginPerLb - a.econ.marginPerLb)[0];
+    }
   }
+  return picks.sort((a,b) => b.econ.marginPerLb - a.econ.marginPerLb)[0];
+}
+
+// Build an optimal allocation across one material pool (flower or trim)
+function allocateOptimal(pool, strategy) {
+  let h = state.harvest;
+  let available = pool === 'flower' ? h.flower : h.trim;
+  let remaining = available;
+
+  let candidates = state.channels
+    .filter(ch => ch.enabled !== false)
+    .filter(ch => ch.material === pool || ch.material === 'either')
+    .map(ch => {
+      let pick = bestPickForChannel(ch, strategy);
+      return { ch, ...pick };
+    });
+
+  // Sort by margin/lb desc
+  candidates.sort((a,b) => b.econ.marginPerLb - a.econ.marginPerLb);
+
+  // Balanced strategy caps any single channel at 40% of the pool to avoid concentration
+  let perChannelCap = strategy === 'balanced' ? Math.floor(available * 0.4) : Infinity;
+
+  let allocations = [];
+  for (let cand of candidates) {
+    if (remaining <= 0) break;
+    // Skip losing channels unless balanced (which forces spread)
+    if (cand.econ.marginPerLb <= 0 && strategy !== 'balanced') continue;
+    let demandCap = cand.ch.demandCap || Infinity;
+    let cap = Math.min(demandCap, perChannelCap, remaining);
+    if (cap <= 0) continue;
+    allocations.push({
+      channelId: cand.ch.id,
+      channelName: cand.ch.name,
+      lbs: cap,
+      mode: cand.mode,
+      destination: cand.destination,
+      marginPerLb: cand.econ.marginPerLb
+    });
+    remaining -= cap;
+  }
+  return { allocations, remaining, poolSize: available };
+}
+
+// Compute scenario-level totals from a set of allocation plans
+function computePlanTotals(flowerPlan, trimPlan) {
+  let totals = { revenue: 0, cost: 0, margin: 0, cash: 0, lbs: 0 };
+  [...(flowerPlan.allocations||[]), ...(trimPlan.allocations||[])].forEach(alloc => {
+    let ch = state.channels.find(c => c.id === alloc.channelId);
+    if (!ch) return;
+    let econ = calcLineEcon({
+      id: 0, channelId: ch.id, lbs: alloc.lbs, mode: alloc.mode, destination: alloc.destination,
+      sellPriceOverride: null, inHouseCostOverride: null, outsourcedCostOverride: null
+    }, ch);
+    totals.revenue += econ.revenue; totals.cost += econ.totalCost; totals.margin += econ.margin;
+    totals.cash += econ.cashInvestment; totals.lbs += alloc.lbs;
+  });
+  return totals;
+}
+
+// Apply an optimal plan to the scenario builder
+function applyOptimalPlan(strategy) {
+  if (!confirm(`Replace current scenario with the "${strategy}" optimal mix? This cannot be undone.`)) return;
+  let flower = allocateOptimal('flower', strategy);
+  let trim = allocateOptimal('trim', strategy);
+  state.currentLines = [];
+  lineIdCounter = 0;
+  [...flower.allocations, ...trim.allocations].forEach(a => {
+    lineIdCounter++;
+    state.currentLines.push({
+      id: lineIdCounter,
+      channelId: a.channelId,
+      lbs: a.lbs,
+      mode: a.mode,
+      destination: a.destination,
+      sellPriceOverride: null,
+      inHouseCostOverride: null,
+      outsourcedCostOverride: null
+    });
+  });
+  let scenName = document.getElementById('scenarioName');
+  if (scenName && scenName.value && !scenName.value.match(/optimal/i)) {
+    scenName.value = scenName.value + ' (' + strategy + ')';
+  } else if (scenName) {
+    scenName.value = 'Optimal ' + strategy;
+  }
+  renderAllocator();
+  // Scroll to top of allocation table
+  document.getElementById('allocTable').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderStrategyCard(strategy, label, description, accentColor) {
+  let flower = allocateOptimal('flower', strategy);
+  let trim = allocateOptimal('trim', strategy);
+  let totals = computePlanTotals(flower, trim);
+  let allAllocs = [...flower.allocations, ...trim.allocations]
+    .sort((a,b) => b.lbs - a.lbs);
+  let top = allAllocs.slice(0, 4);
+  let others = allAllocs.slice(4);
+  let othersLbs = others.reduce((s,a) => s + a.lbs, 0);
+  let cashPerDollarMargin = totals.margin > 0 ? totals.cash / totals.margin : 0;
+
+  return `
+    <div style="background:var(--bg-secondary);border:1px solid ${accentColor};border-radius:8px;padding:14px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:${accentColor}">${label}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${description}</div>
+        </div>
+        <button class="btn btn-sm" style="border-color:${accentColor};color:${accentColor}" onclick="applyOptimalPlan('${strategy}')">Apply →</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;margin-bottom:10px">
+        <div><span style="color:var(--text-muted)">Margin</span> <b class="${totals.margin>=0?'positive':'negative'}" style="display:block;font-size:15px">$${fmt(totals.margin)}</b></div>
+        <div><span style="color:var(--text-muted)">Revenue</span> <b style="display:block;font-size:15px">$${fmt(totals.revenue)}</b></div>
+        <div><span style="color:var(--text-muted)">Cash invest</span> <b style="display:block;font-size:13px;color:var(--accent-orange)">$${fmt(totals.cash)}</b></div>
+        <div><span style="color:var(--text-muted)">$ margin / $ cash</span> <b style="display:block;font-size:13px">${cashPerDollarMargin>0?'$'+fmtD(1/cashPerDollarMargin):'—'}</b></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Top allocations:</div>
+      <div style="font-size:11px">
+        ${top.map(a => {
+          let pctOfPool = ((a.lbs / (a.channelId && state.channels.find(c=>c.id===a.channelId)?.material==='trim' ? state.harvest.trim : state.harvest.flower)) * 100);
+          return `<div style="display:flex;justify-content:space-between;padding:2px 0"><span>${esc(a.channelName)} <span style="color:var(--text-muted)">(${a.mode==='inhouse'?'in':'out'}/${a.destination==='external'?'whsle':'retail'})</span></span><span><b>${fmt(a.lbs)}</b> lbs · $${fmtD(a.marginPerLb)}/lb</span></div>`;
+        }).join('')}
+        ${others.length ? `<div style="display:flex;justify-content:space-between;padding:2px 0;color:var(--text-muted)"><span>+ ${others.length} more channel${others.length>1?'s':''}</span><span><b>${fmt(othersLbs)}</b> lbs</span></div>` : ''}
+      </div>
+      ${(flower.remaining > 0 || trim.remaining > 0) ? `<div style="margin-top:8px;padding:6px;background:rgba(255,107,107,0.05);border-left:2px solid var(--accent-red);font-size:10px;color:var(--text-secondary)">
+        Unallocated: ${flower.remaining>0?fmt(flower.remaining)+' lbs flower':''}${flower.remaining>0&&trim.remaining>0?', ':''}${trim.remaining>0?fmt(trim.remaining)+' lbs trim':''} (all channels filled to demand cap or unprofitable)
+      </div>` : ''}
+    </div>`;
+}
+
+function renderOpportunityCostPanel(currentTotals, perLineInsights, lineEcons) {
+  let div = document.getElementById('oppCostContent');
+  let h = state.harvest;
+  if (h.flower + h.trim <= 0) {
+    div.innerHTML = '<div style="color:var(--text-muted)">Set flower/trim in Harvest Setup to see opportunity cost analysis.</div>';
+    return;
+  }
+
+  // Compute the three strategies
+  let maxProfitTotals = computePlanTotals(allocateOptimal('flower','maxProfit'), allocateOptimal('trim','maxProfit'));
+  let gainVsCurrent = maxProfitTotals.margin - (currentTotals.margin || 0);
+  let gainPct = currentTotals.margin > 0 ? (gainVsCurrent / currentTotals.margin * 100) : null;
+
+  let html = '';
+
+  // Current-vs-optimal banner
+  if (currentTotals.lbs > 0) {
+    let color = gainVsCurrent > 1000 ? 'var(--accent-red)' : gainVsCurrent > 100 ? 'var(--accent-orange)' : 'var(--accent-green)';
+    let verdict = gainVsCurrent > 1000 ? `You're leaving <b>$${fmt(gainVsCurrent)}</b> on the table vs. the max-profit optimal mix${gainPct!=null?` (${gainPct.toFixed(0)}% upside)`:''}.`
+      : gainVsCurrent > 100 ? `Your plan is close to optimal. About <b>$${fmt(gainVsCurrent)}</b> of additional margin is possible.`
+      : `Your plan is near-optimal — within $${fmt(Math.max(0,gainVsCurrent))} of the max-profit benchmark. Good work.`;
+    html += `<div style="padding:12px;margin-bottom:16px;background:rgba(255,212,59,0.04);border-left:3px solid ${color};border-radius:0 6px 6px 0">
+      <div style="font-size:13px;color:var(--text-primary)"><b>Current scenario:</b> $${fmt(currentTotals.margin)} margin on ${fmt(currentTotals.lbs)} lbs. ${verdict}</div>
+    </div>`;
+  }
+
+  // Warn if no demand caps are set — otherwise Max Profit will just pick #1 channel
+  let capsSet = state.channels.filter(c => c.enabled !== false && c.demandCap && c.demandCap > 0).length;
+  let totalEligible = state.channels.filter(c => c.enabled !== false).length;
+  if (capsSet < 2) {
+    html += `<div style="padding:10px 12px;margin-bottom:14px;background:rgba(255,169,77,0.08);border:1px solid rgba(255,169,77,0.3);border-radius:6px;font-size:12px;color:var(--text-primary)">
+      <b style="color:var(--accent-orange)">⚠️ No demand caps set</b> — only ${capsSet} of ${totalEligible} channels has a "Demand Cap (lbs)" set. Without caps, Max Profit will concentrate allocation in the single highest-margin channel (which probably isn't realistic — you can't actually sell 5,000 lbs of pre-rolls). <b>Set demand caps on each channel</b> (Channel Economics → Demand Cap) to get meaningful optimal-mix recommendations. The Balanced strategy below is your safest reference until caps are set.
+    </div>`;
+  }
+
+  // Strategy cards — 3 optimal mix options
+  html += `<div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:10px">Optimal allocation strategies <span style="color:var(--text-muted);font-weight:400">(capacity-aware, respects demand caps)</span></div>`;
+  html += `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:16px">`;
+  html += renderStrategyCard('maxProfit', '💰 Max Profit', 'Highest $/lb, filling caps greedily', 'rgba(105,219,124,0.5)');
+  html += renderStrategyCard('maxCash', '⚡ Max Cash Velocity', 'Favors wholesale/bulk over retail sell-through', 'rgba(88,166,255,0.5)');
+  html += renderStrategyCard('balanced', '🛡 Balanced / Risk-Spread', 'No channel exceeds 40% of material pool', 'rgba(188,140,255,0.5)');
+  html += `</div>`;
+
+  // Per-line reallocation flags (the useful part of the old insight system)
+  if (perLineInsights && perLineInsights.length) {
+    html += `<div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px">Flags on your current scenario</div>`;
+    html += perLineInsights.map(i => `<div style="margin-bottom:8px;padding:8px 10px;background:rgba(255,107,107,0.05);border-left:3px solid var(--accent-red);border-radius:0 4px 4px 0;font-size:12px">${i}</div>`).join('');
+  }
+
+  // Caveats
+  html += `<div style="margin-top:14px;padding:8px 12px;background:var(--bg-input);border-radius:6px;font-size:11px;color:var(--text-muted);line-height:1.6">
+    <b>Methodology:</b> For each strategy, the calculator tests every channel in both In-house/Outsourced modes and Retail/Wholesale destinations, picks the best (mode,destination) per channel, then greedily fills each material pool (flower, trim) in order of margin/lb while respecting each channel's demand cap. Max Cash prefers wholesale where margin stays positive. Balanced caps any single channel at 40% of the pool. These are starting points, not final plans — adjust in the builder.
+  </div>`;
+
+  div.innerHTML = html;
 }
 
 // ====== SAVE / LOAD SCENARIOS ======
@@ -1664,62 +2033,48 @@ function calcLineEconWithHarvest(line, ch, harvest) {
   let overheadCost = line.mode === 'inhouse' ? lbs * prodPerLb : 0;
   let units, revenue, channelCost;
 
-  // Resolve per-line overrides
-  let effRetailPrice = line.sellPriceOverride != null ? line.sellPriceOverride : (ch.retailPrice || 0);
+  // Resolve per-line overrides: sell price (based on destination) and cost per unit
+  let basePrice = (line.destination === 'external') ? (ch.wholesalePrice || 0) : (ch.retailPrice || 0);
+  let effSellPrice = line.sellPriceOverride != null ? line.sellPriceOverride : basePrice;
   let effInHouseCost = line.inHouseCostOverride != null ? line.inHouseCostOverride : (ch.inHouseCost || 0);
   let effOutsourcedCost = line.outsourcedCostOverride != null ? line.outsourcedCostOverride : (ch.outsourcedCost || 0);
-  let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
 
-  let retailPct = line.retailPct != null ? line.retailPct : 100;
-  let effWsPrice = line.wholesalePrice != null ? line.wholesalePrice : (ch.wholesalePrice || 0);
-  let effBrokerFeePct = line.brokerFeePct != null ? line.brokerFeePct : 10;
+  let isExtraction = ch.isExtraction || ch.useExtraction;
+  let isBroker = ch.isBroker || ch.useBroker;
 
-  if (ch.isExtraction) {
+  if (isExtraction) {
     let yieldFrac = (ch.yieldPct || 10) / 100;
     let distillateGrams = lbs * yieldFrac * 453.6;
     units = Math.floor(distillateGrams);
     if (ch.dealType === 'buyback') {
       let buyback = line.outsourcedCostOverride != null ? line.outsourcedCostOverride : (ch.buybackPrice || 4.65);
-      let rUnits = Math.floor(units * retailPct / 100);
-      let wUnits = units - rUnits;
-      let rRev = rUnits * effRetailPrice;
-      let wGross = wUnits * effWsPrice;
-      let wFee = wUnits > 0 ? wGross * (effBrokerFeePct / 100) : 0;
-      revenue = rRev + wGross - wFee;
+      revenue = units * effSellPrice;
       channelCost = units * buyback;
     } else {
       let keepPct = 1 - ((ch.splitPct || 30) / 100);
       units = Math.floor(units * keepPct);
-      let rUnits = Math.floor(units * retailPct / 100);
-      let wUnits = units - rUnits;
-      let rRev = rUnits * effRetailPrice;
-      let wGross = wUnits * effWsPrice;
-      let wFee = wUnits > 0 ? wGross * (effBrokerFeePct / 100) : 0;
-      revenue = rRev + wGross - wFee;
+      revenue = units * effSellPrice;
       channelCost = 0;
     }
-  } else if (ch.isBroker) {
-    units = Math.floor(lbs * getUnitsPerLb(ch));
-    let gross = units * effRetailPrice;
-    let brokerFee = gross * ((ch.brokerFeePct || 10) / 100);
-    revenue = gross - brokerFee;
-    channelCost = units * costPerUnit;
   } else {
     units = Math.floor(lbs * getUnitsPerLb(ch));
-    let rUnits = Math.floor(units * retailPct / 100);
-    let wUnits = units - rUnits;
-    let rRev = rUnits * effRetailPrice;
-    let wGross = wUnits * effWsPrice;
-    let wFee = wUnits > 0 ? wGross * (effBrokerFeePct / 100) : 0;
-    revenue = rRev + wGross - wFee;
+    revenue = units * effSellPrice;
+    let costPerUnit = line.mode === 'inhouse' ? effInHouseCost : effOutsourcedCost;
     channelCost = units * costPerUnit;
+  }
+
+  let brokerFee = 0;
+  if (isBroker) {
+    brokerFee = revenue * ((ch.brokerFeePct || 10) / 100);
+    revenue = revenue - brokerFee;
   }
 
   let totalCost = growCost + overheadCost + channelCost;
   let margin = revenue - totalCost;
   let marginPerLb = lbs > 0 ? margin / lbs : 0;
+  let cashInvestment = overheadCost + channelCost;
 
-  return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost };
+  return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost, brokerFee, cashInvestment };
 }
 
 // ====== EXCEL EXPORT ======
@@ -1744,33 +2099,31 @@ function exportComparison() {
       ['Grow Cost ($)', s.harvest.growCost],
       ['Production Overhead ($)', s.harvest.prodOverhead || 0],
       [''],
-      ['Channel', 'Material', 'Lbs', 'Mode', 'Store %', 'Units', 'Revenue', 'Grow Cost', 'Overhead', 'Processing', 'Fixed Cost', 'Add\'l Cost', 'Total Cost', 'Margin', 'Margin/Lb']
+      ['Channel', 'Material', 'Lbs', 'Mode', 'Destination', 'Units', 'Revenue', 'Grow Cost', 'Overhead', 'Channel Cost', 'Total Cost', 'Margin', 'Margin/Lb']
     ];
 
-    let totals = { rev:0, cost:0, margin:0, lbs:0, grow:0, oh:0, proc:0 };
+    let totals = { rev:0, cost:0, margin:0, lbs:0 };
     let channels = s.channels || state.channels;
     // Support both new lines format and legacy allocations format
     let lines = s.lines || [];
     if (!lines.length && s.allocations) {
       channels.forEach(ch => {
         let lbs = s.allocations[ch.id] || 0;
-        if (lbs > 0) lines.push({ channelId: ch.id, lbs, mode: (s.modes && s.modes[ch.id]) || 'inhouse', destination: 'internal', outsourcedCostOverride: null, retailPct: 100 });
+        if (lbs > 0) lines.push({ channelId: ch.id, lbs, mode: (s.modes && s.modes[ch.id]) || 'inhouse', destination: 'internal', outsourcedCostOverride: null });
       });
     }
     lines.forEach(line => {
       let ch = channels.find(c => c.id === line.channelId);
       if (!ch) return;
       let econ = calcLineEconWithHarvest(line, ch, s.harvest);
-      let storePct = line.retailPct != null ? line.retailPct : 100;
-      let fixedCost = Math.round(econ.growCost) + Math.round(econ.overheadCost);
-      rows.push([ch.name, ch.material, line.lbs, line.mode, storePct + '%', econ.units, econ.revenue, Math.round(econ.growCost), Math.round(econ.overheadCost), Math.round(econ.channelCost), fixedCost, Math.round(econ.channelCost), Math.round(econ.totalCost), Math.round(econ.margin), line.lbs>0?Math.round(econ.marginPerLb*100)/100:0]);
+      let dest = line.destination === 'external' ? 'Wholesale' : 'Retail';
+      rows.push([ch.name, ch.material, line.lbs, line.mode, dest, econ.units, econ.revenue, Math.round(econ.growCost), Math.round(econ.overheadCost), Math.round(econ.channelCost), Math.round(econ.totalCost), Math.round(econ.margin), line.lbs>0?Math.round(econ.marginPerLb*100)/100:0]);
       totals.rev += econ.revenue; totals.cost += econ.totalCost; totals.margin += econ.margin; totals.lbs += line.lbs;
-      totals.grow += econ.growCost; totals.oh += econ.overheadCost; totals.proc += econ.channelCost;
     });
-    rows.push(['TOTAL','','','','','', totals.rev, Math.round(totals.grow), Math.round(totals.oh), Math.round(totals.proc), Math.round(totals.grow+totals.oh), Math.round(totals.proc), totals.cost, totals.margin, totals.lbs>0?Math.round(totals.margin/totals.lbs*100)/100:0]);
+    rows.push(['TOTAL','','','','','', totals.rev, '', '', '', totals.cost, totals.margin, totals.lbs>0?Math.round(totals.margin/totals.lbs*100)/100:0]);
 
     let ws = XLSX.utils.aoa_to_sheet(rows);
-    ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
+    ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
     XLSX.utils.book_append_sheet(wb, ws, s.name.slice(0,31));
   });
 
@@ -1790,22 +2143,20 @@ function exportCurrentScenario() {
     ['Grow Cost ($)', state.harvest.growCost],
     ['Production Overhead ($)', state.harvest.prodOverhead],
     [''],
-    ['Channel', 'Material', 'Lbs', 'Mode', 'Store %', 'Units', 'Revenue', 'Grow Cost', 'Overhead', 'Processing', 'Fixed Cost', 'Add\'l Cost', 'Total Cost', 'Margin', 'Margin/Lb']
+    ['Channel', 'Material', 'Lbs', 'Mode', 'Destination', 'Units', 'Revenue', 'Grow Cost', 'Overhead', 'Channel Cost', 'Total Cost', 'Margin', 'Margin/Lb']
   ];
-  let totals = { rev:0, cost:0, margin:0, lbs:0, grow:0, oh:0, proc:0 };
+  let totals = { rev:0, cost:0, margin:0, lbs:0 };
   state.currentLines.forEach(line => {
     let ch = state.channels.find(c => c.id === line.channelId);
     if (!ch) return;
     let econ = calcLineEcon(line, ch);
-    let storePct = line.retailPct != null ? line.retailPct : 100;
-    let fixedCost = Math.round(econ.growCost) + Math.round(econ.overheadCost);
-    rows.push([ch.name, ch.material, line.lbs, line.mode, storePct + '%', econ.units, econ.revenue, Math.round(econ.growCost), Math.round(econ.overheadCost), Math.round(econ.channelCost), fixedCost, Math.round(econ.channelCost), Math.round(econ.totalCost), Math.round(econ.margin), line.lbs>0?Math.round(econ.marginPerLb*100)/100:0]);
+    let dest = line.destination === 'external' ? 'Wholesale' : 'Retail';
+    rows.push([ch.name, ch.material, line.lbs, line.mode, dest, econ.units, econ.revenue, Math.round(econ.growCost), Math.round(econ.overheadCost), Math.round(econ.channelCost), Math.round(econ.totalCost), Math.round(econ.margin), line.lbs>0?Math.round(econ.marginPerLb*100)/100:0]);
     totals.rev += econ.revenue; totals.cost += econ.totalCost; totals.margin += econ.margin; totals.lbs += line.lbs;
-    totals.grow += econ.growCost; totals.oh += econ.overheadCost; totals.proc += econ.channelCost;
   });
-  rows.push(['TOTAL','','','','','', totals.rev, Math.round(totals.grow), Math.round(totals.oh), Math.round(totals.proc), Math.round(totals.grow+totals.oh), Math.round(totals.proc), totals.cost, totals.margin, totals.lbs>0?Math.round(totals.margin/totals.lbs*100)/100:0]);
+  rows.push(['TOTAL','','','','','', totals.rev, '', '', '', totals.cost, totals.margin, totals.lbs>0?Math.round(totals.margin/totals.lbs*100)/100:0]);
   let ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
+  ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
   XLSX.utils.book_append_sheet(wb, ws, name.slice(0,31));
   XLSX.writeFile(wb, 'YellowBrick_' + name.replace(/\s+/g,'_') + '_' + new Date().toISOString().slice(0,10) + '.xlsx');
 }
