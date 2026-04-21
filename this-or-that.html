@@ -248,6 +248,21 @@ body {
   border-color: var(--accent-yellow);
   box-shadow: 0 0 0 2px rgba(255,212,59,0.35);
 }
+/* Scenario-row drag handle + drop-target styling */
+.line-drag-handle {
+  cursor: grab;
+  padding: 2px 4px;
+  color: var(--text-muted);
+  font-size: 13px;
+  user-select: none;
+  border-radius: 3px;
+  transition: color .15s, background .15s;
+  display: inline-block;
+}
+.line-drag-handle:hover { color: var(--accent-yellow); background: rgba(255,212,59,0.08); }
+.line-drag-handle:active { cursor: grabbing; }
+#allocBody tr.dragging { opacity: 0.4; }
+#allocBody tr.drag-over { box-shadow: inset 0 2px 0 var(--accent-yellow); }
 .channel-card .ch-header {
   display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 12px;
@@ -802,6 +817,13 @@ function init() {
   state.currentLines.forEach(line => {
     if (line.destination == null) line.destination = 'internal';
   });
+  // Re-sync lineIdCounter to the highest id seen, so newly-added lines never collide
+  // with ids of lines already restored from localStorage. Without this, the next
+  // addAllocLine() after a page reload would assign id=1, which matches the top
+  // row's id and causes every edit on the new row to mutate the top row instead.
+  if (state.currentLines.length) {
+    lineIdCounter = state.currentLines.reduce((max, l) => Math.max(max, l.id || 0), 0);
+  }
   if (state.scenarios) {
     state.scenarios.forEach(s => {
       if (s.lines) s.lines.forEach(line => {
@@ -1331,13 +1353,15 @@ function renderAllocator() {
 
     let tr = document.createElement('tr');
     tr.setAttribute('data-line-row', line.id);
+    tr.setAttribute('data-line-id', line.id);
     let isExpanded = line._expanded === true;
     let costTitle = line.mode==='inhouse'
       ? `In-house ADD-ON cost per unit (grow + overhead added automatically)`
       : `All-in vendor cost per unit (grow cost is added; overhead is skipped)`;
     tr.innerHTML = `
-      <td style="width:26px;text-align:center">
-        <button class="btn btn-sm line-expand-btn" data-line="${line.id}" style="padding:2px 6px;font-size:11px" title="Show cost stack">${isExpanded ? '▼' : '▸'}</button>
+      <td style="width:44px;text-align:center;white-space:nowrap">
+        <span class="line-drag-handle" data-line="${line.id}" title="Drag to reorder">⋮⋮</span>
+        <button class="btn btn-sm line-expand-btn" data-line="${line.id}" style="padding:2px 6px;font-size:11px;margin-left:2px" title="Show cost stack">${isExpanded ? '▼' : '▸'}</button>
       </td>
       <td style="text-align:left">
         <span class="mat-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${matColor};margin-right:4px;vertical-align:middle"></span>
@@ -1444,6 +1468,51 @@ function renderAllocator() {
     btn.addEventListener('click', () => {
       let line = state.currentLines.find(l => l.id === parseInt(btn.dataset.line));
       if (line) line._expanded = !line._expanded;
+      renderAllocator();
+    });
+  });
+
+  // Drag-drop reordering of scenario lines.
+  // Only enable draggable on the row while the handle is being pressed, so
+  // input clicks and text selection in other cells aren't hijacked by drag.
+  let dragSrcLineId = null;
+  body.querySelectorAll('.line-drag-handle').forEach(handle => {
+    let tr = handle.closest('tr');
+    if (!tr) return;
+    handle.addEventListener('mousedown', () => tr.setAttribute('draggable', 'true'));
+    // Clear draggable on mouseup in case no drag was initiated
+    handle.addEventListener('mouseup', () => tr.removeAttribute('draggable'));
+  });
+  body.querySelectorAll('tr[data-line-row]').forEach(tr => {
+    tr.addEventListener('dragstart', (e) => {
+      dragSrcLineId = parseInt(tr.dataset.lineId);
+      tr.classList.add('dragging');
+      try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragSrcLineId)); } catch(_) {}
+    });
+    tr.addEventListener('dragend', () => {
+      tr.classList.remove('dragging');
+      tr.removeAttribute('draggable');
+      body.querySelectorAll('tr').forEach(t => t.classList.remove('drag-over'));
+    });
+    tr.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (dragSrcLineId == null) return;
+      if (parseInt(tr.dataset.lineId) !== dragSrcLineId) tr.classList.add('drag-over');
+    });
+    tr.addEventListener('dragleave', () => tr.classList.remove('drag-over'));
+    tr.addEventListener('drop', (e) => {
+      e.preventDefault();
+      tr.classList.remove('drag-over');
+      let toId = parseInt(tr.dataset.lineId);
+      let fromId = dragSrcLineId;
+      dragSrcLineId = null;
+      if (fromId == null || isNaN(fromId) || isNaN(toId) || fromId === toId) return;
+      let fromIdx = state.currentLines.findIndex(l => l.id === fromId);
+      let toIdx = state.currentLines.findIndex(l => l.id === toId);
+      if (fromIdx < 0 || toIdx < 0) return;
+      let [moved] = state.currentLines.splice(fromIdx, 1);
+      state.currentLines.splice(toIdx, 0, moved);
+      saveState();
       renderAllocator();
     });
   });
