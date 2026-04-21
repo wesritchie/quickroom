@@ -955,253 +955,60 @@ const LIT_ALERTS_DATA = {
 // Format: { skus, avgPrice, avgCost } per category per vendor
 // Updated: 2026-04-11 via Dutchie POS API (3 stores: Dracut, Pepperell, Groton; in-stock filtered via /inventory)
 const PRODUCT_DATA = {
-  "lastUpdated": "2026-04-21T07:24:38Z",
-  "vendors": {
-    "fb": {
-      "totalSkus": 35,
-      "categories": {
-        "Disposable": {
-          "skus": 18,
-          "avgPrice": 36.44,
-          "avgCost": 0.0
-        },
-        "Gummies": {
-          "skus": 8,
-          "avgPrice": 12.25,
-          "avgCost": 0.0
-        },
-        "510 Cart": {
-          "skus": 5,
-          "avgPrice": 25.0,
-          "avgCost": 0.0
-        },
-        "Multipack": {
-          "skus": 4,
-          "avgPrice": 28.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "tb": {
-      "totalSkus": 25,
-      "categories": {
-        "Gummies": {
-          "skus": 13,
-          "avgPrice": 21.08,
-          "avgCost": 0.0
-        },
-        "Chocolate": {
-          "skus": 7,
-          "avgPrice": 21.43,
-          "avgCost": 0.0
-        },
-        "510 Cart": {
-          "skus": 5,
-          "avgPrice": 16.8,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "gf": {
-      "totalSkus": 21,
-      "categories": {
-        "Drink Mix": {
-          "skus": 21,
-          "avgPrice": 45.71,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "wf": {
-      "totalSkus": 36,
-      "categories": {
-        "Bud": {
-          "skus": 15,
-          "avgPrice": 31.0,
-          "avgCost": 0.0
-        },
-        "Single": {
-          "skus": 11,
-          "avgPrice": 12.0,
-          "avgCost": 0.0
-        },
-        "Live Rosin": {
-          "skus": 5,
-          "avgPrice": 60.0,
-          "avgCost": 0.0
-        },
-        "Single Infused": {
-          "skus": 2,
-          "avgPrice": 24.0,
-          "avgCost": 0.0
-        },
-        "Salve": {
-          "skus": 1,
-          "avgPrice": 50.0,
-          "avgCost": 0.0
-        },
-        "Multipack Infused": {
-          "skus": 1,
-          "avgPrice": 50.0,
-          "avgCost": 0.0
-        },
-        "Concentrate": {
-          "skus": 1,
-          "avgPrice": 60.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "bo": {
-      "totalSkus": 22,
-      "categories": {
-        "Bud": {
-          "skus": 10,
-          "avgPrice": 18.8,
-          "avgCost": 0.0
-        },
-        "Multipack": {
-          "skus": 5,
-          "avgPrice": 16.4,
-          "avgCost": 0.0
-        },
-        "Single": {
-          "skus": 3,
-          "avgPrice": 9.33,
-          "avgCost": 0.0
-        },
-        "Kief": {
-          "skus": 3,
-          "avgPrice": 20.0,
-          "avgCost": 0.0
-        },
-        "Concentrate": {
-          "skus": 1,
-          "avgPrice": 50.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "hp": {
-      "totalSkus": 33,
-      "categories": {
-        "Single": {
-          "skus": 26,
-          "avgPrice": 8.08,
-          "avgCost": 0.0
-        },
-        "Pre Ground": {
-          "skus": 6,
-          "avgPrice": 33.33,
-          "avgCost": 0.0
-        },
-        "Bud": {
-          "skus": 1,
-          "avgPrice": 38.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "mc": {
-      "totalSkus": 52,
-      "categories": {
-        "Single": {
-          "skus": 14,
-          "avgPrice": 8.14,
-          "avgCost": 0.0
-        },
-        "Pre Ground": {
-          "skus": 13,
-          "avgPrice": 25.0,
-          "avgCost": 0.0
-        },
-        "510 Cart": {
-          "skus": 7,
-          "avgPrice": 20.0,
-          "avgCost": 0.0
-        },
-        "Gift Cards": {
-          "skus": 5,
-          "avgPrice": 82.0,
-          "avgCost": 0.0
-        },
-        "Seeds": {
-          "skus": 5,
-          "avgPrice": 35.0,
-          "avgCost": 0.0
-        },
-        "Gummies": {
-          "skus": 2,
-          "avgPrice": 23.0,
-          "avgCost": 0.0
-        },
-        "Vaporizers": {
-          "skus": 2,
-          "avgPrice": 15.0,
-          "avgCost": 0.0
-        },
-        "Baked Goods": {
-          "skus": 1,
-          "avgPrice": 12.0,
-          "avgCost": 0.0
-        },
-        "Bud": {
-          "skus": 1,
-          "avgPrice": 44.0,
-          "avgCost": 0.0
-        },
-        "Apparel": {
-          "skus": 1,
-          "avgPrice": 25.0,
-          "avgCost": 0.0
-        },
-        "Rolling Papers": {
-          "skus": 1,
-          "avgPrice": 3.0,
-          "avgCost": 0.0
-        }
-      }
-    },
-    "hb": {
-      "totalSkus": 36,
-      "categories": {
-        "510 Cart": {
-          "skus": 19,
-          "avgPrice": 30.05,
-          "avgCost": 0.0
-        },
-        "Single": {
-          "skus": 5,
-          "avgPrice": 8.0,
-          "avgCost": 0.0
-        },
-        "Bud": {
-          "skus": 5,
-          "avgPrice": 25.0,
-          "avgCost": 0.0
-        },
-        "Single Infused": {
-          "skus": 3,
-          "avgPrice": 20.0,
-          "avgCost": 0.0
-        },
-        "Live Resin": {
-          "skus": 2,
-          "avgPrice": 40.0,
-          "avgCost": 0.0
-        },
-        "Concentrate": {
-          "skus": 1,
-          "avgPrice": 40.0,
-          "avgCost": 0.0
-        },
-        "Cured Resin": {
-          "skus": 1,
-          "avgPrice": 40.0,
-          "avgCost": 0.0
-        }
-      }
-    }
+  lastUpdated: "2026-04-21T08:30:00Z",
+  vendors: {
+    fb: { totalSkus: 35, categories: {
+      "Disposable":              { skus: 18, avgPrice: 36.44, avgCost: 16.22 },
+      "Gummies":                 { skus: 8, avgPrice: 12.25, avgCost: 6.13 },
+      "510 Cart":                { skus: 5, avgPrice: 25, avgCost: 10 },
+      "Multipack":               { skus: 4, avgPrice: 28, avgCost: 14 },
+    }},
+    tb: { totalSkus: 25, categories: {
+      "Gummies":                 { skus: 13, avgPrice: 21.08, avgCost: 10.04 },
+      "Chocolate":               { skus: 7, avgPrice: 21.43, avgCost: 10.07 },
+      "510 Cart":                { skus: 5, avgPrice: 16.8, avgCost: 9 },
+    }},
+    gf: { totalSkus: 21, categories: {
+      "Drink Mix":               { skus: 21, avgPrice: 45.71, avgCost: 21.64 },
+    }},
+    wf: { totalSkus: 36, categories: {
+      "Bud":                     { skus: 15, avgPrice: 31, avgCost: 15.33 },
+      "Single":                  { skus: 11, avgPrice: 12, avgCost: 5 },
+      "Live Rosin":              { skus: 5, avgPrice: 60, avgCost: 30 },
+      "Single Infused":          { skus: 2, avgPrice: 24, avgCost: 12 },
+      "Salve":                   { skus: 1, avgPrice: 50, avgCost: 25 },
+      "Multipack Infused":       { skus: 1, avgPrice: 50, avgCost: 25 },
+      "Concentrate":             { skus: 1, avgPrice: 60, avgCost: 30 },
+    }},
+    bo: { totalSkus: 22, categories: {
+      "Bud":                     { skus: 10, avgPrice: 18.8, avgCost: 9.4 },
+      "Multipack":               { skus: 5, avgPrice: 16.4, avgCost: 7.4 },
+      "Single":                  { skus: 3, avgPrice: 9.33, avgCost: 3.5 },
+      "Kief":                    { skus: 3, avgPrice: 20, avgCost: 10 },
+      "Concentrate":             { skus: 1, avgPrice: 50, avgCost: 25 },
+    }},
+    hp: { totalSkus: 33, categories: {
+      "Single":                  { skus: 26, avgPrice: 8.08, avgCost: 2.54 },
+      "Pre Ground":              { skus: 6, avgPrice: 33.33, avgCost: 13.33 },
+      "Bud":                     { skus: 1, avgPrice: 38, avgCost: 18 },
+    }},
+    mc: { totalSkus: 28, categories: {
+      "Pre Ground":              { skus: 13, avgPrice: 25, avgCost: 3.41 },
+      "Gift Cards":              { skus: 5, avgPrice: 82, avgCost: 0 },
+      "Seeds":                   { skus: 5, avgPrice: 35, avgCost: 15 },
+      "Single":                  { skus: 3, avgPrice: 9, avgCost: 0.82 },
+      "Apparel":                 { skus: 1, avgPrice: 25, avgCost: 24 },
+      "Gifts":                   { skus: 1, avgPrice: 250, avgCost: 90 },
+    }},
+    hb: { totalSkus: 36, categories: {
+      "510 Cart":                { skus: 19, avgPrice: 30.05, avgCost: 13.21 },
+      "Bud":                     { skus: 5, avgPrice: 25, avgCost: 12.5 },
+      "Single":                  { skus: 5, avgPrice: 8, avgCost: 2.7 },
+      "Single Infused":          { skus: 3, avgPrice: 20, avgCost: 10 },
+      "Live Resin":              { skus: 2, avgPrice: 40, avgCost: 20 },
+      "Concentrate":             { skus: 1, avgPrice: 40, avgCost: 17.5 },
+      "Cured Resin":             { skus: 1, avgPrice: 40, avgCost: 20 },
+    }},
   }
 };
 
@@ -1376,980 +1183,121 @@ const MARKET_TREND_DATA = {
 // INVENTORY MIX &mdash; Bricks vs Non-Bricks (from Dutchie product catalog)
 // ===================================================
 const INVENTORY_MIX = {
-  "lastUpdated": "2026-04-21T07:24:38Z",
-  "note": "In-stock SKUs via Dutchie /products (quantityAvailable > 0), deduplicated by productId across all 3 stores. SAMPLE / DISPLAY / Prizes excluded.",
-  "totalActive": 727,
-  "totalBrick": 271,
-  "totalCore": 247,
-  "totalOther": 209,
-  "perStore": {
-    "dracut": {
-      "total": 440
-    },
-    "pepperell": {
-      "total": 477
-    },
-    "groton": {
-      "total": 430
-    }
+  lastUpdated: "2026-04-21T08:30:00Z",
+  note: "In-stock SKUs only via /inventory endpoint (quantityAvailable > 0), deduplicated by productId across all 3 stores.",
+  totalActive: 729,
+  totalBrick: 236,
+  totalCore: 196,
+  totalOther: 296,
+  perStore: {
+    dracut:     { total: 440 },
+    pepperell:     { total: 478 },
+    groton:     { total: 432 },
   },
-  "brickVendors": [
-    {
-      "name": "MACC",
-      "skus": 52
-    },
-    {
-      "name": "Hudson Botanical",
-      "skus": 36
-    },
-    {
-      "name": "Wellman Farms",
-      "skus": 36
-    },
-    {
-      "name": "Freshly Baked",
-      "skus": 35
-    },
-    {
-      "name": "High Plains Farm",
-      "skus": 33
-    },
-    {
-      "name": "T.Bear / Coast",
-      "skus": 25
-    },
-    {
-      "name": "Bostica",
-      "skus": 22
-    },
-    {
-      "name": "Good Feels",
-      "skus": 21
-    },
-    {
-      "name": "Green Harbor",
-      "skus": 11
-    }
+  brickVendors: [
+    { name: "Hudson Botanical",                 skus: 36 },
+    { name: "Wellman Farms",                    skus: 36 },
+    { name: "Freshly Baked",                    skus: 35 },
+    { name: "High Plains Farm",                 skus: 33 },
+    { name: "MACC",                             skus: 28 },
+    { name: "T. Bear / Coast",                  skus: 25 },
+    { name: "Bostica",                          skus: 22 },
+    { name: "Good Feels",                       skus: 21 },
   ],
-  "coreVendors": [
-    {
-      "name": "Cultivate",
-      "skus": 54
-    },
-    {
-      "name": "ARL",
-      "skus": 28
-    },
-    {
-      "name": "Garden Remedies",
-      "skus": 26
-    },
-    {
-      "name": "Eureka",
-      "skus": 24
-    },
-    {
-      "name": "Green Meadows",
-      "skus": 21
-    },
-    {
-      "name": "Novel Beverage",
-      "skus": 21
-    },
-    {
-      "name": "Curaleaf",
-      "skus": 14
-    },
-    {
-      "name": "Mederi",
-      "skus": 12
-    },
-    {
-      "name": "Lunar",
-      "skus": 11
-    },
-    {
-      "name": "Canna Provisions",
-      "skus": 10
-    },
-    {
-      "name": "Palazzi",
-      "skus": 9
-    },
-    {
-      "name": "Levia",
-      "skus": 7
-    },
-    {
-      "name": "Atlantic Medicinal",
-      "skus": 6
-    },
-    {
-      "name": "Fathom",
-      "skus": 4
-    }
+  coreVendors: [
+    { name: "Cultivate",                        skus: 53 },
+    { name: "Green Meadows",                    skus: 32 },
+    { name: "ARL Healthcare",                   skus: 29 },
+    { name: "Garden Remedies",                  skus: 27 },
+    { name: "Novel Beverage",                   skus: 21 },
+    { name: "Lunar Xtracts",                    skus: 18 },
+    { name: "Mederi",                           skus: 12 },
+    { name: "Humboldt Masters",                 skus: 4 },
   ],
-  "otherVendors": [
-    {
-      "name": "AFG | AFG Distribution",
-      "skus": 24
-    },
-    {
-      "name": "Healing Rose | Healing Rose",
-      "skus": 20
-    },
-    {
-      "name": "Pulsar | AFG Distribution",
-      "skus": 17
-    },
-    {
-      "name": "ZZZ's Rolling Paper Co. | ZZZ's Rolling Paper Co.",
-      "skus": 16
-    },
-    {
-      "name": "Hemper | Hara Brands",
-      "skus": 14
-    },
-    {
-      "name": "LuvBuds | LuvBuds",
-      "skus": 10
-    },
-    {
-      "name": "ZZZ's Rolling Paper Co. | AFG Distribution",
-      "skus": 9
-    },
-    {
-      "name": "Hemper | HempX LLC",
-      "skus": 7
-    },
-    {
-      "name": "Pilgrim Soul | Pilgrim Soul",
-      "skus": 7
-    },
-    {
-      "name": "SirEEL | LuvBuds",
-      "skus": 7
-    },
-    {
-      "name": "Erva | Erva Inc.",
-      "skus": 5
-    },
-    {
-      "name": "King Palm | LuvBuds",
-      "skus": 4
-    },
-    {
-      "name": "Ooze | AFG Distribution",
-      "skus": 4
-    },
-    {
-      "name": "AFG | LuvBuds",
-      "skus": 3
-    },
-    {
-      "name": "Cannalive Genetics | Cannalive Genetics LLC",
-      "skus": 3
-    },
-    {
-      "name": "Fujima | AFG Distribution",
-      "skus": 3
-    },
-    {
-      "name": "King Palm | AFG Distribution",
-      "skus": 3
-    },
-    {
-      "name": "PAW:20 | AFG Distribution",
-      "skus": 3
-    },
-    {
-      "name": "BIC | LuvBuds",
-      "skus": 2
-    },
-    {
-      "name": "Giddy Glass | AFG Distribution",
-      "skus": 2
-    },
-    {
-      "name": "Keef | Nova Farms LLC",
-      "skus": 2
-    },
-    {
-      "name": "Ooze | LuvBuds",
-      "skus": 2
-    }
+  otherVendors: [
+    { name: "AFG Distribution",                 skus: 80 },
+    { name: "LuvBuds",                          skus: 33 },
+    { name: "ZZZ's Rolling Paper Co.",          skus: 25 },
+    { name: "Mill Town Agriculture LLC",        skus: 25 },
+    { name: "Hara Brands",                      skus: 21 },
+    { name: "Healing Rose",                     skus: 19 },
+    { name: "Curaleaf Massachusetts Inc",       skus: 14 },
+    { name: "Green Harbor",                     skus: 11 },
+    { name: "Canna Provisions Inc",             skus: 10 },
   ],
-  "otherVendorsFull": 54,
-  "missingCore": [
-    "Merimed",
-    "Cresco",
-    "Gibby",
-    "Green Theory",
-    "Aruna",
-    "JBam",
-    "Regenerative",
-    "Standard Farms"
-  ],
-  "byCategory": [
-    {
-      "group": "Merch / Accessories",
-      "brick": 9,
-      "core": 54,
-      "other": 190,
-      "coreVendors": {
-        "Eureka": 24,
-        "ARL": 12,
-        "Novel Beverage": 9,
-        "Lunar": 6,
-        "Canna Provisions": 2,
-        "Garden Remedies": 1
-      },
-      "brickVendors": {
-        "MACC": 7,
-        "Hudson Botanical": 2
-      }
-    },
-    {
-      "group": "Pre-Rolls",
-      "brick": 79,
-      "core": 69,
-      "other": 4,
-      "coreVendors": {
-        "Cultivate": 16,
-        "ARL": 11,
-        "Garden Remedies": 9,
-        "Palazzi": 8,
-        "Canna Provisions": 8,
-        "Mederi": 7,
-        "Fathom": 4,
-        "Atlantic Medicinal": 4,
-        "Green Meadows": 2
-      },
-      "brickVendors": {
-        "High Plains Farm": 26,
-        "Wellman Farms": 14,
-        "MACC": 14,
-        "Bostica": 8,
-        "Hudson Botanical": 8,
-        "Green Harbor": 5,
-        "Freshly Baked": 4
-      }
-    },
-    {
-      "group": "Vapes",
-      "brick": 56,
-      "core": 63,
-      "other": 11,
-      "coreVendors": {
-        "Cultivate": 24,
-        "Green Meadows": 15,
-        "Curaleaf": 14,
-        "Garden Remedies": 5,
-        "Lunar": 5
-      },
-      "brickVendors": {
-        "Freshly Baked": 23,
-        "Hudson Botanical": 19,
-        "MACC": 9,
-        "T.Bear / Coast": 5
-      }
-    },
-    {
-      "group": "Flower",
-      "brick": 62,
-      "core": 38,
-      "other": 3,
-      "coreVendors": {
-        "Cultivate": 14,
-        "Garden Remedies": 11,
-        "Mederi": 5,
-        "Green Meadows": 4,
-        "Atlantic Medicinal": 2,
-        "ARL": 1,
-        "Palazzi": 1
-      },
-      "brickVendors": {
-        "MACC": 19,
-        "Wellman Farms": 15,
-        "Bostica": 10,
-        "High Plains Farm": 7,
-        "Green Harbor": 6,
-        "Hudson Botanical": 5
-      }
-    },
-    {
-      "group": "Edibles",
-      "brick": 31,
-      "core": 2,
-      "other": 0,
-      "coreVendors": {
-        "ARL": 2
-      },
-      "brickVendors": {
-        "T.Bear / Coast": 20,
-        "Freshly Baked": 8,
-        "MACC": 3
-      }
-    },
-    {
-      "group": "Beverages",
-      "brick": 21,
-      "core": 19,
-      "other": 0,
-      "coreVendors": {
-        "Novel Beverage": 12,
-        "Levia": 7
-      },
-      "brickVendors": {
-        "Good Feels": 21
-      }
-    },
-    {
-      "group": "Concentrates",
-      "brick": 12,
-      "core": 2,
-      "other": 1,
-      "coreVendors": {
-        "ARL": 2
-      },
-      "brickVendors": {
-        "Wellman Farms": 6,
-        "Bostica": 4,
-        "Hudson Botanical": 2
-      }
-    },
-    {
-      "group": "Topicals",
-      "brick": 1,
-      "core": 0,
-      "other": 0,
-      "coreVendors": {},
-      "brickVendors": {
-        "Wellman Farms": 1
-      }
-    }
-  ]
+  otherVendorsFull: 26,
 };
 
 // ===================================================
 // PER-STORE INVENTORY (from Dutchie /inventory, deduplicated by productId per store)
 // ===================================================
 const STORE_INVENTORY = {
-  "dracut": {
-    "total": 440,
-    "brick": 203,
-    "core": 157,
-    "other": 80,
-    "brickVendors": [
-      {
-        "name": "MACC",
-        "skus": 43
-      },
-      {
-        "name": "Hudson Botanical",
-        "skus": 30
-      },
-      {
-        "name": "Freshly Baked",
-        "skus": 25
-      },
-      {
-        "name": "Wellman Farms",
-        "skus": 25
-      },
-      {
-        "name": "T.Bear / Coast",
-        "skus": 22
-      },
-      {
-        "name": "High Plains Farm",
-        "skus": 21
-      },
-      {
-        "name": "Good Feels",
-        "skus": 19
-      },
-      {
-        "name": "Bostica",
-        "skus": 11
-      },
-      {
-        "name": "Green Harbor",
-        "skus": 7
-      }
+  dracut: {
+    total: 440, brick: 176, core: 115, other: 149,
+    brickVendors: [
+      { name: "Hudson Botanical",                 skus: 30 },
+      { name: "Freshly Baked",                    skus: 25 },
+      { name: "Wellman Farms",                    skus: 25 },
+      { name: "MACC",                             skus: 23 },
+      { name: "T. Bear / Coast",                  skus: 22 },
+      { name: "High Plains Farm",                 skus: 21 },
+      { name: "Good Feels",                       skus: 19 },
+      { name: "Bostica",                          skus: 11 }
     ],
-    "coreVendors": [
-      {
-        "name": "Cultivate",
-        "skus": 37
-      },
-      {
-        "name": "Eureka",
-        "skus": 19
-      },
-      {
-        "name": "Novel Beverage",
-        "skus": 17
-      },
-      {
-        "name": "Curaleaf",
-        "skus": 14
-      },
-      {
-        "name": "ARL",
-        "skus": 13
-      },
-      {
-        "name": "Canna Provisions",
-        "skus": 10
-      },
-      {
-        "name": "Garden Remedies",
-        "skus": 9
-      },
-      {
-        "name": "Palazzi",
-        "skus": 8
-      },
-      {
-        "name": "Green Meadows",
-        "skus": 7
-      },
-      {
-        "name": "Levia",
-        "skus": 7
-      },
-      {
-        "name": "Mederi",
-        "skus": 7
-      },
-      {
-        "name": "Lunar",
-        "skus": 6
-      },
-      {
-        "name": "Fathom",
-        "skus": 2
-      },
-      {
-        "name": "Atlantic Medicinal",
-        "skus": 1
-      }
-    ],
-    "otherVendors": [
-      {
-        "name": "Healing Rose | Healing Rose",
-        "skus": 10
-      },
-      {
-        "name": "ZZZ's Rolling Paper Co. | ZZZ's Rolling Paper Co.",
-        "skus": 9
-      },
-      {
-        "name": "Hemper | Hara Brands",
-        "skus": 8
-      },
-      {
-        "name": "LuvBuds | LuvBuds",
-        "skus": 7
-      },
-      {
-        "name": "AFG | AFG Distribution",
-        "skus": 6
-      },
-      {
-        "name": "Erva | Erva Inc.",
-        "skus": 4
-      },
-      {
-        "name": "King Palm | LuvBuds",
-        "skus": 4
-      },
-      {
-        "name": "SirEEL | LuvBuds",
-        "skus": 4
-      },
-      {
-        "name": "AFG | LuvBuds",
-        "skus": 3
-      },
-      {
-        "name": "BIC | LuvBuds",
-        "skus": 2
-      },
-      {
-        "name": "Pulsar | AFG Distribution",
-        "skus": 2
-      },
-      {
-        "name": "RAW | LuvBuds",
-        "skus": 2
-      },
-      {
-        "name": "SMYLE Labs | LuvBuds",
-        "skus": 2
-      },
-      {
-        "name": "Blazy Susan | LuvBuds",
-        "skus": 1
-      },
-      {
-        "name": "Blink | LuvBuds",
-        "skus": 1
-      }
-    ],
-    "otherVendorsFull": 30,
-    "byCategory": [
-      {
-        "group": "Merch / Accessories",
-        "brick": 5,
-        "core": 37,
-        "other": 73
-      },
-      {
-        "group": "Pre-Rolls",
-        "brick": 53,
-        "core": 35,
-        "other": 1
-      },
-      {
-        "group": "Vapes",
-        "brick": 45,
-        "core": 45,
-        "other": 4
-      },
-      {
-        "group": "Flower",
-        "brick": 45,
-        "core": 20,
-        "other": 2
-      },
-      {
-        "group": "Edibles",
-        "brick": 27,
-        "core": 2,
-        "other": 0
-      },
-      {
-        "group": "Beverages",
-        "brick": 19,
-        "core": 17,
-        "other": 0
-      },
-      {
-        "group": "Concentrates",
-        "brick": 8,
-        "core": 1,
-        "other": 0
-      },
-      {
-        "group": "Topicals",
-        "brick": 1,
-        "core": 0,
-        "other": 0
-      }
+    coreVendors: [
+      { name: "Cultivate",                        skus: 37 },
+      { name: "Novel Beverage",                   skus: 17 },
+      { name: "Green Meadows",                    skus: 17 },
+      { name: "ARL Healthcare",                   skus: 14 },
+      { name: "Lunar Xtracts",                    skus: 11 },
+      { name: "Garden Remedies",                  skus: 10 },
+      { name: "Mederi",                           skus: 7 },
+      { name: "Humboldt Masters",                 skus: 2 }
     ]
   },
-  "pepperell": {
-    "total": 477,
-    "brick": 192,
-    "core": 143,
-    "other": 142,
-    "brickVendors": [
-      {
-        "name": "MACC",
-        "skus": 40
-      },
-      {
-        "name": "Freshly Baked",
-        "skus": 31
-      },
-      {
-        "name": "Hudson Botanical",
-        "skus": 23
-      },
-      {
-        "name": "High Plains Farm",
-        "skus": 21
-      },
-      {
-        "name": "Good Feels",
-        "skus": 20
-      },
-      {
-        "name": "Wellman Farms",
-        "skus": 20
-      },
-      {
-        "name": "Bostica",
-        "skus": 17
-      },
-      {
-        "name": "T.Bear / Coast",
-        "skus": 11
-      },
-      {
-        "name": "Green Harbor",
-        "skus": 9
-      }
+  pepperell: {
+    total: 478, brick: 176, core: 126, other: 176,
+    brickVendors: [
+      { name: "Freshly Baked",                    skus: 31 },
+      { name: "T. Bear / Coast",                  skus: 23 },
+      { name: "Hudson Botanical",                 skus: 23 },
+      { name: "MACC",                             skus: 21 },
+      { name: "High Plains Farm",                 skus: 21 },
+      { name: "Wellman Farms",                    skus: 20 },
+      { name: "Good Feels",                       skus: 20 },
+      { name: "Bostica",                          skus: 17 }
     ],
-    "coreVendors": [
-      {
-        "name": "Cultivate",
-        "skus": 34
-      },
-      {
-        "name": "Garden Remedies",
-        "skus": 18
-      },
-      {
-        "name": "Eureka",
-        "skus": 17
-      },
-      {
-        "name": "Green Meadows",
-        "skus": 15
-      },
-      {
-        "name": "ARL",
-        "skus": 14
-      },
-      {
-        "name": "Novel Beverage",
-        "skus": 14
-      },
-      {
-        "name": "Lunar",
-        "skus": 8
-      },
-      {
-        "name": "Palazzi",
-        "skus": 8
-      },
-      {
-        "name": "Levia",
-        "skus": 7
-      },
-      {
-        "name": "Mederi",
-        "skus": 6
-      },
-      {
-        "name": "Fathom",
-        "skus": 2
-      }
-    ],
-    "otherVendors": [
-      {
-        "name": "Healing Rose | Healing Rose",
-        "skus": 17
-      },
-      {
-        "name": "Pulsar | AFG Distribution",
-        "skus": 14
-      },
-      {
-        "name": "AFG | AFG Distribution",
-        "skus": 13
-      },
-      {
-        "name": "Coast | Coastal Cultivars LLC",
-        "skus": 12
-      },
-      {
-        "name": "Hemper | HempX LLC",
-        "skus": 8
-      },
-      {
-        "name": "ZZZ's Rolling Paper Co. | ZZZ's Rolling Paper Co.",
-        "skus": 8
-      },
-      {
-        "name": "LuvBuds | LuvBuds",
-        "skus": 6
-      },
-      {
-        "name": "Pilgrim Soul | Pilgrim Soul",
-        "skus": 5
-      },
-      {
-        "name": "King Palm | AFG Distribution",
-        "skus": 4
-      },
-      {
-        "name": "King Palm | LuvBuds",
-        "skus": 3
-      },
-      {
-        "name": "PAW:20 | AFG Distribution",
-        "skus": 3
-      },
-      {
-        "name": "Blazy Susan | AFG Distribution",
-        "skus": 2
-      },
-      {
-        "name": "Cannalive Genetics | Cannalive Genetics LLC",
-        "skus": 2
-      },
-      {
-        "name": "Fujima | AFG Distribution",
-        "skus": 2
-      },
-      {
-        "name": "Giddy Glass | AFG Distribution",
-        "skus": 2
-      }
-    ],
-    "otherVendorsFull": 43,
-    "byCategory": [
-      {
-        "group": "Merch / Accessories",
-        "brick": 5,
-        "core": 35,
-        "other": 118
-      },
-      {
-        "group": "Pre-Rolls",
-        "brick": 50,
-        "core": 31,
-        "other": 1
-      },
-      {
-        "group": "Vapes",
-        "brick": 49,
-        "core": 32,
-        "other": 8
-      },
-      {
-        "group": "Flower",
-        "brick": 45,
-        "core": 26,
-        "other": 2
-      },
-      {
-        "group": "Edibles",
-        "brick": 14,
-        "core": 3,
-        "other": 12
-      },
-      {
-        "group": "Beverages",
-        "brick": 20,
-        "core": 16,
-        "other": 0
-      },
-      {
-        "group": "Concentrates",
-        "brick": 8,
-        "core": 0,
-        "other": 1
-      },
-      {
-        "group": "Topicals",
-        "brick": 1,
-        "core": 0,
-        "other": 0
-      }
+    coreVendors: [
+      { name: "Cultivate",                        skus: 34 },
+      { name: "Green Meadows",                    skus: 24 },
+      { name: "Garden Remedies",                  skus: 18 },
+      { name: "ARL Healthcare",                   skus: 14 },
+      { name: "Novel Beverage",                   skus: 14 },
+      { name: "Lunar Xtracts",                    skus: 14 },
+      { name: "Mederi",                           skus: 6 },
+      { name: "Humboldt Masters",                 skus: 2 }
     ]
   },
-  "groton": {
-    "total": 430,
-    "brick": 178,
-    "core": 116,
-    "other": 136,
-    "brickVendors": [
-      {
-        "name": "MACC",
-        "skus": 29
-      },
-      {
-        "name": "Wellman Farms",
-        "skus": 27
-      },
-      {
-        "name": "High Plains Farm",
-        "skus": 26
-      },
-      {
-        "name": "Freshly Baked",
-        "skus": 22
-      },
-      {
-        "name": "Hudson Botanical",
-        "skus": 19
-      },
-      {
-        "name": "Good Feels",
-        "skus": 17
-      },
-      {
-        "name": "T.Bear / Coast",
-        "skus": 17
-      },
-      {
-        "name": "Bostica",
-        "skus": 13
-      },
-      {
-        "name": "Green Harbor",
-        "skus": 8
-      }
+  groton: {
+    total: 432, brick: 156, core: 100, other: 175,
+    brickVendors: [
+      { name: "Wellman Farms",                    skus: 27 },
+      { name: "High Plains Farm",                 skus: 26 },
+      { name: "Freshly Baked",                    skus: 22 },
+      { name: "Hudson Botanical",                 skus: 19 },
+      { name: "T. Bear / Coast",                  skus: 17 },
+      { name: "Good Feels",                       skus: 17 },
+      { name: "MACC",                             skus: 15 },
+      { name: "Bostica",                          skus: 13 }
     ],
-    "coreVendors": [
-      {
-        "name": "Cultivate",
-        "skus": 26
-      },
-      {
-        "name": "ARL",
-        "skus": 17
-      },
-      {
-        "name": "Eureka",
-        "skus": 15
-      },
-      {
-        "name": "Novel Beverage",
-        "skus": 14
-      },
-      {
-        "name": "Garden Remedies",
-        "skus": 12
-      },
-      {
-        "name": "Lunar",
-        "skus": 9
-      },
-      {
-        "name": "Green Meadows",
-        "skus": 8
-      },
-      {
-        "name": "Levia",
-        "skus": 6
-      },
-      {
-        "name": "Atlantic Medicinal",
-        "skus": 5
-      },
-      {
-        "name": "Mederi",
-        "skus": 4
-      }
-    ],
-    "otherVendors": [
-      {
-        "name": "AFG | AFG Distribution",
-        "skus": 17
-      },
-      {
-        "name": "Healing Rose | Healing Rose",
-        "skus": 16
-      },
-      {
-        "name": "Pulsar | AFG Distribution",
-        "skus": 14
-      },
-      {
-        "name": "ZZZ's Rolling Paper Co. | AFG Distribution",
-        "skus": 12
-      },
-      {
-        "name": "Hemper | Hara Brands",
-        "skus": 7
-      },
-      {
-        "name": "Ooze | AFG Distribution",
-        "skus": 5
-      },
-      {
-        "name": "Cannalive Genetics | Cannalive Genetics LLC",
-        "skus": 4
-      },
-      {
-        "name": "King Palm | AFG Distribution",
-        "skus": 4
-      },
-      {
-        "name": "Pilgrim Soul | Pilgrim Soul",
-        "skus": 4
-      },
-      {
-        "name": "Erva | Erva Inc.",
-        "skus": 3
-      },
-      {
-        "name": "Fujima | AFG Distribution",
-        "skus": 3
-      },
-      {
-        "name": "King Palm | LuvBuds",
-        "skus": 3
-      },
-      {
-        "name": "LuvBuds | LuvBuds",
-        "skus": 3
-      },
-      {
-        "name": "SirEEL | LuvBuds",
-        "skus": 3
-      },
-      {
-        "name": "BIC | AFG Distribution",
-        "skus": 2
-      }
-    ],
-    "otherVendorsFull": 45,
-    "byCategory": [
-      {
-        "group": "Merch / Accessories",
-        "brick": 4,
-        "core": 31,
-        "other": 120
-      },
-      {
-        "group": "Pre-Rolls",
-        "brick": 54,
-        "core": 29,
-        "other": 4
-      },
-      {
-        "group": "Vapes",
-        "brick": 33,
-        "core": 23,
-        "other": 11
-      },
-      {
-        "group": "Flower",
-        "brick": 41,
-        "core": 15,
-        "other": 1
-      },
-      {
-        "group": "Edibles",
-        "brick": 21,
-        "core": 1,
-        "other": 0
-      },
-      {
-        "group": "Beverages",
-        "brick": 17,
-        "core": 16,
-        "other": 0
-      },
-      {
-        "group": "Concentrates",
-        "brick": 7,
-        "core": 1,
-        "other": 0
-      },
-      {
-        "group": "Topicals",
-        "brick": 1,
-        "core": 0,
-        "other": 0
-      }
+    coreVendors: [
+      { name: "Cultivate",                        skus: 25 },
+      { name: "ARL Healthcare",                   skus: 17 },
+      { name: "Novel Beverage",                   skus: 14 },
+      { name: "Green Meadows",                    skus: 14 },
+      { name: "Lunar Xtracts",                    skus: 14 },
+      { name: "Garden Remedies",                  skus: 12 },
+      { name: "Mederi",                           skus: 4 }
     ]
   }
 };
