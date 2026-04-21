@@ -237,11 +237,33 @@ body {
 .channel-card {
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: 8px; padding: 16px;
+  transition: opacity .15s, transform .15s, border-color .15s, box-shadow .15s;
+}
+.channel-card.dragging {
+  opacity: 0.45;
+  border-color: var(--accent-yellow);
+  box-shadow: 0 6px 18px rgba(255,212,59,0.12);
+}
+.channel-card.drag-over {
+  border-color: var(--accent-yellow);
+  box-shadow: 0 0 0 2px rgba(255,212,59,0.35);
 }
 .channel-card .ch-header {
   display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 12px;
 }
+.channel-card .ch-drag-handle {
+  cursor: grab;
+  padding: 2px 6px;
+  margin-right: 4px;
+  color: var(--text-muted);
+  font-size: 14px;
+  user-select: none;
+  border-radius: 4px;
+  transition: background .15s, color .15s;
+}
+.channel-card .ch-drag-handle:hover { color: var(--accent-yellow); background: rgba(255,212,59,0.08); }
+.channel-card .ch-drag-handle:active { cursor: grabbing; }
 .channel-card .ch-name { font-size: 14px; font-weight: 600; }
 .channel-card .ch-type {
   font-size: 10px; padding: 2px 8px; border-radius: 10px;
@@ -578,6 +600,7 @@ body {
     <input type="text" class="scenario-name-input" id="scenarioName" placeholder="Scenario Name" value="Scenario A">
     <div class="spacer"></div>
     <button class="btn" onclick="loadScenarioList()">Load</button>
+    <button class="btn" onclick="exportCurrentScenario()" title="Download this scenario as .xlsx">⬇ Export</button>
     <button class="btn btn-primary" onclick="saveScenario()">Save Scenario</button>
   </div>
 
@@ -636,7 +659,9 @@ body {
           <th>Add-on $/Unit <span class="info-tip" data-tip="Channel-specific cost per unit (e.g., packaging, labor). Grow + overhead are added automatically on top of this.">?</span></th>
           <th>Units</th>
           <th>Revenue</th>
-          <th>All-In Cost <span class="info-tip" data-tip="Grow + overhead (if in-house) + channel cost × units. Includes everything.">?</span></th>
+          <th>Baked-in Cost <span class="info-tip" data-tip="Costs already committed: grow cost (every line) + production overhead (in-house lines only). Allocated from Harvest Setup — no fresh cash needed for these.">?</span></th>
+          <th>Cash Need <span class="info-tip" data-tip="Fresh cash you must spend to produce this line: the Add-on $/Unit × units (plus vendor fee for outsourced or buyback for extraction). Budget this.">?</span></th>
+          <th>All-In Cost <span class="info-tip" data-tip="Baked-in + Cash Need. The full per-line cost stack.">?</span></th>
           <th>Margin</th>
           <th>Margin/Lb</th>
           <th>Opp. Cost</th>
@@ -663,8 +688,18 @@ body {
       <div class="label">Total Revenue</div>
       <div class="value" id="scen-revenue">—</div>
     </div>
+    <div class="kpi" style="border-color:rgba(88,166,255,0.25)">
+      <div class="label">Baked-in Cost</div>
+      <div class="value" id="scen-bakedin" style="color:var(--accent-blue)">—</div>
+      <div class="sub">Already committed — grow + overhead</div>
+    </div>
+    <div class="kpi" style="border-color:rgba(255,169,77,0.35)">
+      <div class="label">Cash Need</div>
+      <div class="value" id="scen-cashneed" style="color:var(--accent-orange)">—</div>
+      <div class="sub">Fresh cash to produce this scenario</div>
+    </div>
     <div class="kpi">
-      <div class="label">Total Cost</div>
+      <div class="label">All-in Cost</div>
       <div class="value" id="scen-cost">—</div>
     </div>
     <div class="kpi">
@@ -685,9 +720,9 @@ body {
     <div class="desc">Select saved scenarios to compare side by side. Export any scenario or comparison to Excel.</div>
   </header>
   <div class="action-bar" style="margin-top:20px">
-    <span style="font-size:13px;color:var(--text-secondary)">Select scenarios to compare:</span>
+    <span style="font-size:13px;color:var(--text-secondary)">Select scenarios to compare (or click ⬇ on any scenario to export just that one):</span>
     <div class="spacer"></div>
-    <button class="btn btn-primary" onclick="exportComparison()">Export to Excel</button>
+    <button class="btn btn-primary" onclick="exportComparison()" title="Exports all selected scenarios (or the current working scenario if none selected)">Export Selected to Excel</button>
   </div>
   <div class="scenario-select" id="compareChips"></div>
   <div id="compareContent"></div>
@@ -978,9 +1013,12 @@ function renderChannels() {
     let matClass = ch.material === 'flower' ? 'flower' : ch.material === 'trim' ? 'trim' : 'either';
     let matLabel = ch.material === 'flower' ? 'Flower' : ch.material === 'trim' ? 'Trim' : 'Either';
     let expanded = ch._expanded !== false; // default expanded
-    let html = `<div class="channel-card" data-idx="${i}">
+    let html = `<div class="channel-card" data-idx="${i}" draggable="true">
       <div class="ch-header">
-        <input class="ch-name-input" type="text" value="${esc(ch.name)}" data-field="name" style="background:transparent;border:1px solid transparent;color:var(--text-primary);font-size:14px;font-weight:700;padding:2px 6px;border-radius:4px;width:160px;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--accent-blue)'" onblur="this.style.borderColor='transparent'">
+        <div style="display:flex;align-items:center;gap:4px;flex:1">
+          <span class="ch-drag-handle" title="Drag to reorder">⋮⋮</span>
+          <input class="ch-name-input" type="text" value="${esc(ch.name)}" data-field="name" style="background:transparent;border:1px solid transparent;color:var(--text-primary);font-size:14px;font-weight:700;padding:2px 6px;border-radius:4px;width:160px;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--accent-blue)'" onblur="this.style.borderColor='transparent'">
+        </div>
         <span class="ch-type ${matClass}">${matLabel}</span>
       </div>
       <div class="ch-fields">
@@ -1047,6 +1085,40 @@ function renderChannels() {
       <button class="btn btn-sm btn-danger" onclick="removeChannel(${i})">Remove</button>
     </div></div>`;
     grid.insertAdjacentHTML('beforeend', html);
+  });
+
+  // Wire drag-and-drop reordering
+  let dragSrcIdx = null;
+  grid.querySelectorAll('.channel-card').forEach(card => {
+    card.addEventListener('dragstart', (e) => {
+      dragSrcIdx = parseInt(card.dataset.idx);
+      card.classList.add('dragging');
+      try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragSrcIdx)); } catch(_) {}
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      grid.querySelectorAll('.channel-card').forEach(c => c.classList.remove('drag-over'));
+    });
+    card.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (dragSrcIdx == null) return;
+      if (parseInt(card.dataset.idx) !== dragSrcIdx) card.classList.add('drag-over');
+    });
+    card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+    card.addEventListener('drop', (e) => {
+      e.preventDefault();
+      card.classList.remove('drag-over');
+      let toIdx = parseInt(card.dataset.idx);
+      let fromIdx = dragSrcIdx;
+      dragSrcIdx = null;
+      if (fromIdx == null || isNaN(fromIdx) || isNaN(toIdx) || fromIdx === toIdx) return;
+      let [moved] = state.channels.splice(fromIdx, 1);
+      state.channels.splice(toIdx, 0, moved);
+      saveState();
+      renderChannels();
+      updateQuoteChannelSelect();
+      // Scenario builder dropdowns use channel ids, not indices, so they stay valid.
+    });
   });
 
   // Bind inputs
@@ -1288,6 +1360,8 @@ function renderAllocator() {
       <td><input type="number" class="alloc-input line-cost" value="${effCost}" min="0" step="0.25" data-line="${line.id}" style="width:70px;border-color:rgba(255,169,77,0.3);background:rgba(255,169,77,0.05)" title="${costTitle}"></td>
       <td class="alloc-val" data-cell="units">—</td>
       <td class="alloc-val" data-cell="revenue">—</td>
+      <td class="alloc-val" data-cell="bakedInCost" style="color:var(--accent-blue)">—</td>
+      <td class="alloc-val" data-cell="cashNeed" style="color:var(--accent-orange)">—</td>
       <td class="alloc-val" data-cell="totalCost">—</td>
       <td class="alloc-val" data-cell="margin">—</td>
       <td class="alloc-val" data-cell="marginPerLb">—</td>
@@ -1305,7 +1379,7 @@ function renderAllocator() {
     if (isExpanded) {
       let detailTr = document.createElement('tr');
       detailTr.setAttribute('data-line-detail', line.id);
-      detailTr.innerHTML = `<td colspan="14" style="padding:0;background:var(--bg-secondary)"><div class="line-cost-detail" id="line-detail-${line.id}" style="padding:12px 20px;border-left:3px solid var(--accent-yellow)">Computing…</div></td>`;
+      detailTr.innerHTML = `<td colspan="16" style="padding:0;background:var(--bg-secondary)"><div class="line-cost-detail" id="line-detail-${line.id}" style="padding:12px 20px;border-left:3px solid var(--accent-yellow)">Computing…</div></td>`;
       body.appendChild(detailTr);
     }
   });
@@ -1422,10 +1496,15 @@ function renderLineCostDetail(line, ch, econ) {
             <tr class="${econ.margin>=0?'positive':'negative'}"><td><b>Margin</b></td><td><b>$${fmtD(marginPerUnit)}</b></td><td><b>$${fmt(econ.margin)}</b></td><td style="color:var(--text-muted)">$${fmtD(econ.marginPerLb)}/lb</td></tr>
           </tbody>
         </table>
-        <div style="margin-top:10px;padding:8px 10px;background:rgba(255,169,77,0.08);border:1px dashed rgba(255,169,77,0.3);border-radius:6px;font-size:11px">
-          <div style="font-weight:600;color:var(--accent-orange);margin-bottom:2px">💰 Cash investment needed</div>
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(88,166,255,0.06);border:1px dashed rgba(88,166,255,0.3);border-radius:6px;font-size:11px">
+          <div style="font-weight:600;color:var(--accent-blue);margin-bottom:2px">🧱 Baked-in cost (already committed)</div>
+          <div>Per ${unitLabel}: <b>$${fmtD(econ.units>0?(econ.bakedInCost||0)/econ.units:0)}</b> &nbsp;·&nbsp; Total: <b>$${fmt(econ.bakedInCost||0)}</b></div>
+          <div style="color:var(--text-muted);margin-top:2px">Grow${line.mode==='inhouse'?' + production overhead':''} allocated from Harvest Setup — no fresh cash.</div>
+        </div>
+        <div style="margin-top:6px;padding:8px 10px;background:rgba(255,169,77,0.08);border:1px dashed rgba(255,169,77,0.3);border-radius:6px;font-size:11px">
+          <div style="font-weight:600;color:var(--accent-orange);margin-bottom:2px">💰 Cash Need (fresh cash to produce)</div>
           <div>Per ${unitLabel}: <b>$${fmtD(econ.units>0?econ.cashInvestment/econ.units:0)}</b> &nbsp;·&nbsp; Total: <b>$${fmt(econ.cashInvestment)}</b></div>
-          <div style="color:var(--text-muted);margin-top:2px">Fresh cash out to produce these units (grow cost already spent).</div>
+          <div style="color:var(--text-muted);margin-top:2px">${line.mode==='inhouse'?'Add-on $/Unit × units — packaging, labor, materials.':'Vendor / buyback cost — pay on delivery.'}</div>
         </div>
       </div>
     </div>`;
@@ -1484,10 +1563,12 @@ function calcLineEcon(line, ch) {
   let totalCost = growCost + overheadCost + channelCost;
   let margin = revenue - totalCost;
   let marginPerLb = lbs > 0 ? margin / lbs : 0;
-  // Cash investment = what you're paying out per unit (excludes sunk grow cost)
-  let cashInvestment = overheadCost + channelCost;
+  // Baked-in cost = grow + production overhead (already committed in Harvest Setup).
+  // Cash Need = fresh cash beyond baked-in needed to produce this line (channelCost only).
+  let bakedInCost = growCost + overheadCost;
+  let cashInvestment = channelCost; // "Cash Need" — excludes sunk grow + already-allocated overhead
 
-  return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost, brokerFee, cashInvestment };
+  return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost, brokerFee, bakedInCost, cashInvestment };
 }
 
 function updateAllocator() {
@@ -1532,7 +1613,7 @@ function updateAllocator() {
   flowerLines.sort((a, b) => b.econ.marginPerLb - a.econ.marginPerLb);
   trimLines.sort((a, b) => b.econ.marginPerLb - a.econ.marginPerLb);
 
-  let totals = { revenue: 0, cost: 0, margin: 0, lbs: 0, units: 0 };
+  let totals = { revenue: 0, cost: 0, margin: 0, lbs: 0, units: 0, bakedIn: 0, cashNeed: 0 };
   let insights = [];
 
   lineEcons.forEach(le => {
@@ -1543,12 +1624,15 @@ function updateAllocator() {
       if (le.line.lbs > 0) {
         setCell('units', fmt(le.econ.units));
         setCell('revenue', '$' + fmt(le.econ.revenue));
+        let bakedIn = (le.econ.growCost || 0) + (le.econ.overheadCost || 0);
+        setCell('bakedInCost', '$' + fmt(bakedIn));
+        setCell('cashNeed', '$' + fmt(le.econ.channelCost || 0));
         setCell('totalCost', '$' + fmt(le.econ.totalCost));
         let mCell = row.querySelector('[data-cell="margin"]');
         if (mCell) { mCell.textContent = '$' + fmt(le.econ.margin); mCell.className = 'alloc-val ' + (le.econ.margin >= 0 ? 'positive' : 'negative'); }
         setCell('marginPerLb', '$' + fmtD(le.econ.marginPerLb));
       } else {
-        setCell('units', '—'); setCell('revenue', '—'); setCell('totalCost', '—'); setCell('margin', '—'); setCell('marginPerLb', '—');
+        setCell('units', '—'); setCell('revenue', '—'); setCell('bakedInCost', '—'); setCell('cashNeed', '—'); setCell('totalCost', '—'); setCell('margin', '—'); setCell('marginPerLb', '—');
       }
     }
     // Populate expanded cost-stack detail row if visible
@@ -1564,6 +1648,8 @@ function updateAllocator() {
       totals.cost += le.econ.totalCost;
       totals.margin += le.econ.margin;
       totals.lbs += le.line.lbs;
+      totals.bakedIn += (le.econ.growCost || 0) + (le.econ.overheadCost || 0);
+      totals.cashNeed += (le.econ.channelCost || 0);
 
       let pool = (le.ch.material === 'flower' || le.ch.material === 'either') ? flowerLines : trimLines;
       let bestAlt = pool.find(p => p.line.id !== le.line.id);
@@ -1583,7 +1669,7 @@ function updateAllocator() {
     }
   });
 
-  // Totals row — 14 columns: Expand, Channel, Lbs, Mode, Dest, Sell$/Unit, Cost$/Unit, Units, Revenue, TotalCost, Margin, Margin/Lb, OppCost, Delete
+  // Totals row — 16 columns: Expand, Channel, Lbs, Mode, Dest, Sell$/Unit, Cost$/Unit, Units, Revenue, BakedIn, CashNeed, TotalCost, Margin, Margin/Lb, OppCost, Delete
   document.getElementById('allocFoot').innerHTML = `
     <tr class="total-row">
       <td></td>
@@ -1592,6 +1678,8 @@ function updateAllocator() {
       <td></td><td></td><td></td><td></td>
       <td style="text-align:right">${fmt(totals.units)}</td>
       <td style="text-align:right">$${fmt(totals.revenue)}</td>
+      <td style="text-align:right;color:var(--accent-blue)">$${fmt(totals.bakedIn)}</td>
+      <td style="text-align:right;color:var(--accent-orange)">$${fmt(totals.cashNeed)}</td>
       <td style="text-align:right">$${fmt(totals.cost)}</td>
       <td style="text-align:right" class="${totals.margin>=0?'positive':'negative'}">$${fmt(totals.margin)}</td>
       <td style="text-align:right">${totals.lbs>0?'$'+fmtD(totals.margin/totals.lbs):'—'}</td>
@@ -1601,6 +1689,8 @@ function updateAllocator() {
 
   // KPIs
   document.getElementById('scen-revenue').textContent = '$' + fmt(totals.revenue);
+  let bakedInEl = document.getElementById('scen-bakedin'); if (bakedInEl) bakedInEl.textContent = '$' + fmt(totals.bakedIn);
+  let cashNeedEl = document.getElementById('scen-cashneed'); if (cashNeedEl) cashNeedEl.textContent = '$' + fmt(totals.cashNeed);
   document.getElementById('scen-cost').textContent = '$' + fmt(totals.cost);
   document.getElementById('scen-margin').textContent = '$' + fmt(totals.margin);
   document.getElementById('scen-margin').style.color = totals.margin >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
@@ -1919,10 +2009,14 @@ function renderCompare() {
     document.getElementById('compareContent').innerHTML = '';
     return;
   }
+  // Each saved scenario: click the name to toggle for comparison; click ⬇ to export just that one.
   state.scenarios.forEach((s, i) => {
-    chips.innerHTML += `<div class="scenario-chip" data-idx="${i}" onclick="toggleCompareChip(this)">${esc(s.name)}</div>`;
+    chips.innerHTML += `<div class="scenario-chip" data-idx="${i}" style="display:inline-flex;align-items:center;gap:8px;padding-right:6px">
+      <span onclick="toggleCompareChip(this.parentElement)" style="cursor:pointer">${esc(s.name)}</span>
+      <button class="btn btn-sm" onclick="event.stopPropagation();exportScenarioByIdx(${i})" title="Download this scenario as .xlsx" style="padding:2px 8px;font-size:11px">⬇</button>
+    </div>`;
   });
-  document.getElementById('compareContent').innerHTML = '<div style="color:var(--text-muted);font-size:13px;margin-top:16px">Select 2-4 scenarios above to compare.</div>';
+  document.getElementById('compareContent').innerHTML = '<div style="color:var(--text-muted);font-size:13px;margin-top:16px">Click a scenario name to select (pick 2-4 to compare). Click ⬇ to export a single scenario.</div>';
 }
 
 function toggleCompareChip(el) {
@@ -2072,13 +2166,99 @@ function calcLineEconWithHarvest(line, ch, harvest) {
   let totalCost = growCost + overheadCost + channelCost;
   let margin = revenue - totalCost;
   let marginPerLb = lbs > 0 ? margin / lbs : 0;
-  let cashInvestment = overheadCost + channelCost;
+  let bakedInCost = growCost + overheadCost;
+  let cashInvestment = channelCost;
 
-  return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost, brokerFee, cashInvestment };
+  return { units, revenue, totalCost, margin, marginPerLb, growCost, overheadCost, channelCost, brokerFee, bakedInCost, cashInvestment };
 }
 
 // ====== EXCEL EXPORT ======
+// Small non-blocking toast for export feedback. Lives briefly in the top-right.
+function toast(msg, kind) {
+  let host = document.getElementById('ybToastHost');
+  if (!host) {
+    host = document.createElement('div');
+    host.id = 'ybToastHost';
+    host.style.cssText = 'position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none';
+    document.body.appendChild(host);
+  }
+  let color = kind === 'error' ? 'var(--accent-red)' : 'var(--accent-green)';
+  let bg = kind === 'error' ? 'rgba(255,107,107,0.15)' : 'rgba(105,219,124,0.15)';
+  let el = document.createElement('div');
+  el.style.cssText = `background:${bg};border:1px solid ${color};color:${color};padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,0.3);pointer-events:auto;max-width:360px`;
+  el.textContent = msg;
+  host.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 300); }, 3000);
+}
+
+function ensureXlsxReady() {
+  if (typeof XLSX === 'undefined' || !XLSX || typeof XLSX.writeFile !== 'function') {
+    toast('Excel library failed to load — check network and refresh.', 'error');
+    return false;
+  }
+  return true;
+}
+
+// Export a single saved scenario by index
+function exportScenarioByIdx(idx) {
+  if (!ensureXlsxReady()) return;
+  let s = state.scenarios[idx];
+  if (!s) { toast('Scenario not found.', 'error'); return; }
+  try {
+    let wb = XLSX.utils.book_new();
+    let rows = buildScenarioExportRows(s);
+    let ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:14},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
+    XLSX.utils.book_append_sheet(wb, ws, s.name.slice(0,31));
+    XLSX.writeFile(wb, 'YellowBrick_' + s.name.replace(/\s+/g,'_') + '_' + new Date().toISOString().slice(0,10) + '.xlsx');
+    toast('Exported "' + s.name + '" to Excel.');
+  } catch(e) {
+    toast('Export failed: ' + e.message, 'error');
+  }
+}
+
+// Build the standard export rows for a saved scenario object (lines or legacy allocations)
+function buildScenarioExportRows(s) {
+  let rows = [
+    ['Scenario: ' + s.name],
+    ['Generated: ' + new Date().toLocaleString()],
+    [''],
+    ['Harvest Inputs'],
+    ['Flower (lbs)', s.harvest.flower],
+    ['Trim (lbs)', s.harvest.trim],
+    ['Grow Cost ($)', s.harvest.growCost],
+    ['Production Overhead ($)', s.harvest.prodOverhead || 0],
+    [''],
+    ['Channel', 'Material', 'Lbs', 'Mode', 'Destination', 'Units', 'Revenue', 'Baked-in Cost', 'Cash Need', 'All-in Cost', 'Margin', 'Margin/Lb']
+  ];
+  let totals = { rev:0, baked:0, cash:0, cost:0, margin:0, lbs:0 };
+  let channels = s.channels || state.channels;
+  let lines = s.lines || [];
+  if (!lines.length && s.allocations) {
+    channels.forEach(ch => {
+      let lbs = s.allocations[ch.id] || 0;
+      if (lbs > 0) lines.push({ channelId: ch.id, lbs, mode: (s.modes && s.modes[ch.id]) || 'inhouse', destination: 'internal', outsourcedCostOverride: null });
+    });
+  }
+  lines.forEach(line => {
+    let ch = channels.find(c => c.id === line.channelId);
+    if (!ch) return;
+    let econ = calcLineEconWithHarvest(line, ch, s.harvest);
+    let dest = line.destination === 'external' ? 'Wholesale' : 'Retail';
+    rows.push([ch.name, ch.material, line.lbs, line.mode, dest, econ.units, Math.round(econ.revenue), Math.round(econ.bakedInCost||0), Math.round(econ.channelCost||0), Math.round(econ.totalCost), Math.round(econ.margin), line.lbs>0?Math.round(econ.marginPerLb*100)/100:0]);
+    totals.rev += econ.revenue;
+    totals.baked += (econ.bakedInCost || 0);
+    totals.cash += (econ.channelCost || 0);
+    totals.cost += econ.totalCost;
+    totals.margin += econ.margin;
+    totals.lbs += line.lbs;
+  });
+  rows.push(['TOTAL','', totals.lbs,'','','', Math.round(totals.rev), Math.round(totals.baked), Math.round(totals.cash), Math.round(totals.cost), Math.round(totals.margin), totals.lbs>0?Math.round(totals.margin/totals.lbs*100)/100:0]);
+  return rows;
+}
+
 function exportComparison() {
+  if (!ensureXlsxReady()) return;
   let selected = document.querySelectorAll('.scenario-chip.selected');
   let indices = [...selected].map(c => parseInt(c.dataset.idx));
   if (indices.length < 1) {
@@ -2087,51 +2267,29 @@ function exportComparison() {
   }
   let wb = XLSX.utils.book_new();
 
-  indices.forEach(idx => {
-    let s = state.scenarios[idx];
-    let rows = [
-      ['Scenario: ' + s.name],
-      ['Generated: ' + new Date().toLocaleString()],
-      [''],
-      ['Harvest Inputs'],
-      ['Flower (lbs)', s.harvest.flower],
-      ['Trim (lbs)', s.harvest.trim],
-      ['Grow Cost ($)', s.harvest.growCost],
-      ['Production Overhead ($)', s.harvest.prodOverhead || 0],
-      [''],
-      ['Channel', 'Material', 'Lbs', 'Mode', 'Destination', 'Units', 'Revenue', 'Grow Cost', 'Overhead', 'Channel Cost', 'Total Cost', 'Margin', 'Margin/Lb']
-    ];
-
-    let totals = { rev:0, cost:0, margin:0, lbs:0 };
-    let channels = s.channels || state.channels;
-    // Support both new lines format and legacy allocations format
-    let lines = s.lines || [];
-    if (!lines.length && s.allocations) {
-      channels.forEach(ch => {
-        let lbs = s.allocations[ch.id] || 0;
-        if (lbs > 0) lines.push({ channelId: ch.id, lbs, mode: (s.modes && s.modes[ch.id]) || 'inhouse', destination: 'internal', outsourcedCostOverride: null });
-      });
-    }
-    lines.forEach(line => {
-      let ch = channels.find(c => c.id === line.channelId);
-      if (!ch) return;
-      let econ = calcLineEconWithHarvest(line, ch, s.harvest);
-      let dest = line.destination === 'external' ? 'Wholesale' : 'Retail';
-      rows.push([ch.name, ch.material, line.lbs, line.mode, dest, econ.units, econ.revenue, Math.round(econ.growCost), Math.round(econ.overheadCost), Math.round(econ.channelCost), Math.round(econ.totalCost), Math.round(econ.margin), line.lbs>0?Math.round(econ.marginPerLb*100)/100:0]);
-      totals.rev += econ.revenue; totals.cost += econ.totalCost; totals.margin += econ.margin; totals.lbs += line.lbs;
+  try {
+    indices.forEach(idx => {
+      let s = state.scenarios[idx];
+      let rows = buildScenarioExportRows(s);
+      let ws = XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:14},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
+      XLSX.utils.book_append_sheet(wb, ws, s.name.slice(0,31));
     });
-    rows.push(['TOTAL','','','','','', totals.rev, '', '', '', totals.cost, totals.margin, totals.lbs>0?Math.round(totals.margin/totals.lbs*100)/100:0]);
-
-    let ws = XLSX.utils.aoa_to_sheet(rows);
-    ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
-    XLSX.utils.book_append_sheet(wb, ws, s.name.slice(0,31));
-  });
-
-  XLSX.writeFile(wb, 'YellowBrick_Comparison_' + new Date().toISOString().slice(0,10) + '.xlsx');
+    XLSX.writeFile(wb, 'YellowBrick_Comparison_' + new Date().toISOString().slice(0,10) + '.xlsx');
+    toast('Exported ' + indices.length + ' scenario' + (indices.length > 1 ? 's' : '') + ' to Excel.');
+  } catch(e) {
+    toast('Export failed: ' + e.message, 'error');
+  }
 }
 
 function exportCurrentScenario() {
+  if (!ensureXlsxReady()) return;
   let name = document.getElementById('scenarioName').value.trim() || 'Current';
+  if (!state.currentLines || state.currentLines.length === 0) {
+    toast('Scenario is empty — add at least one line first.', 'error');
+    return;
+  }
+  try {
   let wb = XLSX.utils.book_new();
   let rows = [
     ['Yellow Brick Calculator — ' + name],
@@ -2143,22 +2301,31 @@ function exportCurrentScenario() {
     ['Grow Cost ($)', state.harvest.growCost],
     ['Production Overhead ($)', state.harvest.prodOverhead],
     [''],
-    ['Channel', 'Material', 'Lbs', 'Mode', 'Destination', 'Units', 'Revenue', 'Grow Cost', 'Overhead', 'Channel Cost', 'Total Cost', 'Margin', 'Margin/Lb']
+    ['Channel', 'Material', 'Lbs', 'Mode', 'Destination', 'Units', 'Revenue', 'Baked-in Cost', 'Cash Need', 'All-in Cost', 'Margin', 'Margin/Lb']
   ];
-  let totals = { rev:0, cost:0, margin:0, lbs:0 };
+  let totals = { rev:0, baked:0, cash:0, cost:0, margin:0, lbs:0 };
   state.currentLines.forEach(line => {
     let ch = state.channels.find(c => c.id === line.channelId);
     if (!ch) return;
     let econ = calcLineEcon(line, ch);
     let dest = line.destination === 'external' ? 'Wholesale' : 'Retail';
-    rows.push([ch.name, ch.material, line.lbs, line.mode, dest, econ.units, econ.revenue, Math.round(econ.growCost), Math.round(econ.overheadCost), Math.round(econ.channelCost), Math.round(econ.totalCost), Math.round(econ.margin), line.lbs>0?Math.round(econ.marginPerLb*100)/100:0]);
-    totals.rev += econ.revenue; totals.cost += econ.totalCost; totals.margin += econ.margin; totals.lbs += line.lbs;
+    rows.push([ch.name, ch.material, line.lbs, line.mode, dest, econ.units, Math.round(econ.revenue), Math.round(econ.bakedInCost||0), Math.round(econ.channelCost||0), Math.round(econ.totalCost), Math.round(econ.margin), line.lbs>0?Math.round(econ.marginPerLb*100)/100:0]);
+    totals.rev += econ.revenue;
+    totals.baked += (econ.bakedInCost || 0);
+    totals.cash += (econ.channelCost || 0);
+    totals.cost += econ.totalCost;
+    totals.margin += econ.margin;
+    totals.lbs += line.lbs;
   });
-  rows.push(['TOTAL','','','','','', totals.rev, '', '', '', totals.cost, totals.margin, totals.lbs>0?Math.round(totals.margin/totals.lbs*100)/100:0]);
+  rows.push(['TOTAL','', totals.lbs,'','','', Math.round(totals.rev), Math.round(totals.baked), Math.round(totals.cash), Math.round(totals.cost), Math.round(totals.margin), totals.lbs>0?Math.round(totals.margin/totals.lbs*100)/100:0]);
   let ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
+  ws['!cols'] = [{wch:25},{wch:10},{wch:8},{wch:10},{wch:10},{wch:10},{wch:12},{wch:14},{wch:12},{wch:12},{wch:12},{wch:12}];
   XLSX.utils.book_append_sheet(wb, ws, name.slice(0,31));
   XLSX.writeFile(wb, 'YellowBrick_' + name.replace(/\s+/g,'_') + '_' + new Date().toISOString().slice(0,10) + '.xlsx');
+  toast('Exported "' + name + '" to Excel.');
+  } catch(e) {
+    toast('Export failed: ' + e.message, 'error');
+  }
 }
 
 // ====== UTILS ======
