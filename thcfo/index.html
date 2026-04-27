@@ -8,6 +8,7 @@
 <script src="data/summary-data.js"></script>
 <script src="data/ap-aging-data.js"></script>
 <script src="data/operations-data.js"></script>
+<script src="data/docs-data.js"></script>
 <style>
 .layout { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; }
 aside.sidebar {
@@ -103,6 +104,69 @@ main.content { padding: var(--space-6) var(--space-7); max-width: var(--content-
 .module-card .health-pill.watch { background: var(--warning-bg); color: var(--warning); border-color: rgba(251, 191, 36, 0.3); }
 .module-card .health-pill.neutral { background: rgba(139, 140, 154, 0.1); color: var(--text-secondary); border-color: var(--border-default); }
 
+/* Docs section — provenance + next-refresh checklist */
+.docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.docs-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-5);
+}
+.docs-card .docs-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: var(--space-4); padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.docs-card .docs-header h3 { font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin: 0; }
+.docs-card .docs-header .docs-count {
+  font-size: var(--fs-xs); color: var(--text-tertiary);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.docs-card .docs-tag {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: var(--space-2);
+}
+.docs-card ul { list-style: none; padding: 0; margin: 0; }
+.docs-card li {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.docs-card li:last-child { border-bottom: none; }
+.docs-card .doc-row {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3);
+  margin-bottom: 4px;
+}
+.docs-card .doc-name { font-size: var(--fs-sm); color: var(--text-primary); font-weight: var(--fw-semibold); }
+.docs-card .doc-meta {
+  font-size: var(--fs-xs); color: var(--text-secondary);
+  line-height: 1.5;
+}
+.docs-card .doc-meta .doc-period {
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: var(--text-tertiary);
+}
+.docs-card .doc-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 8px; border-radius: var(--radius-pill);
+  font-size: 0.6875rem; font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em; flex-shrink: 0; white-space: nowrap;
+}
+.docs-card .doc-status.received {
+  background: var(--positive-bg); color: var(--positive);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+.docs-card .doc-status.awaiting-close {
+  background: var(--warning-bg); color: var(--warning);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+.docs-card .doc-status.awaiting-upload {
+  background: rgba(248, 113, 113, 0.1); color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+.docs-card .doc-status.auto-refresh {
+  background: var(--accent-bg); color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+.docs-card .doc-status .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
 /* Strategic context */
 .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
 .context-card {
@@ -122,6 +186,7 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
   .hero-kpis { grid-template-columns: repeat(2, 1fr); }
   .modules-grid { grid-template-columns: 1fr; }
   .context-grid { grid-template-columns: 1fr; }
+  .docs-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -169,6 +234,32 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
     <!-- ============ HERO KPIs ============ -->
     <section class="section">
       <div class="hero-kpis" id="hero-kpis"></div>
+    </section>
+
+    <!-- ============ DOCS · PROVENANCE + NEXT REFRESH ============ -->
+    <section class="section">
+      <h2>Docs</h2>
+      <div class="section-sub">What this dashboard is built from, and what's required to bring it forward to the next cut. Editable in <code>dashboard/data/docs-data.js</code>.</div>
+
+      <div class="docs-grid">
+        <div class="docs-card">
+          <div class="docs-tag">Source of truth</div>
+          <div class="docs-header">
+            <h3>Current sources</h3>
+            <span class="docs-count" id="docs-current-count"></span>
+          </div>
+          <ul id="docs-current-list"></ul>
+        </div>
+
+        <div class="docs-card">
+          <div class="docs-tag">Next refresh checklist</div>
+          <div class="docs-header">
+            <h3>Pending for next cut</h3>
+            <span class="docs-count" id="docs-pending-count"></span>
+          </div>
+          <ul id="docs-pending-list"></ul>
+        </div>
+      </div>
     </section>
 
     <!-- ============ MODULE NAVIGATION ============ -->
@@ -378,7 +469,59 @@ function renderOverview() {
 
   // ----- Footer status -----
   document.getElementById('page-footer-status').textContent =
-    `● THCFO · data as of ${S.meta.last_updated} · 7 pages · 4 data files`;
+    `● THCFO · data as of ${S.meta.last_updated} · 7 pages · 5 data files`;
+}
+
+// ============================================================================
+// Docs section renderer — provenance (left) + next-refresh checklist (right)
+// Reads from window.DOCS_DATA. Each entry renders as a row with name, source,
+// period, and (right column only) a status pill keyed by who's blocking.
+// ============================================================================
+function renderDocs() {
+  if (!window.DOCS_DATA) return;
+  const D = window.DOCS_DATA;
+
+  const statusLabel = {
+    'awaiting-close':  'Awaiting close',
+    'awaiting-upload': 'Awaiting upload',
+    'auto-refresh':    'Auto-refresh'
+  };
+
+  // ----- Left column: current sources -----
+  const currentEl = document.getElementById('docs-current-list');
+  document.getElementById('docs-current-count').textContent =
+    `${D.currentSources.length} docs · updated ${D.meta.last_updated}`;
+  currentEl.innerHTML = D.currentSources.map(d => `
+    <li>
+      <div class="doc-row">
+        <div class="doc-name">${d.name}</div>
+        <span class="doc-status received"><span class="dot"></span>Received</span>
+      </div>
+      <div class="doc-meta">
+        ${d.source}
+        ${d.period ? ` · <span class="doc-period">${d.period}</span>` : ''}
+        ${d.lens ? `<br>${d.lens}` : ''}
+      </div>
+    </li>
+  `).join('');
+
+  // ----- Right column: pending next refresh -----
+  const pendingEl = document.getElementById('docs-pending-list');
+  document.getElementById('docs-pending-count').textContent =
+    `${D.pendingNextRefresh.length} pending · target ${D.meta.refresh_target}`;
+  pendingEl.innerHTML = D.pendingNextRefresh.map(d => `
+    <li>
+      <div class="doc-row">
+        <div class="doc-name">${d.name}</div>
+        <span class="doc-status ${d.status}"><span class="dot"></span>${statusLabel[d.status] || d.status}</span>
+      </div>
+      <div class="doc-meta">
+        ${d.source}
+        ${d.period ? ` · <span class="doc-period">${d.period}</span>` : ''}
+        ${d.blocker ? `<br>Blocker: ${d.blocker}` : ''}
+      </div>
+    </li>
+  `).join('');
 }
 
 // Tweak inline color helpers used in meta lines
@@ -390,6 +533,7 @@ styleEl.textContent = `
 document.head.appendChild(styleEl);
 
 renderOverview();
+renderDocs();
 </script>
 </body>
 </html>
