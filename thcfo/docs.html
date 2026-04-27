@@ -21,6 +21,7 @@ aside.sidebar {
 .sidebar nav a { display: block; padding: var(--space-2) var(--space-3); color: var(--text-secondary); text-decoration: none; font-size: var(--fs-sm); border-radius: var(--radius-sm); margin-bottom: 2px; transition: color 0.15s, background 0.15s; }
 .sidebar nav a:hover { color: var(--text-primary); }
 .sidebar nav a.active { color: var(--accent); background: var(--accent-bg); font-weight: var(--fw-semibold); }
+.sidebar nav.utility-nav { margin-bottom: var(--space-5); }
 .sidebar .footer-action { margin-top: auto; padding-top: var(--space-5); font-size: var(--fs-sm); color: var(--positive); cursor: pointer; }
 
 main.content { padding: var(--space-6) var(--space-7); max-width: var(--content-max-width); width: 100%; margin: 0 auto; box-sizing: border-box; }
@@ -118,6 +119,10 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
     <div class="brand">THCFO</div>
     <div class="brand-sub">Tree House CFO Dashboard</div>
 
+    <nav class="utility-nav">
+      <a href="docs.html" class="active">Docs</a>
+    </nav>
+
     <div class="section-label">Pages</div>
     <nav>
       <a href="index.html">Overview</a>
@@ -127,14 +132,6 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
       <a href="cashflow.html">Cash Flow &amp; Liquidity</a>
       <a href="debt.html">Debt &amp; Capital</a>
       <a href="operations.html">Operations</a>
-      <a href="docs.html" class="active">Docs</a>
-    </nav>
-
-    <div class="section-label">On This Page</div>
-    <nav>
-      <a href="#legend">Status Legend</a>
-      <a href="#current">Current Sources</a>
-      <a href="#pending">Pending for Next Cut</a>
     </nav>
 
     <div class="section-label">Other Dashboards</div>
@@ -153,47 +150,37 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
     </div>
 
     <!-- ============ STATUS LEGEND ============ -->
-    <section class="section" id="legend">
-      <h2>Status Legend</h2>
-      <div class="section-sub">The right column color-codes who's blocking each pending doc, so the page doubles as a triage view.</div>
+    <div class="status-legend">
+      <div class="legend-item"><span class="doc-status received"><span class="dot"></span>Received</span> Already in the dashboard</div>
+      <div class="legend-item"><span class="doc-status awaiting-close"><span class="dot"></span>Awaiting close</span> Bookkeeping bottleneck</div>
+      <div class="legend-item"><span class="doc-status awaiting-upload"><span class="dot"></span>Awaiting upload</span> Wes bottleneck</div>
+      <div class="legend-item"><span class="doc-status auto-refresh"><span class="dot"></span>Auto-refresh</span> Claude can pull on request</div>
+    </div>
 
-      <div class="status-legend">
-        <div class="legend-item"><span class="doc-status received"><span class="dot"></span>Received</span> Already in the dashboard</div>
-        <div class="legend-item"><span class="doc-status awaiting-close"><span class="dot"></span>Awaiting close</span> Bookkeeping bottleneck</div>
-        <div class="legend-item"><span class="doc-status awaiting-upload"><span class="dot"></span>Awaiting upload</span> Wes bottleneck</div>
-        <div class="legend-item"><span class="doc-status auto-refresh"><span class="dot"></span>Auto-refresh</span> Claude can pull on request</div>
-      </div>
-    </section>
+    <!-- ============ DOCS GRID · SIDE BY SIDE ============ -->
+    <div class="docs-grid">
 
-    <!-- ============ CURRENT SOURCES ============ -->
-    <section class="section" id="current">
-      <h2>Current Sources</h2>
-      <div class="section-sub">The source-of-truth manifest. If a number on the dashboard isn't traceable to a doc here, something is wrong.</div>
-
+      <!-- LEFT · What we have -->
       <div class="docs-card">
         <div class="docs-tag">Source of truth</div>
         <div class="docs-header">
-          <h3>What the dashboard is built on</h3>
+          <h3>What we have</h3>
           <span class="docs-count" id="docs-current-count"></span>
         </div>
         <ul id="docs-current-list"></ul>
       </div>
-    </section>
 
-    <!-- ============ PENDING NEXT REFRESH ============ -->
-    <section class="section" id="pending">
-      <h2>Pending for Next Cut</h2>
-      <div class="section-sub">The to-do list. When all of these land, the dashboard rolls forward to the next monthly cut.</div>
-
+      <!-- RIGHT · What we need -->
       <div class="docs-card">
         <div class="docs-tag">Next refresh checklist</div>
         <div class="docs-header">
-          <h3>Required to advance to next monthly cut</h3>
+          <h3>What we need</h3>
           <span class="docs-count" id="docs-pending-count"></span>
         </div>
         <ul id="docs-pending-list"></ul>
       </div>
-    </section>
+
+    </div>
 
     <footer class="page-footer">
       <span id="page-footer-status">● THCFO · Docs · loading data files</span>

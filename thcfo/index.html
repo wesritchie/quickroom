@@ -23,6 +23,7 @@ aside.sidebar {
 .sidebar nav a { display: block; padding: var(--space-2) var(--space-3); color: var(--text-secondary); text-decoration: none; font-size: var(--fs-sm); border-radius: var(--radius-sm); margin-bottom: 2px; transition: color 0.15s, background 0.15s; }
 .sidebar nav a:hover { color: var(--text-primary); }
 .sidebar nav a.active { color: var(--accent); background: var(--accent-bg); font-weight: var(--fw-semibold); }
+.sidebar nav.utility-nav { margin-bottom: var(--space-5); }
 .sidebar .footer-action { margin-top: auto; padding-top: var(--space-5); font-size: var(--fs-sm); color: var(--positive); cursor: pointer; }
 
 main.content { padding: var(--space-6) var(--space-7); max-width: var(--content-max-width); width: 100%; margin: 0 auto; box-sizing: border-box; }
@@ -132,6 +133,10 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
     <div class="brand">THCFO</div>
     <div class="brand-sub">Tree House CFO Dashboard</div>
 
+    <nav class="utility-nav">
+      <a href="docs.html">Docs</a>
+    </nav>
+
     <div class="section-label">Pages</div>
     <nav>
       <a href="index.html" class="active">Overview</a>
@@ -141,7 +146,6 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
       <a href="cashflow.html">Cash Flow &amp; Liquidity</a>
       <a href="debt.html">Debt &amp; Capital</a>
       <a href="operations.html">Operations</a>
-      <a href="docs.html">Docs</a>
     </nav>
 
     <div class="section-label">Other Dashboards</div>
