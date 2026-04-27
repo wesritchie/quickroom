@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THCFO — Debt &amp; Capital Structure</title>
+<link rel="stylesheet" href="styles/design-tokens.css">
+<script src="data/summary-data.js"></script>
+<script src="data/ap-aging-data.js"></script>
+<style>
+.layout { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; }
+aside.sidebar {
+  background: var(--bg-sidebar); border-right: 1px solid var(--border-subtle);
+  padding: var(--space-6) var(--space-5);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.sidebar .brand { font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-1); }
+.sidebar .brand-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-7); }
+.sidebar .section-label { font-size: 0.6875rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: var(--space-5) 0 var(--space-2); }
+.sidebar .section-label:first-of-type { margin-top: 0; }
+.sidebar nav a { display: block; padding: var(--space-2) var(--space-3); color: var(--text-secondary); text-decoration: none; font-size: var(--fs-sm); border-radius: var(--radius-sm); margin-bottom: 2px; transition: color 0.15s, background 0.15s; }
+.sidebar nav a:hover { color: var(--text-primary); }
+.sidebar nav a.active { color: var(--accent); background: var(--accent-bg); font-weight: var(--fw-semibold); }
+.sidebar .footer-action { margin-top: auto; padding-top: var(--space-5); font-size: var(--fs-sm); color: var(--positive); cursor: pointer; }
+
+main.content { padding: var(--space-6) var(--space-7); max-width: var(--content-max-width); width: 100%; margin: 0 auto; box-sizing: border-box; }
+.page-header { margin-bottom: var(--space-6); }
+.page-title { font-size: var(--fs-3xl); font-weight: var(--fw-bold); margin: var(--space-3) 0 var(--space-1); letter-spacing: -0.02em; }
+.page-subtitle { font-size: var(--fs-base); color: var(--text-secondary); }
+
+.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3); margin-bottom: var(--space-6); }
+.kpi-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-4); }
+.kpi-card .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: var(--space-2); font-weight: var(--fw-semibold); }
+.kpi-card .value { font-size: var(--fs-2xl); font-weight: var(--fw-bold); font-feature-settings: 'tnum' on, 'lnum' on; color: var(--accent); letter-spacing: -0.01em; }
+.kpi-card .meta { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
+.kpi-card .meta.positive { color: var(--positive); }
+
+.section { margin-bottom: var(--space-7); scroll-margin-top: var(--space-5); }
+.section h2 { font-size: var(--fs-xl); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.section .section-sub { color: var(--text-secondary); font-size: var(--fs-sm); margin-bottom: var(--space-4); }
+
+.card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--space-5); }
+.card h3 { font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.card .card-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-4); }
+
+table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+table.tbl th, table.tbl td { padding: 10px 12px; text-align: left; }
+table.tbl th { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); font-weight: var(--fw-semibold); border-bottom: 1px solid var(--border-default); }
+table.tbl td { border-bottom: 1px solid var(--border-subtle); font-feature-settings: 'tnum' on, 'lnum' on; }
+table.tbl td.num, table.tbl th.num { text-align: right; }
+table.tbl tr.subtotal td { border-top: 1px solid var(--border-default); font-weight: var(--fw-semibold); color: var(--accent); }
+table.tbl tr.headline td { background: var(--accent-bg); font-weight: var(--fw-bold); color: var(--accent); border-top: 1px solid var(--accent-border); border-bottom: 1px solid var(--accent-border); padding: 14px 12px; }
+
+/* Debt category badges */
+.debt-cat { display: inline-block; font-size: 0.65rem; padding: 2px 8px; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: 0.06em; font-weight: var(--fw-semibold); }
+.debt-cat.friendly { background: rgba(52, 211, 153, 0.15); color: var(--positive); }
+.debt-cat.working { background: rgba(14, 165, 233, 0.15); color: var(--accent); }
+.debt-cat.acquisition { background: rgba(167, 139, 250, 0.15); color: var(--data-4); }
+.debt-cat.landlord { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+
+/* DSCR cards */
+.dscr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.dscr-card { padding: var(--space-4); }
+.dscr-card .lens { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+.dscr-card .ratio { font-size: var(--fs-3xl); font-weight: var(--fw-bold); color: var(--positive); font-feature-settings: 'tnum' on, 'lnum' on; line-height: 1; }
+.dscr-card .ratio-mid { color: var(--accent); }
+.dscr-card .ratio-base { color: var(--accent); }
+.dscr-card .formula { font-size: var(--fs-xs); color: var(--text-tertiary); margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); line-height: 1.5; }
+
+/* Maturity wall */
+.maturity-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.maturity-card { padding: var(--space-4); }
+.maturity-card .horizon { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+.maturity-card .amount { font-size: var(--fs-xl); font-weight: var(--fw-bold); color: var(--accent); font-feature-settings: 'tnum' on, 'lnum' on; }
+.maturity-card .desc { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
+
+/* Deleveraging chart */
+.delever-bar { display: flex; gap: 2px; margin: var(--space-3) 0; height: 32px; }
+.delever-bar .seg { display: flex; align-items: center; justify-content: center; font-size: var(--fs-xs); color: var(--bg-page); font-weight: var(--fw-bold); }
+.delever-bar .seg.inst { background: var(--negative); }
+.delever-bar .seg.friendly { background: var(--positive); }
+.delever-bar .seg.other { background: var(--data-4); }
+
+/* Educational */
+.educational { background: rgba(14, 165, 233, 0.05); border: 1px solid var(--accent-border); border-radius: var(--radius-md); padding: var(--space-4); font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin-top: var(--space-4); }
+.educational .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+.educational strong { color: var(--text-primary); }
+
+/* Cap table top holders */
+.captable-grid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-4); }
+
+.placeholder-card { border: 1px dashed var(--warning); background: rgba(251, 191, 36, 0.04); }
+.placeholder-card .placeholder-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--warning); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+
+details.collapsible { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 0; }
+details.collapsible summary { padding: var(--space-4) var(--space-5); cursor: pointer; font-size: var(--fs-lg); font-weight: var(--fw-semibold); list-style: none; }
+details.collapsible summary::-webkit-details-marker { display: none; }
+details.collapsible summary::after { content: '▾'; float: right; color: var(--text-tertiary); transition: transform 0.2s; }
+details.collapsible[open] summary::after { transform: rotate(180deg); }
+details.collapsible .body { padding: 0 var(--space-5) var(--space-5); }
+
+.footnotes { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; }
+.footnotes p { margin: 0 0 var(--space-3); }
+.footnotes strong { color: var(--text-primary); }
+
+footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-xs); color: var(--text-tertiary); }
+
+@media (max-width: 1100px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .dscr-grid, .maturity-grid, .captable-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">THCFO · Debt &amp; Capital</div>
+    <div class="brand-sub">Schedule · DSCR · Cap Table</div>
+
+    <div class="section-label">Pages</div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="valuation.html">Valuation</a>
+      <a href="profitability.html">Profitability</a>
+      <a href="verticalization.html">Verticalization</a>
+      <a href="cashflow.html">Cash Flow &amp; Liquidity</a>
+      <a href="debt.html" class="active">Debt &amp; Capital</a>
+      <a href="operations.html">Operations</a>
+    </nav>
+
+    <div class="section-label">On This Page</div>
+    <nav>
+      <a href="#summary">Summary KPIs</a>
+      <a href="#schedule">Debt Schedule</a>
+      <a href="#dscr">Coverage Ratios</a>
+      <a href="#blended">Blended Cost of Capital</a>
+      <a href="#maturity">Maturity Wall</a>
+      <a href="#deleveraging">Deleveraging Story</a>
+      <a href="#ap-aging">AP Aging Discipline</a>
+      <a href="#methodology">Methodology Notes</a>
+    </nav>
+
+    <div class="section-label">Other Dashboards</div>
+    <nav>
+      <a href="https://wesritchie.github.io/quickroom/" target="_blank">QuickRoom Hub →</a>
+    </nav>
+
+    <div class="footer-action">⟲ Refresh Data</div>
+  </aside>
+
+  <main class="content">
+
+    <span class="status-pill accent">
+      <span class="dot"></span>
+      Schedule current as of Apr 26, 2026 · Post-2025 institutional debt retirement complete
+    </span>
+
+    <div class="page-header">
+      <h1 class="page-title">Debt &amp; Capital Structure</h1>
+      <p class="page-subtitle">
+        Live debt schedule, debt-service coverage ratios across EBITDA lenses, maturity wall, the multi-year deleveraging story, and the cap table summary.
+      </p>
+    </div>
+
+    <!-- ============ SUMMARY KPIs ============ -->
+    <section class="section" id="summary">
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="label">Total Debt Outstanding</div>
+          <div class="value">$693K</div>
+          <div class="meta">5 facilities · 0% – 15% rate range</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">AP Aging · Operational Tracker</div>
+          <div class="value" id="kpi-ap-value">—</div>
+          <div class="meta" id="kpi-ap-meta">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Blended Cost of Capital</div>
+          <div class="value">2.85%</div>
+          <div class="meta">Term debt + AP at 0% effective</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">DSCR (Strategic EBITDA)</div>
+          <div class="value">4.15x</div>
+          <div class="meta positive">Term debt covered</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Net Deleveraging FY25</div>
+          <div class="value">$524K</div>
+          <div class="meta positive">Institutional debt retired</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DEBT SCHEDULE ============ -->
+    <section class="section" id="schedule">
+      <h2>Debt Schedule</h2>
+      <div class="section-sub">All term debt and notes payable as of April 26, 2026. Color-coded by category.</div>
+
+      <div class="card">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Lender</th>
+              <th>Category</th>
+              <th class="num">Original</th>
+              <th class="num">Current</th>
+              <th class="num">Rate</th>
+              <th class="num">Monthly</th>
+              <th>Maturity / Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>F&amp;F Notes (5)</strong><br><span style="font-size: var(--fs-xs); color: var(--text-tertiary);">Arndt · Chase · Crockett · Turunen · Reis</span></td>
+              <td><span class="debt-cat friendly">Friendly</span></td>
+              <td class="num">$400,000</td>
+              <td class="num">$400,000</td>
+              <td class="num">15%</td>
+              <td class="num">$25,000</td>
+              <td>Repayment begins Jun 2026</td>
+            </tr>
+            <tr>
+              <td><strong>MACC Transaction Note</strong></td>
+              <td><span class="debt-cat acquisition">Acquisition</span></td>
+              <td class="num">$87,000</td>
+              <td class="num">$87,000</td>
+              <td class="num">0%</td>
+              <td class="num">$2,000</td>
+              <td>Repayment begins Feb 2027</td>
+            </tr>
+            <tr>
+              <td><strong>Colrain Landlord</strong><br><span style="font-size: var(--fs-xs); color: var(--text-tertiary);">Back rent from year 1</span></td>
+              <td><span class="debt-cat landlord">Landlord</span></td>
+              <td class="num">$80,000</td>
+              <td class="num">$77,000</td>
+              <td class="num">0%</td>
+              <td class="num">$1,000</td>
+              <td>In repayment</td>
+            </tr>
+            <tr>
+              <td><strong>Fundcanna</strong><br><span style="font-size: var(--fs-xs); color: var(--text-tertiary);">Working capital line</span></td>
+              <td><span class="debt-cat working">Working Cap</span></td>
+              <td class="num">$75,000</td>
+              <td class="num">$61,000</td>
+              <td class="num">3%</td>
+              <td class="num">$1,829</td>
+              <td>Matures Aug 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Sky Acquisitions</strong><br><span style="font-size: var(--fs-xs); color: var(--text-tertiary);">Friendly investor note</span></td>
+              <td><span class="debt-cat friendly">Friendly</span></td>
+              <td class="num">$250,000</td>
+              <td class="num">$68,000</td>
+              <td class="num">13%</td>
+              <td class="num">$9,715</td>
+              <td>In repayment · ~7 mo to retire</td>
+            </tr>
+            <tr class="headline">
+              <td><strong>Total Outstanding</strong></td>
+              <td></td>
+              <td class="num">$892,000</td>
+              <td class="num">$693,000</td>
+              <td></td>
+              <td class="num">$39,544</td>
+              <td>~$475K annual service</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the schedule</div>
+        Five outstanding facilities at five different price points and structures. <strong>Friendly investor notes dominate the mix</strong> ($468K combined across F&amp;F notes and Sky Acquisitions), reflecting the deliberate strategy of replacing institutional debt with friend-and-family capital at flexible terms. <strong>Working capital exposure is minimal</strong> (single $61K Fundcanna line maturing in August 2026). <strong>Two facilities accrue at 0%</strong> — the MACC Transaction Note (acquisition-related friendly) and the Colrain landlord arrangement — meaning $164K of the outstanding balance carries no interest at all. The 15% rate on the F&amp;F notes is the highest exposure but is on a friendly-investor basis with negotiable repayment timing.
+      </div>
+    </section>
+
+    <!-- ============ DSCR ============ -->
+    <section class="section" id="dscr">
+      <h2>Coverage Ratios</h2>
+      <div class="section-sub">Debt-Service Coverage Ratio (DSCR) measures how comfortably operating earnings cover annual debt payments. Convention: above 1.25x is generally considered safe; above 2.0x is strong. Three lenses shown across the EBITDA range.</div>
+
+      <div class="dscr-grid">
+        <div class="card dscr-card">
+          <div class="lens">DSCR · Conservative</div>
+          <div class="ratio ratio-base">2.74x</div>
+          <div class="formula">Conservative EBITDA $1,300,000<br>÷ Annual debt service $474,528<br>= 2.74x</div>
+        </div>
+        <div class="card dscr-card">
+          <div class="lens">DSCR · Mid</div>
+          <div class="ratio ratio-mid">3.48x</div>
+          <div class="formula">Mid EBITDA $1,650,000<br>÷ Annual debt service $474,528<br>= 3.48x</div>
+        </div>
+        <div class="card dscr-card">
+          <div class="lens">DSCR · Strategic</div>
+          <div class="ratio">4.15x</div>
+          <div class="formula">Strategic EBITDA $1,968,186<br>÷ Annual debt service $474,528<br>= 4.15x</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: var(--space-4);">
+        <h3>Interest Coverage</h3>
+        <p class="card-sub">Operating Income divided by interest expense. Measures the cushion between earnings and interest obligations.</p>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Operating Income (FY 2025)</td><td class="num">$1,022,662</td></tr>
+            <tr><td>Interest Expense (FY 2025)</td><td class="num">$236,360</td></tr>
+            <tr class="headline"><td>Interest Coverage Ratio</td><td class="num">4.33x</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading coverage ratios</div>
+        Both metrics measure different things and both should be strong. <strong>DSCR</strong> answers "can the business afford its debt payments?" by comparing operating earnings against total debt service (principal + interest). <strong>Interest Coverage</strong> answers "can the business afford its interest?" by comparing operating earnings only against interest expense (excluding principal). DSCR matters more for cash management and covenant testing; interest coverage matters more for credit risk assessment. At 2.74x DSCR on the most conservative EBITDA lens, debt service is well-covered with significant cushion. At 4.33x interest coverage, interest payments are not a meaningful constraint on operations. These ratios position the company comfortably for additional borrowing capacity if a strategic opportunity (e.g., cap-lift store expansion) called for it.
+      </div>
+    </section>
+
+    <!-- ============ BLENDED COST OF CAPITAL ============ -->
+    <section class="section" id="blended">
+      <h2>Blended Cost of Capital</h2>
+      <div class="section-sub">A weighted-average view of all liabilities financing the business — term debt at varying rates plus trade payables (AP) carrying no formal interest. The blended figure reflects the true effective cost of operating with the current liability mix.</div>
+
+      <div class="card">
+        <h3>Component Build-Up</h3>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Liability Component</th>
+              <th class="num">Outstanding</th>
+              <th class="num">Effective Rate</th>
+              <th class="num">Annual Interest Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>F&amp;F Notes (5 friendly)</td><td class="num">$400,000</td><td class="num">15.00%</td><td class="num">$60,000</td></tr>
+            <tr><td>Sky Acquisitions</td><td class="num">$68,000</td><td class="num">13.00%</td><td class="num">$8,840</td></tr>
+            <tr><td>Fundcanna</td><td class="num">$61,000</td><td class="num">3.00%</td><td class="num">$1,830</td></tr>
+            <tr><td>MACC Transaction Note</td><td class="num">$87,000</td><td class="num">0.00%</td><td class="num">$0</td></tr>
+            <tr><td>Colrain Landlord (back rent)</td><td class="num">$77,000</td><td class="num">0.00%</td><td class="num">$0</td></tr>
+            <tr class="subtotal"><td>Subtotal — Term Debt</td><td class="num">$693,000</td><td class="num"><strong>10.20%</strong></td><td class="num">$70,670</td></tr>
+            <tr id="blended-ap-row"><td>Accounts Payable <span id="blended-ap-label" style="color: var(--text-tertiary); font-size: 0.85em;">(last reliable close)</span></td><td class="num" id="blended-ap-amt">—</td><td class="num">0.00% effective</td><td class="num">$0</td></tr>
+            <tr class="headline">
+              <td><strong>Total Liabilities Financing the Business</strong></td>
+              <td class="num"><strong id="blended-total-amt">—</strong></td>
+              <td class="num"><strong id="blended-rate">—</strong></td>
+              <td class="num"><strong>$70,670</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: var(--fs-xs); color: var(--text-tertiary); margin-top: var(--space-3);" id="blended-meta">
+          AP value loaded from <code style="color: var(--accent);">data/ap-aging-data.js</code>; refreshes when the data file is updated.
+        </p>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the blended view</div>
+        Headline term-debt rate is 10.20% weighted-average — driven by the 15% F&amp;F notes and the 13% Sky note, partially offset by three 0%–3% facilities. <strong>When trade payables (AP) are included as a real source of operating financing</strong>, the blended cost drops to approximately 2.85%, reflecting that more than two-thirds of total liabilities are 0%-effective-rate. This is not free money in any literal sense — extended AP carries vendor-relationship costs, supply-chain risk, and reputational considerations — but it does reflect the true effective cost of operating with the current capital structure. The metric is most useful for comparison: against a benchmark cost of new capital (a hypothetical bank line might price at 8–12% in this industry, an MSO acquirer's cost of capital might be 5–7%, an investor note might be 12–18%), the current blended cost sits at the low end. The high implied "subsidy" from AP also explains why aggressive AP discipline matters — the day AP normalizes to industry levels, the blended cost rises toward the term-debt figure.
+      </div>
+    </section>
+
+    <!-- ============ MATURITY WALL ============ -->
+    <section class="section" id="maturity">
+      <h2>Maturity Wall</h2>
+      <div class="section-sub">Principal payments due by horizon. The largest single concentration is the F&amp;F note repayment cycle starting June 2026. No refinancing risk on institutional facilities — the only formal maturity is Fundcanna ($61K) in August 2026.</div>
+
+      <div class="maturity-grid">
+        <div class="card maturity-card">
+          <div class="horizon">Next 6 months (May–Oct 2026)</div>
+          <div class="amount">~$210K</div>
+          <div class="desc">F&amp;F notes begin · Fundcanna matures Aug · Sky in repayment</div>
+        </div>
+        <div class="card maturity-card">
+          <div class="horizon">Months 7–12 (Nov 2026–Apr 2027)</div>
+          <div class="amount">~$185K</div>
+          <div class="desc">F&amp;F notes continue · Sky retired · MACC Note begins Feb</div>
+        </div>
+        <div class="card maturity-card">
+          <div class="horizon">Year 2 (May 2027–Apr 2028)</div>
+          <div class="amount">~$155K</div>
+          <div class="desc">F&amp;F notes wind down · MACC ongoing · Colrain ongoing</div>
+        </div>
+        <div class="card maturity-card">
+          <div class="horizon">Year 3+ (post-2028)</div>
+          <div class="amount">~$143K</div>
+          <div class="desc">Tail of MACC + Colrain · Friendly notes substantially complete</div>
+        </div>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the maturity wall</div>
+        The schedule is heavily weighted toward years 1–2, with $395K of payments due in the first 12 months. This is by design: the F&amp;F notes carry the highest interest cost (15%) so retiring them quickly minimizes interest expense and frees up future cash flow. After year 2, the remaining schedule is primarily 0% friendly arrangements (MACC Transaction Note, Colrain landlord) that can be paid down comfortably from operating cash without any financing risk. <strong>No balloon payments or refinancing events are scheduled across the next 36 months</strong> — every facility either amortizes through the period or is friendly and renegotiable.
+      </div>
+    </section>
+
+    <!-- ============ DELEVERAGING ============ -->
+    <section class="section" id="deleveraging">
+      <h2>Deleveraging Story</h2>
+      <div class="section-sub">Multi-year reduction in total debt and shift from expensive institutional capital to friendlier investor notes. The 2025 fiscal year completed the institutional-debt retirement effort.</div>
+
+      <div class="card">
+        <h3>Five Institutional Facilities Retired or Substantially Reduced in 2025</h3>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Lender</th>
+              <th class="num">YE 2024 Balance</th>
+              <th class="num">YE 2025 Balance</th>
+              <th class="num">2025 Reduction</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Cobalt Loan</td><td class="num">$268,333</td><td class="num">$0</td><td class="num">($268,333)</td><td style="color: var(--positive);">Fully retired</td></tr>
+            <tr><td>Cromwell Capital</td><td class="num">$116,438</td><td class="num">$0</td><td class="num">($116,438)</td><td style="color: var(--positive);">Fully retired</td></tr>
+            <tr><td>FinCoast Capital</td><td class="num">$122,930</td><td class="num">$0</td><td class="num">($122,930)</td><td style="color: var(--positive);">Fully retired</td></tr>
+            <tr><td>EBF Holdings</td><td class="num">$353,981</td><td class="num">$111,316</td><td class="num">($242,665)</td><td style="color: var(--positive);">Fully retired post 12/31</td></tr>
+            <tr><td>Sky Acquisitions</td><td class="num">$202,020</td><td class="num">$76,000</td><td class="num">($126,020)</td><td style="color: var(--text-secondary);">Substantially reduced · ongoing</td></tr>
+            <tr class="headline"><td>Total Institutional Reduction</td><td class="num">$1,063,702</td><td class="num">$187,316</td><td class="num">($876,386)</td><td>~83% reduced</td></tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: var(--space-5);">Replaced Partially With Friendlier Investor Notes</h3>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Note</th>
+              <th class="num">Added in 2025</th>
+              <th>Terms</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Reis Note</td><td class="num">$100,000</td><td style="color: var(--text-secondary);">15% · Friendly · Repayment Jun 2026+</td></tr>
+            <tr><td>Turunen Note</td><td class="num">$80,000</td><td style="color: var(--text-secondary);">15% · Friendly · Repayment Jun 2026+</td></tr>
+            <tr><td>Arndt, Chase, Crockett (3 × $50K)</td><td class="num">$150,000</td><td style="color: var(--text-secondary);">15% · Friendly · Repayment Jun 2026+</td></tr>
+            <tr><td>Smaller notes (Bleile, Werner)</td><td class="num">$17,000</td><td style="color: var(--positive);">Both retired in 2026 · paid in full</td></tr>
+            <tr class="subtotal"><td>Total Friendly Notes Added (net of retirements)</td><td class="num">$330,000</td><td></td></tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: var(--space-5);">Net Effect</h3>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Institutional debt reduced</td><td class="num" style="color: var(--positive);">($876,386)</td></tr>
+            <tr><td>Friendly notes added (net of retirements)</td><td class="num" style="color: var(--negative);">+$330,000</td></tr>
+            <tr><td>Other note adjustments (Conwell, Epstein, Shana York interest)</td><td class="num">+$5,682</td></tr>
+            <tr class="headline"><td><strong>Net Deleveraging in 2025</strong></td><td class="num"><strong>~$540K</strong></td></tr>
+            <tr><td colspan="2" style="font-size: var(--fs-xs); color: var(--text-tertiary); padding-top: var(--space-3);">Plus post-2025: EBF Holdings remaining $111K paid in full · Bleile and Werner notes retired · Massachusetts DOR sales-tax payable largely resolved · AP aging materially worked down (see AP Aging section below)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the deleveraging</div>
+        2025 was the year the institutional debt overhang was retired. Five facilities (Cobalt, Cromwell, FinCoast, EBF, Sky) carried a combined $1.06M at year-end 2024; by year-end 2025 that figure was $187K, and post-balance-sheet the remaining EBF balance was paid in full. The strategy: use operating cash and friendly investor capital to retire higher-rate institutional debt, leaving a balance sheet weighted toward flexible relationships. <strong>The result is an annual interest expense materially lower than 2024 levels, increased borrowing capacity, and elimination of refinancing risk.</strong> This is the most defensible single piece of CFO work over the past 12 months and is the headline of any investor or lender update.
+      </div>
+    </section>
+
+    <!-- ============ AP AGING ============ -->
+    <section class="section" id="ap-aging">
+      <h2>AP Aging Discipline</h2>
+      <div class="section-sub">Trade payables aging is a material ongoing CFO challenge — not a solved problem. Balance has been actively worked down from a peak through a structured weekly discipline integrated with the cashflow tracker. This section reports the reality, not the aspiration.</div>
+
+      <div class="card">
+        <h3>AP Balance — Standard 30/60/90 Aging</h3>
+        <p class="card-sub">Reported balances at key reference dates. Sourced from QuickBooks A/P Aging Summary Reports at close. Loaded from <code style="color: var(--accent); font-size: 0.85em;">data/ap-aging-data.js</code> · refresh after each monthly close.</p>
+        <table class="tbl" id="ap-trajectory-table">
+          <thead>
+            <tr>
+              <th>As of Date</th>
+              <th class="num">Total AP</th>
+              <th class="num">Current</th>
+              <th class="num">1–30 days</th>
+              <th class="num">31–60 days</th>
+              <th class="num">61–90 days</th>
+              <th class="num">91+ days</th>
+            </tr>
+          </thead>
+          <tbody id="ap-trajectory-body"></tbody>
+        </table>
+        <div id="ap-trajectory-meta" style="margin-top: var(--space-3); font-size: var(--fs-xs); color: var(--text-tertiary);"></div>
+      </div>
+
+      <div class="card" style="margin-top: var(--space-4);">
+        <h3>Tree House Internal Categorization · Risk Lens</h3>
+        <p class="card-sub">Standard 30/60/90-day aging is one way to read AP. The internal operational tracker uses a complementary risk-lens categorization that maps vendors to their relationship and payment status — a more useful view for management decisions because it separates "won't be a problem" debt from "could be a problem" debt regardless of how old the dollars are. Both views are real and both belong in the analysis. Loaded from <code style="color: var(--accent); font-size: 0.85em;">data/ap-aging-data.js</code> · refresh weekly from operational tracker.</p>
+        <table class="tbl" id="ap-categories-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th class="num">Balance</th>
+              <th class="num">Vendors</th>
+              <th>Risk Level</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody id="ap-categories-body"></tbody>
+        </table>
+        <div id="ap-categories-meta" style="margin-top: var(--space-3); font-size: var(--fs-xs); color: var(--text-tertiary);"></div>
+      </div>
+
+      <div class="card" style="margin-top: var(--space-4);">
+        <h3>The Discipline</h3>
+        <p class="card-sub">How AP aging is actively managed week-to-week</p>
+        <p style="font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin: 0;">
+          AP management is integrated directly into the weekly cashflow tracking system. Each week, three layers are reviewed and reconciled: (1) <strong>weekly product incoming</strong> — what is flowing in from vendors and at what cost; (2) <strong>weekly payment commitments</strong> — what is being paid out to which vendors and in what priority; (3) <strong>category movement</strong> — whether vendors are moving in favorable directions (Hold → Payment Plan → Core) or unfavorable ones. Vendor relationships, supply continuity, and aged-balance reduction are all balanced against the operating cash position week by week. The integrated tracker (separate working spreadsheet titled "Sandbox NECC AP + Budget") is the operational source of truth; this dashboard reports the resulting balances and trajectory.
+        </p>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading AP aging honestly · two lenses, two different stories</div>
+        AP aging at this scale is a real liability and a real ongoing challenge — not a number to minimize or hide. <strong>Standard 30/60/90 aging</strong> shows how long dollars have been outstanding, regardless of vendor relationship or payment plan status. The 91+ bucket of $768K as of Jan 31 looks alarming under this lens. <strong>The internal risk-lens categorization</strong> tells a different story: most of those aged dollars sit with Brick or Core vendors operating on agreed terms, or with Payment Plan vendors in a managed paydown — which is "old debt that won't or shouldn't be a problem" rather than "old debt that signals trouble." The Hold-category portion is the genuinely stressed segment and the one that warrants the most management attention. <strong>Both lenses are necessary</strong>: 30/60/90 is the format an outside reader (auditor, lender, buyer's diligence) will recognize and ask about; the risk-lens is the format that actually drives weekly management decisions. The dashboard shows both because telling the AP story honestly requires both. Three signals the discipline is working: total balance trending down across consecutive months, Hold-category dollars shrinking, vendor categories migrating in favorable directions (Hold → Payment Plan → Core/Brick). Three signals of trouble: total balance growing, Hold-category dollars accelerating or new Hold vendors emerging, vendor supply disruptions. <strong>AP management belongs in the deleveraging narrative</strong> because it is the same discipline applied to a different liability category — the company is reducing both formal debt and trade payables in parallel, and reporting both honestly is what makes the dashboard credible to anyone reading it.
+      </div>
+    </section>
+
+    <!-- ============ METHODOLOGY ============ -->
+    <section class="section" id="methodology">
+      <details class="collapsible">
+        <summary>Methodology Notes &amp; Sources</summary>
+        <div class="body">
+          <div class="footnotes">
+            <p><strong>Debt schedule.</strong> Compiled from the company's signed debt schedule dated April 26, 2026. Includes all term debt and notes payable; excludes accounts payable, sales-tax payables, and other operating accruals. Five outstanding facilities total $693K at current balances.</p>
+            <p><strong>DSCR.</strong> Debt-Service Coverage Ratio = Adjusted EBITDA ÷ Annual Debt Service. Annual debt service = monthly service × 12 = $39,544 × 12 = $474,528. Three lenses used (Conservative $1.3M, Mid $1.65M, Strategic $1.97M Adjusted EBITDA) producing 2.74x / 3.48x / 4.15x. Convention: above 1.25x is generally safe; above 2.0x is strong; above 4.0x indicates substantial unused borrowing capacity.</p>
+            <p><strong>Interest coverage.</strong> Operating Income ÷ Interest Expense. 2025 Operating Income $1,022,662 ÷ Interest Expense $236,360 = 4.33x. Note: interest expense is recorded inside COGS via §471(c) inventoriable cost rather than below-the-line; the figure used here is line 65240 from the 2025 P&amp;L.</p>
+            <p><strong>Maturity wall.</strong> Per-horizon principal payment estimates derived from the monthly service schedule, scheduled repayment start dates (F&amp;F notes begin June 2026, MACC Transaction Note begins February 2027), and the Fundcanna August 2026 maturity. No balloon payments in the 36-month horizon.</p>
+            <p><strong>Deleveraging story.</strong> Comparison of year-end 2024 vs. year-end 2025 balance sheet figures plus the financing activities section of the 2025 statement of cash flows. EBF Holdings retirement and DOR sales-tax payable resolution noted as post-balance-sheet events confirmed in management commentary.</p>
+            <p><strong>Personal guarantees.</strong> No personal guarantees are outstanding on the current debt schedule.</p>
+            <p><strong>Blended cost of capital.</strong> Computed as weighted-average effective rate across all liabilities financing the business. Term debt component: $693K outstanding, $70,670 annual interest, weighted-average 10.20%. Including AP at 0% effective rate (current AP balance ~$1.79M as of Jan 31, 2026 reference): combined liability base ~$2.48M, blended rate ~2.85%. The AP component carries no formal interest but does carry vendor-relationship costs and supply-chain risk; the metric reflects effective dollar cost rather than implied risk cost.</p>
+            <p><strong>AP aging — standard 30/60/90 view.</strong> Sourced from QuickBooks balance sheets and the A/P Aging Summary Report from the most recent closed period (Jan 31, 2026). Reference points: Dec 31, 2024 ($1.70M, BS line); Dec 31, 2025 ($1.70M, BS line); Jan 31, 2026 ($1.79M, aging report). <strong>Bucket distribution as of Jan 31, 2026:</strong> $398K current / $242K 1-30 / $223K 31-60 / $156K 61-90 / $768K 91+. Feb and March 2026 closes are pending at the time of this dashboard build; AP aging reports dated after January 2026 are unreconciled and excluded from the analysis until those closes complete.</p>
+            <p><strong>AP aging — internal risk-lens categorization.</strong> The operational tracker (Sandbox NECC AP + Budget) groups AP into four vendor categories rather than 30/60/90 buckets: <strong>Brick Vendors</strong> (core product vendors with agreed weekly payment cadence — current), <strong>Core Vendors</strong> (recurring service/product vendors on standard terms — current), <strong>Payment Plan Vendors</strong> (past-due balances on agreed paydown plans — being managed), and <strong>Hold Vendors</strong> (past-due balances without active payment plans, often disputed or paused — watch list). This grouping matches how management actually makes decisions: Brick + Core are "won't be a problem," Payment Plan is "being managed," Hold is "could become a problem." Per-category balances and vendor counts populate from <code>data/ap-aging-data.js</code>, which is updated when the operational tracker is refreshed. When category balances are <code>null</code> in the data file, the dashboard renders a "pending" indicator rather than a fabricated value.</p>
+            <p><strong>Operational management mechanism.</strong> Weekly product-incoming and vendor-payment tracking integrated with cashflow planning in a separate working spreadsheet (Sandbox NECC AP + Budget), operating continuously regardless of book-close timing. Tracker drives category-movement decisions (e.g., negotiating a Hold vendor onto a Payment Plan, or transitioning a Payment Plan vendor back to Core terms after paydown completes).</p>
+            <p><strong>Cap table.</strong> Ownership detail is intentionally not displayed on this dashboard. Cap table is maintained in a separate working document and is not relevant to financial-health analysis at this level. Concentration considerations relevant to cap-lift legislation (sub-20% control threshold) are addressed on the Valuation page.</p>
+            <p><strong>Data architecture.</strong> AP aging values on this page (both the standard 30/60/90 view and the internal risk-lens categorization) load dynamically from <code>data/ap-aging-data.js</code>. Refreshing AP data does not require editing this HTML — only updating that data file. The Blended Cost of Capital section also reads its AP component from the same file so both stay in sync. See <code>dashboard/data/README.md</code> for the broader refresh architecture and the planned migration of remaining hardcoded values into per-page data files.</p>
+            <p><strong>Pending refinements.</strong> Population of risk-lens category balances and vendor counts from the next operational tracker export. Append a new entry to <code>trajectory[]</code> in the data file when each new monthly close completes. Quarterly refresh of debt schedule balances. Migration of term-debt schedule into its own data file as part of the broader dynamic-data refactor.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <footer class="page-footer">
+      <span>● Schedule current as of Apr 26, 2026 · refresh after each principal payment cycle</span>
+      <span>Tree House Craft Cannabis · THCFO · Debt &amp; Capital v0.1</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+// ============================================================================
+// AP Aging — render from window.AP_AGING_DATA defined in data/ap-aging-data.js
+// All numbers shown on this page's AP sections come from that file. To refresh,
+// edit the data file and reload — never edit this HTML directly for AP values.
+// ============================================================================
+function fmtUSD(v) {
+  if (v == null) return '—';
+  if (v < 0) return '-$' + Math.abs(v).toLocaleString();
+  return '$' + Math.round(v).toLocaleString();
+}
+function fmtDate(s) {
+  if (!s) return '—';
+  return s;
+}
+
+function renderAPAging() {
+  if (!window.AP_AGING_DATA) {
+    console.warn('AP_AGING_DATA not loaded — check data/ap-aging-data.js');
+    return;
+  }
+  const D = window.AP_AGING_DATA;
+
+  // ---- Trajectory + standard 30/60/90 (most recent close) ----
+  const tbody = document.getElementById('ap-trajectory-body');
+  if (tbody) {
+    let rows = '';
+    // Historical trajectory (BS-only entries — bucket-level not available)
+    D.trajectory.forEach(t => {
+      const isCurrentClose = (t.as_of === D.standard_aging.as_of);
+      if (isCurrentClose && D.standard_aging.buckets) {
+        const b = D.standard_aging.buckets;
+        rows += `<tr class="headline">
+          <td>${fmtDate(t.as_of)} · last reliable close</td>
+          <td class="num">${fmtUSD(t.total_ap)}</td>
+          <td class="num">${fmtUSD(b.current)}</td>
+          <td class="num">${fmtUSD(b.d1_30)}</td>
+          <td class="num">${fmtUSD(b.d31_60)}</td>
+          <td class="num">${fmtUSD(b.d61_90)}</td>
+          <td class="num">${fmtUSD(b.d91_plus)}</td>
+        </tr>`;
+      } else {
+        rows += `<tr>
+          <td>${fmtDate(t.as_of)} <span style="color: var(--text-tertiary); font-size: 0.85em;">· ${t.source}</span></td>
+          <td class="num">${fmtUSD(t.total_ap)}</td>
+          <td class="num" colspan="5" style="text-align: center; color: var(--text-tertiary);">Aged buckets not available at this snapshot</td>
+        </tr>`;
+      }
+    });
+    // Pending row for unclosed periods
+    if (D.meta.feb_mar_close_status === 'pending') {
+      rows += `<tr>
+        <td>Feb–Apr 2026</td>
+        <td class="num" colspan="6" style="text-align: left; color: var(--warning);">⚠ Pending close · no reliable balance available · operational tracker indicates active reduction in progress</td>
+      </tr>`;
+    }
+    tbody.innerHTML = rows;
+  }
+  const tmeta = document.getElementById('ap-trajectory-meta');
+  if (tmeta) {
+    tmeta.innerHTML = `Data file last updated <strong style="color: var(--text-secondary);">${fmtDate(D.meta.last_updated)}</strong> · last close period <strong style="color: var(--text-secondary);">${fmtDate(D.meta.last_close_period)}</strong> · Feb/Mar 2026 close status: <strong style="color: var(--warning);">${D.meta.feb_mar_close_status}</strong>`;
+  }
+
+  // ---- Risk-lens categorization ----
+  const cbody = document.getElementById('ap-categories-body');
+  if (cbody) {
+    const cats = D.risk_categorization.categories;
+    const order = ['brick', 'core', 'payment_plan', 'hold'];
+    const pillClass = {
+      'wont_be_problem': 'friendly',
+      'being_managed': 'working',
+      'could_be_problem': 'landlord'
+    };
+    let total = 0;
+    let anyBalance = false;
+    let rows = '';
+    order.forEach(k => {
+      const c = cats[k];
+      const balanceCell = c.balance != null
+        ? fmtUSD(c.balance)
+        : '<span style="color: var(--warning);">pending</span>';
+      const vendorCell = c.vendor_count != null
+        ? c.vendor_count
+        : '<span style="color: var(--warning);">pending</span>';
+      if (c.balance != null) { total += c.balance; anyBalance = true; }
+      rows += `<tr>
+        <td><strong>${c.label}</strong></td>
+        <td class="num">${balanceCell}</td>
+        <td class="num">${vendorCell}</td>
+        <td><span class="debt-cat ${pillClass[c.risk_level] || ''}">${c.risk_label}</span></td>
+        <td style="color: var(--text-secondary); font-size: var(--fs-xs);">${c.description}</td>
+      </tr>`;
+    });
+    // Total row
+    rows += `<tr class="headline">
+      <td><strong>Total AP — Risk Lens</strong></td>
+      <td class="num">${anyBalance ? fmtUSD(total) : '<span style="color: var(--warning);">pending</span>'}</td>
+      <td class="num">${anyBalance ? '—' : '<span style="color: var(--warning);">pending</span>'}</td>
+      <td colspan="2"></td>
+    </tr>`;
+    cbody.innerHTML = rows;
+  }
+  const cmeta = document.getElementById('ap-categories-meta');
+  if (cmeta) {
+    if (D.risk_categorization.as_of) {
+      cmeta.innerHTML = `Risk-lens snapshot as of <strong style="color: var(--text-secondary);">${fmtDate(D.risk_categorization.as_of)}</strong> · source: <strong style="color: var(--text-secondary);">${D.meta.operational_tracker_source}</strong> · refresh weekly`;
+    } else {
+      cmeta.innerHTML = `<span style="color: var(--warning);">⚠ Per-category balances pending current export from operational tracker.</span> ${D.risk_categorization.notes} Edit <code style="color: var(--accent);">data/ap-aging-data.js</code> to populate.`;
+    }
+  }
+}
+renderAPAging();
+
+// ============================================================================
+// AP KPI card at top of page — pulls from same data file
+// ============================================================================
+function renderAPKPI() {
+  if (!window.AP_AGING_DATA) return;
+  const D = window.AP_AGING_DATA;
+  const apValue = D.risk_categorization.total != null
+    ? D.risk_categorization.total
+    : D.standard_aging.total;
+  const apDate = D.risk_categorization.total != null
+    ? D.risk_categorization.as_of
+    : D.standard_aging.as_of;
+  // Compute YoY/historical comparison from trajectory
+  const trajectory = D.trajectory;
+  const prevValue = trajectory.length > 1 ? trajectory[trajectory.length - 2].total_ap : null;
+  const change = prevValue != null ? apValue - prevValue : null;
+  let metaText = `Week ending ${apDate} · operational tracker`;
+  if (change != null && change < 0) {
+    metaText = `<span style="color: var(--positive);">▼ ${fmtUSD(Math.abs(change))} from prior</span> · ${apDate}`;
+  } else if (change != null && change > 0) {
+    metaText = `<span style="color: var(--negative);">▲ ${fmtUSD(change)} from prior</span> · ${apDate}`;
+  }
+  // Format value as $X.XM
+  const valueStr = apValue >= 1e6 ? '$' + (apValue / 1e6).toFixed(2) + 'M' : '$' + (apValue / 1e3).toFixed(0) + 'K';
+  document.getElementById('kpi-ap-value').textContent = valueStr;
+  document.getElementById('kpi-ap-meta').innerHTML = metaText;
+}
+renderAPKPI();
+
+// ============================================================================
+// Blended Cost of Capital — pulls AP from the same data file
+// ============================================================================
+function renderBlendedCost() {
+  if (!window.AP_AGING_DATA) return;
+  const D = window.AP_AGING_DATA;
+  const S = window.SUMMARY_DATA;
+  // Pull term debt from summary-data.js (single source of truth)
+  const TERM_DEBT     = (S && S.termDebt && S.termDebt.totalOutstanding)        || 693000;
+  const TERM_INTEREST = (S && S.termDebt && S.termDebt.annualInterestExpense)   || 70670;
+
+  // Prefer current risk-lens total when populated; fall back to standard close total
+  const apAmt = D.risk_categorization.total != null
+    ? D.risk_categorization.total
+    : D.standard_aging.total;
+  const apLabel = D.risk_categorization.total != null
+    ? `(operational tracker · ${D.risk_categorization.as_of})`
+    : `(last reliable close · ${D.standard_aging.as_of})`;
+
+  const total = TERM_DEBT + apAmt;
+  const blendedRate = (TERM_INTEREST / total) * 100;
+
+  document.getElementById('blended-ap-amt').textContent = fmtUSD(apAmt);
+  document.getElementById('blended-ap-label').textContent = apLabel;
+  document.getElementById('blended-total-amt').textContent = '~' + fmtUSD(total);
+  document.getElementById('blended-rate').textContent = `~${blendedRate.toFixed(2)}% blended`;
+}
+renderBlendedCost();
+
+// ============================================================================
+// Sidebar nav active state on scroll
+// ============================================================================
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

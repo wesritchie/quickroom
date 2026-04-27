@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THCFO — Verticalization</title>
+<link rel="stylesheet" href="styles/design-tokens.css">
+<script src="data/summary-data.js"></script>
+<style>
+.layout { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; }
+aside.sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-subtle);
+  padding: var(--space-6) var(--space-5);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.sidebar .brand { font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-1); }
+.sidebar .brand-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-7); }
+.sidebar .section-label { font-size: 0.6875rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: var(--space-5) 0 var(--space-2); }
+.sidebar .section-label:first-of-type { margin-top: 0; }
+.sidebar nav a { display: block; padding: var(--space-2) var(--space-3); color: var(--text-secondary); text-decoration: none; font-size: var(--fs-sm); border-radius: var(--radius-sm); margin-bottom: 2px; transition: color 0.15s, background 0.15s; }
+.sidebar nav a:hover { color: var(--text-primary); }
+.sidebar nav a.active { color: var(--accent); background: var(--accent-bg); font-weight: var(--fw-semibold); }
+.sidebar .footer-action { margin-top: auto; padding-top: var(--space-5); font-size: var(--fs-sm); color: var(--positive); cursor: pointer; }
+
+main.content {
+  padding: var(--space-6) var(--space-7);
+  max-width: var(--content-max-width); width: 100%; margin: 0 auto; box-sizing: border-box;
+}
+.page-header { margin-bottom: var(--space-6); }
+.page-title { font-size: var(--fs-3xl); font-weight: var(--fw-bold); margin: var(--space-3) 0 var(--space-1); letter-spacing: -0.02em; }
+.page-subtitle { font-size: var(--fs-base); color: var(--text-secondary); }
+
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); margin-bottom: var(--space-6); }
+.kpi-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-4); }
+.kpi-card .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: var(--space-2); font-weight: var(--fw-semibold); }
+.kpi-card .value { font-size: var(--fs-2xl); font-weight: var(--fw-bold); font-feature-settings: 'tnum' on, 'lnum' on; color: var(--accent); letter-spacing: -0.01em; }
+.kpi-card .meta { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
+.kpi-card .meta.positive { color: var(--positive); }
+
+.section { margin-bottom: var(--space-7); scroll-margin-top: var(--space-5); }
+.section h2 { font-size: var(--fs-xl); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.section .section-sub { color: var(--text-secondary); font-size: var(--fs-sm); margin-bottom: var(--space-4); }
+
+.card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--space-5); }
+.card h3 { font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.card .card-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-4); }
+
+table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+table.tbl th, table.tbl td { padding: 10px 12px; text-align: left; }
+table.tbl th { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); font-weight: var(--fw-semibold); border-bottom: 1px solid var(--border-default); }
+table.tbl td { border-bottom: 1px solid var(--border-subtle); font-feature-settings: 'tnum' on, 'lnum' on; }
+table.tbl td.num, table.tbl th.num { text-align: right; }
+table.tbl tr.subtotal td { border-top: 1px solid var(--border-default); font-weight: var(--fw-semibold); color: var(--accent); }
+table.tbl tr.headline td { background: var(--accent-bg); font-weight: var(--fw-bold); color: var(--accent); border-top: 1px solid var(--accent-border); border-bottom: 1px solid var(--accent-border); padding: 14px 12px; }
+table.tbl .label-indent { padding-left: 24px; color: var(--text-secondary); }
+
+/* Make-vs-Buy side-by-side */
+.mvb-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--space-4); align-items: start; }
+.mvb-vs {
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--fs-lg); color: var(--text-tertiary); font-weight: var(--fw-bold);
+  padding-top: 80px;
+}
+
+.mvb-card .verdict {
+  margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--border-default);
+  font-size: var(--fs-lg); font-weight: var(--fw-semibold);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.mvb-card.win { border-color: var(--positive); }
+.mvb-card.win .verdict { color: var(--positive); }
+
+/* Capacity */
+.capacity-bar {
+  background: var(--bg-input); border-radius: var(--radius-pill); height: 28px; overflow: hidden;
+  position: relative; margin: var(--space-2) 0;
+}
+.capacity-fill {
+  background: linear-gradient(90deg, var(--accent), var(--positive));
+  height: 100%; border-radius: var(--radius-pill);
+  display: flex; align-items: center; justify-content: flex-end; padding-right: 12px;
+  color: var(--bg-page); font-size: var(--fs-xs); font-weight: var(--fw-bold);
+}
+.capacity-bar .label-overlay { position: absolute; top: 0; left: 12px; height: 100%; display: flex; align-items: center; font-size: var(--fs-xs); color: var(--text-secondary); }
+
+/* Standalone valuation card */
+.val-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.val-component { padding: var(--space-3); background: var(--bg-input); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+.val-component .name { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: 4px; }
+.val-component .value { font-size: var(--fs-lg); font-weight: var(--fw-semibold); color: var(--accent); font-feature-settings: 'tnum' on, 'lnum' on; }
+.val-component .basis { font-size: var(--fs-xs); color: var(--text-tertiary); margin-top: 4px; }
+
+/* Educational */
+.educational { background: rgba(14, 165, 233, 0.05); border: 1px solid var(--accent-border); border-radius: var(--radius-md); padding: var(--space-4); font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin-top: var(--space-4); }
+.educational .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+.educational strong { color: var(--text-primary); }
+
+/* Brands list */
+.brand-pills { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+.brand-pill { padding: 6px 12px; background: var(--bg-input); border: 1px solid var(--border-default); border-radius: var(--radius-pill); font-size: var(--fs-sm); color: var(--text-primary); }
+
+/* Strategic narrative grid */
+.narrative-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.narrative-card { padding: var(--space-4); }
+.narrative-card .nidx { font-size: var(--fs-xs); color: var(--accent); font-weight: var(--fw-bold); letter-spacing: 0.08em; }
+.narrative-card .ntitle { font-size: var(--fs-base); font-weight: var(--fw-semibold); margin: 4px 0; }
+.narrative-card .nbody { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; }
+
+details.collapsible { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 0; }
+details.collapsible summary { padding: var(--space-4) var(--space-5); cursor: pointer; font-size: var(--fs-lg); font-weight: var(--fw-semibold); list-style: none; }
+details.collapsible summary::-webkit-details-marker { display: none; }
+details.collapsible summary::after { content: '▾'; float: right; color: var(--text-tertiary); transition: transform 0.2s; }
+details.collapsible[open] summary::after { transform: rotate(180deg); }
+details.collapsible .body { padding: 0 var(--space-5) var(--space-5); }
+
+.footnotes { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; }
+.footnotes p { margin: 0 0 var(--space-3); }
+.footnotes strong { color: var(--text-primary); }
+
+footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-xs); color: var(--text-tertiary); }
+
+@media (max-width: 1100px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .mvb-grid, .val-grid, .narrative-grid { grid-template-columns: 1fr; }
+  .mvb-vs { padding-top: 0; transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">THCFO · Verticalization</div>
+    <div class="brand-sub">Farm Economics &amp; Integration Value</div>
+
+    <div class="section-label">Pages</div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="valuation.html">Valuation</a>
+      <a href="profitability.html">Profitability</a>
+      <a href="verticalization.html" class="active">Verticalization</a>
+      <a href="cashflow.html">Cash Flow &amp; Liquidity</a>
+      <a href="debt.html">Debt &amp; Capital</a>
+      <a href="operations.html">Operations</a>
+    </nav>
+
+    <div class="section-label">On This Page</div>
+    <nav>
+      <a href="#summary">Headline KPIs</a>
+      <a href="#economics">Headline Economics</a>
+      <a href="#mvb">Make-vs-Buy</a>
+      <a href="#capacity">Capacity &amp; Utilization</a>
+      <a href="#wholesale">Wholesale Revenue</a>
+      <a href="#standalone">Standalone Farm Value</a>
+      <a href="#strategic">Strategic Narrative</a>
+      <a href="#methodology">Methodology Notes</a>
+    </nav>
+
+    <div class="section-label">Other Dashboards</div>
+    <nav>
+      <a href="https://wesritchie.github.io/quickroom/" target="_blank">QuickRoom Hub →</a>
+    </nav>
+
+    <div class="footer-action">⟲ Refresh Data</div>
+  </aside>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="content">
+
+    <span class="status-pill accent">
+      <span class="dot"></span>
+      MACC integrated as wholly-owned subsidiary since Jan 1, 2025 · Manufacturing license expected Sep 2026
+    </span>
+
+    <div class="page-header">
+      <h1 class="page-title">Verticalization</h1>
+      <p class="page-subtitle">
+        The farm is a strategic asset, not a cost center. This page quantifies the integration value: margin uplift through retail, wholesale revenue, capacity utilization, standalone farm valuation, and the optionality value of pending manufacturing capability.
+      </p>
+    </div>
+
+    <!-- ============ HEADLINE KPIs ============ -->
+    <section class="section" id="summary">
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="label">Farm-Derived Revenue (Consolidated)</div>
+          <div class="value" id="kpi-fd-rev">—</div>
+          <div class="meta" id="kpi-fd-rev-meta">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Margin Uplift vs. Buy-In Scenario</div>
+          <div class="value">~$209K</div>
+          <div class="meta positive">Annual savings vs. third-party sourcing</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Standalone Farm Value</div>
+          <div class="value" id="kpi-farm-value">—</div>
+          <div class="meta">License + assets + brand + revenue mult.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">In-House % of Retail</div>
+          <div class="value" id="kpi-inhouse-mix">—</div>
+          <div class="meta">$1.17M of $8.09M retail product sales</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HEADLINE ECONOMICS ============ -->
+    <section class="section" id="economics">
+      <h2>Headline Economics</h2>
+      <div class="section-sub">The four ways the farm produces revenue and the consolidated economic picture.</div>
+
+      <div class="card">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Revenue Channel</th>
+              <th class="num">2025 Revenue</th>
+              <th class="num">% of Farm-Derived</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Through TH Retail</strong> (own-grown product sold at TH stores)</td>
+              <td class="num">$1,173,224</td>
+              <td class="num">61.9%</td>
+              <td style="color: var(--text-secondary);">P&amp;L line: MACC Cannabis Retail Sales</td>
+            </tr>
+            <tr>
+              <td><strong>Wholesale</strong> (own-grown sold to other MA dispensaries)</td>
+              <td class="num">$398,087</td>
+              <td class="num">21.0%</td>
+              <td style="color: var(--text-secondary);">P&amp;L line: MACC Wholesale</td>
+            </tr>
+            <tr>
+              <td><strong>Exchange / Trade Transactions</strong></td>
+              <td class="num">$323,524</td>
+              <td class="num">17.1%</td>
+              <td style="color: var(--text-secondary);">P&amp;L line: MACC Exchange Sales</td>
+            </tr>
+            <tr class="headline">
+              <td>Total Farm-Derived Revenue</td>
+              <td class="num">$1,894,835</td>
+              <td class="num">100.0%</td>
+              <td>21.5% of consolidated $8.81M total</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading farm-derived revenue</div>
+        $1.89M of consolidated revenue is derived from the cultivation operation across three channels: own-grown product sold through Tree House retail (the largest piece), wholesale to other Massachusetts dispensaries, and exchange or trade transactions. Without the farm, the in-house retail revenue would have to be replaced with third-party product purchases at a different cost structure, and the wholesale and exchange revenue would not exist at all. The combined contribution is the foundation of the make-vs-buy analysis below.
+      </div>
+    </section>
+
+    <!-- ============ MAKE-VS-BUY ============ -->
+    <section class="section" id="mvb">
+      <h2>Make-vs-Buy Analysis</h2>
+      <div class="section-sub">If you bought third-party flower at typical MA wholesale rates instead of growing your own, what would the consolidated P&amp;L look like?</div>
+
+      <div class="mvb-grid">
+
+        <!-- Make (current) -->
+        <div class="card mvb-card win">
+          <h3>MAKE — current state</h3>
+          <p class="card-sub">Own-grown product flowing through TH retail at consolidated cost</p>
+          <table class="tbl">
+            <tbody>
+              <tr><td>Revenue (in-house through retail)</td><td class="num">$1,173,224</td></tr>
+              <tr><td>Cost of in-house product (consolidated)</td><td class="num">($435,933)</td></tr>
+              <tr class="subtotal"><td>Gross Profit on in-house</td><td class="num">$737,291</td></tr>
+              <tr><td class="label-indent">Gross Margin</td><td class="num">62.8%</td></tr>
+            </tbody>
+          </table>
+          <div class="verdict">Net contribution: +$737,291</div>
+        </div>
+
+        <div class="mvb-vs">→ vs. ←</div>
+
+        <!-- Buy (counterfactual) -->
+        <div class="card mvb-card">
+          <h3>BUY — counterfactual</h3>
+          <p class="card-sub">If TH bought equivalent flower from third-party MA cultivators at typical wholesale rates</p>
+          <table class="tbl">
+            <tbody>
+              <tr><td>Revenue (replaced with 3rd-party product)</td><td class="num">$1,173,224</td></tr>
+              <tr><td>Cost of third-party product (~55% of revenue)</td><td class="num">($645,273)</td></tr>
+              <tr class="subtotal"><td>Gross Profit on bought-in</td><td class="num">$527,951</td></tr>
+              <tr><td class="label-indent">Gross Margin</td><td class="num">~45%</td></tr>
+            </tbody>
+          </table>
+          <div class="verdict" style="color: var(--text-tertiary);">Net contribution: +$527,951</div>
+        </div>
+
+      </div>
+
+      <div class="card" style="margin-top: var(--space-4); border-color: var(--positive);">
+        <h3 style="color: var(--positive);">Margin Uplift from Vertical Integration</h3>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Make scenario gross profit</td><td class="num">$737,291</td></tr>
+            <tr><td>Buy scenario gross profit</td><td class="num">$527,951</td></tr>
+            <tr class="headline"><td><strong>Annual margin uplift from owning the farm</strong></td><td class="num"><strong>+$209,340</strong></td></tr>
+            <tr><td>Plus: Wholesale revenue (would not exist without farm)</td><td class="num">+$398,087</td></tr>
+            <tr><td>Plus: Exchange / trade revenue</td><td class="num">+$323,524</td></tr>
+            <tr class="headline"><td><strong>Total economic contribution of vertical integration</strong></td><td class="num"><strong>+$930,951</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the make-vs-buy spread</div>
+        The cultivation operation contributes approximately $931K of annual economic value that would not exist without vertical integration: ~$209K from the gross-margin advantage of own-grown product through retail vs. third-party sourcing, plus $398K of wholesale revenue, plus $324K of exchange and trade transaction economics. This figure is the standard frame for evaluating whether vertical integration earns its place on the income statement at any given scale. The §471(c) tax treatment layers additional efficiency on top — cultivation labor and overhead flow into inventoriable cost, reducing taxable income at the consolidated level — though the integration economics stand on their own even before the tax benefit.
+      </div>
+    </section>
+
+    <!-- ============ CAPACITY ============ -->
+    <section class="section" id="capacity">
+      <h2>Capacity &amp; Utilization</h2>
+      <div class="section-sub">Current production vs. designed capacity. Two new greenhouses coming online this year and manufacturing license expected September 2026 add additional throughput and value-add capacity.</div>
+
+      <div class="card">
+        <h3>Trailing 12-Month Production</h3>
+
+        <div style="margin-top: var(--space-4);">
+          <div style="display: flex; justify-content: space-between; font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: 4px;">
+            <span>Dry flower (lbs)</span>
+            <span><strong style="color: var(--text-primary);">1,500 lbs</strong> · sold/packaged</span>
+          </div>
+          <div class="capacity-bar">
+            <div class="capacity-fill" style="width: 60%;">60% of indoor potential</div>
+            <span class="label-overlay">2,500 lb max indoor potential at full utilization</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; font-size: var(--fs-sm); color: var(--text-secondary); margin: var(--space-3) 0 4px;">
+            <span>Trim (lbs)</span>
+            <span><strong style="color: var(--text-primary);">2,400 lbs</strong> · sold/packaged</span>
+          </div>
+          <div class="capacity-bar">
+            <div class="capacity-fill" style="width: 75%;">75% of capacity</div>
+            <span class="label-overlay">By-product of flower production</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; font-size: var(--fs-sm); color: var(--text-secondary); margin: var(--space-3) 0 4px;">
+            <span>In-house consumption (% sold to TH retail)</span>
+            <span><strong style="color: var(--text-primary);">~30%</strong></span>
+          </div>
+          <div class="capacity-bar">
+            <div class="capacity-fill" style="width: 30%; background: linear-gradient(90deg, var(--data-2), var(--accent));">30%</div>
+            <span class="label-overlay">Remaining 70% goes to wholesale / exchange</span>
+          </div>
+        </div>
+
+        <table class="tbl" style="margin-top: var(--space-5);">
+          <thead>
+            <tr><th>Facility Detail</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Cultivation space</td><td>49,000 sq ft (outdoor primary)</td></tr>
+            <tr><td>Land</td><td>4 acres (Colrain, MA)</td></tr>
+            <tr><td>Greenhouses</td><td>2 existing + 2 coming online this year</td></tr>
+            <tr><td>Indoor flower rooms</td><td>2 rooms · refrigerator panels in vault</td></tr>
+            <tr><td>Manufacturing license</td><td>Expected September 2026</td></tr>
+            <tr><td>Farm staff</td><td>4 employees</td></tr>
+            <tr><td>Brands grown</td><td>
+              <div class="brand-pills">
+                <span class="brand-pill">Yellow Brick Road</span>
+                <span class="brand-pill">Aristo Fuego</span>
+                <span class="brand-pill">Tree House Select</span>
+                <span class="brand-pill">Habitual Ritual</span>
+                <span class="brand-pill">Forbidden Fruit</span>
+              </div>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading capacity headroom</div>
+        Two additional greenhouses coming online add meaningful production output without commensurate new capital expenditure. The September 2026 manufacturing license unlocks pre-rolls, infused pre-rolls, and other value-add SKUs at higher per-unit revenue than bulk flower. Both are real options on margin expansion that materially change the consolidated economics when activated. Current cultivation operates at moderate utilization, leaving room for upside as the additional capacity comes online and the manufacturing license activates.
+      </div>
+    </section>
+
+    <!-- ============ WHOLESALE ============ -->
+    <section class="section" id="wholesale">
+      <h2>Wholesale Revenue Stream</h2>
+      <div class="section-sub">Sales of own-grown product to other MA dispensaries. Lower margin than retail pull-through but generates incremental revenue and seeds brand presence at competitor stores.</div>
+
+      <div class="card">
+        <table class="tbl">
+          <tbody>
+            <tr><td>2025 Wholesale Revenue</td><td class="num">$398,087</td></tr>
+            <tr><td>2025 Exchange / Trade Sales</td><td class="num">$323,524</td></tr>
+            <tr class="subtotal"><td>Total non-retail farm revenue</td><td class="num">$721,611</td></tr>
+            <tr><td>Approx. # of wholesale customers (per onboarding)</td><td class="num">4–8 dispensaries</td></tr>
+            <tr><td>Customer concentration risk</td><td class="num" style="color: var(--warning);">⚠ medium</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the wholesale stream</div>
+        Wholesale and exchange revenue combined ($722K) is meaningful in its own right, but the strategic value is broader. Wholesale relationships place owned brands (Yellow Brick Road, Aristo Fuego, Tree House Select, Habitual Ritual, Forbidden Fruit) into stores Tree House does not own — a brand-equity channel that pure retailers cannot access. Wholesale partners also frequently become acquisition counterparties or strategic partners as the industry consolidates. Operationally, the channel diversification reduces dependence on retail pull-through alone — harvest economics are no longer fully exposed to any single store's monthly performance.
+      </div>
+    </section>
+
+    <!-- ============ STANDALONE VALUE ============ -->
+    <section class="section" id="standalone">
+      <h2>Standalone Farm Valuation</h2>
+      <div class="section-sub">What would the farm sell for separately from the retail operation? Useful for sum-of-parts analysis, partial-divestiture scenarios, or buyer-specific scoping.</div>
+
+      <div class="card">
+        <h3>Component Build-Up</h3>
+        <p class="card-sub">Four valuation components combined for a sum-of-parts standalone farm value.</p>
+
+        <div class="val-grid" style="margin-top: var(--space-4);">
+          <div class="val-component">
+            <div class="name">Cultivation License</div>
+            <div class="value">$1.5M – $2.0M</div>
+            <div class="basis">MA cannabis cultivator license, separately tradeable. Range reflects current market for unencumbered MA cultivation licenses.</div>
+          </div>
+          <div class="val-component">
+            <div class="name">Hard Assets &amp; Leasehold Improvements</div>
+            <div class="value">$200K – $300K</div>
+            <div class="basis">Cultivation equipment, FF&amp;E, leasehold improvements. Discounted from book per going-concern convention.</div>
+          </div>
+          <div class="val-component">
+            <div class="name">Brand Value (Intangibles)</div>
+            <div class="value">$200K – $400K</div>
+            <div class="basis">Yellow Brick Road, Aristo Fuego, Tree House Select, Habitual Ritual, Forbidden Fruit. Preliminary estimate; refine with brand-specific revenue tracking.</div>
+          </div>
+          <div class="val-component">
+            <div class="name">Going-Concern Earnings (Revenue × Multiple)</div>
+            <div class="value">$1.1M – $1.8M</div>
+            <div class="basis">$723K cash farm revenue × 1.5x – 2.5x cultivator-specific multiple. Cultivators trade at lower multiples than retail.</div>
+          </div>
+        </div>
+
+        <table class="tbl" style="margin-top: var(--space-4);">
+          <tbody>
+            <tr class="headline">
+              <td><strong>Standalone Farm Value Range (Sum-of-Parts)</strong></td>
+              <td class="num"><strong>$2.5M – $3.5M</strong></td>
+            </tr>
+            <tr>
+              <td>vs. cash revenue alone (1.0x simple revenue check)</td>
+              <td class="num">$723K (significantly understates true value)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading standalone farm value</div>
+        The Valuation page asset-floor methodology includes a $1.5M cultivation-license line item; the full sum-of-parts standalone value is materially higher at $2.5M – $3.5M once hard assets, brand intangibles, and going-concern earnings are included. The standalone view is the relevant frame for any partial-divestiture analysis — a retail-only sale, a cultivation-only sale, or a sum-of-parts comparison against an integrated bid. The cultivation operation retains independent value that does not depend on the retail footprint.
+      </div>
+    </section>
+
+    <!-- ============ STRATEGIC NARRATIVE ============ -->
+    <section class="section" id="strategic">
+      <h2>Strategic Narrative</h2>
+      <div class="section-sub">Six reasons the farm is an asset, not a cost center. These are the points to lead with in any buyer or investor conversation about verticalization.</div>
+
+      <div class="narrative-grid">
+        <div class="card narrative-card">
+          <div class="nidx">01</div>
+          <div class="ntitle">Margin Protection in Price Compression</div>
+          <div class="nbody">MA cannabis has been in a multi-year price compression cycle. Retailers without own-grown product face full margin exposure to wholesale price drops. Vertically integrated operators absorb price compression at the gross margin line, not the operating line.</div>
+        </div>
+        <div class="card narrative-card">
+          <div class="nidx">02</div>
+          <div class="ntitle">Supply Security &amp; Quality Control</div>
+          <div class="nbody">Owning cultivation guarantees product availability for your stores regardless of market shortages. Quality is controlled end-to-end. Brand consistency is enforceable. Third-party retailers face stockouts, quality variance, and vendor concentration risk.</div>
+        </div>
+        <div class="card narrative-card">
+          <div class="nidx">03</div>
+          <div class="ntitle">Brand Differentiation</div>
+          <div class="nbody">The five owned brands are TH-exclusive on TH retail shelves and seed brand recognition through wholesale at competitor stores. Brand-driven differentiation is one of the few sustainable competitive moats in commoditizing cannabis retail.</div>
+        </div>
+        <div class="card narrative-card">
+          <div class="nidx">04</div>
+          <div class="ntitle">471(c) Tax Efficiency</div>
+          <div class="nbody">Production costs (labor, utilities, supplies) at the farm flow into inventoriable cost under §471(c), reducing taxable income at the consolidated level. Without the farm, those wages and utilities are pure opex with no tax shield. The integration is a tax-efficiency vehicle.</div>
+        </div>
+        <div class="card narrative-card">
+          <div class="nidx">05</div>
+          <div class="ntitle">Optionality on Manufacturing</div>
+          <div class="nbody">September 2026 manufacturing license unlocks pre-rolls, infused pre-rolls, and value-add SKUs at higher per-unit revenue. This is a real option on margin expansion that pure retailers can't access. Two new greenhouses coming online this year provide the throughput.</div>
+        </div>
+        <div class="card narrative-card">
+          <div class="nidx">06</div>
+          <div class="ntitle">Standalone Resale Optionality</div>
+          <div class="nbody">If a buyer wants only retail, the farm can be sold separately for $2.5M – $3.5M. If a buyer wants only cultivation (e.g., a manufacturer building vertical), the farm has standalone value. Optionality maximizes negotiation flexibility in any partial-divestiture scenario.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ METHODOLOGY ============ -->
+    <section class="section" id="methodology">
+      <details class="collapsible">
+        <summary>Methodology Notes &amp; Sources</summary>
+        <div class="body">
+          <div class="footnotes">
+            <p><strong>MACC revenue lines.</strong> Three lines on the 2025 P&amp;L: 40303 MACC Cannabis Retail Sales ($1,173,224 — own-grown sold through TH retail at consolidated cost), 40400 MACC Exchange Sales ($323,524 — trade transactions), 40500 MACC Wholesale ($398,087 — sold to other MA dispensaries). Combined: $1,894,835 farm-derived revenue, 21.5% of consolidated $8.81M.</p>
+            <p><strong>In-house COGS.</strong> Line 65001.08 MACC COGS ($435,933) on the 2025 P&amp;L represents the consolidated cost of own-grown product flowing through TH retail. This is post-merger consolidated cost (since Jan 1, 2025); pre-merger MACC was on separate books with arms-length transfer pricing that distorted comparisons.</p>
+            <p><strong>Make-vs-Buy assumption.</strong> Third-party flower at typical MA wholesale rates costs ~55% of retail revenue (45% gross margin). This is a directional industry estimate; it varies by category, vendor relationship, and time period. Refine if pulling actual wholesale invoices from third-party suppliers.</p>
+            <p><strong>Margin uplift.</strong> Computed as (in-house gross profit) - (counterfactual third-party gross profit) = $737,291 - $527,951 = $209,340. Plus wholesale ($398K) and exchange ($324K), which would not exist absent the farm. Total economic contribution of vertical integration: ~$931K annually.</p>
+            <p><strong>Capacity utilization.</strong> Trailing 12-month production from onboarding doc: 1,500 lbs flower + 2,400 lbs trim. "60% of indoor potential" and "75% of trim capacity" are illustrative — refine when farm operations team produces a formal capacity-utilization analysis. The 30% in-house consumption figure is also from the onboarding doc.</p>
+            <p><strong>Standalone valuation components.</strong> Cultivation license at $1.5M-$2.0M reflects current MA cultivation-license market rates. Hard assets discounted from book per going-concern convention. Brand value is preliminary; a brand-specific valuation would require revenue tracking by brand. Going-concern earnings use $723K cash farm revenue × 1.5-2.5x cultivator-specific multiple (cultivators trade lower than retail). Sum-of-parts: $2.5M – $3.5M.</p>
+            <p><strong>Cross-page connections.</strong> The Valuation page asset-floor methodology currently uses a $1.5M cultivation-license line item; the full sum-of-parts standalone farm value is $2.5M-$3.5M once hard assets, brand intangibles, and going-concern earnings are added. The Profitability page "Farm contribution ~$240K" line refers to the farm's standalone direct contribution; figures on this page describe the broader consolidated integration value.</p>
+            <p><strong>Pending refinements.</strong> Per-brand revenue tracking would refine brand-value estimates. Formal capacity-utilization study would refine the throughput visualization. Wholesale customer concentration breakdown (top 4-8 customers, % of wholesale revenue, growth/churn) would sharpen the wholesale section. Manufacturing license activation in Sept 2026 will trigger a full refresh of the optionality narrative.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <footer class="page-footer">
+      <span>● Data as of 2025 close · refresh after each monthly close</span>
+      <span>Tree House Craft Cannabis · THCFO · Verticalization v0.1</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+// Render KPI values from summary-data.js (single source of truth)
+(function renderFromSummary() {
+  const S = window.SUMMARY_DATA;
+  if (!S || !S.verticalization) return;
+  const v = S.verticalization;
+  const fmt = x => x >= 1e6 ? '$' + (x / 1e6).toFixed(2) + 'M' : '$' + Math.round(x / 1e3) + 'K';
+  if (v.farmDerivedRevenueTotal != null) {
+    document.getElementById('kpi-fd-rev').textContent = fmt(v.farmDerivedRevenueTotal);
+    document.getElementById('kpi-fd-rev-meta').textContent =
+      `${(v.farmDerivedRevenuePctOfTotal * 100).toFixed(1)}% of total ${S.meta.fy_period} revenue`;
+  }
+  if (v.standaloneFarmValueLow && v.standaloneFarmValueHigh) {
+    document.getElementById('kpi-farm-value').textContent =
+      `${fmt(v.standaloneFarmValueLow)} – ${fmt(v.standaloneFarmValueHigh)}`;
+  }
+  if (v.inHouseRetailMix != null) {
+    document.getElementById('kpi-inhouse-mix').textContent = `${(v.inHouseRetailMix * 100).toFixed(1)}%`;
+  }
+})();
+
+// Sidebar nav active state on scroll
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

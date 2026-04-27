@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THCFO — Valuation</title>
+<link rel="stylesheet" href="styles/design-tokens.css">
+<script src="data/summary-data.js"></script>
+<script src="data/comps-data.js"></script>
+<style>
+/* ============================================================================
+   Page layout — sister of QuickRoom dashboards
+   ============================================================================ */
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 100vh;
+}
+
+aside.sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-subtle);
+  padding: var(--space-6) var(--space-5);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .brand {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-1);
+}
+.sidebar .brand-sub {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-7);
+}
+
+.sidebar .section-label {
+  font-size: 0.6875rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: var(--space-5) 0 var(--space-2);
+}
+.sidebar .section-label:first-of-type { margin-top: 0; }
+
+.sidebar nav a {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-sm);
+  margin-bottom: 2px;
+  transition: color 0.15s, background 0.15s;
+}
+.sidebar nav a:hover { color: var(--text-primary); }
+.sidebar nav a.active {
+  color: var(--accent);
+  background: var(--accent-bg);
+  font-weight: var(--fw-semibold);
+}
+
+.sidebar .footer-action {
+  margin-top: auto;
+  padding-top: var(--space-5);
+  font-size: var(--fs-sm);
+  color: var(--positive);
+  cursor: pointer;
+}
+
+main.content {
+  padding: var(--space-6) var(--space-7);
+  max-width: var(--content-max-width);
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.page-header {
+  margin-bottom: var(--space-6);
+}
+.page-title {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  margin: var(--space-3) 0 var(--space-1);
+  letter-spacing: -0.02em;
+}
+.page-subtitle {
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+}
+
+/* ============================================================================
+   Persistent toggle bar
+   ============================================================================ */
+.toggle-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+.toggle-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+.toggle-group label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+.toggle-options {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.toggle-option {
+  padding: 6px 10px;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all 0.15s;
+}
+.toggle-option:hover { border-color: var(--border-default); color: var(--text-primary); }
+.toggle-option.selected {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+  font-weight: var(--fw-semibold);
+}
+
+/* ============================================================================
+   Section pattern
+   ============================================================================ */
+.section { margin-bottom: var(--space-7); scroll-margin-top: var(--space-5); }
+.section h2 {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  margin: 0 0 var(--space-1);
+}
+.section .section-sub {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-4);
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+.card h3 {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  margin: 0 0 var(--space-1);
+}
+.card .card-sub {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* ============================================================================
+   Headline section — the big card
+   ============================================================================ */
+.headline-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-elevated) 100%);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-elevated);
+}
+.headline-label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--space-2);
+}
+.headline-range {
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  margin-bottom: var(--space-2);
+}
+.headline-range .currency { color: var(--accent); font-weight: var(--fw-bold); }
+.headline-range .dash { color: var(--text-tertiary); margin: 0 12px; font-weight: var(--fw-regular); }
+.headline-meta {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+.headline-meta strong { color: var(--text-primary); }
+
+.headline-secondary {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-5);
+}
+.secondary-metric .label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+.secondary-metric .value {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.secondary-metric .meta { font-size: var(--fs-xs); color: var(--text-tertiary); margin-top: 2px; }
+
+/* ============================================================================
+   Methodologies grid
+   ============================================================================ */
+.methodologies {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+.method-card { padding: var(--space-5); }
+.method-card.primary {
+  border-color: var(--accent-border);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(14, 165, 233, 0.03) 100%);
+}
+.method-tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: var(--fw-semibold);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-bg);
+  color: var(--accent);
+  margin-bottom: var(--space-3);
+}
+.method-tag.secondary { background: rgba(139, 140, 154, 0.1); color: var(--text-secondary); }
+.method-range {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  margin: var(--space-2) 0;
+  letter-spacing: -0.02em;
+}
+.method-range .accent-color { color: var(--accent); }
+.method-inputs {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+.method-inputs .row { display: flex; justify-content: space-between; padding: 2px 0; }
+.method-inputs .row strong { color: var(--text-primary); font-feature-settings: 'tnum' on, 'lnum' on; }
+
+/* EBITDA matrix */
+.ebitda-matrix {
+  display: grid;
+  grid-template-columns: auto repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: var(--space-3);
+  font-size: var(--fs-sm);
+}
+.ebitda-matrix > div {
+  background: var(--bg-card);
+  padding: 8px 10px;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.ebitda-matrix .header {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  font-weight: var(--fw-semibold);
+}
+.ebitda-matrix .row-label { color: var(--text-secondary); font-weight: var(--fw-medium); }
+.ebitda-matrix .cell { color: var(--text-primary); }
+.ebitda-matrix .cell.highlight {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: var(--fw-semibold);
+}
+
+/* ============================================================================
+   Comps tracker
+   ============================================================================ */
+.comps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+.comps-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  margin-top: var(--space-3);
+}
+.comps-table th {
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-subtle);
+  font-weight: var(--fw-semibold);
+}
+.comps-table th.num { text-align: right; }
+.comps-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.comps-table td.num { text-align: right; font-feature-settings: 'tnum' on, 'lnum' on; }
+.comps-table tr:last-child td { border-bottom: none; }
+.placeholder-banner {
+  margin-top: var(--space-3);
+  padding: 10px 14px;
+  border: 1px dashed var(--warning);
+  border-radius: var(--radius-sm);
+  background: var(--warning-bg);
+  font-size: var(--fs-sm);
+  color: var(--warning);
+}
+
+/* ============================================================================
+   Buyer-type lens grid
+   ============================================================================ */
+.buyer-lens-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+.buyer-card {
+  padding: var(--space-4);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.buyer-card.selected {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+.buyer-card .name {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--space-2);
+}
+.buyer-card .multiple {
+  font-size: var(--fs-lg);
+  color: var(--accent);
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--space-2);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.buyer-card .desc {
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ============================================================================
+   Cap-lift scenarios
+   ============================================================================ */
+.caplift-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+.caplift-card {
+  padding: var(--space-4);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  position: relative;
+}
+.caplift-card.selected {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+.caplift-card.speculative {
+  border-style: dashed;
+  border-color: var(--warning);
+  background: var(--warning-bg);
+}
+.caplift-card.speculative .badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--warning-bg);
+  color: var(--warning);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-weight: var(--fw-semibold);
+}
+.caplift-card .stores {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.caplift-card .period {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+.caplift-card .premium {
+  font-size: var(--fs-sm);
+  color: var(--positive);
+  margin-top: var(--space-2);
+  font-weight: var(--fw-medium);
+}
+
+/* ============================================================================
+   Synergy table
+   ============================================================================ */
+.synergy-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  margin-top: var(--space-3);
+}
+.synergy-table th, .synergy-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.synergy-table th {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  font-weight: var(--fw-semibold);
+}
+.synergy-table th.num, .synergy-table td.num {
+  text-align: right;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.synergy-table input.synergy-pct {
+  width: 60px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  text-align: right;
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.synergy-table tr.total td {
+  border-top: 1px solid var(--border-strong);
+  border-bottom: none;
+  font-weight: var(--fw-semibold);
+  color: var(--accent);
+  padding-top: 14px;
+}
+
+details.collapsible {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 0;
+}
+details.collapsible summary {
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  list-style: none;
+}
+details.collapsible summary::-webkit-details-marker { display: none; }
+details.collapsible summary::after {
+  content: '▾';
+  float: right;
+  color: var(--text-tertiary);
+  transition: transform 0.2s;
+}
+details.collapsible[open] summary::after { transform: rotate(180deg); }
+details.collapsible .body { padding: 0 var(--space-5) var(--space-5); }
+
+/* ============================================================================
+   Footnote / methodology section
+   ============================================================================ */
+.footnotes {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.footnotes p { margin: 0 0 var(--space-3); }
+.footnotes strong { color: var(--text-primary); }
+
+/* ============================================================================
+   Footer
+   ============================================================================ */
+footer.page-footer {
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+}
+
+/* Responsive simple */
+@media (max-width: 1100px) {
+  .methodologies, .comps-grid { grid-template-columns: 1fr; }
+  .buyer-lens-grid, .caplift-grid { grid-template-columns: repeat(2, 1fr); }
+  .toggle-bar { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">THCFO · Valuation</div>
+    <div class="brand-sub">Strategic Value Terminal</div>
+
+    <div class="section-label">Pages</div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="valuation.html" class="active">Valuation</a>
+      <a href="profitability.html">Profitability</a>
+      <a href="verticalization.html">Verticalization</a>
+      <a href="cashflow.html">Cash Flow & Liquidity</a>
+      <a href="debt.html">Debt & Capital</a>
+      <a href="operations.html">Operations</a>
+    </nav>
+
+    <div class="section-label">On This Page</div>
+    <nav>
+      <a href="#headline">Headline Range</a>
+      <a href="#methodologies">Methodologies</a>
+      <a href="#comps">Comps Tracker</a>
+      <a href="#buyer-lens">Buyer-Type Lens</a>
+      <a href="#caplift">Cap-Lift Scenarios</a>
+      <a href="#synergy">Synergy Add-Backs</a>
+      <a href="#methodology">Methodology Notes</a>
+    </nav>
+
+    <div class="section-label">Other Dashboards</div>
+    <nav>
+      <a href="https://wesritchie.github.io/quickroom/" target="_blank">QuickRoom Hub →</a>
+    </nav>
+
+    <div class="footer-action">⟲ Refresh Data</div>
+  </aside>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="content">
+
+    <!-- Status pill -->
+    <span class="status-pill accent">
+      <span class="dot"></span>
+      Last updated: Apr 26, 2026 · TTM revenue from QB closed P&L
+    </span>
+
+    <!-- Page header -->
+    <div class="page-header">
+      <h1 class="page-title">Valuation</h1>
+      <p class="page-subtitle">
+        Revenue-multiple primary, EBITDA-multiple secondary. Toggle cap-lift scenario, buyer type, and EBITDA lens to see implied range.
+      </p>
+    </div>
+
+    <!-- ============ PERSISTENT TOGGLES ============ -->
+    <div class="toggle-bar">
+      <div class="toggle-group">
+        <label>Cap-Lift Scenario</label>
+        <div class="toggle-options" data-toggle="capLift">
+          <button class="toggle-option" data-value="pre">Pre (3 stores)</button>
+          <button class="toggle-option selected" data-value="phase1">Phase 1 (5 stores)</button>
+          <button class="toggle-option" data-value="phase2">Phase 2 (6 stores)</button>
+          <button class="toggle-option" data-value="sister">Sister Entity (speculative)</button>
+        </div>
+      </div>
+      <div class="toggle-group">
+        <label>Buyer-Type Lens</label>
+        <div class="toggle-options" data-toggle="buyerType">
+          <button class="toggle-option" data-value="single-state">Single-State</button>
+          <button class="toggle-option selected" data-value="ma-acquirer">MA Acquirer</button>
+          <button class="toggle-option" data-value="mso">MSO</button>
+          <button class="toggle-option" data-value="esop">ESOP</button>
+        </div>
+      </div>
+      <div class="toggle-group">
+        <label>EBITDA Lens</label>
+        <div class="toggle-options" data-toggle="ebitdaLens">
+          <button class="toggle-option" data-value="conservative">Conservative</button>
+          <button class="toggle-option" data-value="mid">Mid</button>
+          <button class="toggle-option selected" data-value="strategic">Strategic</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ HEADLINE RANGE ============ -->
+    <section class="section" id="headline">
+      <div class="headline-card">
+        <div class="headline-label">Implied Valuation Range — Revenue Multiple (Primary)</div>
+        <div class="headline-range">
+          <span class="currency" id="headline-low">—</span>
+          <span class="dash">–</span>
+          <span class="currency" id="headline-high">—</span>
+        </div>
+        <div class="headline-meta" id="headline-meta">
+          —
+        </div>
+
+        <div class="headline-secondary">
+          <div class="secondary-metric">
+            <div class="label">EBITDA-Implied Range (Secondary)</div>
+            <div class="value" id="ebitda-implied">—</div>
+            <div class="meta" id="ebitda-implied-meta">—</div>
+          </div>
+          <div class="secondary-metric">
+            <div class="label">Asset Floor</div>
+            <div class="value" id="asset-floor">—</div>
+            <div class="meta">Going-concern conservative</div>
+          </div>
+          <div class="secondary-metric">
+            <div class="label">Forward 12-Mo (Pro-Forma)</div>
+            <div class="value" id="forward-range">—</div>
+            <div class="meta">At Groton maturity, ~$10.7M revenue</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ METHODOLOGIES ============ -->
+    <section class="section" id="methodologies">
+      <h2>Methodologies</h2>
+      <div class="section-sub">Four valuation frames side by side. Revenue-multiple is primary; the others are fluent secondary frames.</div>
+
+      <div class="methodologies">
+
+        <!-- Methodology 1: Revenue Multiple (Primary) -->
+        <div class="card method-card primary">
+          <span class="method-tag">Primary · Revenue Multiple</span>
+          <h3>Revenue × Multiple</h3>
+          <p class="card-sub">TTM consolidated revenue applied to MA cannabis comp range, adjusted for buyer type and cap-lift scenario.</p>
+          <div class="method-range">
+            <span class="accent-color" id="rev-mult-low">—</span> – <span class="accent-color" id="rev-mult-high">—</span>
+          </div>
+          <div class="method-inputs">
+            <div class="row"><span>TTM Revenue</span><strong>$8,810,261</strong></div>
+            <div class="row"><span>Multiple range</span><strong id="rev-mult-range">—</strong></div>
+            <div class="row"><span>Cap-lift premium</span><strong id="rev-mult-premium">—</strong></div>
+            <div class="row"><span>Buyer type</span><strong id="rev-mult-buyer">—</strong></div>
+          </div>
+        </div>
+
+        <!-- Methodology 2: EBITDA Multiple (Secondary) -->
+        <div class="card method-card">
+          <span class="method-tag secondary">Secondary · EBITDA Multiple</span>
+          <h3>EBITDA × Multiple</h3>
+          <p class="card-sub">Three EBITDA lenses × three multiples. Active cell highlighted based on current lens selections.</p>
+          <div class="ebitda-matrix" id="ebitda-matrix">
+            <div class="header"></div>
+            <div class="header">3.0x</div>
+            <div class="header">3.5x</div>
+            <div class="header">4.0x</div>
+
+            <div class="row-label">Conservative</div>
+            <div class="cell" data-row="conservative" data-col="3.0">—</div>
+            <div class="cell" data-row="conservative" data-col="3.5">—</div>
+            <div class="cell" data-row="conservative" data-col="4.0">—</div>
+
+            <div class="row-label">Mid</div>
+            <div class="cell" data-row="mid" data-col="3.0">—</div>
+            <div class="cell" data-row="mid" data-col="3.5">—</div>
+            <div class="cell" data-row="mid" data-col="4.0">—</div>
+
+            <div class="row-label">Strategic</div>
+            <div class="cell" data-row="strategic" data-col="3.0">—</div>
+            <div class="cell" data-row="strategic" data-col="3.5">—</div>
+            <div class="cell" data-row="strategic" data-col="4.0">—</div>
+          </div>
+        </div>
+
+        <!-- Methodology 3: Asset Floor -->
+        <div class="card method-card">
+          <span class="method-tag secondary">Floor · Going-Concern Assets</span>
+          <h3>Asset Floor</h3>
+          <p class="card-sub">Hard-asset valuation as a downside floor. Excludes brand and going-concern earnings.</p>
+          <div class="method-range">
+            <span class="accent-color" id="asset-low">—</span> – <span class="accent-color" id="asset-high">—</span>
+          </div>
+          <div class="method-inputs">
+            <div class="row"><span>Inventory @ 80–90% of book</span><strong>$1.18M – $1.32M</strong></div>
+            <div class="row"><span>Cash + AR @ 85% of book</span><strong>$492K</strong></div>
+            <div class="row"><span>FF&E + Leaseholds (discount)</span><strong>$776K</strong></div>
+            <div class="row"><span>Cultivation license value</span><strong>$1.5M</strong></div>
+            <div class="row"><span>Retail license values (3)</span><strong>$4.5M – $7.5M</strong></div>
+            <div class="row" style="font-size: var(--fs-xs); color: var(--text-tertiary); border-top: none; padding-top: 4px;"><span>License values are estimates; refine in Verticalization page</span><strong></strong></div>
+          </div>
+        </div>
+
+        <!-- Methodology 4: Forward / Pro-Forma -->
+        <div class="card method-card">
+          <span class="method-tag secondary">Forward · Pro-Forma</span>
+          <h3>Forward Revenue × Multiple</h3>
+          <p class="card-sub">Projected 12-month revenue at Groton maturity, applied to same multiple range as primary.</p>
+          <div class="method-range">
+            <span class="accent-color" id="fwd-rev-low">—</span> – <span class="accent-color" id="fwd-rev-high">—</span>
+          </div>
+          <div class="method-inputs">
+            <div class="row"><span>Projected TTM revenue</span><strong>$10,740,000</strong></div>
+            <div class="row"><span>Dracut → $5.82M</span><strong>+15%</strong></div>
+            <div class="row"><span>Pepperell → $2.97M</span><strong>+18%</strong></div>
+            <div class="row"><span>Groton → $750K</span><strong>+39% (ramp)</strong></div>
+            <div class="row"><span>Colrain (farm) → $1.20M</span><strong>+66%</strong></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ COMPS TRACKER ============ -->
+    <section class="section" id="comps">
+      <h2>Comps Tracker</h2>
+      <div class="section-sub">Public MSO trading multiples and curated MA private transaction database. Multiples used in headline are blended from these.</div>
+
+      <div class="comps-grid">
+
+        <!-- Public MSO — populated from data/comps-data.js -->
+        <div class="card">
+          <h3>Public MSO Trading Multiples</h3>
+          <p class="card-sub">Top US multi-state operators · TTM revenue and trading multiples · loaded from <code style="color: var(--accent); font-size: 0.85em;">data/comps-data.js</code></p>
+          <table class="comps-table">
+            <thead>
+              <tr>
+                <th>Operator</th>
+                <th class="num">TTM Rev</th>
+                <th class="num">Mkt Cap</th>
+                <th class="num">P/S</th>
+                <th class="num">EV/EBITDA</th>
+              </tr>
+            </thead>
+            <tbody id="mso-tbody"></tbody>
+          </table>
+          <div id="mso-meta" style="margin-top: var(--space-3); font-size: var(--fs-xs); color: var(--text-tertiary);"></div>
+        </div>
+
+        <!-- MA Private Transactions — populated from data/comps-data.js -->
+        <div class="card">
+          <h3>MA Private Transactions</h3>
+          <p class="card-sub">Recent disclosed or triangulated MA cannabis acquisitions · loaded from <code style="color: var(--accent); font-size: 0.85em;">data/comps-data.js</code></p>
+          <table class="comps-table">
+            <thead>
+              <tr>
+                <th>Target</th>
+                <th>Date</th>
+                <th class="num">Rev Mult</th>
+                <th class="num">EBITDA Mult</th>
+                <th>Confidence</th>
+              </tr>
+            </thead>
+            <tbody id="private-tbody"></tbody>
+          </table>
+          <div id="private-meta" style="margin-top: var(--space-3); font-size: var(--fs-xs); color: var(--text-tertiary);"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ BUYER-TYPE LENS ============ -->
+    <section class="section" id="buyer-lens">
+      <h2>Buyer-Type Lens</h2>
+      <div class="section-sub">Different buyer profiles produce materially different multiple ranges and synergy assumptions. Click to set lens.</div>
+
+      <div class="buyer-lens-grid" id="buyer-cards">
+        <div class="card buyer-card" data-buyer="single-state">
+          <div class="name">Single-State Operator</div>
+          <div class="multiple">1.0x – 1.5x rev</div>
+          <div class="desc">Smaller MA operator scaling up. Lower multiples, conservative EBITDA lens, minimal synergies. Often the slowest/lowest-priced path.</div>
+        </div>
+        <div class="card buyer-card selected" data-buyer="ma-acquirer">
+          <div class="name">MA At-Cap Acquirer</div>
+          <div class="multiple">1.5x – 2.0x rev</div>
+          <div class="desc">MA operator currently at the 3-store cap, motivated by cap-lift to expand. Strategic EBITDA lens. Moderate synergies (overlap on roles, suppliers).</div>
+        </div>
+        <div class="card buyer-card" data-buyer="mso">
+          <div class="name">MSO (out-of-state)</div>
+          <div class="multiple">0.8x – 1.2x rev</div>
+          <div class="desc">National multi-state operator entering MA. Cannot continue 471(c) — pays on a 280E-bound EBITDA, structurally lower. Pays for license + footprint.</div>
+        </div>
+        <div class="card buyer-card" data-buyer="esop">
+          <div class="name">ESOP Buyer</div>
+          <div class="multiple">1.5x – 2.0x rev</div>
+          <div class="desc">Employee stock ownership plan buyer. Different value drivers (governance, employee continuity, tax treatment). Cap-exempt under §16(b)(i).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CAP-LIFT SCENARIOS ============ -->
+    <section class="section" id="caplift">
+      <h2>Cap-Lift Scenarios</h2>
+      <div class="section-sub">Per Chapter 65 of Acts of 2026, retail cap moves from 3 → 5 → 6 in stages. Sister-entity structuring is speculative pending counsel review.</div>
+
+      <div class="caplift-grid" id="caplift-cards">
+        <div class="card caplift-card" data-scenario="pre">
+          <div class="stores">3</div>
+          <div class="period">Pre-cap-lift (today)</div>
+          <div class="card-sub" style="margin: 8px 0 0; font-size: var(--fs-xs);">Tree House at the legacy 3-cap. Baseline multiple range.</div>
+          <div class="premium">Baseline</div>
+        </div>
+        <div class="card caplift-card selected" data-scenario="phase1">
+          <div class="stores">5</div>
+          <div class="period">Late Jun 2026 – Jun 2027</div>
+          <div class="card-sub" style="margin: 8px 0 0; font-size: var(--fs-xs);">Cap-lift live. Non-social-equity capped at 5 retailers for first 12 months.</div>
+          <div class="premium">+10% to +20% premium</div>
+        </div>
+        <div class="card caplift-card" data-scenario="phase2">
+          <div class="stores">6</div>
+          <div class="period">Late Jun 2027+</div>
+          <div class="card-sub" style="margin: 8px 0 0; font-size: var(--fs-xs);">Full 6-cap available to all licensees. Maximum same-buyer pool.</div>
+          <div class="premium">+15% to +25% premium</div>
+        </div>
+        <div class="card caplift-card speculative" data-scenario="sister">
+          <span class="badge">Speculative</span>
+          <div class="stores">∞</div>
+          <div class="period">Sister-entity structuring</div>
+          <div class="card-sub" style="margin: 8px 0 0; font-size: var(--fs-xs);">Sub-20% / no-control carve-out (§16(b)(ii)). Requires counsel sign-off before relying on.</div>
+          <div class="premium">+20% to +30% premium (pending counsel)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SYNERGY ADD-BACKS ============ -->
+    <section class="section" id="synergy">
+      <details class="collapsible" open>
+        <summary>Strategic Synergy Add-Backs (Owner Comp Layer)</summary>
+        <div class="body">
+          <p class="card-sub">
+            Categories of cost that a strategic buyer with existing infrastructure absorbs partially or fully. Conservative lens applies market-replacement convention — small or negative add-back. Strategic lens (default) reflects how an MA at-cap acquirer or other industry buyer would model post-close synergies. Edit synergy % per category to see impact on Adjusted EBITDA.
+          </p>
+          <table class="synergy-table" id="synergy-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th class="num">Annual Cost</th>
+                <th class="num">Synergy %</th>
+                <th class="num">Add-Back $</th>
+                <th>Rationale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-cat="exec" data-cost="740000">
+                <td>Executive &amp; Leadership Compensation</td>
+                <td class="num">$740,000</td>
+                <td class="num"><input type="number" class="synergy-pct" value="80" min="0" max="100">%</td>
+                <td class="num addback">$592,000</td>
+                <td style="font-size: var(--fs-xs); color: var(--text-secondary);">Co-CEO, CFO, GC, COO, CPO, HR roles. Strategic buyer absorbs most into existing org.</td>
+              </tr>
+              <tr data-cat="profsvcs" data-cost="269000">
+                <td>Professional Services</td>
+                <td class="num">$269,000</td>
+                <td class="num"><input type="number" class="synergy-pct" value="30" min="0" max="100">%</td>
+                <td class="num addback">$80,700</td>
+                <td style="font-size: var(--fs-xs); color: var(--text-secondary);">Legal, accounting, tax, audit. Buyer's existing providers cover NECC.</td>
+              </tr>
+              <tr data-cat="software" data-cost="123000">
+                <td>Software, IT &amp; Subscriptions</td>
+                <td class="num">$123,000</td>
+                <td class="num"><input type="number" class="synergy-pct" value="40" min="0" max="100">%</td>
+                <td class="num addback">$49,200</td>
+                <td style="font-size: var(--fs-xs); color: var(--text-secondary);">QB, CRM, productivity, security software. Consolidated to buyer's existing licenses.</td>
+              </tr>
+              <tr data-cat="insurance" data-cost="48000">
+                <td>Insurance &amp; Risk Management</td>
+                <td class="num">$48,000</td>
+                <td class="num"><input type="number" class="synergy-pct" value="25" min="0" max="100">%</td>
+                <td class="num addback">$12,000</td>
+                <td style="font-size: var(--fs-xs); color: var(--text-secondary);">GL, property, D&amp;O, cyber. Pooled into buyer's master coverage.</td>
+              </tr>
+              <tr data-cat="overhead" data-cost="80000">
+                <td>Other Corporate Overhead</td>
+                <td class="num">$80,000</td>
+                <td class="num"><input type="number" class="synergy-pct" value="25" min="0" max="100">%</td>
+                <td class="num addback">$20,000</td>
+                <td style="font-size: var(--fs-xs); color: var(--text-secondary);">Banking fees, office supplies, travel, training, board/advisory. Partial absorption.</td>
+              </tr>
+              <tr data-cat="otheradds" data-cost="0">
+                <td>Other Synergistic Add-Backs <em style="color: var(--warning);">(to be identified)</em></td>
+                <td class="num">$0</td>
+                <td class="num"><input type="number" class="synergy-pct" value="100" min="0" max="100">%</td>
+                <td class="num addback">$0</td>
+                <td style="font-size: var(--fs-xs); color: var(--text-secondary);">Placeholder for non-comp add-backs identified in EBITDA build session (one-time costs, founder-discretionary spend, etc.).</td>
+              </tr>
+              <tr class="total">
+                <td>Total Strategic Add-Back</td>
+                <td class="num">$1,260,000</td>
+                <td class="num">—</td>
+                <td class="num" id="total-addback">$753,900</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="card-sub" style="margin-top: 16px;">
+            Default percentages are illustrative starting points based on standard M&amp;A practice for comparable transactions; refine during EBITDA build session. The "Other Synergistic Add-Backs" row is intentionally empty — non-comp add-backs (one-time legal, Groton opening costs, founder-discretionary, etc.) get populated in that session.
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ METHODOLOGY NOTES ============ -->
+    <section class="section" id="methodology">
+      <details class="collapsible">
+        <summary>Methodology Notes & Sources</summary>
+        <div class="body">
+          <div class="footnotes">
+            <p><strong>TTM Revenue ($8,810,261).</strong> Source: New England Craft Cultivators LLC 2025 Profit and Loss by Month, accrual basis, year-ended Dec 31, 2025. Reflects fully-integrated NECC + MACC since Jan 1, 2025.</p>
+            <p><strong>Forward 12-month revenue ($10,740,000).</strong> Composed of Dracut $5.82M + Pepperell $2.97M + Groton $750K + Colrain wholesale $1.2M, reflecting full-year run-rate at Groton maturity and the manufacturing license activation expected September 2026.</p>
+            <p><strong>Adjusted EBITDA — Strategic ($1,968,186).</strong> Tree House internal calculation reflecting strategic-buyer synergy assumptions (categorized owner-comp absorption plus non-comp synergies). Underlying line-item workpaper documents each add-back.</p>
+            <p><strong>Adjusted EBITDA — Mid (~$1,650,000).</strong> Working estimate: Strategic lens with partial synergy realization. Refine during line-item workpaper review.</p>
+            <p><strong>Adjusted EBITDA — Conservative (~$1,300,000).</strong> Operating income plus interest reclassification from COGS, plus estimated D&amp;A, with minimal additional adjustments. Represents the floor view a financial buyer or first-pass diligence would compute. Depreciation add-back is approximate pending the formal 2025 D&amp;A schedule.</p>
+            <p><strong>Revenue multiple range.</strong> 1.0x–2.0x reflects the consolidated MA cannabis comp range observed across recent transactions. MSO buyers anchor lower (0.8x–1.2x) due to 280E carry-forward considerations. Cap-lift acquirers pay premium (1.5x–2.0x). EBITDA multiples used in cross-check (3.0x–4.0x) reflect the same comp set translated to the EBITDA frame.</p>
+            <p><strong>Cap-lift legislative source.</strong> Chapter 65 of the Acts of 2026, signed April 2026. §16 rewritten by §36 of the act: cap = 6 retailers / 3 manufacturers / 3 cultivators, with sub-20%/no-control and ESOP exemptions. §60 stages the rollout: non-social-equity licensees limited to 5 retail licenses for the first 12 months of new applications; 6th license available after that 12-month period. CCC must begin accepting applications within 2 months of effective date.</p>
+            <p><strong>Sister-entity scenario.</strong> Speculative read of §16(b)(ii). Statute exempts sub-20%/no-control passive equity from cap aggregation. Whether same-controllers can run two licensee entities while staying below the control threshold is a counsel-advice question. Flagged speculative until pressure-tested with outside counsel.</p>
+            <p><strong>Asset floor.</strong> Inventory $1,470,721 from 2025 year-end balance sheet, haircut to 80–90% per going-concern convention. Cash $354,316 + AR $161,723 at 85%. FF&E + leasehold improvements at discount to book. Retail and cultivation license values estimated from MA market — refine during Verticalization page build for the cultivation portion.</p>
+            <p><strong>Synergy add-back assumptions.</strong> Default values are illustrative and subject to refinement. The Strategic lens assumes a buyer who already has CFO, GC, COO infrastructure — typical of MA at-cap acquirers and ESOP buyers. Conservative lens assumes financial buyer with no existing infrastructure. Replacement-cost benchmarks should ultimately be sourced from a cannabis-specific compensation study.</p>
+            <p><strong>Comps data file.</strong> Public MSO multiples and MA private transactions are loaded from <code style="background: var(--bg-input); padding: 2px 6px; border-radius: 3px; color: var(--accent);">dashboard/data/comps-data.js</code> at page load. Refresh by editing that file directly — no HTML changes needed. The file's header comment documents refresh cadence (quarterly for public MSOs after each earnings cycle; monthly + ad hoc for MA private). Each MA private row carries an explicit confidence rating and source citation.</p>
+            <p><strong>Other data freshness.</strong> Revenue, balance sheet, and EBITDA inputs are point-in-time as of Apr 2026. Live wiring to Dutchie POS for daily revenue and to QuickBooks for post-monthly-close financials is a future iteration.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <footer class="page-footer">
+      <span>● Data as of Apr 26, 2026 — refreshes manually</span>
+      <span>Tree House Craft Cannabis · THCFO · Valuation v0.1</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+// ============================================================================
+// State and configuration
+// ============================================================================
+const state = {
+  capLift: 'phase1',
+  buyerType: 'ma-acquirer',
+  ebitdaLens: 'strategic',
+};
+
+// Read core values from data/summary-data.js (single source of truth)
+// Falls back to local defaults if SUMMARY_DATA isn't loaded.
+const _S = window.SUMMARY_DATA || {};
+const _SVAL = _S.valuation || {};
+const _SEBT = _S.ebitda || {};
+const _SMUL = _SVAL.revenueMultiples || {};
+const _SCAP = _SVAL.capLiftPremiums || {};
+
+const TTM_REVENUE = _SVAL.ttmRevenue || 8810261;
+const FWD_REVENUE = _SVAL.fwdRevenue || 10740000;
+
+const ebitdaValues = {
+  conservative: _SEBT.conservative || 1300000,
+  mid:          _SEBT.mid          || 1650000,
+  strategic:    _SEBT.strategic    || 1968186,
+};
+
+const buyerTypeConfig = {
+  'single-state': { revLow: _SMUL.singleStateLow || 1.0, revHigh: _SMUL.singleStateHigh || 1.5, name: 'Single-State Operator' },
+  'ma-acquirer':  { revLow: _SMUL.maAcquirerLow  || 1.5, revHigh: _SMUL.maAcquirerHigh  || 2.0, name: 'MA At-Cap Acquirer' },
+  'mso':          { revLow: _SMUL.msoLow         || 0.8, revHigh: _SMUL.msoHigh         || 1.2, name: 'MSO (out-of-state)' },
+  'esop':         { revLow: _SMUL.esopLow        || 1.5, revHigh: _SMUL.esopHigh        || 2.0, name: 'ESOP Buyer' },
+};
+
+const capLiftConfig = {
+  'pre':    { lowMult: _SCAP.preLow    || 1.00, highMult: _SCAP.preHigh    || 1.00, label: 'No premium (baseline)' },
+  'phase1': { lowMult: _SCAP.phase1Low || 1.10, highMult: _SCAP.phase1High || 1.20, label: '+10% to +20%' },
+  'phase2': { lowMult: _SCAP.phase2Low || 1.15, highMult: _SCAP.phase2High || 1.25, label: '+15% to +25%' },
+  'sister': { lowMult: _SCAP.sisterLow || 1.20, highMult: _SCAP.sisterHigh || 1.30, label: '+20% to +30% (speculative)' },
+};
+
+// Asset floor calculations
+const assetFloorLow = (
+  1470721 * 0.80 +    // inventory low haircut
+  354316 +            // cash at face
+  161723 * 0.80 +     // AR low haircut
+  (24573 + 1551728 * 0.50) +  // FF&E + leasehold at 50% of book
+  1500000 +           // cultivation license
+  3 * 1500000         // retail licenses low end
+);
+const assetFloorHigh = (
+  1470721 * 0.90 +
+  354316 +
+  161723 * 0.90 +
+  (24573 + 1551728 * 0.55) +
+  1500000 +
+  3 * 2500000         // retail licenses high end
+);
+
+// ============================================================================
+// Formatters
+// ============================================================================
+function fmtUSD(v) {
+  if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
+  if (v >= 1e3) return '$' + (v / 1e3).toFixed(0) + 'K';
+  return '$' + Math.round(v).toLocaleString();
+}
+function fmtUSDFull(v) {
+  return '$' + Math.round(v).toLocaleString();
+}
+
+// ============================================================================
+// Headline calculation
+// ============================================================================
+function calcHeadline() {
+  const b = buyerTypeConfig[state.buyerType];
+  const cl = capLiftConfig[state.capLift];
+  const low = TTM_REVENUE * b.revLow * cl.lowMult;
+  const high = TTM_REVENUE * b.revHigh * cl.highMult;
+  return [low, high];
+}
+function calcEBITDARange() {
+  const ebitda = ebitdaValues[state.ebitdaLens];
+  // EBITDA multiples adjusted slightly by buyer type
+  let lowMult = 3.0, highMult = 4.0;
+  if (state.buyerType === 'ma-acquirer') { lowMult = 3.5; highMult = 4.5; }
+  if (state.buyerType === 'mso') { lowMult = 3.0; highMult = 3.5; }
+  return [ebitda * lowMult, ebitda * highMult];
+}
+function calcForward() {
+  const b = buyerTypeConfig[state.buyerType];
+  const cl = capLiftConfig[state.capLift];
+  return [FWD_REVENUE * b.revLow * cl.lowMult, FWD_REVENUE * b.revHigh * cl.highMult];
+}
+
+// ============================================================================
+// Render
+// ============================================================================
+function render() {
+  // Headline
+  const [hLow, hHigh] = calcHeadline();
+  document.getElementById('headline-low').textContent = fmtUSD(hLow);
+  document.getElementById('headline-high').textContent = fmtUSD(hHigh);
+
+  const b = buyerTypeConfig[state.buyerType];
+  const cl = capLiftConfig[state.capLift];
+  document.getElementById('headline-meta').innerHTML =
+    `Based on TTM revenue of <strong>${fmtUSDFull(TTM_REVENUE)}</strong> × ` +
+    `<strong>${b.revLow.toFixed(1)}x – ${b.revHigh.toFixed(1)}x</strong> ` +
+    `revenue multiple · <strong>${b.name}</strong> · ` +
+    `<strong>${cl.label}</strong> cap-lift adjustment`;
+
+  // EBITDA implied
+  const [eLow, eHigh] = calcEBITDARange();
+  document.getElementById('ebitda-implied').textContent = `${fmtUSD(eLow)} – ${fmtUSD(eHigh)}`;
+  const ebitda = ebitdaValues[state.ebitdaLens];
+  document.getElementById('ebitda-implied-meta').textContent =
+    `${state.ebitdaLens.charAt(0).toUpperCase() + state.ebitdaLens.slice(1)} Adj. EBITDA: ${fmtUSDFull(ebitda)}`;
+
+  // Asset floor
+  document.getElementById('asset-floor').textContent = `${fmtUSD(assetFloorLow)} – ${fmtUSD(assetFloorHigh)}`;
+
+  // Forward
+  const [fLow, fHigh] = calcForward();
+  document.getElementById('forward-range').textContent = `${fmtUSD(fLow)} – ${fmtUSD(fHigh)}`;
+
+  // Methodology 1: Revenue Multiple
+  document.getElementById('rev-mult-low').textContent = fmtUSD(hLow);
+  document.getElementById('rev-mult-high').textContent = fmtUSD(hHigh);
+  document.getElementById('rev-mult-range').textContent = `${b.revLow.toFixed(1)}x – ${b.revHigh.toFixed(1)}x`;
+  document.getElementById('rev-mult-premium').textContent = cl.label;
+  document.getElementById('rev-mult-buyer').textContent = b.name;
+
+  // Methodology 2: EBITDA matrix
+  const matrix = document.getElementById('ebitda-matrix');
+  ['conservative', 'mid', 'strategic'].forEach(row => {
+    ['3.0', '3.5', '4.0'].forEach(col => {
+      const cell = matrix.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+      if (cell) {
+        const val = ebitdaValues[row] * parseFloat(col);
+        cell.textContent = fmtUSD(val);
+        cell.classList.toggle('highlight', row === state.ebitdaLens);
+      }
+    });
+  });
+
+  // Methodology 3: Asset
+  document.getElementById('asset-low').textContent = fmtUSD(assetFloorLow);
+  document.getElementById('asset-high').textContent = fmtUSD(assetFloorHigh);
+
+  // Methodology 4: Forward
+  document.getElementById('fwd-rev-low').textContent = fmtUSD(fLow);
+  document.getElementById('fwd-rev-high').textContent = fmtUSD(fHigh);
+
+  // Buyer-card selection
+  document.querySelectorAll('.buyer-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.buyer === state.buyerType);
+  });
+
+  // Cap-lift card selection
+  document.querySelectorAll('.caplift-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.scenario === state.capLift);
+  });
+
+  // Toggle bar selection
+  document.querySelectorAll('[data-toggle]').forEach(group => {
+    const key = group.dataset.toggle;
+    group.querySelectorAll('.toggle-option').forEach(btn => {
+      btn.classList.toggle('selected', btn.dataset.value === state[key]);
+    });
+  });
+}
+
+// ============================================================================
+// Synergy table
+// ============================================================================
+function recalcSynergy() {
+  let total = 0;
+  document.querySelectorAll('#synergy-table tr[data-cat]').forEach(tr => {
+    const cost = parseInt(tr.dataset.cost);
+    const pct = parseFloat(tr.querySelector('input.synergy-pct').value) / 100;
+    const addback = Math.round(cost * pct);
+    tr.querySelector('.addback').textContent = fmtUSDFull(addback);
+    total += addback;
+  });
+  document.getElementById('total-addback').textContent = fmtUSDFull(total);
+}
+
+// ============================================================================
+// Event wiring
+// ============================================================================
+document.querySelectorAll('[data-toggle]').forEach(group => {
+  group.addEventListener('click', e => {
+    const btn = e.target.closest('.toggle-option');
+    if (!btn) return;
+    const key = group.dataset.toggle;
+    state[key] = btn.dataset.value;
+    render();
+  });
+});
+
+document.querySelectorAll('.buyer-card').forEach(card => {
+  card.addEventListener('click', () => {
+    state.buyerType = card.dataset.buyer;
+    render();
+  });
+});
+
+document.querySelectorAll('.caplift-card').forEach(card => {
+  card.addEventListener('click', () => {
+    state.capLift = card.dataset.scenario;
+    render();
+  });
+});
+
+document.querySelectorAll('.synergy-pct').forEach(input => {
+  input.addEventListener('input', recalcSynergy);
+});
+
+// ============================================================================
+// Comps rendering — pulls from window.COMPS_DATA defined in data/comps-data.js
+// ============================================================================
+function renderComps() {
+  if (!window.COMPS_DATA) {
+    console.warn('COMPS_DATA not loaded — check data/comps-data.js');
+    return;
+  }
+
+  const data = window.COMPS_DATA;
+
+  // ----- Public MSOs -----
+  const msoBody = document.getElementById('mso-tbody');
+  if (msoBody && data.public_msos) {
+    let psSum = 0, evSum = 0, n = 0;
+    msoBody.innerHTML = data.public_msos.map(c => {
+      psSum += c.ps_multiple;
+      evSum += c.ev_ebitda_multiple;
+      n++;
+      return `<tr>
+        <td>${c.name} <span style="color: var(--text-tertiary); font-size: 0.85em;">(${c.ticker})</span></td>
+        <td class="num">$${c.ttm_revenue_b.toFixed(2)}B</td>
+        <td class="num">$${c.market_cap_b.toFixed(2)}B</td>
+        <td class="num">~${c.ps_multiple.toFixed(1)}x</td>
+        <td class="num">~${c.ev_ebitda_multiple.toFixed(1)}x</td>
+      </tr>`;
+    }).join('');
+    // Append median row
+    if (n > 0) {
+      msoBody.innerHTML += `<tr style="border-top: 1px solid var(--border-default);">
+        <td><strong>Median (Tier-1 MSOs)</strong></td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+        <td class="num"><strong>~${(psSum/n).toFixed(1)}x</strong></td>
+        <td class="num"><strong>~${(evSum/n).toFixed(1)}x</strong></td>
+      </tr>`;
+    }
+  }
+  const msoMeta = document.getElementById('mso-meta');
+  if (msoMeta && data.meta) {
+    msoMeta.innerHTML = `Data as of <strong style="color: var(--text-secondary);">${data.meta.last_updated}</strong> · Next refresh due <strong style="color: var(--text-secondary);">${data.meta.next_refresh_due}</strong> · Edit <code style="color: var(--accent);">data/comps-data.js</code> to update`;
+  }
+
+  // ----- MA Private -----
+  const privBody = document.getElementById('private-tbody');
+  if (privBody && data.ma_private) {
+    privBody.innerHTML = data.ma_private.map(t => {
+      const conf = t.confidence;
+      const confColor = conf === 'high' ? 'var(--positive)' :
+                       conf === 'medium' ? 'var(--warning)' :
+                       conf === 'low' ? 'var(--text-tertiary)' :
+                       'var(--text-quaternary)';
+      const revStr = t.revenue_multiple ? `~${t.revenue_multiple.toFixed(1)}x` : '—';
+      const ebitdaStr = t.ebitda_multiple ? `~${t.ebitda_multiple.toFixed(1)}x` : '—';
+      const confLabel = conf === 'placeholder' ? 'placeholder' : conf;
+      return `<tr>
+        <td>${t.target}${t.buyer && t.buyer !== '—' ? `<br><span style="color: var(--text-tertiary); font-size: 0.85em;">→ ${t.buyer}</span>` : ''}</td>
+        <td>${t.date}</td>
+        <td class="num">${revStr}</td>
+        <td class="num">${ebitdaStr}</td>
+        <td><span style="display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-xs); color: ${confColor};"><span style="width: 8px; height: 8px; border-radius: 50%; background: ${confColor};"></span>${confLabel}</span></td>
+      </tr>`;
+    }).join('');
+  }
+  const privMeta = document.getElementById('private-meta');
+  if (privMeta) {
+    privMeta.innerHTML = `Confidence: <span style="color: var(--positive);">●</span> public disclosure · <span style="color: var(--warning);">●</span> industry intel · <span style="color: var(--text-tertiary);">●</span> rumor or triangulated · sources cited per row in <code style="color: var(--accent);">data/comps-data.js</code>`;
+  }
+}
+renderComps();
+
+// Sidebar nav active state on scroll
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// Initial render
+render();
+recalcSynergy();
+</script>
+</body>
+</html>

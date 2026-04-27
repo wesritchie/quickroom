@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THCFO — Overview</title>
+<link rel="stylesheet" href="styles/design-tokens.css">
+<script src="data/summary-data.js"></script>
+<script src="data/ap-aging-data.js"></script>
+<script src="data/operations-data.js"></script>
+<style>
+.layout { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; }
+aside.sidebar {
+  background: var(--bg-sidebar); border-right: 1px solid var(--border-subtle);
+  padding: var(--space-6) var(--space-5);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.sidebar .brand { font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-1); }
+.sidebar .brand-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-7); }
+.sidebar .section-label { font-size: 0.6875rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: var(--space-5) 0 var(--space-2); }
+.sidebar .section-label:first-of-type { margin-top: 0; }
+.sidebar nav a { display: block; padding: var(--space-2) var(--space-3); color: var(--text-secondary); text-decoration: none; font-size: var(--fs-sm); border-radius: var(--radius-sm); margin-bottom: 2px; transition: color 0.15s, background 0.15s; }
+.sidebar nav a:hover { color: var(--text-primary); }
+.sidebar nav a.active { color: var(--accent); background: var(--accent-bg); font-weight: var(--fw-semibold); }
+.sidebar .footer-action { margin-top: auto; padding-top: var(--space-5); font-size: var(--fs-sm); color: var(--positive); cursor: pointer; }
+
+main.content { padding: var(--space-6) var(--space-7); max-width: var(--content-max-width); width: 100%; margin: 0 auto; box-sizing: border-box; }
+
+/* Hero */
+.hero { margin-bottom: var(--space-7); }
+.hero-title {
+  font-size: var(--fs-3xl); font-weight: var(--fw-bold);
+  margin: var(--space-3) 0 var(--space-2);
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--positive) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+.hero-sub { font-size: var(--fs-base); color: var(--text-secondary); max-width: 720px; }
+
+/* Hero KPI tiles */
+.hero-kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3); margin-bottom: var(--space-7); }
+.hero-kpi { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--space-5); }
+.hero-kpi.headline { border-color: var(--accent-border); background: linear-gradient(135deg, var(--bg-card) 0%, rgba(14, 165, 233, 0.06) 100%); }
+.hero-kpi .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: var(--space-2); font-weight: var(--fw-semibold); }
+.hero-kpi .value { font-size: var(--fs-2xl); font-weight: var(--fw-bold); font-feature-settings: 'tnum' on, 'lnum' on; color: var(--accent); letter-spacing: -0.01em; line-height: 1.1; }
+.hero-kpi.headline .value { font-size: var(--fs-3xl); }
+.hero-kpi .meta { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 6px; }
+.hero-kpi .meta.positive { color: var(--positive); }
+
+/* Section */
+.section { margin-bottom: var(--space-7); }
+.section h2 { font-size: var(--fs-xl); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.section .section-sub { color: var(--text-secondary); font-size: var(--fs-sm); margin-bottom: var(--space-4); }
+
+/* Module cards (links to subpages) */
+.modules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+.module-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-5);
+  text-decoration: none; color: inherit; display: block;
+  transition: border-color 0.2s, transform 0.2s, background 0.2s;
+  position: relative;
+}
+.module-card:hover {
+  border-color: var(--accent-border);
+  background: var(--bg-card-elevated);
+  transform: translateY(-2px);
+}
+.module-card .arrow {
+  position: absolute; top: var(--space-4); right: var(--space-5);
+  color: var(--text-tertiary); font-size: var(--fs-lg);
+  transition: color 0.2s, transform 0.2s;
+}
+.module-card:hover .arrow { color: var(--accent); transform: translateX(4px); }
+.module-card .module-name {
+  font-size: var(--fs-lg); font-weight: var(--fw-semibold);
+  color: var(--text-primary); margin-bottom: 4px;
+}
+.module-card .module-tag {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: var(--space-3);
+}
+.module-card .module-headline {
+  font-size: var(--fs-2xl); font-weight: var(--fw-bold); color: var(--accent);
+  font-feature-settings: 'tnum' on, 'lnum' on; margin-bottom: 4px;
+}
+.module-card .module-desc {
+  font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.5;
+  margin-top: var(--space-3); padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+.module-card .health-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: var(--radius-pill);
+  font-size: var(--fs-xs); margin-top: var(--space-3);
+  background: var(--positive-bg); color: var(--positive);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+.module-card .health-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.module-card .health-pill.watch { background: var(--warning-bg); color: var(--warning); border-color: rgba(251, 191, 36, 0.3); }
+.module-card .health-pill.neutral { background: rgba(139, 140, 154, 0.1); color: var(--text-secondary); border-color: var(--border-default); }
+
+/* Strategic context */
+.context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.context-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-5);
+}
+.context-card h3 { font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin: 0 0 var(--space-2); }
+.context-card .context-tag {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: var(--space-3);
+}
+.context-card .context-body { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; }
+
+footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-xs); color: var(--text-tertiary); }
+
+@media (max-width: 1100px) {
+  .hero-kpis { grid-template-columns: repeat(2, 1fr); }
+  .modules-grid { grid-template-columns: 1fr; }
+  .context-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">THCFO</div>
+    <div class="brand-sub">Tree House CFO Dashboard</div>
+
+    <div class="section-label">Pages</div>
+    <nav>
+      <a href="index.html" class="active">Overview</a>
+      <a href="valuation.html">Valuation</a>
+      <a href="profitability.html">Profitability</a>
+      <a href="verticalization.html">Verticalization</a>
+      <a href="cashflow.html">Cash Flow &amp; Liquidity</a>
+      <a href="debt.html">Debt &amp; Capital</a>
+      <a href="operations.html">Operations</a>
+    </nav>
+
+    <div class="section-label">Other Dashboards</div>
+    <nav>
+      <a href="https://wesritchie.github.io/quickroom/" target="_blank">QuickRoom Hub →</a>
+    </nav>
+
+    <div class="footer-action">⟲ Refresh Data</div>
+  </aside>
+
+  <main class="content">
+
+    <span class="status-pill accent">
+      <span class="dot"></span>
+      As of Apr 26, 2026 · 2025 books closed · debt schedule current
+    </span>
+
+    <!-- ============ HERO ============ -->
+    <div class="hero">
+      <h1 class="hero-title">Tree House CFO Dashboard</h1>
+      <p class="hero-sub">
+        Single source of financial truth for New England Craft Cultivators · Tree House Craft Cannabis · MA Craft Cultivation. Six modules covering valuation, profitability, vertical integration, cash flow, debt, and operations. Internal tool first, externally defensible second.
+      </p>
+    </div>
+
+    <!-- ============ HERO KPIs ============ -->
+    <section class="section">
+      <div class="hero-kpis" id="hero-kpis"></div>
+    </section>
+
+    <!-- ============ MODULE NAVIGATION ============ -->
+    <section class="section">
+      <h2>Modules</h2>
+      <div class="section-sub">Six dashboards, each focused on a distinct lens of the business. Click any module to dive in.</div>
+
+      <div class="modules-grid" id="modules-grid"></div>
+    </section>
+
+    <!-- ============ STRATEGIC CONTEXT ============ -->
+    <section class="section">
+      <h2>Strategic Context · April 2026</h2>
+      <div class="section-sub">Macro environment and inflection points the dashboard responds to.</div>
+
+      <div class="context-grid">
+
+        <div class="context-card">
+          <div class="context-tag">Cap-Lift Legislation</div>
+          <h3>Chapter 65 of Acts of 2026</h3>
+          <div class="context-body">
+            Massachusetts retail cap moves from 3 stores per company to 5 stores (effective late June 2026 for non-social-equity licensees) and 6 stores (effective late June 2027). Sub-20% non-control passive equity and ESOP-owned licensees are exempt from the cap. Tree House becomes a candidate to expand from 3 to 5 retail locations during the next 14 months, with a 6th available the year after. Buyer-pool composition expands materially: every MA operator currently at the cap becomes a potential acquirer, plus MSOs and ESOP buyers.
+          </div>
+        </div>
+
+        <div class="context-card">
+          <div class="context-tag">Deleveraging Complete</div>
+          <h3>Institutional Debt Retired</h3>
+          <div class="context-body">
+            FY 2025 saw retirement of five institutional facilities (Cobalt, Cromwell, EBF, FinCoast, and reduction of Sky Acquisitions) totaling $876K of principal. Replaced in part with $381K of friendlier investor notes at flexible terms. Net deleveraging of ~$524K. Post 12/31, EBF Holdings paid in full and Massachusetts DOR sales-tax payable largely resolved. Result: 4.15x DSCR on Strategic EBITDA, no refinancing risk in the 36-month horizon, and substantial unused borrowing capacity for cap-lift-driven expansion.
+          </div>
+        </div>
+
+        <div class="context-card">
+          <div class="context-tag">Vertical Integration</div>
+          <h3>Farm Fully Consolidated</h3>
+          <div class="context-body">
+            MA Craft Cultivation became a wholly-owned subsidiary effective January 1, 2025, completing the absorption of pre-acquisition non-NECC owners. Books are fully integrated from that date forward. The cultivation operation contributes ~$931K of annual economic value across margin uplift on own-grown product through retail, wholesale revenue to other dispensaries, and exchange/trade transactions. Manufacturing license activation expected September 2026 — first opportunity to internalize pre-roll and infused-pre-roll production at higher per-unit revenue than bulk flower.
+          </div>
+        </div>
+
+        <div class="context-card">
+          <div class="context-tag">Tax Strategy</div>
+          <h3>§471(c) Through Year 3</h3>
+          <div class="context-body">
+            Effective federal tax for FY 2024 was approximately zero, the result of three consecutive years of §471(c) inventory accounting under professional tax counsel. The strategy capitalizes operating costs into inventoriable cost rather than treating them as ordinary opex (which §280E prevents from deducting). Implication for valuation conversations: an MSO buyer above the §471(c) threshold cannot continue the strategy post-close, which is itself a structural argument for revenue-multiple framing rather than EBITDA-multiple framing in any sale negotiation.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span id="page-footer-status">● THCFO · loading data files</span>
+      <span>Tree House Craft Cannabis · New England Craft Cultivators LLC</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+// ============================================================================
+// Overview rendering — entirely driven from data files in dashboard/data/
+//   summary-data.js     · cross-page company facts (single source of truth)
+//   ap-aging-data.js    · AP balances, risk-lens categorization
+//   operations-data.js  · Dutchie POS metrics, Rainbow Review snapshot
+// Editing those files refreshes this Overview automatically. No HTML changes
+// needed for value updates.
+// ============================================================================
+function fmtUSDShort(v) {
+  if (v == null || isNaN(v)) return '—';
+  if (Math.abs(v) >= 1e6) return '$' + (v / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M';
+  if (Math.abs(v) >= 1e3) return '$' + Math.round(v / 1e3) + 'K';
+  return '$' + Math.round(v).toLocaleString();
+}
+function fmtPct(v, decimals = 1) {
+  if (v == null) return '—';
+  return (v * 100).toFixed(decimals) + '%';
+}
+
+function renderOverview() {
+  if (!window.SUMMARY_DATA || !window.AP_AGING_DATA || !window.OPERATIONS_DATA) {
+    document.getElementById('page-footer-status').textContent = '● THCFO · data files missing — check dashboard/data/';
+    return;
+  }
+  const S = window.SUMMARY_DATA;
+  const AP = window.AP_AGING_DATA;
+  const OPS = window.OPERATIONS_DATA;
+
+  // ----- Computed: Operational debt = Term debt + AP (Brick + Core + Payment Plan) -----
+  const apBrick = AP.risk_categorization.categories.brick.balance || 0;
+  const apCore = AP.risk_categorization.categories.core.balance || 0;
+  const apPlan = AP.risk_categorization.categories.payment_plan.balance || 0;
+  const apHold = AP.risk_categorization.categories.hold.balance || 0;
+  const apTotal = apBrick + apCore + apPlan + apHold;
+  const operationalDebt = S.termDebt.totalOutstanding + apBrick + apCore + apPlan;
+  const unmanagedVendorDebt = apHold;
+
+  // ----- Computed: Implied Valuation Range -----
+  const v = S.valuation;
+  const valRangeLow  = Math.round(v.ttmRevenue * v.revenueMultiples.msoLow * v.capLiftPremiums.preLow);
+  const valRangeHigh = Math.round(v.ttmRevenue * v.revenueMultiples.maAcquirerHigh * v.capLiftPremiums.sisterHigh);
+
+  // ----- Hero KPIs -----
+  const heroKPIs = [
+    {
+      label: 'Implied Valuation Range',
+      value: `${fmtUSDShort(valRangeLow)} – ${fmtUSDShort(valRangeHigh)}`,
+      meta: 'Full bracket across every scenario on Valuation page · MSO floor to ESOP ceiling',
+      headline: true
+    },
+    {
+      label: `${S.meta.fy_period} Revenue`,
+      value: fmtUSDShort(S.fy2025.totalRevenue),
+      meta: `<span class="positive">+${fmtPct(S.fy2025.revenueGrowthYoY)} vs. FY24</span>`,
+      headline: false
+    },
+    {
+      label: 'Adjusted EBITDA · Strategic',
+      value: fmtUSDShort(S.ebitda.strategic),
+      meta: `${fmtPct(S.ebitda.strategicMargin)} margin`,
+      headline: false
+    },
+    {
+      label: 'Operational Debt',
+      value: fmtUSDShort(operationalDebt),
+      meta: 'Term + AP managed (Brick + Core + Plan)',
+      headline: false
+    },
+    {
+      label: 'Unmanaged Vendor Debt',
+      value: fmtUSDShort(unmanagedVendorDebt),
+      meta: '<span class="warning-text">Hold AP · highest attention category</span>',
+      headline: false
+    }
+  ];
+  const heroEl = document.getElementById('hero-kpis');
+  heroEl.innerHTML = heroKPIs.map(k => `
+    <div class="hero-kpi${k.headline ? ' headline' : ''}">
+      <div class="label">${k.label}</div>
+      <div class="value">${k.value}</div>
+      <div class="meta">${k.meta}</div>
+    </div>
+  `).join('');
+
+  // ----- Module Cards -----
+  // Calculate AP delta from trajectory
+  const traj = AP.trajectory;
+  const latest = traj[traj.length - 1];
+  const reference = traj.find(t => t.as_of === '2026-01-31');
+  const apReductionPct = reference ? Math.round((1 - latest.total_ap / reference.total_ap) * 100) : null;
+
+  // Best store rank from operations data
+  const ranks = OPS.rainbow_review.tree_house_rankings;
+  const bestStore = Object.entries(ranks).reduce((b, [k, v]) => v.rank < b.rank ? {name: k, rank: v.rank} : b, {name: '', rank: Infinity});
+  const bestName = bestStore.name.charAt(0).toUpperCase() + bestStore.name.slice(1);
+
+  const modules = [
+    {
+      href: 'valuation.html', tag: 'Strategic value', name: 'Valuation',
+      headline: `${fmtUSDShort(valRangeLow)} – ${fmtUSDShort(valRangeHigh)}`,
+      pill: { text: 'Cap-lift expansion active', cls: '' },
+      desc: `Full bracket across every supported scenario. Revenue-multiple primary (${v.revenueMultiples.msoLow}x – ${v.revenueMultiples.maAcquirerHigh}x depending on buyer type), EBITDA secondary, comp tracker (public MSO + MA private), buyer-type lens (Single-State / MA Acquirer / MSO / ESOP), cap-lift scenarios incl. speculative sister-entity, synergy add-back layer.`
+    },
+    {
+      href: 'profitability.html', tag: 'P&L · EBITDA · ROIC', name: 'Profitability',
+      headline: fmtUSDShort(S.ebitda.strategic),
+      pill: { text: `Margin expansion +${Math.round((S.ebitda.yoyMarginExpansion - 1) * 100)}% YoY`, cls: '' },
+      desc: `Full P&L stack with §471(c) book-vs-economic reconciliation (${fmtPct(S.fy2025.grossMarginBook)} book gross margin vs. ~${fmtPct(S.fy2025.grossMarginEconomic, 0)} economic), store contribution margins, EBITDA bridge across three lenses (Conservative ${fmtUSDShort(S.ebitda.conservative)} / Mid ${fmtUSDShort(S.ebitda.mid)} / Strategic ${fmtUSDShort(S.ebitda.strategic)}), ~61% blended retail ROIC.`
+    },
+    {
+      href: 'verticalization.html', tag: 'Farm · integration', name: 'Verticalization',
+      headline: fmtUSDShort(S.verticalization.integrationEconomicValue),
+      pill: { text: `${fmtPct(S.verticalization.farmDerivedRevenuePctOfTotal)} farm-derived revenue`, cls: '' },
+      desc: `Make-vs-buy analysis, capacity utilization, wholesale stream, standalone farm valuation ${fmtUSDShort(S.verticalization.standaloneFarmValueLow)} – ${fmtUSDShort(S.verticalization.standaloneFarmValueHigh)}, manufacturing license activating ${S.verticalization.manufacturingLicenseExpected}.`
+    },
+    {
+      href: 'cashflow.html', tag: 'Cash · working capital', name: 'Cash Flow & Liquidity',
+      headline: `${fmtUSDShort(S.cashFlow.netCashFromOps)} from ops`,
+      pill: { text: `${fmtPct(S.cashFlow.cashConversionRatio, 0)} conversion · CCC ${S.cashFlow.workingCapitalCycle.cccBook}d`, cls: '' },
+      desc: `Statement of cash flows for ${S.meta.fy_period}, cash conversion analysis (book NI vs. operating cash, ${fmtUSDShort(S.cashFlow.inventoryBuildAbsorption)} inventory build absorption), working capital cycle (DIO ${S.cashFlow.workingCapitalCycle.dioBook} / DPO ${S.cashFlow.workingCapitalCycle.dpoBook} / CCC ${S.cashFlow.workingCapitalCycle.cccBook} days), weekly forward cashflow tracker reference, budget framework.`
+    },
+    {
+      href: 'debt.html', tag: 'Debt · payables · capital', name: 'Debt & Capital',
+      headline: `${fmtUSDShort(operationalDebt)} op · ${fmtUSDShort(unmanagedVendorDebt)} unmanaged`,
+      pill: { text: apReductionPct ? `AP down ${apReductionPct}% since Jan 2026` : 'AP discipline ongoing', cls: '' },
+      desc: `Operational debt ${fmtUSDShort(operationalDebt)} = ${fmtUSDShort(S.termDebt.totalOutstanding)} term + ${fmtUSDShort(apBrick + apCore + apPlan)} AP managed (Brick + Core + Payment Plan). Unmanaged vendor debt ${fmtUSDShort(unmanagedVendorDebt)} = Hold-category AP. Total AP ${fmtUSDShort(apTotal)} (${AP.risk_categorization.as_of}, down from ${reference ? fmtUSDShort(reference.total_ap) : '—'} ${reference ? `at ${reference.as_of} close` : ''}). ${S.cashFlow.dscr.toFixed(2)}x DSCR on Strategic EBITDA, no refinancing risk in ${S.termDebt.refinancingRiskMonths} months.`
+    },
+    {
+      href: 'operations.html', tag: 'Stores · mix · tax', name: 'Operations',
+      headline: `${OPS.fy2025.portfolio.avgTransactionsPerDay} / day · $${OPS.fy2025.portfolio.avgBasket.toFixed(2)}`,
+      pill: { text: `${bestName} #${bestStore.rank} of ${OPS.rainbow_review.market_overview.active_retailers} in MA`, cls: '' },
+      desc: `${S.meta.fy_period} Dutchie POS verified: ${OPS.fy2025.portfolio.transactionCount.toLocaleString()} retail transactions across 3 stores at $${OPS.fy2025.portfolio.avgBasket.toFixed(2)} avg basket. Live MA peer benchmarking via embedded Rainbow Review. Customer geography (~50% NH cross-border) via Geo Totem. §471(c) tax-lens explainer.`
+    }
+  ];
+  const modulesEl = document.getElementById('modules-grid');
+  modulesEl.innerHTML = modules.map(m => `
+    <a class="module-card" href="${m.href}">
+      <span class="arrow">→</span>
+      <div class="module-tag">${m.tag}</div>
+      <div class="module-name">${m.name}</div>
+      <div class="module-headline">${m.headline}</div>
+      <div class="health-pill ${m.pill.cls}"><span class="dot"></span>${m.pill.text}</div>
+      <div class="module-desc">${m.desc}</div>
+    </a>
+  `).join('');
+
+  // ----- Footer status -----
+  document.getElementById('page-footer-status').textContent =
+    `● THCFO · data as of ${S.meta.last_updated} · 7 pages · 4 data files`;
+}
+
+// Tweak inline color helpers used in meta lines
+const styleEl = document.createElement('style');
+styleEl.textContent = `
+  .hero-kpi .meta .positive { color: var(--positive); }
+  .hero-kpi .meta .warning-text { color: var(--warning); }
+`;
+document.head.appendChild(styleEl);
+
+renderOverview();
+</script>
+</body>
+</html>

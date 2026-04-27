@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THCFO — Cash Flow &amp; Liquidity</title>
+<link rel="stylesheet" href="styles/design-tokens.css">
+<script src="data/summary-data.js"></script>
+<style>
+.layout { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; }
+aside.sidebar {
+  background: var(--bg-sidebar); border-right: 1px solid var(--border-subtle);
+  padding: var(--space-6) var(--space-5);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.sidebar .brand { font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-1); }
+.sidebar .brand-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-7); }
+.sidebar .section-label { font-size: 0.6875rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: var(--space-5) 0 var(--space-2); }
+.sidebar .section-label:first-of-type { margin-top: 0; }
+.sidebar nav a { display: block; padding: var(--space-2) var(--space-3); color: var(--text-secondary); text-decoration: none; font-size: var(--fs-sm); border-radius: var(--radius-sm); margin-bottom: 2px; transition: color 0.15s, background 0.15s; }
+.sidebar nav a:hover { color: var(--text-primary); }
+.sidebar nav a.active { color: var(--accent); background: var(--accent-bg); font-weight: var(--fw-semibold); }
+.sidebar .footer-action { margin-top: auto; padding-top: var(--space-5); font-size: var(--fs-sm); color: var(--positive); cursor: pointer; }
+
+main.content { padding: var(--space-6) var(--space-7); max-width: var(--content-max-width); width: 100%; margin: 0 auto; box-sizing: border-box; }
+.page-header { margin-bottom: var(--space-6); }
+.page-title { font-size: var(--fs-3xl); font-weight: var(--fw-bold); margin: var(--space-3) 0 var(--space-1); letter-spacing: -0.02em; }
+.page-subtitle { font-size: var(--fs-base); color: var(--text-secondary); }
+
+.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3); margin-bottom: var(--space-6); }
+.kpi-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-4); }
+.kpi-card .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: var(--space-2); font-weight: var(--fw-semibold); }
+.kpi-card .value { font-size: var(--fs-2xl); font-weight: var(--fw-bold); font-feature-settings: 'tnum' on, 'lnum' on; color: var(--accent); letter-spacing: -0.01em; }
+.kpi-card .meta { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
+.kpi-card .meta.positive { color: var(--positive); }
+.kpi-card .meta.warning { color: var(--warning); }
+.kpi-card .meta.negative { color: var(--negative); }
+
+.section { margin-bottom: var(--space-7); scroll-margin-top: var(--space-5); }
+.section h2 { font-size: var(--fs-xl); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.section .section-sub { color: var(--text-secondary); font-size: var(--fs-sm); margin-bottom: var(--space-4); }
+
+.card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--space-5); }
+.card h3 { font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.card .card-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-4); }
+
+table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+table.tbl th, table.tbl td { padding: 8px 12px; text-align: left; }
+table.tbl th { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); font-weight: var(--fw-semibold); border-bottom: 1px solid var(--border-default); }
+table.tbl td { border-bottom: 1px solid var(--border-subtle); font-feature-settings: 'tnum' on, 'lnum' on; }
+table.tbl td.num, table.tbl th.num { text-align: right; }
+table.tbl tr.subtotal td { border-top: 1px solid var(--border-default); font-weight: var(--fw-semibold); color: var(--accent); padding-top: 12px; padding-bottom: 12px; }
+table.tbl tr.headline td { background: var(--accent-bg); font-weight: var(--fw-bold); color: var(--accent); border-top: 1px solid var(--accent-border); border-bottom: 1px solid var(--accent-border); padding: 14px 12px; }
+table.tbl .label-indent { padding-left: 24px; color: var(--text-secondary); }
+table.tbl .label-indent-2 { padding-left: 36px; color: var(--text-tertiary); font-size: 0.85em; }
+table.tbl tr.add td { color: var(--positive); }
+table.tbl tr.sub td { color: var(--negative); }
+
+/* Cash position grid */
+.cash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-4); }
+
+/* Working capital cycle */
+.wc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.wc-card { padding: var(--space-4); text-align: center; }
+.wc-card .metric { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+.wc-card .days { font-size: var(--fs-3xl); font-weight: var(--fw-bold); color: var(--accent); font-feature-settings: 'tnum' on, 'lnum' on; line-height: 1; }
+.wc-card .days.negative { color: var(--positive); }
+.wc-card .unit { font-size: var(--fs-sm); color: var(--text-secondary); margin-top: 4px; }
+.wc-card .formula { font-size: var(--fs-xs); color: var(--text-tertiary); margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); line-height: 1.5; }
+
+/* Conversion bridge */
+.conv-bridge { width: 100%; }
+.conv-bridge tr td { padding: 10px 12px; border-bottom: 1px solid var(--border-subtle); font-feature-settings: 'tnum' on, 'lnum' on; font-size: var(--fs-sm); }
+.conv-bridge tr td.num { text-align: right; font-weight: var(--fw-semibold); }
+.conv-bridge tr.add td.num { color: var(--positive); }
+.conv-bridge tr.sub td.num { color: var(--negative); }
+.conv-bridge tr.milestone td { background: var(--bg-card-elevated); border-top: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default); font-weight: var(--fw-semibold); color: var(--accent); padding: 14px 12px; }
+.conv-bridge tr.final td { background: var(--accent-bg); font-weight: var(--fw-bold); color: var(--accent); border: 1px solid var(--accent-border); padding: 14px 12px; }
+.bridge-note { font-size: var(--fs-xs); color: var(--text-tertiary); padding-left: 12px; }
+
+/* Forward cashflow */
+.forward-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.forward-card { padding: var(--space-4); }
+.forward-card .horizon { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+.forward-card .balance { font-size: var(--fs-xl); font-weight: var(--fw-bold); color: var(--accent); font-feature-settings: 'tnum' on, 'lnum' on; }
+.forward-card .basis { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
+
+/* Educational */
+.educational { background: rgba(14, 165, 233, 0.05); border: 1px solid var(--accent-border); border-radius: var(--radius-md); padding: var(--space-4); font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin-top: var(--space-4); }
+.educational .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+.educational strong { color: var(--text-primary); }
+
+/* Budget vs actuals — placeholder treatment */
+.placeholder-card { border: 1px dashed var(--warning); background: rgba(251, 191, 36, 0.04); }
+.placeholder-card .placeholder-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--warning); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+
+details.collapsible { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 0; }
+details.collapsible summary { padding: var(--space-4) var(--space-5); cursor: pointer; font-size: var(--fs-lg); font-weight: var(--fw-semibold); list-style: none; }
+details.collapsible summary::-webkit-details-marker { display: none; }
+details.collapsible summary::after { content: '▾'; float: right; color: var(--text-tertiary); transition: transform 0.2s; }
+details.collapsible[open] summary::after { transform: rotate(180deg); }
+details.collapsible .body { padding: 0 var(--space-5) var(--space-5); }
+
+.footnotes { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; }
+.footnotes p { margin: 0 0 var(--space-3); }
+.footnotes strong { color: var(--text-primary); }
+
+footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-xs); color: var(--text-tertiary); }
+
+@media (max-width: 1100px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .cash-grid, .wc-grid, .forward-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">THCFO · Cash Flow</div>
+    <div class="brand-sub">Liquidity &amp; Working Capital</div>
+
+    <div class="section-label">Pages</div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="valuation.html">Valuation</a>
+      <a href="profitability.html">Profitability</a>
+      <a href="verticalization.html">Verticalization</a>
+      <a href="cashflow.html" class="active">Cash Flow &amp; Liquidity</a>
+      <a href="debt.html">Debt &amp; Capital</a>
+      <a href="operations.html">Operations</a>
+    </nav>
+
+    <div class="section-label">On This Page</div>
+    <nav>
+      <a href="#summary">Summary KPIs</a>
+      <a href="#position">Cash Position</a>
+      <a href="#statement">Statement of Cash Flows</a>
+      <a href="#conversion">Cash Conversion</a>
+      <a href="#working-capital">Working Capital Cycle</a>
+      <a href="#forward">Forward View</a>
+      <a href="#budget">Budget vs. Actuals</a>
+      <a href="#methodology">Methodology Notes</a>
+    </nav>
+
+    <div class="section-label">Other Dashboards</div>
+    <nav>
+      <a href="https://wesritchie.github.io/quickroom/" target="_blank">QuickRoom Hub →</a>
+    </nav>
+
+    <div class="footer-action">⟲ Refresh Data</div>
+  </aside>
+
+  <main class="content">
+
+    <span class="status-pill accent">
+      <span class="dot"></span>
+      Cash position as of Dec 31, 2025 · Statement of Cash Flows from 2025 close
+    </span>
+
+    <div class="page-header">
+      <h1 class="page-title">Cash Flow &amp; Liquidity</h1>
+      <p class="page-subtitle">
+        Where the cash actually is, where it came from, where it went, and how the working capital cycle is operating. The page that translates book profitability into real cash and explains any gap between the two.
+      </p>
+    </div>
+
+    <!-- ============ SUMMARY KPIs ============ -->
+    <section class="section" id="summary">
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="label">Cash on Hand</div>
+          <div class="value">$354K</div>
+          <div class="meta">10 accounts · year-end 2025</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Days Cash on Hand</div>
+          <div class="value">~17</div>
+          <div class="meta warning">Tight · monitor weekly</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Cash from Operations (FY25)</div>
+          <div class="value" id="kpi-cfo">—</div>
+          <div class="meta" id="kpi-cfo-meta">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Cash Conversion Cycle</div>
+          <div class="value" id="kpi-ccc">—</div>
+          <div class="meta positive" id="kpi-ccc-meta">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Net Debt Reduction (FY25)</div>
+          <div class="value" id="kpi-deleveraging">—</div>
+          <div class="meta positive">Institutional → friendly</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CASH POSITION ============ -->
+    <section class="section" id="position">
+      <h2>Cash Position</h2>
+      <div class="section-sub">Cash distributed across operating, payroll, store-level, change-fund, and petty-cash accounts. Year-end 2025 snapshot — refresh after each weekly cashflow review.</div>
+
+      <div class="cash-grid">
+
+        <div class="card">
+          <h3>Account Detail</h3>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th class="num">Balance</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>BayCoast Operating · 6466</td><td class="num">$228,606</td><td style="color: var(--text-secondary);">Primary operating</td></tr>
+              <tr><td>Northern Bank · 3901</td><td class="num">$53,896</td><td style="color: var(--text-secondary);">Payroll funding</td></tr>
+              <tr><td>MACC · 1637</td><td class="num">$37,137</td><td style="color: var(--text-secondary);">Cultivation operating</td></tr>
+              <tr><td>Change Funds (DD/PD/GD)</td><td class="num">$16,445</td><td style="color: var(--text-secondary);">Store change in vault</td></tr>
+              <tr><td>Cash Drawers (all stores)</td><td class="num">$13,625</td><td style="color: var(--text-secondary);">Active POS drawers</td></tr>
+              <tr><td>Petty Cash (all locations)</td><td class="num">$3,314</td><td style="color: var(--text-secondary);">Incidentals</td></tr>
+              <tr><td>Store Revenue Accounts (DD/PD/GD)</td><td class="num">$1,218</td><td style="color: var(--text-secondary);">Daily store deposits</td></tr>
+              <tr><td>MACC · 8944</td><td class="num">$200</td><td style="color: var(--text-secondary);">Cultivation secondary</td></tr>
+              <tr><td>BayCoast Clearing &amp; Other</td><td class="num">($125)</td><td style="color: var(--text-secondary);">In-transit / clearing</td></tr>
+              <tr class="headline"><td>Total Cash on Hand</td><td class="num">$354,316</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>Position Summary</h3>
+          <table class="tbl">
+            <tbody>
+              <tr><td>Cash at year-end 2025</td><td class="num">$354,973</td></tr>
+              <tr><td>Cash at year-end 2024</td><td class="num">$362,325</td></tr>
+              <tr class="subtotal"><td>YoY Change</td><td class="num" style="color: var(--text-secondary);">-$7,351</td></tr>
+            </tbody>
+          </table>
+          <div class="educational" style="margin-top: var(--space-4);">
+            <div class="label">Reading the position</div>
+            Cash position is essentially flat year-over-year (-$7K), but the activity behind that flat number was substantial: $551K generated from operations, $45K spent on capital improvements, $514K used to retire debt. The flat cash balance reflects deliberate deployment of operating cash into deleveraging rather than cash accumulation.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ STATEMENT OF CASH FLOWS ============ -->
+    <section class="section" id="statement">
+      <h2>Statement of Cash Flows · FY 2025</h2>
+      <div class="section-sub">The three-section cash flow statement: how net income converted to operating cash, what was invested in long-term assets, and how financing activities (debt and equity) moved cash. The bridge from book net income at the top to cash-at-end-of-period at the bottom.</div>
+
+      <div class="card">
+        <table class="tbl conv-bridge">
+          <tbody>
+            <tr><td colspan="3" style="font-weight: var(--fw-semibold); color: var(--accent); padding-top: var(--space-4); padding-bottom: var(--space-2);">OPERATING ACTIVITIES</td></tr>
+            <tr><td>Net Income</td><td class="num">$1,022,662</td><td class="bridge-note">From P&amp;L</td></tr>
+            <tr><td colspan="3" style="font-size: var(--fs-xs); color: var(--text-tertiary); padding-left: 12px;">Adjustments to reconcile to operating cash:</td></tr>
+            <tr class="sub"><td class="label-indent">Increase in Accounts Receivable</td><td class="num">($161,723)</td><td class="bridge-note">Receivables grew</td></tr>
+            <tr class="sub"><td class="label-indent">Increase in Cannabis Inventory</td><td class="num">($555,886)</td><td class="bridge-note">Inventory build absorbs cash</td></tr>
+            <tr class="add"><td class="label-indent">Decrease in Non-Cannabis Inventory</td><td class="num">$22,138</td><td class="bridge-note"></td></tr>
+            <tr class="add"><td class="label-indent">Increase in Accounts Payable</td><td class="num">$49,788</td><td class="bridge-note">Vendor terms extended</td></tr>
+            <tr class="add"><td class="label-indent">Increase in DOR Payable</td><td class="num">$127,927</td><td class="bridge-note">Sales tax timing</td></tr>
+            <tr class="add"><td class="label-indent">MACC Wholesale Inventory adj.</td><td class="num">$34,039</td><td class="bridge-note"></td></tr>
+            <tr class="add"><td class="label-indent">MACC Due to/From</td><td class="num">$30,463</td><td class="bridge-note">Intercompany</td></tr>
+            <tr class="sub"><td class="label-indent">Other working capital (tips, accrued, gift cards, prepaid)</td><td class="num">($18,205)</td><td class="bridge-note"></td></tr>
+            <tr><td class="label-indent" style="color: var(--text-secondary);">Total Working Capital Adjustments</td><td class="num" style="color: var(--negative);">($471,460)</td><td class="bridge-note"></td></tr>
+            <tr class="milestone"><td>= Net Cash from Operating Activities</td><td class="num">$551,202</td><td class="bridge-note">54% of book NI</td></tr>
+
+            <tr><td colspan="3" style="font-weight: var(--fw-semibold); color: var(--accent); padding-top: var(--space-4); padding-bottom: var(--space-2);">INVESTING ACTIVITIES</td></tr>
+            <tr class="sub"><td>Groton Startup Costs</td><td class="num">($42,578)</td><td class="bridge-note">Tail of Feb 2025 opening</td></tr>
+            <tr class="sub"><td>Leasehold Improvements</td><td class="num">($2,000)</td><td class="bridge-note"></td></tr>
+            <tr class="milestone"><td>= Net Cash used in Investing</td><td class="num">($44,578)</td><td class="bridge-note">Minimal capex year</td></tr>
+
+            <tr><td colspan="3" style="font-weight: var(--fw-semibold); color: var(--accent); padding-top: var(--space-4); padding-bottom: var(--space-2);">FINANCING ACTIVITIES</td></tr>
+            <tr><td colspan="3" style="font-size: var(--fs-xs); color: var(--text-tertiary); padding-left: 12px;">Institutional debt retired:</td></tr>
+            <tr class="sub"><td class="label-indent">Cobalt Loan</td><td class="num">($268,333)</td><td class="bridge-note">Fully retired</td></tr>
+            <tr class="sub"><td class="label-indent">EBF Holdings</td><td class="num">($242,665)</td><td class="bridge-note">Retired post year-end</td></tr>
+            <tr class="sub"><td class="label-indent">FinCoast Capital</td><td class="num">($122,930)</td><td class="bridge-note">Fully retired</td></tr>
+            <tr class="sub"><td class="label-indent">Cromwell Capital</td><td class="num">($116,438)</td><td class="bridge-note">Fully retired</td></tr>
+            <tr class="sub"><td class="label-indent">Sky Acquisitions principal</td><td class="num">($126,292)</td><td class="bridge-note">Ongoing repayment</td></tr>
+            <tr><td colspan="3" style="font-size: var(--fs-xs); color: var(--text-tertiary); padding-left: 12px;">Friendly investor notes added:</td></tr>
+            <tr class="add"><td class="label-indent">Reis Note</td><td class="num">$100,000</td><td class="bridge-note"></td></tr>
+            <tr class="add"><td class="label-indent">Turunen Note</td><td class="num">$80,000</td><td class="bridge-note"></td></tr>
+            <tr class="add"><td class="label-indent">Arndt Note</td><td class="num">$60,000</td><td class="bridge-note"></td></tr>
+            <tr class="add"><td class="label-indent">Chase Note</td><td class="num">$50,000</td><td class="bridge-note"></td></tr>
+            <tr class="add"><td class="label-indent">Crockett Note</td><td class="num">$50,000</td><td class="bridge-note"></td></tr>
+            <tr class="add"><td class="label-indent">Bleile Note</td><td class="num">$11,000</td><td class="bridge-note"></td></tr>
+            <tr class="add"><td class="label-indent">Werner Note</td><td class="num">$6,000</td><td class="bridge-note"></td></tr>
+            <tr class="add"><td class="label-indent">Shana York Accrued Interest</td><td class="num">$24,060</td><td class="bridge-note"></td></tr>
+            <tr class="sub"><td class="label-indent">Conwell &amp; Epstein Note adjustments</td><td class="num">($18,378)</td><td class="bridge-note"></td></tr>
+            <tr class="milestone"><td>= Net Cash used in Financing</td><td class="num">($513,976)</td><td class="bridge-note">Net deleveraging of ~$514K</td></tr>
+
+            <tr><td colspan="3" style="padding-top: var(--space-4);"></td></tr>
+            <tr class="final"><td>Net Change in Cash</td><td class="num">($7,351)</td><td class="bridge-note">Essentially flat</td></tr>
+            <tr><td>Cash at Beginning of Period</td><td class="num">$362,325</td><td></td></tr>
+            <tr><td>Cash at End of Period</td><td class="num">$354,973</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the cash flow statement</div>
+        The cash flow statement reconciles three different views of the business that the P&amp;L alone cannot show. <strong>Operating Activities</strong> answers "did the core business produce cash?" — book net income gets adjusted for non-cash items and working-capital changes. <strong>Investing Activities</strong> shows long-term capital deployment — buildouts, equipment, asset purchases. <strong>Financing Activities</strong> shows movement of debt and equity capital. The 2025 picture: operations generated $551K, capex consumed $45K, financing consumed $514K (net of new investor notes against retired institutional debt), and cash ended essentially flat. The headline of the year is the deleveraging story — five institutional loans (Cobalt, Cromwell, EBF, FinCoast, Sky) were paid down by ~$877K combined while seven friendlier investor notes added $381K, producing a net debt reduction of nearly half a million dollars while keeping the cash balance stable.
+      </div>
+    </section>
+
+    <!-- ============ CASH CONVERSION ============ -->
+    <section class="section" id="conversion">
+      <h2>Cash Conversion: Book NI vs. Cash from Operations</h2>
+      <div class="section-sub">$1.02M of book net income produced $551K of operating cash — a $471K gap. This section decomposes that gap line by line. The dominant driver is intentional inventory build supporting vertical integration ramp.</div>
+
+      <div class="card">
+        <table class="tbl conv-bridge">
+          <tbody>
+            <tr class="milestone"><td>Net Income (book)</td><td class="num">$1,022,662</td><td class="bridge-note">P&amp;L bottom line</td></tr>
+            <tr class="sub"><td>− Cannabis inventory build</td><td class="num">($555,886)</td><td class="bridge-note">Own-grown inventory grew with vertical integration ramp</td></tr>
+            <tr class="sub"><td>− Accounts receivable build</td><td class="num">($161,723)</td><td class="bridge-note">Wholesale customer receivables</td></tr>
+            <tr class="add"><td>+ DOR (sales tax) timing benefit</td><td class="num">$127,927</td><td class="bridge-note">Tax payable accrual</td></tr>
+            <tr class="add"><td>+ Accounts payable extension</td><td class="num">$49,788</td><td class="bridge-note">Vendor terms used</td></tr>
+            <tr class="add"><td>+ MACC adjustments &amp; other</td><td class="num">$68,434</td><td class="bridge-note">Intercompany + non-cannabis inventory</td></tr>
+            <tr class="final"><td>= Net Cash from Operating Activities</td><td class="num">$551,202</td><td class="bridge-note">54% conversion of book NI</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the conversion gap</div>
+        Book profitability and operating cash diverge when balance-sheet items move during the period. <strong>The single largest driver in 2025 was a $556K cannabis inventory build</strong> — inventory grew from $914K to $1.47M as the cultivation operation ramped and own-grown product accumulated for sell-through. This is intentional: inventory build is a normal feature of vertical integration coming online, and the cost capitalization is part of the §471(c) tax strategy. A $162K AR build and an $11K tips-payable swing also consumed cash, partially offset by sales-tax timing ($128K), vendor-terms extension ($50K), and intercompany adjustments. <strong>Net result: 54% cash conversion of book NI.</strong> Conversion in the 50–70% range is normal for retailers in inventory-build mode; full-conversion (90%+) typically happens only in steady-state inventory years. The metric to watch in 2026: as inventory normalizes, conversion should rise toward the higher end of that range.
+      </div>
+    </section>
+
+    <!-- ============ WORKING CAPITAL ============ -->
+    <section class="section" id="working-capital">
+      <h2>Working Capital Cycle</h2>
+      <div class="section-sub">Days Inventory Outstanding (DIO), Days Sales Outstanding (DSO), Days Payable Outstanding (DPO), and the Cash Conversion Cycle (CCC) that combines them. CCC is one of the cleanest single measures of working capital health.</div>
+
+      <div class="wc-grid">
+        <div class="card wc-card">
+          <div class="metric">DIO · Days Inventory</div>
+          <div class="days">69</div>
+          <div class="unit">days (book basis)</div>
+          <div class="formula">Inventory ÷ COGS × 365<br>$1.47M ÷ $7.77M × 365</div>
+        </div>
+        <div class="card wc-card">
+          <div class="metric">DSO · Days Sales</div>
+          <div class="days">7</div>
+          <div class="unit">days</div>
+          <div class="formula">AR ÷ Revenue × 365<br>$162K ÷ $8.81M × 365</div>
+        </div>
+        <div class="card wc-card">
+          <div class="metric">DPO · Days Payable</div>
+          <div class="days">80</div>
+          <div class="unit">days (book basis)</div>
+          <div class="formula">AP ÷ COGS × 365<br>$1.70M ÷ $7.77M × 365</div>
+        </div>
+        <div class="card wc-card">
+          <div class="metric">CCC · Cash Cycle</div>
+          <div class="days negative">-4</div>
+          <div class="unit">days · favorable</div>
+          <div class="formula">DIO + DSO − DPO<br>69 + 7 − 80 = −4</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: var(--space-4);">
+        <h3>Economic-Basis Working Capital (using product COGS only)</h3>
+        <p class="card-sub">Because §471(c) inflates book COGS with capitalized labor and overhead, DIO and DPO calculated on the book basis understate the working-capital exposure. Recomputing on product-COGS-only basis gives the industry-comparable view.</p>
+        <table class="tbl">
+          <thead>
+            <tr><th>Metric</th><th class="num">Book Basis</th><th class="num">Economic Basis</th><th>Difference</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>DIO (Days Inventory)</td><td class="num">69</td><td class="num">151</td><td style="color: var(--text-secondary);">+82 days · much higher</td></tr>
+            <tr><td>DPO (Days Payable)</td><td class="num">80</td><td class="num">175</td><td style="color: var(--text-secondary);">+95 days · much higher</td></tr>
+            <tr><td>DSO (Days Sales)</td><td class="num">7</td><td class="num">7</td><td style="color: var(--text-secondary);">unchanged · revenue is revenue</td></tr>
+            <tr class="subtotal"><td><strong>CCC · Cash Cycle</strong></td><td class="num"><strong>-4 days</strong></td><td class="num"><strong>-17 days</strong></td><td style="color: var(--positive);">More favorable on economic basis</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the cash cycle</div>
+        <strong>A negative CCC means cash is collected from customers faster than it must be paid out to vendors</strong> — the business effectively runs on supplier credit. For retailers this is a structural advantage; the most extreme examples (large grocery chains) operate on CCC as low as -30 days. Tree House sits at -4 days on the book basis and -17 days on the economic basis — both healthy, with the economic-basis figure more reflective of the underlying operating reality given §471(c) accounting. The metrics to monitor over time are: <strong>DIO trending up</strong> (signals slow inventory turn or aging stock) and <strong>DPO trending down</strong> (signals tighter vendor terms or stretched supplier relationships). Both are leading indicators of cash strain before the bank balance shows it.
+      </div>
+    </section>
+
+    <!-- ============ FORWARD VIEW ============ -->
+    <section class="section" id="forward">
+      <h2>Forward Cash Flow View</h2>
+      <div class="section-sub">Weekly cash projection through end of 2027 maintained in a separate working document, refreshed three times per week. Summary horizons shown here; the underlying weekly model is the source of truth.</div>
+
+      <div class="forward-grid">
+        <div class="card forward-card">
+          <div class="horizon">4-Week Forward</div>
+          <div class="balance">~$370K</div>
+          <div class="basis">Modest improvement on current as new note payments stagger</div>
+        </div>
+        <div class="card forward-card">
+          <div class="horizon">13-Week Forward</div>
+          <div class="balance">~$420K</div>
+          <div class="basis">Through Q3 close · investor notes begin in May 2026</div>
+        </div>
+        <div class="card forward-card">
+          <div class="horizon">EOY 2026 Forward</div>
+          <div class="balance">~$525K</div>
+          <div class="basis">Year-end 2026 projection · post-cap-lift Phase 1</div>
+        </div>
+        <div class="card forward-card">
+          <div class="horizon">EOY 2027 Forward</div>
+          <div class="balance">~$560K+</div>
+          <div class="basis">After full investor note repayment cycle</div>
+        </div>
+      </div>
+
+      <div class="card placeholder-card" style="margin-top: var(--space-4);">
+        <div class="placeholder-label">⚠ Live wiring pending</div>
+        <h3 style="color: var(--text-primary);">Forward Cashflow Tracker</h3>
+        <p style="color: var(--text-secondary); margin: 0;">The detailed weekly forward cashflow lives in a separate working spreadsheet through the end of 2027, with line-item detail for every recurring expense (payroll by store, rent, debt service by lender, software subscriptions, taxes, etc.). The summary projections above are point estimates extracted from that source. Future iteration: ingest the spreadsheet directly so this section auto-refreshes each time the underlying tracker is updated.</p>
+      </div>
+    </section>
+
+    <!-- ============ BUDGET VS ACTUALS ============ -->
+    <section class="section" id="budget">
+      <h2>Budget vs. Actuals</h2>
+      <div class="section-sub">A formal annual operating budget for 2026 has not yet been adopted. This section will track variance between actual monthly results and budget once the budget is set; until then, 2025 actuals serve as the trailing baseline against which 2026 monthly performance can be compared.</div>
+
+      <div class="card placeholder-card">
+        <div class="placeholder-label">⚠ Budget framework pending</div>
+        <h3 style="color: var(--text-primary);">Establishing the 2026 Operating Budget</h3>
+        <p style="color: var(--text-secondary); margin: 0 0 var(--space-3);">A standard CFO practice is to set an annual operating budget at the line-item level (revenue by store, COGS, opex by category, capital expenditure plan, debt service) and report monthly variance against it. The forward cashflow document covers cash projection but does not function as a P&amp;L budget. Recommended next step: lock a 2026 P&amp;L budget by category against which monthly actuals are reported.</p>
+        <table class="tbl" style="margin-top: var(--space-4);">
+          <thead>
+            <tr>
+              <th>Line</th>
+              <th class="num">FY 2025 Actual</th>
+              <th class="num">FY 2026 Budget</th>
+              <th class="num">Variance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Total Revenue</td><td class="num">$8,810,261</td><td class="num">TBD</td><td class="num" style="color: var(--text-tertiary);">—</td></tr>
+            <tr><td>Gross Profit (book)</td><td class="num">$1,041,925</td><td class="num">TBD</td><td class="num" style="color: var(--text-tertiary);">—</td></tr>
+            <tr><td>Operating Income</td><td class="num">$1,022,662</td><td class="num">TBD</td><td class="num" style="color: var(--text-tertiary);">—</td></tr>
+            <tr><td>Cash from Operations</td><td class="num">$551,202</td><td class="num">TBD</td><td class="num" style="color: var(--text-tertiary);">—</td></tr>
+            <tr><td>Capital Expenditure</td><td class="num">$44,578</td><td class="num">TBD</td><td class="num" style="color: var(--text-tertiary);">—</td></tr>
+            <tr><td>Debt Service</td><td class="num">~$475K</td><td class="num">TBD</td><td class="num" style="color: var(--text-tertiary);">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading variance</div>
+        Once a budget is in place, monthly variance reporting becomes the primary management discipline. Favorable variances (actuals better than budget) get celebrated and analyzed for replicability; unfavorable variances trigger investigation and corrective action. The CFO function is to flag variance early — before three months of compounding — and to maintain credibility of the budget so that variance analysis is treated seriously by the operating team. Even a directional budget for 2026 is better than no budget at all.
+      </div>
+    </section>
+
+    <!-- ============ METHODOLOGY ============ -->
+    <section class="section" id="methodology">
+      <details class="collapsible">
+        <summary>Methodology Notes &amp; Sources</summary>
+        <div class="body">
+          <div class="footnotes">
+            <p><strong>Cash position.</strong> Account-level balances from 2025 year-end balance sheet. Refresh after each weekly cashflow review. Account purposes documented inline; "store revenue accounts" are daily-deposit pass-through accounts that empty into the BayCoast Operating account on a regular cycle.</p>
+            <p><strong>Statement of Cash Flows.</strong> Generated from 2025 close per QuickBooks. Operating activities use the indirect method (net income reconciled via working-capital adjustments). Investing reflects the tail of Groton startup spending (the store opened February 2025) plus minor leasehold improvements. Financing decomposes the deleveraging story: institutional debt fully retired or reduced, replaced in part by friendlier investor notes.</p>
+            <p><strong>Days Cash on Hand.</strong> Computed as cash on hand divided by daily operating expenses. Daily opex = book COGS + below-line opex ÷ 365 ≈ $21.3K/day. $354K ÷ $21.3K ≈ 17 days. Conventionally, 30–60 days cash on hand is considered comfortable for a retailer; under 30 days requires close cash management.</p>
+            <p><strong>Cash conversion cycle.</strong> CCC = DIO + DSO − DPO. Computed both on book-COGS basis (as the books read) and on product-COGS-only basis (industry-comparable). The book basis understates exposure because §471(c) inflates COGS with capitalized opex. Both views are shown for transparency; the economic basis is the more relevant single measure for benchmarking against peer retailers.</p>
+            <p><strong>Forward cashflow.</strong> Detailed weekly projections through end of 2027 are maintained in a separate working spreadsheet outside this dashboard. Summary point estimates shown here are illustrative; the underlying tracker is the source of truth. Future iteration: direct ingestion of that spreadsheet.</p>
+            <p><strong>Budget vs. actuals.</strong> A formal 2026 P&amp;L budget has not yet been adopted at the time of this dashboard build. Once adopted, the variance table on this page will populate. Recommended budget structure: revenue by store + farm wholesale, COGS at product-only level, opex by category (payroll, marketing, professional, software, insurance, security, rent, utilities, other), capital expenditure, debt service.</p>
+            <p><strong>Pending refinements.</strong> Direct ingestion of the weekly cashflow tracker. Establishment of 2026 operating budget. Live cash position from bank API or daily import (currently year-end snapshot).</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <footer class="page-footer">
+      <span>● Year-end 2025 close · refresh after each monthly close and weekly cashflow review</span>
+      <span>Tree House Craft Cannabis · THCFO · Cash Flow v0.1</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+// Render KPI values from summary-data.js (single source of truth)
+(function renderFromSummary() {
+  const S = window.SUMMARY_DATA;
+  if (!S) return;
+  const fmt = v => v >= 1e6 ? '$' + (v / 1e6).toFixed(2) + 'M' : '$' + Math.round(v / 1e3) + 'K';
+  if (S.cashFlow && S.cashFlow.netCashFromOps != null) {
+    document.getElementById('kpi-cfo').textContent = fmt(S.cashFlow.netCashFromOps);
+    if (S.fy2025 && S.fy2025.netIncome) {
+      document.getElementById('kpi-cfo-meta').textContent = `vs. ${fmt(S.fy2025.netIncome)} book NI`;
+    }
+  }
+  if (S.cashFlow && S.cashFlow.workingCapitalCycle && S.cashFlow.workingCapitalCycle.cccBook != null) {
+    const ccc = S.cashFlow.workingCapitalCycle.cccBook;
+    document.getElementById('kpi-ccc').textContent = `${ccc} days`;
+    document.getElementById('kpi-ccc-meta').textContent = ccc < 0 ? 'Negative = favorable' : 'Cash conversion cycle';
+  }
+  if (S.termDebt && S.termDebt.netDeleveragingFY25 != null) {
+    document.getElementById('kpi-deleveraging').textContent = fmt(S.termDebt.netDeleveragingFY25);
+  }
+})();
+
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

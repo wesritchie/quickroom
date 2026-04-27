@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THCFO — Operations</title>
+<link rel="stylesheet" href="styles/design-tokens.css">
+<script src="data/summary-data.js"></script>
+<script src="data/operations-data.js"></script>
+<style>
+.layout { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; }
+aside.sidebar {
+  background: var(--bg-sidebar); border-right: 1px solid var(--border-subtle);
+  padding: var(--space-6) var(--space-5);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.sidebar .brand { font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-1); }
+.sidebar .brand-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-7); }
+.sidebar .section-label { font-size: 0.6875rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: var(--space-5) 0 var(--space-2); }
+.sidebar .section-label:first-of-type { margin-top: 0; }
+.sidebar nav a { display: block; padding: var(--space-2) var(--space-3); color: var(--text-secondary); text-decoration: none; font-size: var(--fs-sm); border-radius: var(--radius-sm); margin-bottom: 2px; transition: color 0.15s, background 0.15s; }
+.sidebar nav a:hover { color: var(--text-primary); }
+.sidebar nav a.active { color: var(--accent); background: var(--accent-bg); font-weight: var(--fw-semibold); }
+.sidebar .footer-action { margin-top: auto; padding-top: var(--space-5); font-size: var(--fs-sm); color: var(--positive); cursor: pointer; }
+
+main.content { padding: var(--space-6) var(--space-7); max-width: var(--content-max-width); width: 100%; margin: 0 auto; box-sizing: border-box; }
+.page-header { margin-bottom: var(--space-6); }
+.page-title { font-size: var(--fs-3xl); font-weight: var(--fw-bold); margin: var(--space-3) 0 var(--space-1); letter-spacing: -0.02em; }
+.page-subtitle { font-size: var(--fs-base); color: var(--text-secondary); }
+
+.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3); margin-bottom: var(--space-6); }
+.kpi-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-4); }
+.kpi-card .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: var(--space-2); font-weight: var(--fw-semibold); }
+.kpi-card .value { font-size: var(--fs-2xl); font-weight: var(--fw-bold); font-feature-settings: 'tnum' on, 'lnum' on; color: var(--accent); letter-spacing: -0.01em; }
+.kpi-card .meta { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
+
+.section { margin-bottom: var(--space-7); scroll-margin-top: var(--space-5); }
+.section h2 { font-size: var(--fs-xl); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.section .section-sub { color: var(--text-secondary); font-size: var(--fs-sm); margin-bottom: var(--space-4); }
+
+.card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--space-5); }
+.card h3 { font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.card .card-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-4); }
+
+table.tbl { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+table.tbl th, table.tbl td { padding: 10px 12px; text-align: left; }
+table.tbl th { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); font-weight: var(--fw-semibold); border-bottom: 1px solid var(--border-default); }
+table.tbl td { border-bottom: 1px solid var(--border-subtle); font-feature-settings: 'tnum' on, 'lnum' on; }
+table.tbl td.num, table.tbl th.num { text-align: right; }
+table.tbl tr.subtotal td { border-top: 1px solid var(--border-default); font-weight: var(--fw-semibold); color: var(--accent); }
+table.tbl tr.headline td { background: var(--accent-bg); font-weight: var(--fw-bold); color: var(--accent); border-top: 1px solid var(--accent-border); border-bottom: 1px solid var(--accent-border); padding: 14px 12px; }
+
+.store-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.store-card { padding: var(--space-4); }
+.store-card .name { font-size: var(--fs-base); font-weight: var(--fw-semibold); margin-bottom: 4px; }
+.store-card .opened { font-size: var(--fs-xs); color: var(--text-tertiary); margin-bottom: var(--space-3); }
+.store-card .metric-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: var(--fs-sm); border-bottom: 1px solid var(--border-subtle); }
+.store-card .metric-row:last-of-type { border-bottom: none; }
+.store-card .metric-row .v { color: var(--text-primary); font-feature-settings: 'tnum' on, 'lnum' on; font-weight: var(--fw-semibold); }
+.store-card .metric-row .l { color: var(--text-secondary); }
+
+/* 471(c) bridge */
+.tax-bridge { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+.tax-bridge tr td { padding: 10px 12px; border-bottom: 1px solid var(--border-subtle); font-feature-settings: 'tnum' on, 'lnum' on; }
+.tax-bridge tr td.num { text-align: right; font-weight: var(--fw-semibold); }
+.tax-bridge tr.milestone td { background: var(--bg-card-elevated); border-top: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default); font-weight: var(--fw-semibold); color: var(--accent); padding: 14px 12px; }
+.bridge-note { font-size: var(--fs-xs); color: var(--text-tertiary); padding-left: 12px; }
+
+/* Buyer-type implications */
+.buyer-impl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+
+/* Educational */
+.educational { background: rgba(14, 165, 233, 0.05); border: 1px solid var(--accent-border); border-radius: var(--radius-md); padding: var(--space-4); font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin-top: var(--space-4); }
+.educational .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+.educational strong { color: var(--text-primary); }
+
+.placeholder-card { border: 1px dashed var(--warning); background: rgba(251, 191, 36, 0.04); }
+.placeholder-card .placeholder-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--warning); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
+
+details.collapsible { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 0; }
+details.collapsible summary { padding: var(--space-4) var(--space-5); cursor: pointer; font-size: var(--fs-lg); font-weight: var(--fw-semibold); list-style: none; }
+details.collapsible summary::-webkit-details-marker { display: none; }
+details.collapsible summary::after { content: '▾'; float: right; color: var(--text-tertiary); transition: transform 0.2s; }
+details.collapsible[open] summary::after { transform: rotate(180deg); }
+details.collapsible .body { padding: 0 var(--space-5) var(--space-5); }
+
+.footnotes { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; }
+.footnotes p { margin: 0 0 var(--space-3); }
+.footnotes strong { color: var(--text-primary); }
+
+footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-xs); color: var(--text-tertiary); }
+
+@media (max-width: 1400px) {
+  .store-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 1100px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .store-grid, .buyer-impl-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">THCFO · Operations</div>
+    <div class="brand-sub">Same-Store · Mix · Tax</div>
+
+    <div class="section-label">Pages</div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="valuation.html">Valuation</a>
+      <a href="profitability.html">Profitability</a>
+      <a href="verticalization.html">Verticalization</a>
+      <a href="cashflow.html">Cash Flow &amp; Liquidity</a>
+      <a href="debt.html">Debt &amp; Capital</a>
+      <a href="operations.html" class="active">Operations</a>
+    </nav>
+
+    <div class="section-label">On This Page</div>
+    <nav>
+      <a href="#summary">Summary KPIs</a>
+      <a href="#stores">Store Operations</a>
+      <a href="#sss">Same-Store Sales</a>
+      <a href="#mix">Product Mix</a>
+      <a href="#geography">Customer Geography</a>
+      <a href="#peers">MA Peer Benchmarking</a>
+      <a href="#tax">471(c) &amp; Tax Lens</a>
+      <a href="#methodology">Methodology Notes</a>
+    </nav>
+
+    <div class="section-label">Other Dashboards</div>
+    <nav>
+      <a href="https://wesritchie.github.io/quickroom/" target="_blank">QuickRoom Hub →</a>
+    </nav>
+
+    <div class="footer-action">⟲ Refresh Data</div>
+  </aside>
+
+  <main class="content">
+
+    <span class="status-pill accent">
+      <span class="dot"></span>
+      Per-store data from FY 2025 · Live wiring to Dutchie POS planned for v2
+    </span>
+
+    <div class="page-header">
+      <h1 class="page-title">Operations</h1>
+      <p class="page-subtitle">
+        Store-level performance, traffic and basket trends, customer geography, peer benchmarking against MA cannabis operators, and the 471(c) tax-lens explainer.
+      </p>
+    </div>
+
+    <!-- ============ SUMMARY KPIs ============ -->
+    <section class="section" id="summary">
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="label">Transactions / Day · Portfolio</div>
+          <div class="value" id="kpi-tpd">—</div>
+          <div class="meta" id="kpi-tpd-meta">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Avg Basket · Portfolio</div>
+          <div class="value" id="kpi-basket">—</div>
+          <div class="meta" id="kpi-basket-meta">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">In-House Product Mix</div>
+          <div class="value">14.5%</div>
+          <div class="meta">Of retail product sales</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">MA Market Position · Best Store</div>
+          <div class="value" id="kpi-rank">—</div>
+          <div class="meta" id="kpi-rank-meta">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Federal Tax (FY 2024)</div>
+          <div class="value">~$0</div>
+          <div class="meta">§471(c) inventory method</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STORE OPERATIONS ============ -->
+    <section class="section" id="stores">
+      <h2>License Operations</h2>
+      <div class="section-sub">All four operating licenses. Retail metrics sourced directly from the Dutchie POS API closing-report endpoint for FY 2025. Farm production from operator records. Loaded from <code style="color: var(--accent); font-size: 0.9em;">data/operations-data.js</code> · refresh via Dutchie API pull.</div>
+
+      <div class="store-grid" id="store-grid"></div>
+
+      <div class="educational">
+        <div class="label">Reading the four licenses</div>
+        Three retail locations and one cultivation operation, each with its own license and economics. Retail revenue is driven by Transactions × Avg Basket. Dracut and Pepperell carry baskets in the $48–$56 range reflecting comparable product mix and pricing; Groton's lower basket (~$40) reflects ramp-phase pricing and product mix as the store builds customer base — basket typically converges toward portfolio average as a store matures. Transaction-count per POS station is a useful efficiency check: Dracut ~41 transactions per station per day, Pepperell ~35, Groton ~10 (significant headroom for growth). The cultivation operation runs on a different metric set entirely — production output (flower + trim pounds), in-house consumption ratio, and capacity utilization. Two additional greenhouses coming online add throughput; the September 2026 manufacturing license activates new value-add SKUs (pre-rolls, infused pre-rolls). Detailed Verticalization economics are on the dedicated <a href="verticalization.html" style="color: var(--accent);">Verticalization page</a>.
+      </div>
+    </section>
+
+    <!-- ============ SAME-STORE SALES ============ -->
+    <section class="section" id="sss">
+      <h2>Same-Store Sales</h2>
+      <div class="section-sub">Year-over-year revenue change for stores open in both periods. Same-store metrics strip out new-store effects to show underlying location performance.</div>
+
+      <div class="card placeholder-card">
+        <div class="placeholder-label">⚠ Per-store SSS pending</div>
+        <h3 style="color: var(--text-primary);">Same-Store Sales Tracking</h3>
+        <p style="color: var(--text-secondary); margin: 0 0 var(--space-3);">Detailed monthly same-store-sales tracking by location requires per-store revenue data from the Dutchie POS system across 2024 and 2025. The trailing-12-month onboarding figures provide a snapshot but not the rolling SSS view that operations management uses week-to-week. Live wiring to Dutchie is a planned future iteration.</p>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Store</th>
+              <th class="num">2024 Revenue</th>
+              <th class="num">2025 Revenue</th>
+              <th class="num">SSS YoY</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Dracut</td><td class="num">TBD</td><td class="num">$5.05M</td><td class="num" style="color: var(--text-tertiary);">—</td><td style="color: var(--text-secondary);">Mature store · in both periods</td></tr>
+            <tr><td>Pepperell</td><td class="num">TBD</td><td class="num">$2.50M</td><td class="num" style="color: var(--text-tertiary);">—</td><td style="color: var(--text-secondary);">In both periods · 2024 partial</td></tr>
+            <tr><td>Groton</td><td class="num">N/A</td><td class="num">$0.54M</td><td class="num" style="color: var(--text-tertiary);">N/A</td><td style="color: var(--text-secondary);">Opened Feb 2025 · not in SSS until 2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ PRODUCT MIX ============ -->
+    <section class="section" id="mix">
+      <h2>Product Mix</h2>
+      <div class="section-sub">Revenue breakdown by product category. In-house brands (Yellow Brick Road, Aristo Fuego, Tree House Select, Habitual Ritual, Forbidden Fruit) account for 20% of shelf space and 14.5% of retail product sales. Detailed SKU-level mix lives in Dutchie POS.</div>
+
+      <div class="card">
+        <h3>2025 COGS by Product Category</h3>
+        <p class="card-sub">Product cost lines from the 2025 P&amp;L · gives directional signal on revenue mix</p>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th class="num">2025 COGS</th>
+              <th class="num">% of Product COGS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Vape Cartridge</td><td class="num">$1,022,949</td><td class="num">28.8%</td></tr>
+            <tr><td>Flower</td><td class="num">$783,796</td><td class="num">22.1%</td></tr>
+            <tr><td>Edibles</td><td class="num">$644,365</td><td class="num">18.1%</td></tr>
+            <tr><td>Pre-Rolls</td><td class="num">$487,464</td><td class="num">13.7%</td></tr>
+            <tr><td>MACC (in-house)</td><td class="num">$435,933</td><td class="num">12.3%</td></tr>
+            <tr><td>Concentrates</td><td class="num">$73,584</td><td class="num">2.1%</td></tr>
+            <tr><td>Topicals</td><td class="num">$11,733</td><td class="num">0.3%</td></tr>
+            <tr><td>Grow / Other</td><td class="num">$2,249</td><td class="num">0.1%</td></tr>
+            <tr><td>Non-Cannabis (accessories, etc.)</td><td class="num">$87,750</td><td class="num">2.5%</td></tr>
+            <tr class="headline"><td>Total Product COGS</td><td class="num">$3,549,824</td><td class="num">100.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading product mix</div>
+        Vape, flower, edibles, and pre-rolls together account for ~83% of product cost and represent the core revenue drivers. <strong>The MACC line (in-house, 12.3% of product cost)</strong> reflects own-grown product flowing through retail at consolidated cost — economically larger than this line shows because pricing applied to that product at the retail counter generates higher gross margin than equivalent third-party product. Concentrates, topicals, and accessories are smaller categories but represent margin-expansion opportunities if buyer demand grows. The September 2026 manufacturing license activation will allow Tree House to internalize pre-roll and infused-pre-roll production, which today is sourced as third-party COGS.
+      </div>
+    </section>
+
+    <!-- ============ CUSTOMER GEOGRAPHY ============ -->
+    <section class="section" id="geography">
+      <h2>Customer Geography</h2>
+      <div class="section-sub">Where customers come from by store. Detailed geography lives in the Geo Totem dashboard (Veriscan ID-scan data); summary view shown here.</div>
+
+      <div class="card">
+        <h3>State-Level Mix Snapshot</h3>
+        <p class="card-sub">Cross-state customer composition · Veriscan check-in data · summary view</p>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Origin</th>
+              <th class="num">% of Scans</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Massachusetts</td><td class="num">~43.4%</td><td style="color: var(--text-secondary);">Local in-state customers</td></tr>
+            <tr><td>New Hampshire</td><td class="num">~50.5%</td><td style="color: var(--text-secondary);">Cross-border traffic · key strategic segment</td></tr>
+            <tr><td>Out of State (Other)</td><td class="num">~6.0%</td><td style="color: var(--text-secondary);">Tourists and travelers</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top: var(--space-4); font-size: var(--fs-sm); color: var(--text-secondary);">
+          For full geographic intelligence including city-level breakdown, store-by-store comparison, and trend over time, see the <strong>Geo Totem</strong> dashboard at the QuickRoom.
+        </p>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading geography</div>
+        <strong>New Hampshire customers represent over half of scanned traffic</strong> across the portfolio — a critical strategic dependency. NH legalization (which has been discussed periodically in the NH legislature) would meaningfully reduce cross-border demand for MA dispensaries near the border. Conversely, until NH legalizes, Tree House's border-proximate locations (especially Pepperell and Groton) capture an out-of-state demand pool that pure-MA-resident operators do not. The Massachusetts customer base (~43%) is the durable local foundation. The dependency on NH cross-border traffic should be tracked over time as a directional risk factor.
+      </div>
+    </section>
+
+    <!-- ============ MA PEER BENCHMARKING ============ -->
+    <section class="section" id="peers">
+      <h2>MA Peer Benchmarking · Live via Rainbow Review</h2>
+      <div class="section-sub">Tree House performance vs. ~380 active MA cannabis retailers. The Rainbow Review dashboard (sister tool in QuickRoom) pulls live data directly from Lit Alerts (market-wide) and Dutchie POS (Tree House actuals) on a daily refresh — there is no need to duplicate that data here. This section embeds the live Rainbow Review and links to the full dashboard for deep-dive analysis.</div>
+
+      <div class="card" style="border-color: var(--accent-border); background: linear-gradient(135deg, var(--bg-card) 0%, rgba(14, 165, 233, 0.04) 100%);">
+        <h3 style="display: flex; justify-content: space-between; align-items: center;">
+          <span>🌈 Rainbow Review · Daily Market Intelligence</span>
+          <a id="rainbow-link" href="#" target="_blank" style="font-size: var(--fs-sm); color: var(--accent); text-decoration: none; font-weight: var(--fw-semibold);">Open full dashboard →</a>
+        </h3>
+        <p class="card-sub">Lit Alerts market data + Dutchie POS · refreshed every morning · ranks Tree House stores against the entire MA market.</p>
+
+        <!-- Embedded Rainbow Review · update src to actual URL once provided -->
+        <div id="rainbow-embed-container" style="position: relative; width: 100%; height: 720px; border: 1px solid var(--border-default); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-input);">
+          <iframe
+            id="rainbow-iframe"
+            src=""
+            style="width: 100%; height: 100%; border: 0; display: none;"
+            title="Tree House Rainbow Review · MA Cannabis Market Intelligence"
+            loading="lazy">
+          </iframe>
+          <div id="rainbow-fallback" style="padding: var(--space-6); text-align: center; color: var(--text-secondary);">
+            <div style="font-size: var(--fs-2xl); margin-bottom: var(--space-3); color: var(--accent);">🌈</div>
+            <div style="font-size: var(--fs-base); font-weight: var(--fw-semibold); color: var(--text-primary); margin-bottom: var(--space-2);">Rainbow Review embed pending URL</div>
+            <div style="font-size: var(--fs-sm); max-width: 520px; margin: 0 auto; line-height: 1.7;">
+              Once the Rainbow Review dashboard URL is provided, the iframe above will load the live dashboard inline. Update the <code style="color: var(--accent);">RAINBOW_REVIEW_URL</code> constant in this page's script (or move to a shared <code style="color: var(--accent);">config-data.js</code> file) and the embed activates automatically. Until then, the most authoritative MA peer data lives in the Rainbow Review dashboard at the QuickRoom hub.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="educational">
+        <div class="label">Why integrate rather than duplicate</div>
+        Rainbow Review already does the work — it pulls Lit Alerts market data plus Tree House Dutchie data, refreshes every morning, and ranks all three Tree House stores against the ~380 active MA retailers across category breakdowns, sales trends, SKU analysis, and over-time positioning. Reproducing any of that data on this page would create two sources of truth that drift out of sync. Embedding the dashboard inline and linking to the full version preserves a single live source. The Rainbow Review's structural updates (new Lit Alerts metrics, new Dutchie integrations) automatically flow through to this view without any maintenance on the THCFO side.
+      </div>
+    </section>
+
+    <!-- ============ 471(c) AND TAX LENS ============ -->
+    <section class="section" id="tax">
+      <h2>§471(c) and the Tax Lens</h2>
+      <div class="section-sub">The single most important tax fact about Tree House: cannabis tax accounting is governed by §471(c) of the Internal Revenue Code, not §280E. This explainer covers what §471(c) does, why it matters, and what changes for a buyer who cannot continue the strategy.</div>
+
+      <div class="card">
+        <h3>What §471(c) Does</h3>
+        <p class="card-sub">A small-business inventory accounting method available under the Tax Cuts and Jobs Act</p>
+        <p style="font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7;">
+          <strong>§280E</strong> is the federal tax provision that prevents most cannabis businesses from deducting ordinary operating expenses (wages, rent, marketing, etc.) for federal tax purposes. Only Cost of Goods Sold is deductible under §280E.
+        </p>
+        <p style="font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7;">
+          <strong>§471(c)</strong>, added by the TCJA, allows certain small businesses with gross receipts under approximately $30M to use a simplified inventory accounting method that conforms inventory to the company's books or applies a simplified rule. Cannabis tax practitioners have used §471(c) to capitalize a much broader category of operating costs into inventory cost — labor, utilities, rent attributable to production, and overhead — which then flow through Cost of Goods Sold when product sells. Because §280E permits COGS deduction even when ordinary expenses are not deductible, §471(c) effectively converts otherwise-non-deductible operating expenses into deductible cost-of-goods.
+        </p>
+
+        <h3 style="margin-top: var(--space-5);">Tax-Affected Result · 2024 Federal Return</h3>
+        <table class="tax-bridge">
+          <tbody>
+            <tr><td>Form 1120 Line 1a · Gross Receipts</td><td class="num">$9,056,359</td><td class="bridge-note">Consolidated revenue including MACC post-acquisition</td></tr>
+            <tr><td>Form 1120 Line 2 · Cost of Goods Sold</td><td class="num">($16,916)</td><td class="bridge-note">Negative — net inventory credit + capitalized opex</td></tr>
+            <tr><td>Form 1120 Line 3 · Gross Profit</td><td class="num">$9,073,275</td><td class="bridge-note"></td></tr>
+            <tr class="milestone"><td>Form 1120 Line 30 · Taxable Income</td><td class="num">($16,916)</td><td class="bridge-note">Effective $0 federal tax for FY 2024</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card" style="margin-top: var(--space-4);">
+        <h3>Buyer-Type Tax Implications</h3>
+        <p class="card-sub">Whether a buyer can continue the §471(c) strategy depends on size and structure</p>
+
+        <div class="buyer-impl-grid">
+          <div class="card" style="background: var(--bg-input);">
+            <h3 style="font-size: var(--fs-base);">Sub-$30M Acquirer</h3>
+            <p style="font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin: 0;">A buyer below the §471(c) gross-receipts threshold can continue the inventory method post-close. Tax-affected EBITDA roughly preserves what the books show. Strategic-buyer category for valuation purposes.</p>
+          </div>
+          <div class="card" style="background: var(--bg-input);">
+            <h3 style="font-size: var(--fs-base);">MSO / Large Acquirer (above threshold)</h3>
+            <p style="font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin: 0;">A buyer above the §471(c) threshold cannot continue this method on the acquired entity. Post-close, the operations would be subject to §280E in the traditional way: only COGS deductible, ordinary opex non-deductible federally. EBITDA the buyer underwrites is structurally lower than the EBITDA Tree House currently generates.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="educational">
+        <div class="label">Reading the tax lens</div>
+        The §471(c) strategy is one of the most consequential CFO decisions reflected on this dashboard. It produces three downstream effects: (1) reported gross margins look low (~12% book) because operating costs are capitalized into COGS — the economic reconciliation on the Profitability page corrects this view; (2) effective federal tax is near zero, freeing operating cash for debt reduction and reinvestment; (3) the strategy does not transfer to a buyer above the $30M threshold, which is itself a legitimate argument for revenue-multiple framing in any valuation conversation rather than EBITDA-multiple framing — revenue is buyer-agnostic, while EBITDA shifts depending on which tax method the buyer can use post-close. The strategy is supported by professional tax counsel and has been employed for three consecutive fiscal years.
+      </div>
+    </section>
+
+    <!-- ============ METHODOLOGY ============ -->
+    <section class="section" id="methodology">
+      <details class="collapsible">
+        <summary>Methodology Notes &amp; Sources</summary>
+        <div class="body">
+          <div class="footnotes">
+            <p><strong>Per-license retail metrics — Dutchie POS (verified).</strong> Net sales, transaction count, customer count, and item count pulled directly from the Dutchie POS API <code>/reporting/closing-report</code> endpoint, month-by-month, summed for FY 2025. Verified totals: Dracut $5,012,295 net sales / 90,226 transactions / $55.55 avg basket; Pepperell $2,489,113 / 51,194 / $48.62; Groton $426,192 / 10,492 / $40.62 (334 days open from Feb 2025). Portfolio: $7,927,600 / 151,912 transactions / $52.18 avg basket / 416 transactions/day average across 365 days. <strong>Avg basket = Net Sales ÷ Transaction Count</strong> — each retail transaction approximates one customer visit. Note: Dutchie net sales total ($7.93M) is slightly below the consolidated P&amp;L Sales of Product Income subtotal ($8.09M); the ~$160K difference reflects MACC retail sales recorded separately in QuickBooks plus other accounting items not captured in store-level Dutchie reporting.</p>
+            <p><strong>Farm metrics.</strong> Production output (1,500 lbs flower, 2,400 lbs trim), in-house consumption ratio (~30%), cultivation space (49,000 sq ft), and other Colrain figures from operator records and the Verticalization page methodology. Annual cash farm revenue $723,017; consolidated farm-derived revenue $1.89M including the in-house product flowing through retail.</p>
+            <p><strong>Same-store sales.</strong> Per-store monthly revenue across both 2024 and 2025 is required to compute SSS at the store level; this data lives in Dutchie POS but is not yet wired to the dashboard. Once wired, this section will populate with rolling 12-month SSS by store.</p>
+            <p><strong>Product mix.</strong> Category-level COGS from the 2025 P&amp;L (line items 65001.01 through 65001.08, plus 65002 for non-cannabis). COGS is a directional signal for revenue mix; the relationship between COGS and revenue is approximately consistent across categories at the markup level applied at the retail counter, though varies by category.</p>
+            <p><strong>Customer geography.</strong> State-level scan composition from the Veriscan ID-scan system. Detailed city-level and store-by-store breakdowns live in the Geo Totem dashboard.</p>
+            <p><strong>MA peer benchmarking.</strong> Live data via the Rainbow Review dashboard at <code>wesritchie.github.io/quickroom/rainbow-review.html</code>, embedded inline via iframe and linked out to the full version. Rainbow Review pulls Lit Alerts (market-wide MA cannabis retail data covering ~380 active retailers) and Dutchie POS (Tree House actuals) directly and refreshes every morning. The Operations page also captures a Rainbow Review snapshot in <code>data/operations-data.js</code> for the KPI row at the top: total market revenue, active retailer count, avg revenue/store, and Tree House store rankings. Snapshot date and rankings update when the data file is refreshed; the embedded iframe is always live.</p>
+            <p><strong>§471(c) tax data.</strong> 2024 Form 1120 figures from the filed corporate return: Gross Receipts $9,056,359, Cost of Goods Sold ($16,916), Taxable Income ($16,916). The 471(c) strategy has been employed continuously for three fiscal years (2022, 2023, 2024) under professional tax counsel.</p>
+            <p><strong>Pending refinements.</strong> Live wiring to Dutchie POS for daily revenue, traffic, basket, and SKU-level mix. Live wiring to ma-cannabis-market skill for peer benchmarking. Same-store-sales tracking once historical store-level data is consolidated.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <footer class="page-footer">
+      <span>● FY 2025 close + onboarding-doc operational data · live POS wiring planned</span>
+      <span>Tree House Craft Cannabis · THCFO · Operations v0.1</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+// ============================================================================
+// Helpers
+// ============================================================================
+function fmtUSD(v) {
+  if (v == null) return '—';
+  if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
+  if (v >= 1e3) return '$' + (v / 1e3).toFixed(0) + 'K';
+  return '$' + Math.round(v).toLocaleString();
+}
+function fmtUSDFull(v) {
+  if (v == null) return '—';
+  return '$' + Math.round(v).toLocaleString();
+}
+
+// ============================================================================
+// Render KPI row + store cards from window.OPERATIONS_DATA
+// ============================================================================
+function renderOperations() {
+  if (!window.OPERATIONS_DATA) {
+    console.warn('OPERATIONS_DATA missing — check data/operations-data.js');
+    return;
+  }
+  const D = window.OPERATIONS_DATA;
+  const fy = D.fy2025;
+  const rr = D.rainbow_review;
+
+  // KPI row
+  document.getElementById('kpi-tpd').textContent = fy.portfolio.avgTransactionsPerDay;
+  document.getElementById('kpi-tpd-meta').textContent = `${fy.portfolio.transactionCount.toLocaleString()} transactions · FY 2025 · Dutchie POS`;
+  document.getElementById('kpi-basket').textContent = '$' + fy.portfolio.avgBasket.toFixed(2);
+  document.getElementById('kpi-basket-meta').textContent = `Net Sales ÷ Transactions · FY 2025`;
+  // Best-ranked store
+  const ranks = rr.tree_house_rankings;
+  const bestStore = Object.entries(ranks).reduce((b, [k, v]) => v.rank < b.rank ? {name: k, rank: v.rank, mv: v.movement, dir: v.movement_dir} : b, {name: '', rank: Infinity});
+  document.getElementById('kpi-rank').textContent = '#' + bestStore.rank;
+  const arrow = bestStore.dir === 'up' ? '▲' : '▼';
+  const color = bestStore.dir === 'up' ? 'var(--positive)' : 'var(--negative)';
+  document.getElementById('kpi-rank-meta').innerHTML = `Dracut · <span style="color: ${color};">${arrow}${Math.abs(parseInt(bestStore.mv))}</span> vs 7-day · of ${rr.market_overview.active_retailers}`;
+
+  // Store grid
+  const grid = document.getElementById('store-grid');
+  if (grid) {
+    const ddData = fy.byStore.dracut;
+    const pdData = fy.byStore.pepperell;
+    const gdData = fy.byStore.groton;
+    grid.innerHTML = `
+      <div class="card store-card">
+        <div class="name">Dracut · Flagship</div>
+        <div class="opened">Retail · Opened Nov 2021</div>
+        <div class="metric-row"><span class="l">Net Sales (FY25)</span><span class="v">${fmtUSDFull(ddData.netSales)}</span></div>
+        <div class="metric-row"><span class="l">Transactions</span><span class="v">${ddData.transactionCount.toLocaleString()}</span></div>
+        <div class="metric-row"><span class="l">Trans / Day</span><span class="v">${ddData.transactionsPerDay}</span></div>
+        <div class="metric-row"><span class="l">Avg Basket</span><span class="v">$${ddData.avgBasket.toFixed(2)}</span></div>
+        <div class="metric-row"><span class="l">Items Sold</span><span class="v">${ddData.itemCount.toLocaleString()}</span></div>
+        <div class="metric-row"><span class="l">POS Stations</span><span class="v">6</span></div>
+        <div class="metric-row"><span class="l">Employees</span><span class="v">25 (FT + PT)</span></div>
+        <div class="metric-row"><span class="l">MA Rank</span><span class="v">#${ranks.dracut.rank} of ${rr.market_overview.active_retailers}</span></div>
+      </div>
+      <div class="card store-card">
+        <div class="name">Pepperell</div>
+        <div class="opened">Retail · Opened Mar 2023</div>
+        <div class="metric-row"><span class="l">Net Sales (FY25)</span><span class="v">${fmtUSDFull(pdData.netSales)}</span></div>
+        <div class="metric-row"><span class="l">Transactions</span><span class="v">${pdData.transactionCount.toLocaleString()}</span></div>
+        <div class="metric-row"><span class="l">Trans / Day</span><span class="v">${pdData.transactionsPerDay}</span></div>
+        <div class="metric-row"><span class="l">Avg Basket</span><span class="v">$${pdData.avgBasket.toFixed(2)}</span></div>
+        <div class="metric-row"><span class="l">Items Sold</span><span class="v">${pdData.itemCount.toLocaleString()}</span></div>
+        <div class="metric-row"><span class="l">POS Stations</span><span class="v">4</span></div>
+        <div class="metric-row"><span class="l">Employees</span><span class="v">12 (FT + PT)</span></div>
+        <div class="metric-row"><span class="l">MA Rank</span><span class="v">#${ranks.pepperell.rank} of ${rr.market_overview.active_retailers}</span></div>
+      </div>
+      <div class="card store-card">
+        <div class="name">Groton · Newest</div>
+        <div class="opened">Retail · Opened Feb 2025 · Ramp</div>
+        <div class="metric-row"><span class="l">Net Sales (FY25)</span><span class="v">${fmtUSDFull(gdData.netSales)}</span></div>
+        <div class="metric-row"><span class="l">Transactions</span><span class="v">${gdData.transactionCount.toLocaleString()}</span></div>
+        <div class="metric-row"><span class="l">Trans / Day</span><span class="v">${gdData.transactionsPerDay} <span style="color: var(--text-tertiary); font-size: 0.85em;">(${gdData.daysOpen}d)</span></span></div>
+        <div class="metric-row"><span class="l">Avg Basket</span><span class="v">$${gdData.avgBasket.toFixed(2)}</span></div>
+        <div class="metric-row"><span class="l">Items Sold</span><span class="v">${gdData.itemCount.toLocaleString()}</span></div>
+        <div class="metric-row"><span class="l">POS Stations</span><span class="v">3</span></div>
+        <div class="metric-row"><span class="l">Employees</span><span class="v">6 (FT + PT)</span></div>
+        <div class="metric-row"><span class="l">MA Rank</span><span class="v">#${ranks.groton.rank} of ${rr.market_overview.active_retailers}</span></div>
+      </div>
+      <div class="card store-card">
+        <div class="name">Colrain · Farm</div>
+        <div class="opened">Cultivation · MA Craft Cultivation</div>
+        <div class="metric-row"><span class="l">Annual Cash Rev</span><span class="v">$723,017</span></div>
+        <div class="metric-row"><span class="l">Farm-Derived Total</span><span class="v">$1.89M</span></div>
+        <div class="metric-row"><span class="l">Flower Produced</span><span class="v">~1,500 lbs</span></div>
+        <div class="metric-row"><span class="l">Trim Produced</span><span class="v">~2,400 lbs</span></div>
+        <div class="metric-row"><span class="l">In-House Mix</span><span class="v">~30% to TH retail</span></div>
+        <div class="metric-row"><span class="l">Cultivation Space</span><span class="v">49,000 sq ft</span></div>
+        <div class="metric-row"><span class="l">Type</span><span class="v">Outdoor + 2 GH</span></div>
+        <div class="metric-row"><span class="l">Employees</span><span class="v">4</span></div>
+        <div class="metric-row"><span class="l">Mfg License</span><span class="v" style="color: var(--warning);">Sept 2026</span></div>
+      </div>
+    `;
+  }
+}
+renderOperations();
+
+// ============================================================================
+// Rainbow Review · live MA peer benchmarking embed
+// ============================================================================
+const RAINBOW_REVIEW_URL = (window.OPERATIONS_DATA && window.OPERATIONS_DATA.rainbow_review)
+  ? window.OPERATIONS_DATA.rainbow_review.rainbow_review_url
+  : 'https://wesritchie.github.io/quickroom/rainbow-review.html';
+
+(function activateRainbowReview() {
+  const iframe = document.getElementById('rainbow-iframe');
+  const fallback = document.getElementById('rainbow-fallback');
+  const link = document.getElementById('rainbow-link');
+  if (RAINBOW_REVIEW_URL) {
+    iframe.src = RAINBOW_REVIEW_URL;
+    iframe.style.display = 'block';
+    fallback.style.display = 'none';
+    link.href = RAINBOW_REVIEW_URL;
+  } else {
+    link.href = 'https://wesritchie.github.io/quickroom/';
+  }
+})();
+
+// ============================================================================
+// Sidebar nav active state on scroll
+// ============================================================================
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
