@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THCFO — Docs</title>
+<link rel="stylesheet" href="styles/design-tokens.css">
+<script src="data/docs-data.js"></script>
+<style>
+.layout { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; }
+aside.sidebar {
+  background: var(--bg-sidebar); border-right: 1px solid var(--border-subtle);
+  padding: var(--space-6) var(--space-5);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.sidebar .brand { font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-1); }
+.sidebar .brand-sub { font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: var(--space-7); }
+.sidebar .section-label { font-size: 0.6875rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: var(--space-5) 0 var(--space-2); }
+.sidebar .section-label:first-of-type { margin-top: 0; }
+.sidebar nav a { display: block; padding: var(--space-2) var(--space-3); color: var(--text-secondary); text-decoration: none; font-size: var(--fs-sm); border-radius: var(--radius-sm); margin-bottom: 2px; transition: color 0.15s, background 0.15s; }
+.sidebar nav a:hover { color: var(--text-primary); }
+.sidebar nav a.active { color: var(--accent); background: var(--accent-bg); font-weight: var(--fw-semibold); }
+.sidebar .footer-action { margin-top: auto; padding-top: var(--space-5); font-size: var(--fs-sm); color: var(--positive); cursor: pointer; }
+
+main.content { padding: var(--space-6) var(--space-7); max-width: var(--content-max-width); width: 100%; margin: 0 auto; box-sizing: border-box; }
+.page-header { margin-bottom: var(--space-6); }
+.page-title { font-size: var(--fs-3xl); font-weight: var(--fw-bold); margin: var(--space-3) 0 var(--space-1); letter-spacing: -0.02em; }
+.page-subtitle { font-size: var(--fs-base); color: var(--text-secondary); max-width: 760px; }
+
+.section { margin-bottom: var(--space-7); scroll-margin-top: var(--space-5); }
+.section h2 { font-size: var(--fs-xl); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
+.section .section-sub { color: var(--text-secondary); font-size: var(--fs-sm); margin-bottom: var(--space-4); }
+
+/* Status legend */
+.status-legend {
+  display: flex; flex-wrap: wrap; gap: var(--space-3);
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-6);
+}
+.status-legend .legend-item { display: flex; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); color: var(--text-secondary); }
+
+/* Docs section — provenance + next-refresh checklist */
+.docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.docs-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-5);
+}
+.docs-card .docs-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: var(--space-4); padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.docs-card .docs-header h3 { font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin: 0; }
+.docs-card .docs-header .docs-count {
+  font-size: var(--fs-xs); color: var(--text-tertiary);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.docs-card .docs-tag {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: var(--space-2);
+}
+.docs-card ul { list-style: none; padding: 0; margin: 0; }
+.docs-card li {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.docs-card li:last-child { border-bottom: none; }
+.docs-card .doc-row {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3);
+  margin-bottom: 4px;
+}
+.docs-card .doc-name { font-size: var(--fs-sm); color: var(--text-primary); font-weight: var(--fw-semibold); }
+.docs-card .doc-meta {
+  font-size: var(--fs-xs); color: var(--text-secondary);
+  line-height: 1.5;
+}
+.docs-card .doc-meta .doc-period {
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  color: var(--text-tertiary);
+}
+.doc-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 8px; border-radius: var(--radius-pill);
+  font-size: 0.6875rem; font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em; flex-shrink: 0; white-space: nowrap;
+}
+.doc-status.received {
+  background: var(--positive-bg); color: var(--positive);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+.doc-status.awaiting-close {
+  background: var(--warning-bg); color: var(--warning);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+.doc-status.awaiting-upload {
+  background: rgba(248, 113, 113, 0.1); color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+.doc-status.auto-refresh {
+  background: var(--accent-bg); color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+.doc-status .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-xs); color: var(--text-tertiary); }
+
+@media (max-width: 1100px) {
+  .docs-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">THCFO</div>
+    <div class="brand-sub">Tree House CFO Dashboard</div>
+
+    <div class="section-label">Pages</div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="valuation.html">Valuation</a>
+      <a href="profitability.html">Profitability</a>
+      <a href="verticalization.html">Verticalization</a>
+      <a href="cashflow.html">Cash Flow &amp; Liquidity</a>
+      <a href="debt.html">Debt &amp; Capital</a>
+      <a href="operations.html">Operations</a>
+      <a href="docs.html" class="active">Docs</a>
+    </nav>
+
+    <div class="section-label">On This Page</div>
+    <nav>
+      <a href="#legend">Status Legend</a>
+      <a href="#current">Current Sources</a>
+      <a href="#pending">Pending for Next Cut</a>
+    </nav>
+
+    <div class="section-label">Other Dashboards</div>
+    <nav>
+      <a href="https://wesritchie.github.io/quickroom/" target="_blank">QuickRoom Hub →</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+
+    <div class="page-header">
+      <h1 class="page-title">Docs</h1>
+      <p class="page-subtitle">
+        What this dashboard is built from, and what's required to bring it forward to the next cut. Edit <code>dashboard/data/docs-data.js</code> to flip a doc from pending to received — every page that depends on the data updates automatically.
+      </p>
+    </div>
+
+    <!-- ============ STATUS LEGEND ============ -->
+    <section class="section" id="legend">
+      <h2>Status Legend</h2>
+      <div class="section-sub">The right column color-codes who's blocking each pending doc, so the page doubles as a triage view.</div>
+
+      <div class="status-legend">
+        <div class="legend-item"><span class="doc-status received"><span class="dot"></span>Received</span> Already in the dashboard</div>
+        <div class="legend-item"><span class="doc-status awaiting-close"><span class="dot"></span>Awaiting close</span> Bookkeeping bottleneck</div>
+        <div class="legend-item"><span class="doc-status awaiting-upload"><span class="dot"></span>Awaiting upload</span> Wes bottleneck</div>
+        <div class="legend-item"><span class="doc-status auto-refresh"><span class="dot"></span>Auto-refresh</span> Claude can pull on request</div>
+      </div>
+    </section>
+
+    <!-- ============ CURRENT SOURCES ============ -->
+    <section class="section" id="current">
+      <h2>Current Sources</h2>
+      <div class="section-sub">The source-of-truth manifest. If a number on the dashboard isn't traceable to a doc here, something is wrong.</div>
+
+      <div class="docs-card">
+        <div class="docs-tag">Source of truth</div>
+        <div class="docs-header">
+          <h3>What the dashboard is built on</h3>
+          <span class="docs-count" id="docs-current-count"></span>
+        </div>
+        <ul id="docs-current-list"></ul>
+      </div>
+    </section>
+
+    <!-- ============ PENDING NEXT REFRESH ============ -->
+    <section class="section" id="pending">
+      <h2>Pending for Next Cut</h2>
+      <div class="section-sub">The to-do list. When all of these land, the dashboard rolls forward to the next monthly cut.</div>
+
+      <div class="docs-card">
+        <div class="docs-tag">Next refresh checklist</div>
+        <div class="docs-header">
+          <h3>Required to advance to next monthly cut</h3>
+          <span class="docs-count" id="docs-pending-count"></span>
+        </div>
+        <ul id="docs-pending-list"></ul>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span id="page-footer-status">● THCFO · Docs · loading data files</span>
+      <span>Tree House Craft Cannabis · New England Craft Cultivators LLC</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+// ============================================================================
+// Docs page renderer — provenance (top) + next-refresh checklist (bottom)
+// Reads from window.DOCS_DATA. Each entry renders as a row with name, source,
+// period, and a status pill keyed by who's blocking.
+// ============================================================================
+function renderDocs() {
+  if (!window.DOCS_DATA) {
+    document.getElementById('page-footer-status').textContent = '● THCFO · Docs · docs-data.js missing';
+    return;
+  }
+  const D = window.DOCS_DATA;
+
+  const statusLabel = {
+    'awaiting-close':  'Awaiting close',
+    'awaiting-upload': 'Awaiting upload',
+    'auto-refresh':    'Auto-refresh'
+  };
+
+  // ----- Current sources -----
+  document.getElementById('docs-current-count').textContent =
+    `${D.currentSources.length} docs · updated ${D.meta.last_updated}`;
+  document.getElementById('docs-current-list').innerHTML = D.currentSources.map(d => `
+    <li>
+      <div class="doc-row">
+        <div class="doc-name">${d.name}</div>
+        <span class="doc-status received"><span class="dot"></span>Received</span>
+      </div>
+      <div class="doc-meta">
+        ${d.source}
+        ${d.period ? ` · <span class="doc-period">${d.period}</span>` : ''}
+        ${d.lens ? `<br>${d.lens}` : ''}
+      </div>
+    </li>
+  `).join('');
+
+  // ----- Pending next refresh -----
+  document.getElementById('docs-pending-count').textContent =
+    `${D.pendingNextRefresh.length} pending · target ${D.meta.refresh_target}`;
+  document.getElementById('docs-pending-list').innerHTML = D.pendingNextRefresh.map(d => `
+    <li>
+      <div class="doc-row">
+        <div class="doc-name">${d.name}</div>
+        <span class="doc-status ${d.status}"><span class="dot"></span>${statusLabel[d.status] || d.status}</span>
+      </div>
+      <div class="doc-meta">
+        ${d.source}
+        ${d.period ? ` · <span class="doc-period">${d.period}</span>` : ''}
+        ${d.blocker ? `<br>Blocker: ${d.blocker}` : ''}
+      </div>
+    </li>
+  `).join('');
+
+  // ----- Footer status -----
+  document.getElementById('page-footer-status').textContent =
+    `● THCFO · Docs · ${D.currentSources.length} sources · ${D.pendingNextRefresh.length} pending · updated ${D.meta.last_updated}`;
+}
+
+renderDocs();
+</script>
+</body>
+</html>
