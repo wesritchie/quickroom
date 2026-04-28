@@ -78,9 +78,9 @@ window.DOCS_DATA = {
     },
     {
       name: "Dutchie POS Closing Reports",
-      source: "Dutchie API · per-store",
-      period: "FY 2025",
-      lens: "Revenue, transactions, basket, mix"
+      source: "Dutchie API · per-store · monthly + quarterly",
+      period: "Jan 2024 – Mar 2026 (27 months · 9 quarters)",
+      lens: "Revenue, transactions, basket, discounts, category mix"
     },
     {
       name: "Veriscan ID-Scan Data",
@@ -150,18 +150,11 @@ window.DOCS_DATA = {
       blocker: "Wes — powers Budget vs Actuals"
     },
     {
-      name: "Q1 2026 Dutchie Pull",
-      source: "Dutchie API · all 3 stores · monthly + quarterly granularity",
-      period: "Q1 2026",
+      name: "Q2 2026 Dutchie Pull",
+      source: "Dutchie API · all 3 stores · once Q2 2026 completes",
+      period: "Q2 2026 (Apr–Jun)",
       status: "auto-refresh",
-      blocker: "Auto — Claude can pull on request"
-    },
-    {
-      name: "Historical Quarterly Dutchie Backfill",
-      source: "Dutchie API · per-store quarterly closing reports + discounts + category mix",
-      period: "Q1 2024 – Q4 2025 (8 quarters)",
-      status: "auto-refresh",
-      blocker: "Auto — populates Quarterly Review page (per-store, discounts, mix sections)"
+      blocker: "Auto — Claude can pull on request after Jun 2026"
     },
     {
       name: "Q1 2026 Veriscan Refresh",

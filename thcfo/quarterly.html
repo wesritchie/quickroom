@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>THCFO — Quarterly Review</title>
 <link rel="stylesheet" href="styles/design-tokens.css">
-<script src="data/summary-data.js"></script>
-<script src="data/operations-data.js"></script>
 <script src="data/quarterly-data.js"></script>
 <style>
 .layout { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; }
@@ -31,12 +29,20 @@ main.content { padding: var(--space-6) var(--space-7); max-width: var(--content-
 .page-title { font-size: var(--fs-3xl); font-weight: var(--fw-bold); margin: var(--space-3) 0 var(--space-1); letter-spacing: -0.02em; }
 .page-subtitle { font-size: var(--fs-base); color: var(--text-secondary); max-width: 760px; }
 
+.scope-banner {
+  background: rgba(14, 165, 233, 0.06); border: 1px solid var(--accent-border);
+  border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5); font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.6;
+}
+.scope-banner .scope-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: 4px; }
+.scope-banner strong { color: var(--text-primary); }
+
 .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3); margin-bottom: var(--space-6); }
 .kpi-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-4); }
 .kpi-card.headline { border-color: var(--accent-border); background: linear-gradient(135deg, var(--bg-card) 0%, rgba(14, 165, 233, 0.06) 100%); }
 .kpi-card .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: var(--space-2); font-weight: var(--fw-semibold); }
-.kpi-card .value { font-size: var(--fs-2xl); font-weight: var(--fw-bold); font-feature-settings: 'tnum' on, 'lnum' on; color: var(--accent); letter-spacing: -0.01em; }
-.kpi-card .meta { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
+.kpi-card .value { font-size: var(--fs-2xl); font-weight: var(--fw-bold); font-feature-settings: 'tnum' on, 'lnum' on; color: var(--accent); letter-spacing: -0.01em; line-height: 1.1; }
+.kpi-card .meta { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 6px; }
 
 .section { margin-bottom: var(--space-7); scroll-margin-top: var(--space-5); }
 .section h2 { font-size: var(--fs-xl); font-weight: var(--fw-semibold); margin: 0 0 var(--space-1); }
@@ -53,7 +59,7 @@ table.tbl td { border-bottom: 1px solid var(--border-subtle); font-feature-setti
 table.tbl td.num, table.tbl th.num { text-align: right; }
 table.tbl tr.highlight td { background: var(--accent-bg); font-weight: var(--fw-semibold); color: var(--accent); border-top: 1px solid var(--accent-border); border-bottom: 1px solid var(--accent-border); }
 table.tbl tr.year-divider td { padding: 4px 12px; background: var(--bg-card-elevated); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); font-weight: var(--fw-semibold); }
-table.tbl .scope-flag { font-size: 0.625rem; color: var(--text-tertiary); margin-left: 6px; }
+table.tbl tr.subtotal td { border-top: 1px solid var(--border-default); font-weight: var(--fw-semibold); color: var(--accent); }
 
 .delta { font-feature-settings: 'tnum' on, 'lnum' on; font-weight: var(--fw-semibold); }
 .delta.up   { color: var(--positive); }
@@ -66,44 +72,29 @@ table.tbl .scope-flag { font-size: 0.625rem; color: var(--text-tertiary); margin
 .compare-card .compare-tag { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: var(--fw-semibold); }
 .compare-card h3 { font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin: 0; }
 .compare-card .compare-period { font-size: var(--fs-xs); color: var(--text-tertiary); font-feature-settings: 'tnum' on, 'lnum' on; }
-.compare-card table.tbl td { padding: 8px 0; }
+
+.bar-chart { display: flex; flex-direction: column; gap: 6px; margin-top: var(--space-4); }
+.bar-row { display: grid; grid-template-columns: 80px 1fr 110px; align-items: center; gap: var(--space-3); font-size: var(--fs-xs); }
+.bar-row .bar-label { color: var(--text-secondary); font-weight: var(--fw-semibold); }
+.bar-row .bar-track { background: rgba(14, 165, 233, 0.08); border-radius: var(--radius-sm); height: 22px; overflow: hidden; position: relative; }
+.bar-row .bar-fill { background: linear-gradient(90deg, var(--accent) 0%, var(--positive) 100%); height: 100%; border-radius: var(--radius-sm); transition: width 0.4s; }
+.bar-row .bar-value { text-align: right; color: var(--text-primary); font-feature-settings: 'tnum' on, 'lnum' on; font-weight: var(--fw-semibold); }
+.bar-row.dim { opacity: 0.55; }
+
+.mix-table td.cat-cell { font-weight: var(--fw-semibold); }
+.mix-bar { background: var(--accent-bg); border-radius: var(--radius-sm); height: 16px; position: relative; min-width: 30px; }
+.mix-bar-fill { background: var(--accent); height: 100%; border-radius: var(--radius-sm); }
 
 .callout {
-  background: rgba(14, 165, 233, 0.05);
-  border: 1px solid var(--accent-border);
+  background: rgba(14, 165, 233, 0.05); border: 1px solid var(--accent-border);
   border-radius: var(--radius-md); padding: var(--space-4);
   font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.6;
   margin-bottom: var(--space-4);
 }
 .callout .callout-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: 4px; }
 .callout strong { color: var(--text-primary); }
-
-.placeholder-card {
-  border: 1px dashed var(--warning);
-  background: rgba(251, 191, 36, 0.04);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
-}
-.placeholder-card .placeholder-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--warning); font-weight: var(--fw-semibold); margin-bottom: var(--space-2); }
-.placeholder-card h3 { font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin: 0 0 var(--space-2); }
-.placeholder-card p { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.6; margin: 0 0 var(--space-2); }
-.placeholder-card .pull-cta {
-  display: inline-block; margin-top: var(--space-2);
-  font-size: var(--fs-xs); font-feature-settings: 'tnum' on, 'lnum' on;
-  background: var(--accent-bg); color: var(--accent);
-  border: 1px solid var(--accent-border);
-  padding: 4px 10px; border-radius: var(--radius-pill);
-  font-weight: var(--fw-semibold);
-}
-
-.bar-chart { display: flex; flex-direction: column; gap: 6px; margin-top: var(--space-4); }
-.bar-row { display: grid; grid-template-columns: 80px 1fr 100px; align-items: center; gap: var(--space-3); font-size: var(--fs-xs); }
-.bar-row .bar-label { color: var(--text-secondary); font-weight: var(--fw-semibold); }
-.bar-row .bar-track { background: rgba(14, 165, 233, 0.08); border-radius: var(--radius-sm); height: 22px; overflow: hidden; position: relative; }
-.bar-row .bar-fill { background: linear-gradient(90deg, var(--accent) 0%, var(--positive) 100%); height: 100%; border-radius: var(--radius-sm); transition: width 0.4s; }
-.bar-row .bar-value { text-align: right; color: var(--text-primary); font-feature-settings: 'tnum' on, 'lnum' on; font-weight: var(--fw-semibold); }
-.bar-row.scope-pre { opacity: 0.55; }
-.bar-row.scope-pre .bar-fill { background: linear-gradient(90deg, #8b8c9a 0%, #b0b1bf 100%); }
+.callout.warning { background: rgba(251, 191, 36, 0.05); border-color: rgba(251, 191, 36, 0.3); }
+.callout.warning .callout-label { color: var(--warning); }
 
 footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: var(--fs-xs); color: var(--text-tertiary); }
 
@@ -139,7 +130,7 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
     <div class="section-label">On This Page</div>
     <nav>
       <a href="#summary">Most Recent Quarter</a>
-      <a href="#trend">8-Quarter Trend</a>
+      <a href="#trend">Retail Portfolio Trend</a>
       <a href="#compare">QoQ &amp; YoY Compare</a>
       <a href="#stores">Per-Store Quarterly</a>
       <a href="#discounts">Discount Analysis</a>
@@ -158,38 +149,40 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
     <div class="page-header">
       <h1 class="page-title">Quarterly Review</h1>
       <p class="page-subtitle">
-        Quarter-over-quarter and year-over-year financial review across the consolidated business and the retail portfolio. Company-wide P&amp;L derives automatically from the monthly close in <code>summary-data.js</code> — when a new month closes, the quarterly view rolls forward without a separate edit. Dutchie-sourced sections (per-store quarterly, discounts, mix) populate when a fresh quarterly pull runs.
+        Retail performance across Dracut, Pepperell, and Groton — Dutchie-sourced, quarterly granularity, apples-to-apples store-vs-store and retail-portfolio-vs-retail-portfolio comparisons.
       </p>
+    </div>
+
+    <div class="scope-banner">
+      <div class="scope-label">Scope</div>
+      <strong>Retail only.</strong> Every number on this page comes from the Dutchie POS API and reflects the three retail dispensaries. Farm/wholesale revenue (MACC sales to other dispensaries) is <strong>not included here</strong> — it lives on the Verticalization page. Consolidated NECC + MACC P&amp;L (which combines retail and farm) lives on Profitability. This page exists so retail unit-economics trends aren't masked by farm contribution.
     </div>
 
     <!-- ============ MOST RECENT QUARTER · KPI ROW ============ -->
     <section class="section" id="summary">
-      <h2>Most Recent Complete Quarter</h2>
+      <h2>Most Recent Quarter · Retail Portfolio</h2>
       <div class="section-sub" id="kpi-period-sub">Loading…</div>
       <div class="kpi-row" id="kpi-row"></div>
     </section>
 
-    <!-- ============ 8-QUARTER TREND TABLE ============ -->
+    <!-- ============ RETAIL PORTFOLIO TREND ============ -->
     <section class="section" id="trend">
-      <h2>Company-Wide Quarterly Trend</h2>
-      <div class="section-sub">Eight quarters of consolidated revenue, COGS, gross profit, and NOI. Includes both retail (Dutchie) and farm (wholesale, exchange) revenue rolled up through QuickBooks.</div>
-
-      <div class="callout">
-        <div class="callout-label">Scope note</div>
-        <strong>FY 2024</strong> reflects NECC standalone P&amp;L (pre-MACC consolidation). <strong>FY 2025 onward</strong> reflects fully-consolidated NECC + MACC. Year-over-year comparisons across this boundary include scope expansion, not just same-store change. Same-quarter comparisons within FY 2025 (e.g., Q4 vs Q3) are comparable on a like-for-like basis.
-      </div>
+      <h2>Retail Portfolio Quarterly Trend</h2>
+      <div class="section-sub">Sum of Dracut + Pepperell + Groton, every quarter from Q1 2024 forward. Like-for-like comparisons within FY 2025+ once Groton was open; FY 2024 figures reflect Dracut + Pepperell only.</div>
 
       <div class="card">
-        <table class="tbl" id="trend-table">
+        <table class="tbl">
           <thead>
             <tr>
               <th>Quarter</th>
-              <th class="num">Revenue</th>
-              <th class="num">COGS</th>
-              <th class="num">Gross Profit</th>
-              <th class="num">NOI</th>
-              <th class="num">GM %</th>
-              <th class="num">NOI %</th>
+              <th class="num">Net Sales</th>
+              <th class="num">Gross Sales</th>
+              <th class="num">Discount $</th>
+              <th class="num">Discount %</th>
+              <th class="num">Transactions</th>
+              <th class="num">Avg Basket</th>
+              <th class="num">Items / Txn</th>
+              <th class="num">Retail Margin %</th>
             </tr>
           </thead>
           <tbody id="trend-tbody"></tbody>
@@ -197,19 +190,18 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
       </div>
 
       <div class="card" style="margin-top: var(--space-4);">
-        <h3>Revenue by Quarter</h3>
-        <div class="card-sub">Visual ranking. Grayed bars indicate FY 2024 (NECC standalone scope).</div>
+        <h3>Net Sales by Quarter · Retail Portfolio</h3>
+        <div class="card-sub">Visual ranking. Most recent quarter highlighted.</div>
         <div class="bar-chart" id="bar-chart"></div>
       </div>
     </section>
 
-    <!-- ============ QoQ + YoY SIDE BY SIDE ============ -->
+    <!-- ============ QoQ + YoY ============ -->
     <section class="section" id="compare">
-      <h2>QoQ &amp; YoY Snapshot</h2>
-      <div class="section-sub">Most recent complete quarter vs. immediately prior quarter, and vs. same quarter prior year. The two views answer different questions: QoQ shows momentum, YoY shows scale.</div>
+      <h2>QoQ &amp; YoY Snapshot · Retail Portfolio</h2>
+      <div class="section-sub">Most recent quarter vs. immediately prior quarter (momentum) and vs. same quarter prior year (year-over-year, like-for-like at the portfolio level).</div>
 
       <div class="compare-grid">
-
         <div class="card compare-card">
           <div class="compare-header">
             <div>
@@ -219,14 +211,7 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
             <div class="compare-period" id="qoq-period"></div>
           </div>
           <table class="tbl">
-            <thead>
-              <tr>
-                <th>Metric</th>
-                <th class="num">Prior</th>
-                <th class="num">Current</th>
-                <th class="num">Δ</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Metric</th><th class="num">Prior</th><th class="num">Current</th><th class="num">Δ</th></tr></thead>
             <tbody id="qoq-tbody"></tbody>
           </table>
         </div>
@@ -240,124 +225,121 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
             <div class="compare-period" id="yoy-period"></div>
           </div>
           <table class="tbl">
-            <thead>
-              <tr>
-                <th>Metric</th>
-                <th class="num">Prior</th>
-                <th class="num">Current</th>
-                <th class="num">Δ</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Metric</th><th class="num">Prior Year</th><th class="num">Current</th><th class="num">Δ</th></tr></thead>
             <tbody id="yoy-tbody"></tbody>
           </table>
         </div>
-
       </div>
     </section>
 
     <!-- ============ PER-STORE QUARTERLY ============ -->
     <section class="section" id="stores">
-      <h2>Per-Store Quarterly · Dutchie</h2>
-      <div class="section-sub">Quarterly retail performance by store. Annual totals are verified from the Dutchie API; per-quarter breakouts populate when a fresh closing-report pull runs at the quarterly granularity.</div>
+      <h2>Per-Store Quarterly Detail</h2>
+      <div class="section-sub">Each store's quarterly performance, side by side. Apples-to-apples once Groton ramped through Q2 2025.</div>
 
       <div class="card" style="margin-bottom: var(--space-4);">
-        <h3>FY 2025 Annual Totals · Locked</h3>
-        <div class="card-sub">Reference point — per-quarter detail rolls into these annual figures once pulled.</div>
-        <table class="tbl" id="store-annual-table">
-          <thead>
-            <tr>
-              <th>Store</th>
-              <th class="num">Net Sales</th>
-              <th class="num">Transactions</th>
-              <th class="num">Avg Basket</th>
-              <th class="num">% of Portfolio</th>
-            </tr>
-          </thead>
-          <tbody id="store-annual-tbody"></tbody>
+        <h3>Net Sales by Store by Quarter</h3>
+        <div class="card-sub">Headline retail revenue per location.</div>
+        <table class="tbl">
+          <thead><tr><th>Quarter</th><th class="num">Dracut</th><th class="num">Pepperell</th><th class="num">Groton</th><th class="num">Portfolio</th></tr></thead>
+          <tbody id="store-net-tbody"></tbody>
         </table>
       </div>
 
-      <div class="placeholder-card" id="store-quarterly-placeholder">
-        <div class="placeholder-label">Awaiting Dutchie pull</div>
-        <h3>Per-Store Quarterly Detail</h3>
-        <p id="store-quarterly-rationale"></p>
-        <span class="pull-cta">Prompt: "pull quarterly Dutchie data through Q1 2026"</span>
+      <div class="card" style="margin-bottom: var(--space-4);">
+        <h3>Avg Basket by Store</h3>
+        <div class="card-sub">Net Sales ÷ Transactions per quarter. Tells you how much each customer spends per visit at each store.</div>
+        <table class="tbl">
+          <thead><tr><th>Quarter</th><th class="num">Dracut</th><th class="num">Pepperell</th><th class="num">Groton</th></tr></thead>
+          <tbody id="store-basket-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Retail Product Margin by Store</h3>
+        <div class="card-sub">(Net Sales − Product Cost) ÷ Net Sales. Excludes occupancy, payroll, etc — that's on Profitability. This is the SKU-level economics each store is delivering.</div>
+        <table class="tbl">
+          <thead><tr><th>Quarter</th><th class="num">Dracut</th><th class="num">Pepperell</th><th class="num">Groton</th></tr></thead>
+          <tbody id="store-gm-tbody"></tbody>
+        </table>
       </div>
     </section>
 
     <!-- ============ DISCOUNT ANALYSIS ============ -->
     <section class="section" id="discounts">
       <h2>Discount Analysis</h2>
-      <div class="section-sub">Quarterly discount % trend (gross sales → net sales bridge) and absolute discount dollars by store. Helps see whether margin compression is COGS-driven or promotional.</div>
+      <div class="section-sub">Discount percentage trend (Discount $ ÷ Gross Sales) and absolute discount dollars by quarter. Helps see whether retail margin compression is COGS-driven or promotional.</div>
 
-      <div class="placeholder-card">
-        <div class="placeholder-label">Awaiting Dutchie pull</div>
-        <h3>Discount % &amp; Discount $ by Quarter</h3>
-        <p id="discount-rationale"></p>
-        <p><strong>Fields to pull:</strong> <span id="discount-fields"></span></p>
-        <span class="pull-cta">Prompt: "pull quarterly discount data from Dutchie"</span>
+      <div class="card">
+        <table class="tbl">
+          <thead><tr><th>Quarter</th><th class="num">Gross Sales</th><th class="num">Discount $</th><th class="num">Net Sales</th><th class="num">Discount %</th><th class="num">Discount % · Pep</th><th class="num">Discount % · Dracut</th></tr></thead>
+          <tbody id="discount-tbody"></tbody>
+        </table>
       </div>
     </section>
 
     <!-- ============ SALES MIX ============ -->
     <section class="section" id="mix">
-      <h2>Sales Mix by Category</h2>
-      <div class="section-sub">Quarter-over-quarter category mix shifts (flower, vape, pre-rolls, edibles, concentrates) reveal customer behavior trends and inform purchasing decisions.</div>
+      <h2>Sales Mix by Category · Portfolio</h2>
+      <div class="section-sub">Each major Dutchie category as a % of total quarterly net sales. Categories rolled up from per-store closing reports.</div>
 
-      <div class="placeholder-card">
-        <div class="placeholder-label">Awaiting Dutchie pull</div>
-        <h3>Mix % by Category by Quarter</h3>
-        <p id="mix-rationale"></p>
-        <p><strong>Categories tracked:</strong> <span id="mix-categories"></span></p>
-        <span class="pull-cta">Prompt: "pull quarterly category mix from Dutchie"</span>
+      <div class="card">
+        <table class="tbl mix-table">
+          <thead><tr><th>Category</th><th class="num" id="mix-h-qoq">Q4 2025 → Q1 2026</th><th class="num" id="mix-h-yoy">Q1 2025 → Q1 2026</th><th class="num">Q1 2024</th><th class="num">Q1 2025</th><th class="num">Q1 2026</th></tr></thead>
+          <tbody id="mix-tbody"></tbody>
+        </table>
       </div>
     </section>
 
-    <!-- ============ METHODOLOGY NOTES ============ -->
+    <!-- ============ METHODOLOGY ============ -->
     <section class="section" id="methodology">
       <h2>Methodology Notes</h2>
-      <div class="section-sub">How this page is built and what to keep in mind when reading it.</div>
+      <div class="section-sub">How this page is built and the sharp distinctions to keep in mind when reading it.</div>
+
+      <div class="callout">
+        <div class="callout-label">Apples to apples</div>
+        Every number on this page is retail Dutchie data. <strong>Net Sales</strong> = sum of three stores' Dutchie net sales for the quarter. <strong>Gross Sales</strong> = pre-discount. <strong>Cost</strong> is product COGS from the Dutchie closing-report — it does <strong>not</strong> include occupancy, payroll, or other store opex. So <strong>Retail Product Margin</strong> here (~53–57% portfolio) is the SKU-level margin, useful for store-vs-store unit economics. The <strong>Profitability</strong> page is where you go for full P&amp;L gross margin, NOI, and §471(c)-adjusted economic margin (~59.7%).
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-label">Reconciliation flag</div>
+        Groton FY 2025 net sales pulled from Dutchie API: <strong>$544,015</strong>. The value previously stored in <code>operations-data.js</code>: <strong>$426,192</strong>. That's a $117,823 discrepancy. Dutchie API is authoritative — <code>operations-data.js</code> Groton number is stale and should be updated. Dracut and Pepperell reconcile within $1 across both sources.
+      </div>
 
       <div class="card">
-        <h3>Sources &amp; consolidation</h3>
-        <div class="card-sub">Where each section's numbers come from.</div>
+        <h3>Sources &amp; scope</h3>
+        <div class="card-sub">Where every section's numbers come from.</div>
         <table class="tbl">
-          <thead>
-            <tr><th>Section</th><th>Source</th><th>Notes</th></tr>
-          </thead>
+          <thead><tr><th>Section</th><th>Source</th><th>Scope</th></tr></thead>
           <tbody>
-            <tr>
-              <td>Company-Wide Quarterly Trend</td>
-              <td>QuickBooks · monthly P&amp;L aggregated to quarters</td>
-              <td>Includes farm/wholesale revenue. FY 2024 = NECC standalone. FY 2025+ = consolidated.</td>
-            </tr>
-            <tr>
-              <td>Per-Store Quarterly</td>
-              <td>Dutchie API · /reporting/closing-report</td>
-              <td>Retail only. Pull at quarterly granularity to populate.</td>
-            </tr>
-            <tr>
-              <td>Discount Analysis</td>
-              <td>Dutchie API · gross/net/discount fields</td>
-              <td>Same pull as per-store quarterly.</td>
-            </tr>
-            <tr>
-              <td>Sales Mix</td>
-              <td>Dutchie API · category breakouts</td>
-              <td>Pull category-level closing reports.</td>
-            </tr>
-            <tr>
-              <td>Farm (Wholesale)</td>
-              <td>Internal · uploaded with monthly close</td>
-              <td>Not in Dutchie. Captured in QB consolidated revenue.</td>
-            </tr>
+            <tr><td>Most Recent Quarter KPIs</td><td>Dutchie API · summed across 3 stores</td><td>Retail only</td></tr>
+            <tr><td>Retail Portfolio Trend</td><td>Dutchie API · 9 quarters · per-store summed</td><td>Retail only</td></tr>
+            <tr><td>QoQ &amp; YoY Snapshot</td><td>Dutchie API · derived from trend</td><td>Retail only</td></tr>
+            <tr><td>Per-Store Quarterly</td><td>Dutchie API · /reporting/closing-report per store</td><td>Retail only</td></tr>
+            <tr><td>Discount Analysis</td><td>Dutchie API · grossSales/discount fields</td><td>Retail only</td></tr>
+            <tr><td>Sales Mix</td><td>Dutchie API · categorySummary aggregated</td><td>Retail only</td></tr>
+            <tr><td>Farm/Wholesale Revenue</td><td><strong>Not on this page.</strong> See Verticalization &amp; Profitability.</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card" style="margin-top: var(--space-4);">
+        <h3>FY 2024 vs FY 2025 comparability</h3>
+        <div class="card-sub">A store-count caveat for year-over-year reads.</div>
+        <table class="tbl">
+          <thead><tr><th>Period</th><th>Stores Open</th><th>Comparable Same-Store?</th></tr></thead>
+          <tbody>
+            <tr><td>FY 2024 (Q1–Q4)</td><td>Dracut + Pepperell</td><td>Yes — vs FY 2023 same two stores</td></tr>
+            <tr><td>FY 2025 Q1</td><td>Dracut + Pepperell + Groton (partial)</td><td>Mixed — Groton ramping</td></tr>
+            <tr><td>FY 2025 Q2 onward</td><td>All three stores at full operation</td><td>Yes within FY 2025+, Groton mature by Q3</td></tr>
+            <tr><td>YoY Q1 2026 vs Q1 2025</td><td>3 stores vs 3 stores</td><td>Yes — true like-for-like portfolio</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
     <footer class="page-footer">
-      <span id="page-footer-status">● THCFO · Quarterly · loading data</span>
+      <span id="page-footer-status">● THCFO · Quarterly Review · loading data</span>
       <span>Tree House Craft Cannabis · New England Craft Cultivators LLC</span>
     </footer>
 
@@ -366,11 +348,12 @@ footer.page-footer { margin-top: var(--space-7); padding-top: var(--space-5); bo
 
 <script>
 // ============================================================================
-// Quarterly Review — derives company-wide quarterly P&L on the fly from the
-// monthly time series in summary-data.js. Per-store/discount/mix sections
-// pull from quarterly-data.js (currently mostly placeholders pending a fresh
-// Dutchie pull at quarterly granularity).
+// Quarterly Review · Retail-only
+// All data from window.QUARTERLY_DATA · Dutchie POS API monthly pulls
+// aggregated to quarters per store and at the retail-portfolio level.
 // ============================================================================
+const FIELD = { netSales:0, grossSales:1, discount:2, cost:3, transactions:4, items:5, avgBasket:6, discountPct:7, grossMarginPct:8, itemsPerTxn:9 };
+
 function fmtUSDShort(v) {
   if (v == null || isNaN(v)) return '—';
   if (Math.abs(v) >= 1e6) return '$' + (v / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M';
@@ -381,138 +364,83 @@ function fmtUSD(v) {
   if (v == null || isNaN(v)) return '—';
   return '$' + Math.round(v).toLocaleString();
 }
-function fmtPct(v, decimals = 1) {
+function fmtPct(v, dp = 1) {
   if (v == null || isNaN(v)) return '—';
-  return (v * 100).toFixed(decimals) + '%';
+  return (v * 100).toFixed(dp) + '%';
 }
-function fmtPctPoints(v, decimals = 1) {
+function fmtPctPoints(v, dp = 1) {
   if (v == null || isNaN(v)) return '—';
   const sign = v >= 0 ? '+' : '';
-  return sign + (v * 100).toFixed(decimals) + ' pp';
+  return sign + (v * 100).toFixed(dp) + ' pp';
 }
-function fmtDelta(curr, prior, asPct = true, isInverse = false) {
-  // asPct=true: show % change. asPct=false: show absolute change (money).
-  // isInverse=true: down is good (e.g., COGS lower than prior). default: up is good.
-  if (curr == null || prior == null) return { text: '—', cls: 'flat' };
-  if (prior === 0) {
-    if (curr === 0) return { text: 'flat', cls: 'flat' };
-    return { text: 'n/m', cls: 'nm' };
-  }
-  // n/m if sign flipped — % change isn't meaningful
-  if (Math.sign(curr) !== Math.sign(prior) && asPct) {
-    return { text: 'n/m', cls: 'nm' };
-  }
-  if (asPct) {
-    const pct = (curr - prior) / Math.abs(prior);
-    const goodDir = isInverse ? -1 : 1;
-    let cls = 'flat';
-    if (Math.abs(pct) < 0.005) cls = 'flat';
-    else if (pct * goodDir > 0) cls = 'up';
-    else cls = 'down';
-    const sign = pct >= 0 ? '+' : '';
-    return { text: `${sign}${(pct * 100).toFixed(1)}%`, cls };
-  } else {
-    const diff = curr - prior;
-    const goodDir = isInverse ? -1 : 1;
-    let cls = 'flat';
-    if (Math.abs(diff) < 1) cls = 'flat';
-    else if (diff * goodDir > 0) cls = 'up';
-    else cls = 'down';
-    const sign = diff >= 0 ? '+' : '';
-    return { text: `${sign}${fmtUSDShort(diff)}`, cls };
-  }
-}
-
-// Aggregate monthly entries into quarterly totals.
-// Returns array sorted oldest → newest: [{label, year, qNum, revenue, cogs, grossProfit, noi, gmPct, noiPct}, ...]
-function aggregateMonthlyToQuarters(monthlyByYear) {
-  const out = [];
-  Object.keys(monthlyByYear).sort().forEach(year => {
-    const months = monthlyByYear[year];
-    if (!months || !months.length) return;
-    // Group by quarter (1-4)
-    const quarters = { 1: [], 2: [], 3: [], 4: [] };
-    months.forEach(m => {
-      const monthNum = parseInt(m.month.split('-')[1], 10);
-      const q = Math.ceil(monthNum / 3);
-      quarters[q].push(m);
-    });
-    [1, 2, 3, 4].forEach(q => {
-      if (quarters[q].length === 0) return;
-      const revenue = quarters[q].reduce((a, m) => a + m.revenue, 0);
-      const cogs = quarters[q].reduce((a, m) => a + m.cogs, 0);
-      const grossProfit = quarters[q].reduce((a, m) => a + m.grossProfit, 0);
-      const noi = quarters[q].reduce((a, m) => a + m.noi, 0);
-      out.push({
-        label: `Q${q} ${year}`,
-        year: parseInt(year, 10),
-        qNum: q,
-        complete: quarters[q].length === 3,
-        revenue, cogs, grossProfit, noi,
-        gmPct: revenue > 0 ? grossProfit / revenue : null,
-        noiPct: revenue > 0 ? noi / revenue : null
-      });
-    });
-  });
-  return out;
+function deltaPct(curr, prior, isInverse = false) {
+  if (curr == null || prior == null || prior === 0) return { text: prior === 0 && curr === 0 ? 'flat' : (prior === 0 ? 'n/m' : '—'), cls: 'flat' };
+  if (Math.sign(curr) !== Math.sign(prior)) return { text: 'n/m', cls: 'nm' };
+  const pct = (curr - prior) / Math.abs(prior);
+  const goodDir = isInverse ? -1 : 1;
+  let cls = 'flat';
+  if (Math.abs(pct) < 0.005) cls = 'flat';
+  else if (pct * goodDir > 0) cls = 'up';
+  else cls = 'down';
+  const sign = pct >= 0 ? '+' : '';
+  return { text: `${sign}${(pct * 100).toFixed(1)}%`, cls };
 }
 
 function renderQuarterly() {
-  if (!window.SUMMARY_DATA || !window.OPERATIONS_DATA || !window.QUARTERLY_DATA) {
-    document.getElementById('page-footer-status').textContent = '● THCFO · Quarterly · data files missing';
+  if (!window.QUARTERLY_DATA) {
+    document.getElementById('page-footer-status').textContent = '● THCFO · Quarterly · quarterly-data.js missing';
     return;
   }
-  const S = window.SUMMARY_DATA;
-  const OPS = window.OPERATIONS_DATA;
   const Q = window.QUARTERLY_DATA;
+  const order = Q.meta.quartersOrdered;
+  const portfolio = Q.byQuarter.portfolio;
+  const dracut = Q.byQuarter.dracut;
+  const pepperell = Q.byQuarter.pepperell;
+  const groton = Q.byQuarter.groton;
 
-  const quarters = aggregateMonthlyToQuarters(S.monthly);
-  const completeQuarters = quarters.filter(q => q.complete);
-  if (completeQuarters.length === 0) {
-    document.getElementById('page-footer-status').textContent = '● THCFO · Quarterly · no complete quarters in monthly data';
-    return;
-  }
-
-  const mostRecent = completeQuarters[completeQuarters.length - 1];
-  const priorQ = completeQuarters[completeQuarters.length - 2] || null;
-  const yoyQ = completeQuarters.find(q => q.year === mostRecent.year - 1 && q.qNum === mostRecent.qNum) || null;
+  const mostRecent = order[order.length - 1];
+  const priorQ = order[order.length - 2];
+  const yoyQ = order[order.length - 5]; // 4 quarters back
 
   // ----- Period subtitle -----
   document.getElementById('kpi-period-sub').textContent =
-    `${mostRecent.label} · ${completeQuarters.length} complete quarters in series · most recent close ${S.meta.last_updated}`;
+    `${mostRecent} · 9 complete quarters in series · Dutchie pull updated ${Q.meta.last_updated}`;
 
   // ----- KPI row -----
-  const qoqRev = fmtDelta(mostRecent.revenue, priorQ ? priorQ.revenue : null, true);
-  const qoqGP  = fmtDelta(mostRecent.grossProfit, priorQ ? priorQ.grossProfit : null, true);
-  const qoqNOI = fmtDelta(mostRecent.noi, priorQ ? priorQ.noi : null, true);
-  const yoyRev = fmtDelta(mostRecent.revenue, yoyQ ? yoyQ.revenue : null, true);
+  const cur = portfolio[mostRecent];
+  const prv = portfolio[priorQ];
+  const yoy = portfolio[yoyQ];
 
   const kpis = [
     {
-      label: `${mostRecent.label} · Revenue`,
-      value: fmtUSDShort(mostRecent.revenue),
-      meta: `QoQ <span class="delta ${qoqRev.cls}">${qoqRev.text}</span> · YoY <span class="delta ${yoyRev.cls}">${yoyRev.text}</span>`,
+      label: `${mostRecent} · Retail Net Sales`,
+      value: fmtUSDShort(cur[FIELD.netSales]),
+      meta: (() => {
+        const qoq = deltaPct(cur[FIELD.netSales], prv[FIELD.netSales]);
+        const y = deltaPct(cur[FIELD.netSales], yoy[FIELD.netSales]);
+        return `QoQ <span class="delta ${qoq.cls}">${qoq.text}</span> · YoY <span class="delta ${y.cls}">${y.text}</span>`;
+      })(),
       headline: true
     },
     {
-      label: 'Gross Profit',
-      value: fmtUSDShort(mostRecent.grossProfit),
-      meta: `QoQ <span class="delta ${qoqGP.cls}">${qoqGP.text}</span>`
+      label: 'Transactions',
+      value: cur[FIELD.transactions].toLocaleString(),
+      meta: (() => { const d = deltaPct(cur[FIELD.transactions], prv[FIELD.transactions]); return `QoQ <span class="delta ${d.cls}">${d.text}</span>`; })()
     },
     {
-      label: 'NOI',
-      value: fmtUSDShort(mostRecent.noi),
-      meta: `QoQ <span class="delta ${qoqNOI.cls}">${qoqNOI.text}</span>`
+      label: 'Avg Basket',
+      value: '$' + cur[FIELD.avgBasket].toFixed(2),
+      meta: (() => { const d = deltaPct(cur[FIELD.avgBasket], prv[FIELD.avgBasket]); return `QoQ <span class="delta ${d.cls}">${d.text}</span>`; })()
     },
     {
-      label: 'GM %',
-      value: fmtPct(mostRecent.gmPct),
-      meta: priorQ ? `vs prior <span class="delta ${(mostRecent.gmPct - priorQ.gmPct) > 0 ? 'up' : 'down'}">${fmtPctPoints(mostRecent.gmPct - priorQ.gmPct)}</span>` : '—'
+      label: 'Discount %',
+      value: fmtPct(cur[FIELD.discountPct], 2),
+      meta: `vs prior <span class="delta ${(cur[FIELD.discountPct] - prv[FIELD.discountPct]) > 0 ? 'down' : 'up'}">${fmtPctPoints(cur[FIELD.discountPct] - prv[FIELD.discountPct])}</span>`
     },
     {
-      label: 'NOI %',
-      value: fmtPct(mostRecent.noiPct),
-      meta: priorQ ? `vs prior <span class="delta ${(mostRecent.noiPct - priorQ.noiPct) > 0 ? 'up' : 'down'}">${fmtPctPoints(mostRecent.noiPct - priorQ.noiPct)}</span>` : '—'
+      label: 'Retail Product Margin',
+      value: fmtPct(cur[FIELD.grossMarginPct], 1),
+      meta: `vs prior <span class="delta ${(cur[FIELD.grossMarginPct] - prv[FIELD.grossMarginPct]) > 0 ? 'up' : 'down'}">${fmtPctPoints(cur[FIELD.grossMarginPct] - prv[FIELD.grossMarginPct])}</span>`
     }
   ];
   document.getElementById('kpi-row').innerHTML = kpis.map(k => `
@@ -524,133 +452,180 @@ function renderQuarterly() {
   `).join('');
 
   // ----- Trend table -----
-  const trendTbody = document.getElementById('trend-tbody');
   let lastYear = null;
-  trendTbody.innerHTML = quarters.map(q => {
+  document.getElementById('trend-tbody').innerHTML = order.map(q => {
+    const r = portfolio[q];
+    const year = parseInt(q.split(' ')[1], 10);
     let yearDivider = '';
-    if (q.year !== lastYear) {
-      const scopeNote = q.year <= 2024 ? 'NECC standalone' : 'Consolidated NECC + MACC';
-      yearDivider = `<tr class="year-divider"><td colspan="7">FY ${q.year} · ${scopeNote}</td></tr>`;
-      lastYear = q.year;
+    if (year !== lastYear) {
+      const scope = year <= 2024 ? 'Dracut + Pepperell only' : 'All 3 stores';
+      yearDivider = `<tr class="year-divider"><td colspan="9">FY ${year} · ${scope}</td></tr>`;
+      lastYear = year;
     }
-    const isHighlight = q.label === mostRecent.label;
+    const isHL = q === mostRecent;
     return `${yearDivider}
-      <tr${isHighlight ? ' class="highlight"' : ''}>
-        <td>${q.label}${q.complete ? '' : ' <span class="scope-flag">incomplete</span>'}</td>
-        <td class="num">${fmtUSDShort(q.revenue)}</td>
-        <td class="num">${fmtUSDShort(q.cogs)}</td>
-        <td class="num">${fmtUSDShort(q.grossProfit)}</td>
-        <td class="num">${fmtUSDShort(q.noi)}</td>
-        <td class="num">${fmtPct(q.gmPct)}</td>
-        <td class="num">${fmtPct(q.noiPct)}</td>
+      <tr${isHL ? ' class="highlight"' : ''}>
+        <td>${q}</td>
+        <td class="num">${fmtUSD(r[FIELD.netSales])}</td>
+        <td class="num">${fmtUSD(r[FIELD.grossSales])}</td>
+        <td class="num">${fmtUSD(r[FIELD.discount])}</td>
+        <td class="num">${fmtPct(r[FIELD.discountPct], 2)}</td>
+        <td class="num">${r[FIELD.transactions].toLocaleString()}</td>
+        <td class="num">$${r[FIELD.avgBasket].toFixed(2)}</td>
+        <td class="num">${r[FIELD.itemsPerTxn].toFixed(2)}</td>
+        <td class="num">${fmtPct(r[FIELD.grossMarginPct], 1)}</td>
       </tr>`;
   }).join('');
 
   // ----- Bar chart -----
-  const maxRev = Math.max(...quarters.map(q => q.revenue));
-  document.getElementById('bar-chart').innerHTML = quarters.map(q => {
-    const pct = (q.revenue / maxRev) * 100;
-    const isPre = q.year <= 2024;
+  const maxRev = Math.max(...order.map(q => portfolio[q][FIELD.netSales]));
+  document.getElementById('bar-chart').innerHTML = order.map(q => {
+    const r = portfolio[q];
+    const pct = (r[FIELD.netSales] / maxRev) * 100;
+    const isHL = q === mostRecent;
     return `
-      <div class="bar-row${isPre ? ' scope-pre' : ''}">
-        <div class="bar-label">${q.label}</div>
-        <div class="bar-track"><div class="bar-fill" style="width: ${pct.toFixed(1)}%;"></div></div>
-        <div class="bar-value">${fmtUSDShort(q.revenue)}</div>
+      <div class="bar-row${isHL ? '' : ''}">
+        <div class="bar-label">${q}</div>
+        <div class="bar-track"><div class="bar-fill" style="width: ${pct.toFixed(1)}%; ${isHL ? '' : 'opacity:0.7;'}"></div></div>
+        <div class="bar-value">${fmtUSDShort(r[FIELD.netSales])}</div>
       </div>
     `;
   }).join('');
 
-  // ----- QoQ comparison -----
-  document.getElementById('qoq-title').textContent =
-    priorQ ? `${priorQ.label} → ${mostRecent.label}` : 'Insufficient quarters';
-  document.getElementById('qoq-period').textContent =
-    priorQ ? `${priorQ.label} (prior) vs ${mostRecent.label} (current)` : '';
-  if (priorQ) {
-    document.getElementById('qoq-tbody').innerHTML = renderCompareRows(priorQ, mostRecent);
-  }
+  // ----- QoQ + YoY -----
+  document.getElementById('qoq-title').textContent = `${priorQ} → ${mostRecent}`;
+  document.getElementById('qoq-period').textContent = 'Sequential momentum';
+  document.getElementById('qoq-tbody').innerHTML = renderCompareRows(prv, cur);
 
-  // ----- YoY comparison -----
-  document.getElementById('yoy-title').textContent =
-    yoyQ ? `${yoyQ.label} → ${mostRecent.label}` : 'No prior-year quarter';
-  document.getElementById('yoy-period').textContent =
-    yoyQ ? `${yoyQ.label} (prior year) vs ${mostRecent.label} (current)` : '';
-  if (yoyQ) {
-    const note = (yoyQ.year <= 2024 && mostRecent.year >= 2025)
-      ? '<tr class="year-divider"><td colspan="4">Comparison crosses the NECC standalone → NECC + MACC consolidation boundary. Includes scope expansion.</td></tr>'
-      : '';
-    document.getElementById('yoy-tbody').innerHTML = note + renderCompareRows(yoyQ, mostRecent);
-  }
+  document.getElementById('yoy-title').textContent = `${yoyQ} → ${mostRecent}`;
+  document.getElementById('yoy-period').textContent = 'Like-for-like portfolio (3 stores)';
+  document.getElementById('yoy-tbody').innerHTML = renderCompareRows(yoy, cur);
 
-  // ----- Per-store annual ----- (FY 2025 locked totals, with portfolio share)
-  const storeData = OPS.fy2025.byStore;
-  const storeKeys = Object.keys(storeData);
-  const portfolioNet = storeKeys.reduce((a, k) => a + storeData[k].netSales, 0);
-  document.getElementById('store-annual-tbody').innerHTML = storeKeys.map(k => {
-    const s = storeData[k];
-    const name = k.charAt(0).toUpperCase() + k.slice(1);
-    const sharePct = (s.netSales / portfolioNet);
-    return `
-      <tr>
-        <td>${name}</td>
-        <td class="num">${fmtUSD(s.netSales)}</td>
-        <td class="num">${s.transactionCount.toLocaleString()}</td>
-        <td class="num">$${s.avgBasket.toFixed(2)}</td>
-        <td class="num">${fmtPct(sharePct)}</td>
-      </tr>
-    `;
-  }).join('') + `
-    <tr class="highlight">
-      <td>Portfolio</td>
-      <td class="num">${fmtUSD(portfolioNet)}</td>
-      <td class="num">${OPS.fy2025.portfolio.transactionCount.toLocaleString()}</td>
-      <td class="num">$${OPS.fy2025.portfolio.avgBasket.toFixed(2)}</td>
-      <td class="num">100%</td>
-    </tr>
-  `;
+  // ----- Per-store: Net Sales -----
+  document.getElementById('store-net-tbody').innerHTML = order.map(q => {
+    const d = dracut[q][FIELD.netSales];
+    const p = pepperell[q][FIELD.netSales];
+    const g = groton[q][FIELD.netSales];
+    const t = portfolio[q][FIELD.netSales];
+    const isHL = q === mostRecent;
+    return `<tr${isHL ? ' class="highlight"' : ''}>
+      <td>${q}</td>
+      <td class="num">${fmtUSD(d)}</td>
+      <td class="num">${fmtUSD(p)}</td>
+      <td class="num">${g === 0 ? '— (closed)' : fmtUSD(g)}</td>
+      <td class="num">${fmtUSD(t)}</td>
+    </tr>`;
+  }).join('');
 
-  // ----- Per-store quarterly placeholder rationale -----
-  document.getElementById('store-quarterly-rationale').textContent =
-    `${Q.storeQuarterly.blocker}. When pulled, each store will show net sales, transaction count, average basket, and discount % for every complete quarter back to Q1 2024. ${Q.meta.farm_revenue_note}`;
+  // ----- Per-store: Avg Basket -----
+  document.getElementById('store-basket-tbody').innerHTML = order.map(q => {
+    const d = dracut[q][FIELD.avgBasket];
+    const p = pepperell[q][FIELD.avgBasket];
+    const g = groton[q][FIELD.avgBasket];
+    const isHL = q === mostRecent;
+    return `<tr${isHL ? ' class="highlight"' : ''}>
+      <td>${q}</td>
+      <td class="num">$${d.toFixed(2)}</td>
+      <td class="num">$${p.toFixed(2)}</td>
+      <td class="num">${g === 0 ? '—' : '$' + g.toFixed(2)}</td>
+    </tr>`;
+  }).join('');
 
-  // ----- Discount/mix rationales -----
-  document.getElementById('discount-rationale').textContent = Q.discounts.rationale;
-  document.getElementById('discount-fields').textContent = Q.discounts.fields_to_pull.join(', ');
-  document.getElementById('mix-rationale').textContent = Q.mix.rationale;
-  document.getElementById('mix-categories').textContent = Q.mix.categories_to_track.join(', ');
+  // ----- Per-store: Retail Margin -----
+  document.getElementById('store-gm-tbody').innerHTML = order.map(q => {
+    const d = dracut[q][FIELD.grossMarginPct];
+    const p = pepperell[q][FIELD.grossMarginPct];
+    const g = groton[q][FIELD.grossMarginPct];
+    const isHL = q === mostRecent;
+    return `<tr${isHL ? ' class="highlight"' : ''}>
+      <td>${q}</td>
+      <td class="num">${fmtPct(d, 1)}</td>
+      <td class="num">${fmtPct(p, 1)}</td>
+      <td class="num">${g === 0 ? '—' : fmtPct(g, 1)}</td>
+    </tr>`;
+  }).join('');
+
+  // ----- Discount table -----
+  document.getElementById('discount-tbody').innerHTML = order.map(q => {
+    const r = portfolio[q];
+    const dRow = dracut[q]; const pRow = pepperell[q];
+    const isHL = q === mostRecent;
+    return `<tr${isHL ? ' class="highlight"' : ''}>
+      <td>${q}</td>
+      <td class="num">${fmtUSD(r[FIELD.grossSales])}</td>
+      <td class="num">${fmtUSD(r[FIELD.discount])}</td>
+      <td class="num">${fmtUSD(r[FIELD.netSales])}</td>
+      <td class="num">${fmtPct(r[FIELD.discountPct], 2)}</td>
+      <td class="num">${fmtPct(pRow[FIELD.discountPct], 2)}</td>
+      <td class="num">${fmtPct(dRow[FIELD.discountPct], 2)}</td>
+    </tr>`;
+  }).join('');
+
+  // ----- Sales mix -----
+  // Show categories sorted by Q1 2026 size desc, with mix % at three points (Q1 2024, Q1 2025, Q1 2026), plus QoQ and YoY pp deltas
+  const cats = Q.portfolioCategoryMix;
+  const categoryList = Array.from(new Set(Object.keys(cats[mostRecent])));
+  // Sort by current quarter size
+  categoryList.sort((a, b) => (cats[mostRecent][b] || 0) - (cats[mostRecent][a] || 0));
+  const totalCur = Object.values(cats[mostRecent]).reduce((a, v) => a + v, 0);
+  const totalPrior = Object.values(cats[priorQ]).reduce((a, v) => a + v, 0);
+  const totalYoY = Object.values(cats[yoyQ]).reduce((a, v) => a + v, 0);
+  const totalQ1_24 = Object.values(cats['Q1 2024']).reduce((a, v) => a + v, 0);
+  const totalQ1_25 = Object.values(cats['Q1 2025']).reduce((a, v) => a + v, 0);
+
+  document.getElementById('mix-tbody').innerHTML = categoryList.map(cat => {
+    const cur = (cats[mostRecent][cat] || 0) / totalCur;
+    const prv = (cats[priorQ][cat] || 0) / totalPrior;
+    const yoy = (cats[yoyQ][cat] || 0) / totalYoY;
+    const q1_24 = (cats['Q1 2024'][cat] || 0) / totalQ1_24;
+    const q1_25 = (cats['Q1 2025'][cat] || 0) / totalQ1_25;
+    const qoqPP = cur - prv;
+    const yoyPP = cur - yoy;
+    const qoqCls = Math.abs(qoqPP) < 0.001 ? 'flat' : (qoqPP > 0 ? 'up' : 'down');
+    const yoyCls = Math.abs(yoyPP) < 0.001 ? 'flat' : (yoyPP > 0 ? 'up' : 'down');
+    return `<tr>
+      <td class="cat-cell">${cat}</td>
+      <td class="num"><span class="delta ${qoqCls}">${fmtPctPoints(qoqPP)}</span></td>
+      <td class="num"><span class="delta ${yoyCls}">${fmtPctPoints(yoyPP)}</span></td>
+      <td class="num">${fmtPct(q1_24, 1)}</td>
+      <td class="num">${fmtPct(q1_25, 1)}</td>
+      <td class="num">${fmtPct(cur, 1)}</td>
+    </tr>`;
+  }).join('');
 
   // ----- Footer -----
   document.getElementById('page-footer-status').textContent =
-    `● THCFO · Quarterly Review · ${quarters.length} quarters · most recent ${mostRecent.label} · ${S.meta.last_updated}`;
+    `● THCFO · Quarterly Review · 9 quarters · ${mostRecent} most recent · Dutchie pull ${Q.meta.last_updated}`;
 }
 
 function renderCompareRows(prior, current) {
   const rows = [
-    { label: 'Revenue',      p: prior.revenue,     c: current.revenue,     fmt: fmtUSDShort,  inverse: false },
-    { label: 'COGS',         p: prior.cogs,        c: current.cogs,        fmt: fmtUSDShort,  inverse: true  },
-    { label: 'Gross Profit', p: prior.grossProfit, c: current.grossProfit, fmt: fmtUSDShort,  inverse: false },
-    { label: 'NOI',          p: prior.noi,         c: current.noi,         fmt: fmtUSDShort,  inverse: false },
-    { label: 'GM %',         p: prior.gmPct,       c: current.gmPct,       fmt: v => fmtPct(v), inverse: false, isPctPoints: true },
-    { label: 'NOI %',        p: prior.noiPct,      c: current.noiPct,      fmt: v => fmtPct(v), inverse: false, isPctPoints: true }
+    { label: 'Net Sales',           f: FIELD.netSales,       fmt: fmtUSD,  inverse: false, isPctPoints: false },
+    { label: 'Gross Sales',         f: FIELD.grossSales,     fmt: fmtUSD,  inverse: false, isPctPoints: false },
+    { label: 'Discount $',          f: FIELD.discount,       fmt: fmtUSD,  inverse: true,  isPctPoints: false },
+    { label: 'Discount %',          f: FIELD.discountPct,    fmt: v => fmtPct(v, 2), inverse: true, isPctPoints: true },
+    { label: 'Transactions',        f: FIELD.transactions,   fmt: v => v.toLocaleString(), inverse: false, isPctPoints: false },
+    { label: 'Avg Basket',          f: FIELD.avgBasket,      fmt: v => '$' + v.toFixed(2), inverse: false, isPctPoints: false },
+    { label: 'Items / Txn',         f: FIELD.itemsPerTxn,    fmt: v => v.toFixed(2), inverse: false, isPctPoints: false },
+    { label: 'Retail Margin %',     f: FIELD.grossMarginPct, fmt: v => fmtPct(v, 1), inverse: false, isPctPoints: true }
   ];
   return rows.map(r => {
-    let deltaText, deltaCls;
+    const p = prior[r.f]; const c = current[r.f];
+    let dt, dc;
     if (r.isPctPoints) {
-      const pp = (r.c == null || r.p == null) ? null : (r.c - r.p);
-      deltaText = pp == null ? '—' : fmtPctPoints(pp);
-      deltaCls = pp == null ? 'flat' : (Math.abs(pp) < 0.001 ? 'flat' : (pp > 0 ? 'up' : 'down'));
+      const pp = c - p;
+      dt = fmtPctPoints(pp);
+      dc = Math.abs(pp) < 0.001 ? 'flat' : (pp * (r.inverse ? -1 : 1) > 0 ? 'up' : 'down');
     } else {
-      const d = fmtDelta(r.c, r.p, true, r.inverse);
-      deltaText = d.text;
-      deltaCls = d.cls;
+      const d = deltaPct(c, p, r.inverse);
+      dt = d.text; dc = d.cls;
     }
-    return `
-      <tr>
-        <td>${r.label}</td>
-        <td class="num">${r.fmt(r.p)}</td>
-        <td class="num">${r.fmt(r.c)}</td>
-        <td class="num"><span class="delta ${deltaCls}">${deltaText}</span></td>
-      </tr>
-    `;
+    return `<tr>
+      <td>${r.label}</td>
+      <td class="num">${r.fmt(p)}</td>
+      <td class="num">${r.fmt(c)}</td>
+      <td class="num"><span class="delta ${dc}">${dt}</span></td>
+    </tr>`;
   }).join('');
 }
 
