@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THCFO — Direction C v2 · Hunter Green</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Hunter green palette */
+  --hg-50:  #eaf2ec;   /* soft tint background */
+  --hg-100: #c9dfd0;
+  --hg-200: #a2c5ad;
+  --hg-400: #5b8c66;
+  --hg-500: #3f7849;   /* mid */
+  --hg-600: #355e3b;   /* hunter green primary */
+  --hg-700: #2a4a30;   /* deeper for hover */
+  --hg-800: #1f3724;   /* darkest */
+  --hg-bright: #4a9d5e; /* for use against dark sidebar */
+
+  --text-primary:    #1a1f2e;
+  --text-secondary:  #525866;
+  --text-tertiary:   #868e9d;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #f5f3ee 0%, #faf8f3 50%, #f0f4ec 100%);
+  min-height: 100vh;
+  color: var(--text-primary);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+/* Soft floating greens in background for depth */
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(circle at 75% 20%, rgba(53, 94, 59, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 25% 85%, rgba(74, 157, 94, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 90% 75%, rgba(106, 177, 117, 0.05) 0%, transparent 35%);
+}
+.layout { display: grid; grid-template-columns: 232px 1fr; min-height: 100vh; position: relative; z-index: 1; }
+
+/* Dark sidebar */
+aside {
+  background: #0a1410;     /* slight green tint to dark navy */
+  color: #cbd5cb;
+  padding: 28px 20px;
+  position: sticky; top: 0; height: 100vh;
+}
+.brand {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--hg-bright);
+  margin-bottom: 4px;
+}
+.brand-sub { font-size: 13px; color: #94a3a2; margin-bottom: 32px; }
+.nav-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--hg-bright); margin: 22px 0 8px;
+}
+nav a {
+  display: block; padding: 8px 12px; color: #cbd5cb;
+  text-decoration: none; font-size: 13px; border-radius: 8px;
+  margin-bottom: 2px; transition: all 0.15s;
+}
+nav a:hover { color: #ffffff; background: rgba(255,255,255,0.05); }
+nav a.active {
+  background: rgba(74, 157, 94, 0.18);
+  color: #ffffff; font-weight: 600;
+  border-left: 2px solid var(--hg-bright);
+}
+
+/* Main content */
+main { padding: 36px 44px; max-width: 1280px; }
+.page-title {
+  font-size: 32px; font-weight: 700; margin: 0 0 6px;
+  color: var(--hg-600);
+  letter-spacing: -0.025em;
+}
+.page-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; max-width: 700px; line-height: 1.6; }
+
+.scope-banner {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(53, 94, 59, 0.18);
+  box-shadow: 0 4px 24px rgba(53, 94, 59, 0.06);
+  border-radius: 14px; padding: 14px 18px; font-size: 13px; color: var(--text-secondary);
+  margin-bottom: 32px; line-height: 1.6;
+}
+.scope-banner strong { color: var(--text-primary); font-weight: 600; }
+.scope-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;
+  color: var(--hg-600); margin-bottom: 4px;
+}
+
+/* Tab toggle pill */
+.tab-strip {
+  display: inline-flex;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(53, 94, 59, 0.15);
+  box-shadow: 0 2px 12px rgba(53, 94, 59, 0.06);
+  border-radius: 12px; padding: 4px; margin-bottom: 24px;
+}
+.tab {
+  padding: 9px 22px; font-size: 13px; font-weight: 500;
+  color: var(--text-secondary); cursor: pointer; border-radius: 9px;
+  transition: all 0.2s; border: none; background: transparent;
+}
+.tab.active {
+  background: var(--hg-600);
+  color: white; font-weight: 600;
+  box-shadow: 0 4px 14px rgba(53, 94, 59, 0.35);
+}
+
+/* Section */
+.section { margin-bottom: 36px; }
+.section h2 { font-size: 22px; font-weight: 600; margin: 0 0 4px; color: var(--hg-700); letter-spacing: -0.01em; }
+.section .sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+
+/* Glass KPI cards */
+.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 28px; }
+.kpi-card {
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.85);
+  border-radius: 16px; padding: 22px;
+  box-shadow: 0 4px 24px rgba(53, 94, 59, 0.06);
+  transition: all 0.25s;
+  position: relative; overflow: hidden;
+}
+.kpi-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(53, 94, 59, 0.12); }
+.kpi-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(53, 94, 59, 0.4), transparent);
+}
+.kpi-card.headline {
+  background: linear-gradient(135deg, rgba(53, 94, 59, 0.12) 0%, rgba(106, 177, 117, 0.06) 100%);
+  border: 1px solid rgba(53, 94, 59, 0.25);
+  box-shadow: 0 8px 32px rgba(53, 94, 59, 0.12);
+}
+.kpi-card.headline::before { background: var(--hg-600); height: 4px; }
+.kpi-card .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-secondary); font-weight: 600; margin-bottom: 12px;
+}
+.kpi-card .value {
+  font-size: 28px; font-weight: 700; color: var(--text-primary);
+  letter-spacing: -0.02em; line-height: 1.1;
+}
+.kpi-card.headline .value {
+  color: var(--hg-600);
+  font-size: 32px;
+}
+.kpi-card .meta { font-size: 12px; color: var(--text-secondary); margin-top: 10px; }
+.kpi-card .delta-up { color: #2d7a44; font-weight: 600; }
+.kpi-card .delta-down { color: #c2410c; font-weight: 600; }
+.kpi-card .delta-flat { color: var(--text-tertiary); }
+
+/* Chart card (glass) */
+.chart-card {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.85);
+  box-shadow: 0 4px 24px rgba(53, 94, 59, 0.06);
+  border-radius: 16px; padding: 24px;
+  margin-bottom: 16px;
+}
+.chart-card h3 { font-size: 17px; font-weight: 600; margin: 0 0 4px; color: var(--hg-700); }
+.chart-card .desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; }
+
+/* Data table */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); font-weight: 600; padding: 10px 12px; text-align: left; border-bottom: 1px solid rgba(53, 94, 59, 0.15); }
+table td { padding: 12px; border-bottom: 1px solid rgba(53, 94, 59, 0.08); }
+table td.num, table th.num { text-align: right; }
+table tr:last-child td { border-bottom: none; }
+table tr.highlight td {
+  background: rgba(53, 94, 59, 0.08);
+  color: var(--hg-700); font-weight: 600;
+}
+.delta-up { color: #2d7a44; font-weight: 600; }
+.delta-down { color: #c2410c; font-weight: 600; }
+
+/* Bar chart */
+.bar-chart { display: flex; flex-direction: column; gap: 10px; }
+.bar-row { display: grid; grid-template-columns: 80px 1fr 100px; align-items: center; gap: 14px; font-size: 12px; }
+.bar-row .lbl { color: var(--text-secondary); font-weight: 500; }
+.bar-row .track {
+  background: rgba(53, 94, 59, 0.06);
+  border-radius: 9px; height: 28px; overflow: hidden;
+  border: 1px solid rgba(53, 94, 59, 0.05);
+}
+.bar-row .fill {
+  background: linear-gradient(90deg, var(--hg-700) 0%, var(--hg-500) 100%);
+  height: 100%; border-radius: 9px; transition: width 0.4s;
+  box-shadow: 0 2px 8px rgba(53, 94, 59, 0.25);
+}
+.bar-row.highlight .fill {
+  background: linear-gradient(90deg, var(--hg-bright) 0%, #6ab175 100%);
+  box-shadow: 0 2px 12px rgba(74, 157, 94, 0.4);
+}
+.bar-row .val { text-align: right; color: var(--text-primary); font-weight: 600; }
+
+/* Store mix — keep distinct colors so stores remain visually identifiable */
+.store-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.store-card {
+  border-radius: 16px; padding: 22px; text-align: center;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  position: relative; overflow: hidden;
+  transition: all 0.25s;
+}
+.store-card:hover { transform: translateY(-3px); }
+.store-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+}
+/* Dracut = hunter green (the flagship, branded) */
+.store-card.dracut {
+  background: linear-gradient(135deg, rgba(53, 94, 59, 0.12) 0%, rgba(106, 177, 117, 0.06) 100%);
+  border: 1px solid rgba(53, 94, 59, 0.25);
+  box-shadow: 0 4px 24px rgba(53, 94, 59, 0.1);
+}
+.store-card.dracut::before { background: var(--hg-600); }
+.store-card.dracut .name { color: var(--hg-700); }
+.store-card.dracut .num { color: var(--hg-600); }
+/* Pepperell = deep purple */
+.store-card.pepperell {
+  background: linear-gradient(135deg, rgba(126, 34, 206, 0.12) 0%, rgba(168, 85, 247, 0.06) 100%);
+  border: 1px solid rgba(126, 34, 206, 0.25);
+  box-shadow: 0 4px 24px rgba(126, 34, 206, 0.1);
+}
+.store-card.pepperell::before { background: linear-gradient(90deg, #7e22ce, #a855f7); }
+.store-card.pepperell .name { color: #6b21a8; }
+.store-card.pepperell .num { color: #7e22ce; }
+/* Groton = warm amber */
+.store-card.groton {
+  background: linear-gradient(135deg, rgba(180, 83, 9, 0.12) 0%, rgba(245, 158, 11, 0.06) 100%);
+  border: 1px solid rgba(180, 83, 9, 0.25);
+  box-shadow: 0 4px 24px rgba(180, 83, 9, 0.1);
+}
+.store-card.groton::before { background: linear-gradient(90deg, #b45309, #f59e0b); }
+.store-card.groton .name { color: #92400e; }
+.store-card.groton .num { color: #b45309; }
+.store-card .name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.store-card .num { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+.store-card .pct { font-size: 12px; color: var(--text-secondary); margin-top: 6px; }
+
+/* Donut */
+.mix-chart-wrap { display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: center; }
+.donut { width: 180px; height: 180px; }
+.cat-list { font-size: 13px; }
+.cat-row { display: grid; grid-template-columns: 12px 1fr 70px 56px; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(53, 94, 59, 0.08); }
+.cat-row:last-child { border-bottom: none; }
+.cat-dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 0 2px rgba(255,255,255,0.6); }
+.cat-name { font-weight: 500; }
+.cat-amt { text-align: right; color: var(--text-secondary); }
+.cat-pct { text-align: right; font-weight: 700; color: var(--text-primary); }
+
+.hidden { display: none !important; }
+
+footer {
+  margin-top: 40px; padding: 16px 0; border-top: 1px solid rgba(53, 94, 59, 0.12);
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--text-tertiary);
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside>
+    <div class="brand">THCFO</div>
+    <div class="brand-sub">Tree House CFO Dashboard</div>
+
+    <nav>
+      <a>Docs</a>
+    </nav>
+
+    <div class="nav-label">Pages</div>
+    <nav>
+      <a>Overview</a>
+      <a class="active">Quarterly Review</a>
+      <a>Valuation</a>
+      <a>Profitability</a>
+      <a>Verticalization</a>
+      <a>Cash Flow &amp; Liquidity</a>
+      <a>Debt &amp; Capital</a>
+      <a>Operations</a>
+    </nav>
+
+    <div class="nav-label">On This Page</div>
+    <nav>
+      <a>Most Recent Quarter</a>
+      <a>Portfolio Trend</a>
+      <a>QoQ &amp; YoY</a>
+      <a>Per-Store Detail</a>
+      <a>Sales Mix</a>
+    </nav>
+  </aside>
+
+  <main>
+    <h1 class="page-title">Quarterly Review</h1>
+    <p class="page-sub">
+      Retail performance across Dracut, Pepperell, and Groton — Dutchie-sourced, quarterly granularity, apples-to-apples store-vs-store comparisons.
+    </p>
+
+    <div class="scope-banner">
+      <div class="scope-label">Scope</div>
+      <strong>Retail only.</strong> Every number on this page comes from the Dutchie POS API and reflects the three retail dispensaries. Farm/wholesale revenue lives on the Verticalization page.
+    </div>
+
+    <!-- ====== Most Recent Quarter — KPI cards (no sparklines) ====== -->
+    <div class="section">
+      <h2>Most Recent Quarter · Q1 2026</h2>
+      <div class="sub">Retail portfolio · 9 complete quarters in series · Dutchie pull updated 2026-04-28</div>
+
+      <div class="kpi-row">
+        <div class="kpi-card headline">
+          <div class="label">Q1 2026 Net Sales</div>
+          <div class="value">$1.87M</div>
+          <div class="meta">QoQ <span class="delta-down">-10.9%</span> · YoY <span class="delta-flat">+0.0%</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Transactions</div>
+          <div class="value">35,427</div>
+          <div class="meta">QoQ <span class="delta-down">-11.4%</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Avg Basket</div>
+          <div class="value">$52.69</div>
+          <div class="meta">QoQ <span class="delta-up">+0.6%</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Discount %</div>
+          <div class="value">9.59%</div>
+          <div class="meta">vs prior <span class="delta-up">+0.05 pp</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="label">Retail Margin</div>
+          <div class="value">53.6%</div>
+          <div class="meta">vs prior <span class="delta-up">+0.14 pp</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Portfolio Trend with TAB toggle ====== -->
+    <div class="section">
+      <h2>Retail Portfolio Trend</h2>
+      <div class="sub">Sum of 3 stores, every quarter from Q1 2024 forward.</div>
+
+      <div class="tab-strip">
+        <button class="tab active" onclick="showTab(this, 'data')">Data</button>
+        <button class="tab" onclick="showTab(this, 'charts')">Charts</button>
+      </div>
+
+      <div id="trend-data" class="tab-content">
+        <div class="chart-card">
+          <h3>Quarterly Net Sales · Retail Portfolio</h3>
+          <div class="desc">Top 6 quarters by recency.</div>
+          <table>
+            <thead><tr><th>Quarter</th><th class="num">Net Sales</th><th class="num">Transactions</th><th class="num">Avg Basket</th><th class="num">Discount %</th><th class="num">Retail Margin</th></tr></thead>
+            <tbody>
+              <tr class="highlight"><td>Q1 2026</td><td class="num">$1,866,481</td><td class="num">35,427</td><td class="num">$52.69</td><td class="num">9.59%</td><td class="num">53.6%</td></tr>
+              <tr><td>Q4 2025</td><td class="num">$2,094,654</td><td class="num">39,976</td><td class="num">$52.40</td><td class="num">9.54%</td><td class="num">53.5%</td></tr>
+              <tr><td>Q3 2025</td><td class="num">$2,071,046</td><td class="num">40,148</td><td class="num">$51.59</td><td class="num">10.18%</td><td class="num">55.0%</td></tr>
+              <tr><td>Q2 2025</td><td class="num">$2,013,530</td><td class="num">38,512</td><td class="num">$52.28</td><td class="num">11.00%</td><td class="num">56.7%</td></tr>
+              <tr><td>Q1 2025</td><td class="num">$1,866,191</td><td class="num">34,125</td><td class="num">$54.69</td><td class="num">9.54%</td><td class="num">56.3%</td></tr>
+              <tr><td>Q4 2024</td><td class="num">$2,116,357</td><td class="num">37,818</td><td class="num">$55.96</td><td class="num">8.59%</td><td class="num">54.7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="trend-charts" class="tab-content hidden">
+        <div class="chart-card">
+          <h3>Net Sales by Quarter</h3>
+          <div class="desc">Visual ranking · 9 quarters · most recent highlighted.</div>
+          <div class="bar-chart">
+            <div class="bar-row"><div class="lbl">Q1 2024</div><div class="track"><div class="fill" style="width: 88.6%;"></div></div><div class="val">$1.98M</div></div>
+            <div class="bar-row"><div class="lbl">Q2 2024</div><div class="track"><div class="fill" style="width: 98.4%;"></div></div><div class="val">$2.19M</div></div>
+            <div class="bar-row"><div class="lbl">Q3 2024</div><div class="track"><div class="fill" style="width: 100%;"></div></div><div class="val">$2.23M</div></div>
+            <div class="bar-row"><div class="lbl">Q4 2024</div><div class="track"><div class="fill" style="width: 95.0%;"></div></div><div class="val">$2.12M</div></div>
+            <div class="bar-row"><div class="lbl">Q1 2025</div><div class="track"><div class="fill" style="width: 83.7%;"></div></div><div class="val">$1.87M</div></div>
+            <div class="bar-row"><div class="lbl">Q2 2025</div><div class="track"><div class="fill" style="width: 90.4%;"></div></div><div class="val">$2.01M</div></div>
+            <div class="bar-row"><div class="lbl">Q3 2025</div><div class="track"><div class="fill" style="width: 92.9%;"></div></div><div class="val">$2.07M</div></div>
+            <div class="bar-row"><div class="lbl">Q4 2025</div><div class="track"><div class="fill" style="width: 94.0%;"></div></div><div class="val">$2.09M</div></div>
+            <div class="bar-row highlight"><div class="lbl">Q1 2026</div><div class="track"><div class="fill" style="width: 83.8%;"></div></div><div class="val">$1.87M</div></div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Discount % Trend · Portfolio</h3>
+          <div class="desc">Promotional intensity over time. Higher = more discounting required to drive volume.</div>
+          <svg viewBox="0 0 580 200" style="width: 100%; height: 200px;">
+            <defs>
+              <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#2a4a30"/>
+                <stop offset="100%" stop-color="#5b8c66"/>
+              </linearGradient>
+              <linearGradient id="area-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#355e3b" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#5b8c66" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <line x1="40" y1="160" x2="560" y2="160" stroke="rgba(53,94,59,0.15)" stroke-width="1"/>
+            <line x1="40" y1="120" x2="560" y2="120" stroke="rgba(53,94,59,0.1)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="40" y1="80"  x2="560" y2="80"  stroke="rgba(53,94,59,0.1)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="40" y1="40"  x2="560" y2="40"  stroke="rgba(53,94,59,0.1)" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="34" y="164" font-size="10" fill="#868e9d" text-anchor="end">5%</text>
+            <text x="34" y="124" font-size="10" fill="#868e9d" text-anchor="end">8%</text>
+            <text x="34" y="84"  font-size="10" fill="#868e9d" text-anchor="end">11%</text>
+            <text x="34" y="44"  font-size="10" fill="#868e9d" text-anchor="end">14%</text>
+            <path d="M65,133 L130,127 L195,131 L260,113 L325,99 L390,80 L455,93 L520,99 L580,99 L580,160 L65,160 Z" fill="url(#area-grad)"/>
+            <path d="M65,133 L130,127 L195,131 L260,113 L325,99 L390,80 L455,93 L520,99 L580,99" stroke="url(#line-grad)" stroke-width="3" fill="none" stroke-linejoin="round"/>
+            <circle cx="65" cy="133" r="4" fill="#355e3b"/>
+            <circle cx="130" cy="127" r="4" fill="#355e3b"/>
+            <circle cx="195" cy="131" r="4" fill="#355e3b"/>
+            <circle cx="260" cy="113" r="4" fill="#355e3b"/>
+            <circle cx="325" cy="99" r="4" fill="#3f7849"/>
+            <circle cx="390" cy="80" r="4" fill="#3f7849"/>
+            <circle cx="455" cy="93" r="4" fill="#3f7849"/>
+            <circle cx="520" cy="99" r="4" fill="#3f7849"/>
+            <circle cx="580" cy="99" r="6" fill="#4a9d5e" stroke="#ffffff" stroke-width="2"/>
+            <text x="65" y="180" font-size="10" fill="#525866" text-anchor="middle">Q1'24</text>
+            <text x="195" y="180" font-size="10" fill="#525866" text-anchor="middle">Q3'24</text>
+            <text x="325" y="180" font-size="10" fill="#525866" text-anchor="middle">Q1'25</text>
+            <text x="455" y="180" font-size="10" fill="#525866" text-anchor="middle">Q3'25</text>
+            <text x="580" y="180" font-size="10" fill="#4a9d5e" text-anchor="middle" font-weight="600">Q1'26</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Per-Store ====== -->
+    <div class="section">
+      <h2>Per-Store · Q1 2026</h2>
+      <div class="sub">Each store color-coded for quick visual scan across all charts. Dracut takes the brand color.</div>
+      <div class="store-grid">
+        <div class="store-card dracut">
+          <div class="name">Dracut</div>
+          <div class="num">$1.14M</div>
+          <div class="pct">61.3% of portfolio · $57.00 avg basket</div>
+        </div>
+        <div class="store-card pepperell">
+          <div class="name">Pepperell</div>
+          <div class="num">$552K</div>
+          <div class="pct">29.6% of portfolio · $49.03 avg basket</div>
+        </div>
+        <div class="store-card groton">
+          <div class="name">Groton</div>
+          <div class="num">$170K</div>
+          <div class="pct">9.1% of portfolio · $41.58 avg basket</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Sales Mix ====== -->
+    <div class="section">
+      <h2>Sales Mix · Q1 2026</h2>
+      <div class="sub">Category breakdown · portfolio retail.</div>
+      <div class="chart-card">
+        <div class="mix-chart-wrap">
+          <svg class="donut" viewBox="0 0 200 200">
+            <defs>
+              <linearGradient id="g-purple" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#7e22ce"/></linearGradient>
+              <linearGradient id="g-hg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a9d5e"/><stop offset="100%" stop-color="#355e3b"/></linearGradient>
+              <linearGradient id="g-amber" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#b45309"/></linearGradient>
+              <linearGradient id="g-rose" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fb7185"/><stop offset="100%" stop-color="#be123c"/></linearGradient>
+              <linearGradient id="g-teal" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#0e7490"/></linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(53,94,59,0.08)" stroke-width="32"/>
+            <circle cx="100" cy="100" r="80" fill="none" stroke="url(#g-purple)" stroke-width="32" stroke-dasharray="170 503" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+            <circle cx="100" cy="100" r="80" fill="none" stroke="url(#g-hg)" stroke-width="32" stroke-dasharray="149 503" stroke-dashoffset="-170" transform="rotate(-90 100 100)"/>
+            <circle cx="100" cy="100" r="80" fill="none" stroke="url(#g-amber)" stroke-width="32" stroke-dasharray="83 503" stroke-dashoffset="-319" transform="rotate(-90 100 100)"/>
+            <circle cx="100" cy="100" r="80" fill="none" stroke="url(#g-rose)" stroke-width="32" stroke-dasharray="61 503" stroke-dashoffset="-402" transform="rotate(-90 100 100)"/>
+            <circle cx="100" cy="100" r="80" fill="none" stroke="url(#g-teal)" stroke-width="32" stroke-dasharray="40 503" stroke-dashoffset="-463" transform="rotate(-90 100 100)"/>
+            <text x="100" y="95" text-anchor="middle" font-size="11" fill="#525866" font-weight="600" letter-spacing="0.5">PORTFOLIO</text>
+            <text x="100" y="118" text-anchor="middle" font-size="22" font-weight="700" fill="#355e3b">$1.87M</text>
+          </svg>
+          <div class="cat-list">
+            <div class="cat-row">
+              <div class="cat-dot" style="background: linear-gradient(135deg, #a855f7, #7e22ce);"></div>
+              <div class="cat-name">Vape Cartridge</div><div class="cat-amt">$629K</div><div class="cat-pct">33.7%</div>
+            </div>
+            <div class="cat-row">
+              <div class="cat-dot" style="background: linear-gradient(135deg, #4a9d5e, #355e3b);"></div>
+              <div class="cat-name">Flower</div><div class="cat-amt">$552K</div><div class="cat-pct">29.6%</div>
+            </div>
+            <div class="cat-row">
+              <div class="cat-dot" style="background: linear-gradient(135deg, #fbbf24, #b45309);"></div>
+              <div class="cat-name">Pre Roll</div><div class="cat-amt">$307K</div><div class="cat-pct">16.5%</div>
+            </div>
+            <div class="cat-row">
+              <div class="cat-dot" style="background: linear-gradient(135deg, #fb7185, #be123c);"></div>
+              <div class="cat-name">Edible</div><div class="cat-amt">$228K</div><div class="cat-pct">12.2%</div>
+            </div>
+            <div class="cat-row">
+              <div class="cat-dot" style="background: linear-gradient(135deg, #06b6d4, #0e7490);"></div>
+              <div class="cat-name">Beverage</div><div class="cat-amt">$89K</div><div class="cat-pct">4.7%</div>
+            </div>
+            <div class="cat-row">
+              <div class="cat-dot" style="background: #cbd5e1;"></div>
+              <div class="cat-name">Other (5 cats)</div><div class="cat-amt">$62K</div><div class="cat-pct">3.3%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span>● THCFO · Direction C v2 · Hunter Green</span>
+      <span>Tree House Craft Cannabis</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+function showTab(btn, target) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+  document.getElementById('trend-' + target).classList.remove('hidden');
+}
+</script>
+</body>
+</html>
