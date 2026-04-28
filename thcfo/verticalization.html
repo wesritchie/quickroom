@@ -18,21 +18,39 @@
   border: 1px solid var(--accent-border);
   font-weight: var(--fw-medium);
 }
-.capacity-bar {
-  position: relative; background: rgba(53, 94, 59, 0.06);
-  border-radius: var(--radius-md); height: 36px; overflow: hidden;
-  border: 1px solid var(--border-subtle); margin-top: var(--space-2);
+/* Capacity rows (production / consumption visualizations) */
+.capacity-list { display: flex; flex-direction: column; gap: 18px; margin-top: var(--space-4); }
+.cap-row { display: flex; flex-direction: column; gap: 6px; }
+.cap-meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 13px; color: var(--text-secondary);
 }
-.capacity-fill {
+.cap-meta .cap-name { font-weight: var(--fw-medium); }
+.cap-meta .cap-value strong { color: var(--text-primary); font-weight: var(--fw-semibold); font-feature-settings: 'tnum' on, 'lnum' on; }
+.cap-track {
+  background: rgba(53, 94, 59, 0.06);
+  border-radius: 10px; height: 28px; overflow: hidden;
+  border: 1px solid rgba(53, 94, 59, 0.06);
+}
+.cap-fill {
   background: linear-gradient(90deg, var(--hg-700), var(--hg-500));
-  height: 100%; border-radius: var(--radius-md); transition: width 0.4s;
+  height: 100%; border-radius: 10px;
+  display: flex; align-items: center; padding: 0 12px;
+  white-space: nowrap; overflow: hidden;
   box-shadow: 0 2px 8px rgba(53, 94, 59, 0.25);
+  transition: width 0.4s;
 }
-.label-overlay {
-  position: absolute; top: 0; left: 12px; right: 12px; bottom: 0;
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: var(--fs-sm); font-weight: var(--fw-semibold);
-  color: var(--text-primary); pointer-events: none;
+.cap-fill span {
+  color: white; font-size: 11px; font-weight: var(--fw-bold);
+  letter-spacing: 0.02em;
+}
+.cap-fill-alt {
+  background: linear-gradient(90deg, #7e22ce, #a855f7);
+  box-shadow: 0 2px 8px rgba(126, 34, 206, 0.25);
+}
+.cap-caption {
+  font-size: 12px; color: var(--text-tertiary);
+  line-height: 1.5;
 }
 .mvb-grid { display: grid; grid-template-columns: 1fr 50px 1fr; gap: var(--space-4); align-items: center; }
 .mvb-card { padding: var(--space-5); }
@@ -271,33 +289,35 @@
       <div class="card">
         <h3>Trailing 12-Month Production</h3>
 
-        <div style="margin-top: var(--space-4);">
-          <div style="display: flex; justify-content: space-between; font-size: var(--fs-sm); color: var(--text-secondary); margin-bottom: 4px;">
-            <span>Dry flower (lbs)</span>
-            <span><strong style="color: var(--text-primary);">1,500 lbs</strong> · sold/packaged</span>
-          </div>
-          <div class="capacity-bar">
-            <div class="capacity-fill" style="width: 60%;">60% of indoor potential</div>
-            <span class="label-overlay">2,500 lb max indoor potential at full utilization</span>
+        <div class="capacity-list">
+
+          <div class="cap-row">
+            <div class="cap-meta">
+              <span class="cap-name">Dry flower (lbs)</span>
+              <span class="cap-value"><strong>1,500 lbs</strong> · sold/packaged</span>
+            </div>
+            <div class="cap-track"><div class="cap-fill" style="width: 60%;"><span>60%</span></div></div>
+            <div class="cap-caption">2,500 lb max indoor potential at full utilization</div>
           </div>
 
-          <div style="display: flex; justify-content: space-between; font-size: var(--fs-sm); color: var(--text-secondary); margin: var(--space-3) 0 4px;">
-            <span>Trim (lbs)</span>
-            <span><strong style="color: var(--text-primary);">2,400 lbs</strong> · sold/packaged</span>
-          </div>
-          <div class="capacity-bar">
-            <div class="capacity-fill" style="width: 75%;">75% of capacity</div>
-            <span class="label-overlay">By-product of flower production</span>
+          <div class="cap-row">
+            <div class="cap-meta">
+              <span class="cap-name">Trim (lbs)</span>
+              <span class="cap-value"><strong>2,400 lbs</strong> · sold/packaged</span>
+            </div>
+            <div class="cap-track"><div class="cap-fill" style="width: 75%;"><span>75%</span></div></div>
+            <div class="cap-caption">By-product of flower production</div>
           </div>
 
-          <div style="display: flex; justify-content: space-between; font-size: var(--fs-sm); color: var(--text-secondary); margin: var(--space-3) 0 4px;">
-            <span>In-house consumption (% sold to TH retail)</span>
-            <span><strong style="color: var(--text-primary);">~30%</strong></span>
+          <div class="cap-row">
+            <div class="cap-meta">
+              <span class="cap-name">In-house consumption (% sold to TH retail)</span>
+              <span class="cap-value"><strong>~30%</strong></span>
+            </div>
+            <div class="cap-track"><div class="cap-fill cap-fill-alt" style="width: 30%;"><span>30%</span></div></div>
+            <div class="cap-caption">Remaining 70% goes to wholesale / exchange</div>
           </div>
-          <div class="capacity-bar">
-            <div class="capacity-fill" style="width: 30%; background: linear-gradient(90deg, var(--data-2), var(--accent));">30%</div>
-            <span class="label-overlay">Remaining 70% goes to wholesale / exchange</span>
-          </div>
+
         </div>
 
         <table class="tbl" style="margin-top: var(--space-5);">

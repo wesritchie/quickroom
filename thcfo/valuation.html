@@ -57,9 +57,10 @@
 }
 .secondary-metric .meta { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
 
-/* Methodologies grid */
+/* Methodologies grid — 2x2, equal heights */
 .methodologies {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4);
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+  align-items: stretch;
 }
 .method-card { position: relative; }
 .method-card.primary {
@@ -126,32 +127,38 @@ table.comps-table td {
 table.comps-table th.num, table.comps-table td.num { text-align: right; }
 table.comps-table tr:last-child td { border-bottom: none; }
 
-/* Buyer-type lens cards */
-.buyer-lens-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
-.buyer-card { cursor: pointer; transition: all 0.2s; }
-.buyer-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-elevated); }
+/* Buyer-type lens cards — 2x2, equal heights, click to select */
+.buyer-lens-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; align-items: stretch; }
+.buyer-card { cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; padding: 22px; }
+.buyer-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-elevated); border-color: var(--accent-border); }
 .buyer-card.selected {
   background: linear-gradient(135deg, rgba(53, 94, 59, 0.10) 0%, rgba(106, 177, 117, 0.05) 100%);
-  border-color: var(--accent-border); box-shadow: var(--shadow-elevated);
+  border: 1px solid var(--accent-border); box-shadow: var(--shadow-elevated);
 }
-.buyer-card .name { font-size: var(--fs-lg); font-weight: var(--fw-semibold); color: var(--text-primary); margin-bottom: 4px; }
+.buyer-card .name { font-size: 1.0625rem; font-weight: var(--fw-semibold); color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.01em; }
 .buyer-card .multiple {
-  font-size: var(--fs-base); font-weight: var(--fw-bold);
-  color: var(--accent); margin-bottom: var(--space-2);
+  font-size: var(--fs-xs); font-weight: var(--fw-bold);
+  color: var(--accent); margin-bottom: 12px;
   font-feature-settings: 'tnum' on, 'lnum' on;
+  display: inline-block;
+  padding: 3px 10px; background: var(--accent-bg);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent-border);
+  letter-spacing: 0.02em;
 }
-.buyer-card .desc { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.5; }
+.buyer-card .desc { font-size: 13px; color: var(--text-secondary); line-height: 1.55; margin: 0; }
 
-/* Cap-lift scenarios */
-.caplift-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+/* Cap-lift scenarios — 4 in a row, equal heights, click to select */
+.caplift-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: stretch; }
 .caplift-card {
-  text-align: center; cursor: pointer; padding: var(--space-5) var(--space-4);
-  position: relative; transition: all 0.2s;
+  text-align: center; cursor: pointer; padding: 22px 18px;
+  position: relative; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  display: flex; flex-direction: column; align-items: center;
 }
-.caplift-card:hover { transform: translateY(-2px); }
+.caplift-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-elevated); border-color: var(--accent-border); }
 .caplift-card.selected {
   background: linear-gradient(135deg, rgba(53, 94, 59, 0.10) 0%, rgba(106, 177, 117, 0.05) 100%);
-  border-color: var(--accent-border); box-shadow: var(--shadow-elevated);
+  border: 1px solid var(--accent-border); box-shadow: var(--shadow-elevated);
 }
 .caplift-card.speculative {
   border-style: dashed; border-color: var(--warning);
@@ -186,26 +193,46 @@ table.synergy-table { width: 100%; border-collapse: collapse; font-size: var(--f
 table.synergy-table th {
   font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em;
   color: var(--text-tertiary); font-weight: var(--fw-semibold);
-  padding: 10px 12px; text-align: left;
+  padding: 12px 14px; text-align: left;
   border-bottom: 1px solid var(--border-default);
+  white-space: nowrap;
 }
 table.synergy-table td {
-  padding: 10px 12px; border-bottom: 1px solid var(--border-subtle);
+  padding: 12px 14px; border-bottom: 1px solid var(--border-subtle);
   font-feature-settings: 'tnum' on, 'lnum' on;
+  vertical-align: middle;
 }
 table.synergy-table th.num, table.synergy-table td.num { text-align: right; }
+table.synergy-table td.synergy-cell {
+  text-align: right; white-space: nowrap;
+}
 table.synergy-table tr.total td {
   background: var(--accent-bg); font-weight: var(--fw-bold); color: var(--accent);
   border-top: 1px solid var(--accent-border); border-bottom: 1px solid var(--accent-border);
+  padding: 14px;
 }
 .synergy-pct {
-  width: 60px; padding: 4px 6px; font-size: var(--fs-sm);
+  width: 50px; padding: 5px 8px; font-size: var(--fs-sm);
   text-align: right; border: 1px solid var(--border-default);
-  border-radius: 4px; background: var(--bg-card-solid);
-  color: var(--text-primary); font-family: inherit;
+  border-radius: 6px; background: var(--bg-card-solid);
+  color: var(--text-primary); font-family: var(--font-sans);
   font-feature-settings: 'tnum' on, 'lnum' on;
+  font-weight: var(--fw-semibold);
+  vertical-align: middle;
+  display: inline-block;
 }
-.synergy-pct:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.synergy-pct:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.synergy-cell .pct-mark {
+  display: inline-block;
+  margin-left: 4px;
+  color: var(--text-secondary);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  vertical-align: middle;
+}
 .addback { color: var(--positive); font-weight: var(--fw-semibold); }
 
 @media (max-width: 1100px) {
@@ -557,42 +584,42 @@ table.synergy-table tr.total td {
               <tr data-cat="exec" data-cost="740000">
                 <td>Executive &amp; Leadership Compensation</td>
                 <td class="num">$740,000</td>
-                <td class="num"><input type="number" class="synergy-pct" value="80" min="0" max="100">%</td>
+                <td class="synergy-cell"><input type="number" class="synergy-pct" value="80" min="0" max="100"><span class="pct-mark">%</span></td>
                 <td class="num addback">$592,000</td>
                 <td style="font-size: var(--fs-xs); color: var(--text-secondary);">Co-CEO, CFO, GC, COO, CPO, HR roles. Strategic buyer absorbs most into existing org.</td>
               </tr>
               <tr data-cat="profsvcs" data-cost="269000">
                 <td>Professional Services</td>
                 <td class="num">$269,000</td>
-                <td class="num"><input type="number" class="synergy-pct" value="30" min="0" max="100">%</td>
+                <td class="synergy-cell"><input type="number" class="synergy-pct" value="30" min="0" max="100"><span class="pct-mark">%</span></td>
                 <td class="num addback">$80,700</td>
                 <td style="font-size: var(--fs-xs); color: var(--text-secondary);">Legal, accounting, tax, audit. Buyer's existing providers cover NECC.</td>
               </tr>
               <tr data-cat="software" data-cost="123000">
                 <td>Software, IT &amp; Subscriptions</td>
                 <td class="num">$123,000</td>
-                <td class="num"><input type="number" class="synergy-pct" value="40" min="0" max="100">%</td>
+                <td class="synergy-cell"><input type="number" class="synergy-pct" value="40" min="0" max="100"><span class="pct-mark">%</span></td>
                 <td class="num addback">$49,200</td>
                 <td style="font-size: var(--fs-xs); color: var(--text-secondary);">QB, CRM, productivity, security software. Consolidated to buyer's existing licenses.</td>
               </tr>
               <tr data-cat="insurance" data-cost="48000">
                 <td>Insurance &amp; Risk Management</td>
                 <td class="num">$48,000</td>
-                <td class="num"><input type="number" class="synergy-pct" value="25" min="0" max="100">%</td>
+                <td class="synergy-cell"><input type="number" class="synergy-pct" value="25" min="0" max="100"><span class="pct-mark">%</span></td>
                 <td class="num addback">$12,000</td>
                 <td style="font-size: var(--fs-xs); color: var(--text-secondary);">GL, property, D&amp;O, cyber. Pooled into buyer's master coverage.</td>
               </tr>
               <tr data-cat="overhead" data-cost="80000">
                 <td>Other Corporate Overhead</td>
                 <td class="num">$80,000</td>
-                <td class="num"><input type="number" class="synergy-pct" value="25" min="0" max="100">%</td>
+                <td class="synergy-cell"><input type="number" class="synergy-pct" value="25" min="0" max="100"><span class="pct-mark">%</span></td>
                 <td class="num addback">$20,000</td>
                 <td style="font-size: var(--fs-xs); color: var(--text-secondary);">Banking fees, office supplies, travel, training, board/advisory. Partial absorption.</td>
               </tr>
               <tr data-cat="otheradds" data-cost="0">
                 <td>Other Synergistic Add-Backs <em style="color: var(--warning);">(to be identified)</em></td>
                 <td class="num">$0</td>
-                <td class="num"><input type="number" class="synergy-pct" value="100" min="0" max="100">%</td>
+                <td class="synergy-cell"><input type="number" class="synergy-pct" value="100" min="0" max="100"><span class="pct-mark">%</span></td>
                 <td class="num addback">$0</td>
                 <td style="font-size: var(--fs-xs); color: var(--text-secondary);">Placeholder for non-comp add-backs identified in EBITDA build session (one-time costs, founder-discretionary spend, etc.).</td>
               </tr>
