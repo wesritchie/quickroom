@@ -7,7 +7,122 @@
 <link rel="stylesheet" href="styles/design-tokens.css">
 <script src="data/summary-data.js"></script>
 <style>
-/* Page-specific overrides only — common styles in styles/design-tokens.css */
+/* ============================================================================
+   Profitability page-specific styles
+   ============================================================================ */
+
+/* Reconciliation tables — book vs economic */
+table.recon-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+table.recon-table th {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold);
+  padding: 10px 12px; text-align: left;
+  border-bottom: 1px solid var(--border-default);
+}
+table.recon-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border-subtle);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+table.recon-table th.num, table.recon-table td.num { text-align: right; }
+table.recon-table tr.subtotal td {
+  border-top: 1px solid var(--border-default);
+  font-weight: var(--fw-semibold); color: var(--accent);
+  background: var(--accent-bg);
+}
+table.recon-table tr.gross td { background: rgba(53, 94, 59, 0.04); font-weight: var(--fw-medium); }
+table.recon-table tr.revenue td { font-weight: var(--fw-semibold); }
+table.recon-table tr.final td {
+  border-top: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  font-weight: var(--fw-bold); color: var(--accent);
+  font-size: var(--fs-base); padding: 14px 12px;
+}
+
+.recon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+
+/* Store contribution */
+.contribution {
+  font-size: var(--fs-2xl); font-weight: var(--fw-bold);
+  letter-spacing: -0.02em; margin: 6px 0;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.contribution.positive { color: var(--positive); }
+.contribution.negative { color: var(--negative); }
+.contribution-label {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold);
+}
+.store-detail { margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); }
+
+/* EBITDA bridge */
+table.bridge-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+table.bridge-table th {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold);
+  padding: 10px 12px; text-align: left;
+  border-bottom: 1px solid var(--border-default);
+}
+table.bridge-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border-subtle);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+table.bridge-table th.num, table.bridge-table td.num { text-align: right; }
+table.bridge-table tr.step-add td { color: var(--positive); font-weight: var(--fw-medium); }
+table.bridge-table tr.step-add td:first-child { color: var(--text-primary); }
+table.bridge-table tr.subtotal td {
+  border-top: 1px solid var(--border-default);
+  background: rgba(53, 94, 59, 0.04);
+  font-weight: var(--fw-semibold); color: var(--accent);
+}
+table.bridge-table tr.final td {
+  border-top: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  font-weight: var(--fw-bold); color: var(--accent);
+  padding: 14px 12px;
+}
+
+/* Year-over-year cards */
+.yoy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+.yoy-card .values { display: flex; gap: var(--space-4); align-items: baseline; margin-top: var(--space-3); }
+.year-value { display: flex; flex-direction: column; gap: 4px; }
+.year-value .year {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold);
+}
+.year-value .v {
+  font-size: var(--fs-xl); font-weight: var(--fw-bold);
+  color: var(--text-primary); font-feature-settings: 'tnum' on, 'lnum' on;
+  letter-spacing: -0.01em;
+}
+.yoy-card .change {
+  margin-top: var(--space-3); padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--fs-sm); color: var(--text-secondary);
+}
+.yoy-card .change strong { color: var(--positive); font-feature-settings: 'tnum' on, 'lnum' on; }
+.yoy-card .change.negative strong { color: var(--negative); }
+
+/* ROIC table */
+table.roic-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+table.roic-table th {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold);
+  padding: 10px 12px; text-align: left;
+  border-bottom: 1px solid var(--border-default);
+}
+table.roic-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border-subtle);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+table.roic-table th.num, table.roic-table td.num { text-align: right; }
+table.roic-table tr.high td .roic-pct { color: var(--positive); font-weight: var(--fw-bold); }
+table.roic-table tr.med td .roic-pct { color: var(--accent); font-weight: var(--fw-bold); }
+table.roic-table tr.low td .roic-pct { color: var(--negative); font-weight: var(--fw-bold); }
+.roic-pct { font-feature-settings: 'tnum' on, 'lnum' on; }
+
+@media (max-width: 1100px) {
+  .recon-grid, .yoy-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>

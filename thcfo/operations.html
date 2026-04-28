@@ -8,7 +8,24 @@
 <script src="data/summary-data.js"></script>
 <script src="data/operations-data.js"></script>
 <style>
-/* Page-specific overrides only — common styles in styles/design-tokens.css */
+/* ============================================================================
+   Operations page-specific styles
+   Most components (store-card, table.tax-bridge, kpi-row) are in design-tokens.css.
+   This file only adds the metric-row layout used inside store cards.
+   ============================================================================ */
+
+.store-card .metric-row .l { color: var(--text-secondary); }
+.store-card .metric-row .v {
+  color: var(--text-primary); font-feature-settings: 'tnum' on, 'lnum' on;
+  font-weight: var(--fw-semibold);
+}
+
+/* Rainbow Review embed iframe sizing */
+iframe#rainbow-iframe {
+  width: 100%; min-height: 420px; border: none;
+  border-radius: var(--radius-md);
+  background: var(--bg-card-elevated);
+}
 </style>
 </head>
 <body>

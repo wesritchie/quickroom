@@ -7,7 +7,70 @@
 <link rel="stylesheet" href="styles/design-tokens.css">
 <script src="data/summary-data.js"></script>
 <style>
-/* Page-specific overrides only — common styles in styles/design-tokens.css */
+/* ============================================================================
+   Cash Flow page-specific styles
+   ============================================================================ */
+
+/* Cash bridge / forward grid */
+.cash-grid, .forward-grid, .wc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.forward-card, .wc-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+.metric { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); font-weight: var(--fw-semibold); margin-bottom: 6px; }
+.metric .label, .forward-card .label, .wc-card .label {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold);
+}
+.balance, .amount {
+  font-size: var(--fs-xl); font-weight: var(--fw-bold);
+  color: var(--accent); font-feature-settings: 'tnum' on, 'lnum' on;
+  letter-spacing: -0.01em; margin: 4px 0;
+}
+.unit, .days, .horizon {
+  font-size: var(--fs-xs); color: var(--text-secondary);
+}
+
+/* Conversion bridge */
+.conv-bridge { display: flex; flex-direction: column; gap: 0; margin-top: var(--space-3); }
+.conv-bridge .row {
+  display: flex; justify-content: space-between; padding: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--fs-sm);
+}
+.conv-bridge .row:last-child { border-bottom: none; }
+.conv-bridge .row.add { color: var(--positive); }
+.conv-bridge .row.add::before { content: '+ '; }
+.conv-bridge .row.subtract { color: var(--negative); }
+.conv-bridge .row.subtract::before { content: '− '; }
+.conv-bridge .row.subtotal {
+  border-top: 1px solid var(--border-default);
+  font-weight: var(--fw-semibold); color: var(--accent);
+  background: rgba(53, 94, 59, 0.04);
+}
+.conv-bridge .row.final {
+  border-top: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  font-weight: var(--fw-bold); color: var(--accent);
+  padding: 14px 12px;
+}
+.conv-bridge .row .label { color: var(--text-secondary); }
+.conv-bridge .row.subtotal .label, .conv-bridge .row.final .label { color: inherit; }
+.conv-bridge .row .v {
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  font-weight: var(--fw-semibold);
+}
+
+.basis, .formula { font-size: var(--fs-xs); color: var(--text-secondary); line-height: 1.5; margin-top: 4px; }
+
+@media (max-width: 1100px) {
+  .cash-grid, .forward-grid, .wc-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>

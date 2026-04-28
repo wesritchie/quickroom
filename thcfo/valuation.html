@@ -8,7 +8,212 @@
 <script src="data/summary-data.js"></script>
 <script src="data/comps-data.js"></script>
 <style>
-/* Page-specific overrides only — common styles in styles/design-tokens.css */
+/* ============================================================================
+   Valuation page-specific styles
+   Common styles (cards, tables, KPIs, sidebar, glass effect) come from
+   styles/design-tokens.css. Below are only valuation-unique components.
+   ============================================================================ */
+
+/* Headline card (top of page) */
+.headline-card {
+  background: linear-gradient(135deg, rgba(53, 94, 59, 0.10) 0%, rgba(106, 177, 117, 0.05) 100%);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--accent-border);
+  box-shadow: var(--shadow-elevated);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+  position: relative; overflow: hidden;
+}
+.headline-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: var(--accent);
+}
+.headline-label {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--accent); font-weight: var(--fw-semibold); margin-bottom: var(--space-2);
+}
+.headline-range {
+  font-size: 3rem; font-weight: var(--fw-bold); color: var(--accent);
+  letter-spacing: -0.025em; line-height: 1.05; margin-bottom: var(--space-2);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.headline-range .currency { color: var(--accent); }
+.headline-range .dash { color: var(--text-tertiary); margin: 0 var(--space-2); font-weight: var(--fw-regular); }
+.headline-meta { font-size: var(--fs-sm); color: var(--text-secondary); }
+.headline-secondary {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4);
+  margin-top: var(--space-5); padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+}
+.secondary-metric .label {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold); margin-bottom: 6px;
+}
+.secondary-metric .value {
+  font-size: var(--fs-xl); font-weight: var(--fw-bold);
+  color: var(--text-primary); font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.secondary-metric .meta { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
+
+/* Methodologies grid */
+.methodologies {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4);
+}
+.method-card { position: relative; }
+.method-card.primary {
+  background: linear-gradient(135deg, rgba(53, 94, 59, 0.08) 0%, rgba(106, 177, 117, 0.04) 100%);
+  border: 1px solid var(--accent-border);
+}
+.method-tag {
+  display: inline-block;
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent); font-weight: var(--fw-semibold);
+  padding: 3px 10px; border-radius: var(--radius-pill);
+  background: var(--accent-bg); border: 1px solid var(--accent-border);
+  margin-bottom: var(--space-3);
+}
+.method-tag.secondary {
+  color: var(--text-secondary); background: rgba(139, 140, 154, 0.1);
+  border-color: var(--border-default);
+}
+.method-range {
+  font-size: var(--fs-2xl); font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  margin: var(--space-3) 0; letter-spacing: -0.02em;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.method-range .accent-color { color: var(--accent); }
+
+/* EBITDA Matrix */
+.ebitda-matrix {
+  display: grid; grid-template-columns: 110px 1fr 1fr 1fr;
+  gap: 1px; background: var(--border-subtle);
+  border-radius: var(--radius-md); overflow: hidden;
+  margin-top: var(--space-3);
+}
+.ebitda-matrix .header, .ebitda-matrix .row-label, .ebitda-matrix .cell {
+  background: var(--bg-card-elevated); padding: 10px 12px;
+  font-size: var(--fs-sm); text-align: right;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.ebitda-matrix .header {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold); text-align: right;
+}
+.ebitda-matrix .row-label {
+  text-align: left; color: var(--text-secondary); font-weight: var(--fw-medium);
+}
+.ebitda-matrix .cell { color: var(--text-primary); font-weight: var(--fw-semibold); }
+.ebitda-matrix .cell.active {
+  background: var(--accent-bg); color: var(--accent); font-weight: var(--fw-bold);
+}
+
+/* Comps grid */
+.comps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+table.comps-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+table.comps-table th {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold);
+  padding: 10px 12px; text-align: left;
+  border-bottom: 1px solid var(--border-default);
+}
+table.comps-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border-subtle);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+table.comps-table th.num, table.comps-table td.num { text-align: right; }
+table.comps-table tr:last-child td { border-bottom: none; }
+
+/* Buyer-type lens cards */
+.buyer-lens-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+.buyer-card { cursor: pointer; transition: all 0.2s; }
+.buyer-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-elevated); }
+.buyer-card.selected {
+  background: linear-gradient(135deg, rgba(53, 94, 59, 0.10) 0%, rgba(106, 177, 117, 0.05) 100%);
+  border-color: var(--accent-border); box-shadow: var(--shadow-elevated);
+}
+.buyer-card .name { font-size: var(--fs-lg); font-weight: var(--fw-semibold); color: var(--text-primary); margin-bottom: 4px; }
+.buyer-card .multiple {
+  font-size: var(--fs-base); font-weight: var(--fw-bold);
+  color: var(--accent); margin-bottom: var(--space-2);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.buyer-card .desc { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.5; }
+
+/* Cap-lift scenarios */
+.caplift-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.caplift-card {
+  text-align: center; cursor: pointer; padding: var(--space-5) var(--space-4);
+  position: relative; transition: all 0.2s;
+}
+.caplift-card:hover { transform: translateY(-2px); }
+.caplift-card.selected {
+  background: linear-gradient(135deg, rgba(53, 94, 59, 0.10) 0%, rgba(106, 177, 117, 0.05) 100%);
+  border-color: var(--accent-border); box-shadow: var(--shadow-elevated);
+}
+.caplift-card.speculative {
+  border-style: dashed; border-color: var(--warning);
+  background: rgba(180, 83, 9, 0.04);
+}
+.caplift-card .stores {
+  font-size: 2.5rem; font-weight: var(--fw-bold); color: var(--accent);
+  letter-spacing: -0.03em; line-height: 1;
+}
+.caplift-card.speculative .stores { color: var(--warning); }
+.caplift-card .period {
+  font-size: var(--fs-sm); font-weight: var(--fw-semibold);
+  color: var(--text-primary); margin-top: 6px;
+}
+.caplift-card .premium {
+  margin-top: var(--space-3); font-size: var(--fs-xs); font-weight: var(--fw-semibold);
+  color: var(--accent); padding: 4px 10px;
+  background: var(--accent-bg); border-radius: var(--radius-pill);
+  display: inline-block;
+}
+.caplift-card.speculative .premium { color: var(--warning); background: rgba(180, 83, 9, 0.1); }
+.caplift-card .badge {
+  position: absolute; top: var(--space-3); right: var(--space-3);
+  font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.08em;
+  font-weight: var(--fw-bold); color: var(--warning);
+  background: rgba(180, 83, 9, 0.15); padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+/* Synergy table */
+table.synergy-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); margin-top: var(--space-3); }
+table.synergy-table th {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold);
+  padding: 10px 12px; text-align: left;
+  border-bottom: 1px solid var(--border-default);
+}
+table.synergy-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border-subtle);
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+table.synergy-table th.num, table.synergy-table td.num { text-align: right; }
+table.synergy-table tr.total td {
+  background: var(--accent-bg); font-weight: var(--fw-bold); color: var(--accent);
+  border-top: 1px solid var(--accent-border); border-bottom: 1px solid var(--accent-border);
+}
+.synergy-pct {
+  width: 60px; padding: 4px 6px; font-size: var(--fs-sm);
+  text-align: right; border: 1px solid var(--border-default);
+  border-radius: 4px; background: var(--bg-card-solid);
+  color: var(--text-primary); font-family: inherit;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+.synergy-pct:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.addback { color: var(--positive); font-weight: var(--fw-semibold); }
+
+@media (max-width: 1100px) {
+  .methodologies, .comps-grid, .buyer-lens-grid { grid-template-columns: 1fr; }
+  .caplift-grid { grid-template-columns: repeat(2, 1fr); }
+  .headline-secondary { grid-template-columns: 1fr; }
+  .headline-range { font-size: 2rem; }
+}
 </style>
 </head>
 <body>

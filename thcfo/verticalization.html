@@ -7,7 +7,68 @@
 <link rel="stylesheet" href="styles/design-tokens.css">
 <script src="data/summary-data.js"></script>
 <style>
-/* Page-specific overrides only — common styles in styles/design-tokens.css */
+/* ============================================================================
+   Verticalization page-specific styles
+   ============================================================================ */
+.brand-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--space-3); }
+.brand-pill {
+  font-size: var(--fs-xs); padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-bg); color: var(--accent);
+  border: 1px solid var(--accent-border);
+  font-weight: var(--fw-medium);
+}
+.capacity-bar {
+  position: relative; background: rgba(53, 94, 59, 0.06);
+  border-radius: var(--radius-md); height: 36px; overflow: hidden;
+  border: 1px solid var(--border-subtle); margin-top: var(--space-2);
+}
+.capacity-fill {
+  background: linear-gradient(90deg, var(--hg-700), var(--hg-500));
+  height: 100%; border-radius: var(--radius-md); transition: width 0.4s;
+  box-shadow: 0 2px 8px rgba(53, 94, 59, 0.25);
+}
+.label-overlay {
+  position: absolute; top: 0; left: 12px; right: 12px; bottom: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: var(--fs-sm); font-weight: var(--fw-semibold);
+  color: var(--text-primary); pointer-events: none;
+}
+.mvb-grid { display: grid; grid-template-columns: 1fr 50px 1fr; gap: var(--space-4); align-items: center; }
+.mvb-card { padding: var(--space-5); }
+.mvb-card.win { border-color: var(--accent-border); background: linear-gradient(135deg, rgba(53, 94, 59, 0.08) 0%, rgba(106, 177, 117, 0.04) 100%); }
+.mvb-vs { text-align: center; font-size: var(--fs-lg); font-weight: var(--fw-bold); color: var(--text-tertiary); letter-spacing: 0.1em; }
+.verdict {
+  margin-top: var(--space-3); padding: 6px 12px; border-radius: var(--radius-pill);
+  font-size: var(--fs-xs); font-weight: var(--fw-semibold);
+  display: inline-block; background: var(--accent-bg); color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+.narrative-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.narrative-card { padding: var(--space-5); position: relative; }
+.narrative-card .nidx {
+  font-size: 2.5rem; font-weight: var(--fw-bold);
+  color: var(--accent); opacity: 0.25; line-height: 1;
+  position: absolute; top: var(--space-4); right: var(--space-5);
+}
+.narrative-card .ntitle { font-size: var(--fs-lg); font-weight: var(--fw-semibold); color: var(--hg-700); margin-bottom: var(--space-2); }
+.narrative-card .nbody { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; }
+.val-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.val-component {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4); text-align: center;
+}
+.val-component .label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); font-weight: var(--fw-semibold); margin-bottom: 6px; }
+.val-component .value { font-size: var(--fs-xl); font-weight: var(--fw-bold); color: var(--accent); font-feature-settings: 'tnum' on, 'lnum' on; letter-spacing: -0.01em; }
+.val-component .basis { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 4px; }
+@media (max-width: 1100px) {
+  .mvb-grid, .narrative-grid, .val-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
