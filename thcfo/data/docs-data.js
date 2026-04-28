@@ -26,7 +26,7 @@
 window.DOCS_DATA = {
 
   meta: {
-    last_updated: "2026-04-27",
+    last_updated: "2026-04-28",
     refresh_target: "May 2026 — Feb + March 2026 monthly close cut"
   },
 
@@ -151,10 +151,17 @@ window.DOCS_DATA = {
     },
     {
       name: "Q1 2026 Dutchie Pull",
-      source: "Dutchie API · all 3 stores",
+      source: "Dutchie API · all 3 stores · monthly + quarterly granularity",
       period: "Q1 2026",
       status: "auto-refresh",
       blocker: "Auto — Claude can pull on request"
+    },
+    {
+      name: "Historical Quarterly Dutchie Backfill",
+      source: "Dutchie API · per-store quarterly closing reports + discounts + category mix",
+      period: "Q1 2024 – Q4 2025 (8 quarters)",
+      status: "auto-refresh",
+      blocker: "Auto — populates Quarterly Review page (per-store, discounts, mix sections)"
     },
     {
       name: "Q1 2026 Veriscan Refresh",
