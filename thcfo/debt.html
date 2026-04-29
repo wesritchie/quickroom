@@ -38,20 +38,36 @@
   font-size: var(--fs-xs); color: var(--text-secondary); margin-top: 6px;
 }
 
-/* Debt category groupings — risk lens (Brick / Core / Plan / Hold) */
-.debt-cat {
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border-glass);
-  box-shadow: var(--shadow-card);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5); margin-bottom: var(--space-3);
+/* Debt category labels — small inline pill in the table column */
+span.debt-cat {
+  display: inline-flex; align-items: center;
+  padding: 3px 10px;
+  font-size: var(--fs-xs); font-weight: var(--fw-semibold);
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  line-height: 1.5;
 }
-.debt-cat .amount {
-  font-size: var(--fs-2xl); font-weight: var(--fw-bold);
-  font-feature-settings: 'tnum' on, 'lnum' on; letter-spacing: -0.02em;
-  margin: 4px 0;
+span.debt-cat.friendly {
+  color: var(--positive);
+  background: var(--positive-bg);
+  border: 1px solid rgba(45, 122, 68, 0.30);
+}
+span.debt-cat.acquisition {
+  color: var(--negative);
+  background: var(--negative-bg);
+  border: 1px solid rgba(194, 65, 12, 0.30);
+}
+span.debt-cat.landlord {
+  color: var(--text-tertiary);
+  background: rgba(139, 140, 154, 0.10);
+  border: 1px solid var(--border-default);
+  font-style: italic; font-weight: var(--fw-medium);
+}
+span.debt-cat.working {
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
 }
 
 /* Maturity ladder cards */
