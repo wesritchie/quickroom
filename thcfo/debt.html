@@ -213,7 +213,7 @@ table.tbl th.operating-edge { border-left: 2px solid var(--accent); padding-left
           <div class="meta">5 facilities · 0% – 15% rate range</div>
         </div>
         <div class="kpi-card">
-          <div class="label">AP Aging · Operational Tracker</div>
+          <div class="label">Total AP · QB Aging</div>
           <div class="value" id="kpi-ap-value">—</div>
           <div class="meta" id="kpi-ap-meta">—</div>
         </div>
@@ -745,23 +745,20 @@ renderAPAging();
 function renderAPKPI() {
   if (!window.AP_AGING_DATA) return;
   const D = window.AP_AGING_DATA;
-  const apValue = D.risk_categorization.total != null
-    ? D.risk_categorization.total
-    : D.standard_aging.total;
-  const apDate = D.risk_categorization.total != null
-    ? D.risk_categorization.as_of
-    : D.standard_aging.as_of;
-  // Compute YoY/historical comparison from trajectory
+  // QB AP Aging is the source-of-truth for total AP per Wes's framing principle.
+  const apValue = D.standard_aging.total;
+  const apDate  = D.standard_aging.as_of;
+  // Compute change vs prior trajectory point
   const trajectory = D.trajectory;
-  const prevValue = trajectory.length > 1 ? trajectory[trajectory.length - 2].total_ap : null;
-  const change = prevValue != null ? apValue - prevValue : null;
-  let metaText = `Week ending ${apDate} · operational tracker`;
+  const prevValue  = trajectory.length > 1 ? trajectory[trajectory.length - 2].total_ap : null;
+  const change     = prevValue != null ? apValue - prevValue : null;
+  let metaText = `As of ${apDate} · ${D.standard_aging.source}`;
   if (change != null && change < 0) {
     metaText = `<span style="color: var(--positive);">▼ ${fmtUSD(Math.abs(change))} from prior</span> · ${apDate}`;
   } else if (change != null && change > 0) {
     metaText = `<span style="color: var(--negative);">▲ ${fmtUSD(change)} from prior</span> · ${apDate}`;
   }
-  // Format value as $X.XM
+  // Format value as $X.XM or $XXK
   const valueStr = apValue >= 1e6 ? '$' + (apValue / 1e6).toFixed(2) + 'M' : '$' + (apValue / 1e3).toFixed(0) + 'K';
   document.getElementById('kpi-ap-value').textContent = valueStr;
   document.getElementById('kpi-ap-meta').innerHTML = metaText;

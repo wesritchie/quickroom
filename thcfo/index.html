@@ -150,14 +150,22 @@ function renderOverview() {
   const AP = window.AP_AGING_DATA;
   const OPS = window.OPERATIONS_DATA;
 
-  // ----- Computed: Operational debt = Term debt + AP (Brick + Core + Payment Plan) -----
+  // ----- Computed: AP under the >60d framing principle ----------------------
+  // QB A/P Aging is now the source-of-truth for total AP and the operating-vs-
+  // carried split. Risk-lens (Brick/Core/Plan/Hold) is the operational view but
+  // does NOT define "real debt" anymore — that role belongs to Carried AP (>60d).
+  const sa = AP.standard_aging;                      // QB aging snapshot
+  const apTotal     = sa.total;                       // QB total AP
+  const operatingAP = sa.framing.operating_ap;        // <=60d  · operating cost
+  const carriedAP   = sa.framing.carried_ap;          // >60d   · real carried debt
+  const operationalDebt = S.termDebt.totalOutstanding + carriedAP;
+  const carriedAPDebt = carriedAP;
+
+  // Risk-lens still available for narrative/secondary uses
   const apBrick = AP.risk_categorization.categories.brick.balance || 0;
-  const apCore = AP.risk_categorization.categories.core.balance || 0;
-  const apPlan = AP.risk_categorization.categories.payment_plan.balance || 0;
-  const apHold = AP.risk_categorization.categories.hold.balance || 0;
-  const apTotal = apBrick + apCore + apPlan + apHold;
-  const operationalDebt = S.termDebt.totalOutstanding + apBrick + apCore + apPlan;
-  const unmanagedVendorDebt = apHold;
+  const apCore  = AP.risk_categorization.categories.core.balance || 0;
+  const apPlan  = AP.risk_categorization.categories.payment_plan.balance || 0;
+  const apHold  = AP.risk_categorization.categories.hold.balance || 0;
 
   // ----- Computed: Implied Valuation Range -----
   const v = S.valuation;
@@ -187,13 +195,13 @@ function renderOverview() {
     {
       label: 'Operational Debt',
       value: fmtUSDShort(operationalDebt),
-      meta: 'Term + AP managed (Brick + Core + Plan)',
+      meta: 'Term debt + Carried AP (&gt;60d)',
       headline: false
     },
     {
-      label: 'Unmanaged Vendor Debt',
-      value: fmtUSDShort(unmanagedVendorDebt),
-      meta: '<span class="warning-text">Hold AP · highest attention category</span>',
+      label: 'Carried AP Debt',
+      value: fmtUSDShort(carriedAPDebt),
+      meta: '<span class="warning-text">AP &gt;60 days · actual debt being carried</span>',
       headline: false
     }
   ];
@@ -245,9 +253,9 @@ function renderOverview() {
     },
     {
       href: 'debt.html', tag: 'Debt · payables · capital', name: 'Debt & Capital',
-      headline: `${fmtUSDShort(operationalDebt)} op · ${fmtUSDShort(unmanagedVendorDebt)} unmanaged`,
+      headline: `${fmtUSDShort(operationalDebt)} op · ${fmtUSDShort(carriedAPDebt)} carried`,
       pill: { text: apReductionPct ? `AP down ${apReductionPct}% since Jan 2026` : 'AP discipline ongoing', cls: '' },
-      desc: `Operational debt ${fmtUSDShort(operationalDebt)} = ${fmtUSDShort(S.termDebt.totalOutstanding)} term + ${fmtUSDShort(apBrick + apCore + apPlan)} AP managed (Brick + Core + Payment Plan). Unmanaged vendor debt ${fmtUSDShort(unmanagedVendorDebt)} = Hold-category AP. Total AP ${fmtUSDShort(apTotal)} (${AP.risk_categorization.as_of}, down from ${reference ? fmtUSDShort(reference.total_ap) : '—'} ${reference ? `at ${reference.as_of} close` : ''}). ${S.cashFlow.dscr.toFixed(2)}x DSCR on Strategic EBITDA, no refinancing risk in ${S.termDebt.refinancingRiskMonths} months.`
+      desc: `Operational debt ${fmtUSDShort(operationalDebt)} = ${fmtUSDShort(S.termDebt.totalOutstanding)} term + ${fmtUSDShort(carriedAP)} carried AP (&gt;60d). Operating AP (≤60d) ${fmtUSDShort(operatingAP)} treated as routine cost-of-doing-business. Total AP ${fmtUSDShort(apTotal)} (QB ${sa.as_of}, down from ${reference ? fmtUSDShort(reference.total_ap) : '—'} ${reference ? `at ${reference.as_of} close` : ''}). ${S.cashFlow.dscr.toFixed(2)}x DSCR on Strategic EBITDA, no refinancing risk in ${S.termDebt.refinancingRiskMonths} months.`
     },
     {
       href: 'operations.html', tag: 'Stores · mix · tax', name: 'Operations',
