@@ -26,7 +26,7 @@
 window.DOCS_DATA = {
 
   meta: {
-    last_updated: "2026-04-28",
+    last_updated: "2026-04-29",
     refresh_target: "May 2026 — Feb + March 2026 monthly close cut"
   },
 
@@ -65,10 +65,16 @@ window.DOCS_DATA = {
       lens: "Outstanding, rates, service, amortization"
     },
     {
-      name: "AP Aging",
-      source: "Operational tracker",
+      name: "QB A/P Aging Summary",
+      source: "QuickBooks · A/P Aging Summary Report",
+      period: "As of Apr 29, 2026",
+      lens: "Standard 30/60/90/91+ buckets · vendor-level · operating-vs-carried framing (<60d / >60d)"
+    },
+    {
+      name: "AP Risk Lens",
+      source: "Operational tracker · Sandbox NECC AP + Budget · Google Sheets",
       period: "Week ending Apr 24, 2026",
-      lens: "Brick / Core / Payment Plan / Hold lens"
+      lens: "Brick / Core / Payment Plan / Hold categorization"
     },
     {
       name: "Federal Tax Returns",

@@ -26,28 +26,43 @@
 window.AP_AGING_DATA = {
 
   meta: {
-    last_updated: "2026-04-26",
+    last_updated: "2026-04-29",
+    qb_aging_as_of: "2026-04-29",
     last_close_period: "2026-01-31",
     feb_mar_close_status: "pending",
     operational_tracker_week_ending: "2026-04-24",
     operational_tracker_source: "Sandbox NECC AP + Budget · Google Sheets",
-    refresh_owner: "Update on monthly close + weekly operational tracker refresh"
+    refresh_owner: "Update on monthly close + weekly operational tracker refresh + QB AP Aging on demand",
+    framing_note: "Per Wes: aging buckets <60 days = current operating AP (regular cost-of-doing-business). Aging buckets >60 days = actual debt being carried. The two-tier sums (operating_ap, carried_ap) reflect this principle."
   },
 
   // -------------------------------------------------------------------------
-  // STANDARD 30/60/90 AGING — last fully reconciled close
-  // Source: QuickBooks A/P Aging Summary Report at close
+  // STANDARD 30/60/90/91+ AGING — fresh QB pull
+  // Source: QuickBooks A/P Aging Summary Report (Apr 29, 2026)
+  //
+  // FRAMING (per Wes): <60d = operating AP, >60d = carried debt
+  //   operating_ap = current + 1-30 + 31-60      (regular operating costs)
+  //   carried_ap   = 61-90 + 91+                  (actual debt the business is carrying)
   // -------------------------------------------------------------------------
   standard_aging: {
-    as_of: "2026-01-31",
-    total: 1788121,
+    as_of: "2026-04-29",
+    source: "QB A/P Aging Summary Report",
+    total: 999818,
+    vendor_count: 62,
     buckets: {
-      current:  398376,
-      d1_30:    242445,
-      d31_60:   222889,
-      d61_90:   156143,
-      d91_plus: 768268
-    }
+      current:  242909,
+      d1_30:    108542,
+      d31_60:    65695,
+      d61_90:    55778,
+      d91_plus: 526894
+    },
+    framing: {
+      operating_ap: 417146,   // <60d · regular operating costs
+      carried_ap:   582672,   // >60d · actual debt being carried
+      operating_pct: 0.417,   // 41.7% of total
+      carried_pct:   0.583    // 58.3% of total
+    },
+    concentration_note: "91+ bucket alone is $527K (52.7% of total) — bulk of carried AP debt sits in the oldest aging bucket."
   },
 
   // -------------------------------------------------------------------------
@@ -103,11 +118,24 @@ window.AP_AGING_DATA = {
   // Append a new entry for each new reliable data point.
   // -------------------------------------------------------------------------
   trajectory: [
-    { as_of: "2024-12-31", source: "BS year-end",        total_ap: 1695977 },
-    { as_of: "2025-12-31", source: "BS year-end",        total_ap: 1703556 },
-    { as_of: "2026-01-31", source: "QB A/P Aging Report", total_ap: 1788121 },
-    { as_of: "2026-04-24", source: "Operational tracker (week ending)", total_ap: 953545 }
-    // append next: { as_of: "2026-02-28", source: "QB A/P Aging Report", total_ap: ... }
-  ]
+    { as_of: "2024-12-31", source: "BS year-end",                       total_ap: 1695977 },
+    { as_of: "2025-12-31", source: "BS year-end",                       total_ap: 1703556 },
+    { as_of: "2026-01-31", source: "QB A/P Aging Report",               total_ap: 1788121 },
+    { as_of: "2026-04-24", source: "Operational tracker (week ending)", total_ap:  953545 },
+    { as_of: "2026-04-29", source: "QB A/P Aging Report",               total_ap:  999818 }
+  ],
+
+  // -------------------------------------------------------------------------
+  // RECONCILIATION NOTE
+  // The two AP sources don't agree exactly because they're 5 days apart
+  // and use different categorization frames. Document the gap honestly.
+  // -------------------------------------------------------------------------
+  reconciliation: {
+    qb_aging_total:        999818,   // Apr 29
+    risk_lens_total:       953545,   // Apr 24 (operational tracker)
+    delta:                  46273,
+    delta_days:                  5,
+    note: "QB AP Aging (Apr 29) is $46,273 higher than the operational tracker risk-lens snapshot (Apr 24, 5 days earlier). The growth reflects 5 days of vendor activity. Risk-lens categorization (Brick / Core / Payment Plan / Hold) of the new $46K is unknown until the next operational tracker pull."
+  }
 
 };

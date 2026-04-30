@@ -97,6 +97,55 @@ span.debt-cat.working {
 .landlord { color: var(--text-tertiary); font-style: italic; }
 .working { color: var(--accent); font-weight: var(--fw-semibold); }
 
+/* AP framing — operating vs carried */
+.ap-framing-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+}
+.ap-framing-cell {
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  position: relative;
+}
+.ap-framing-cell .cell-label {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-tertiary); font-weight: var(--fw-semibold);
+  margin-bottom: 8px;
+}
+.ap-framing-cell .cell-value {
+  font-size: 1.625rem; font-weight: var(--fw-bold);
+  color: var(--text-primary); letter-spacing: -0.02em;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  line-height: 1.15;
+}
+.ap-framing-cell .cell-meta {
+  font-size: var(--fs-xs); color: var(--text-secondary);
+  margin-top: 6px; line-height: 1.5;
+}
+.ap-framing-cell.operating {
+  background: linear-gradient(135deg, var(--positive-bg) 0%, rgba(45, 122, 68, 0.04) 100%);
+  border: 1px solid rgba(45, 122, 68, 0.30);
+}
+.ap-framing-cell.operating .cell-value { color: var(--positive); }
+.ap-framing-cell.carried {
+  background: linear-gradient(135deg, var(--negative-bg) 0%, rgba(194, 65, 12, 0.04) 100%);
+  border: 1px solid rgba(194, 65, 12, 0.30);
+}
+.ap-framing-cell.carried .cell-value { color: var(--negative); }
+.ap-framing-cell.total {
+  background: linear-gradient(135deg, var(--accent-bg) 0%, rgba(53, 94, 59, 0.04) 100%);
+  border: 1px solid var(--accent-border);
+}
+.ap-framing-cell.total .cell-value { color: var(--accent); }
+
+/* Highlight 60-day boundary in standard aging table */
+table.tbl th.operating-edge { border-left: 2px solid var(--accent); padding-left: 14px; }
+
+@media (max-width: 1100px) {
+  .ap-framing-grid { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 1100px) {
   .dscr-grid, .maturity-grid { grid-template-columns: 1fr; }
 }
@@ -455,9 +504,17 @@ span.debt-cat.working {
       <h2>AP Aging Discipline</h2>
       <div class="section-sub">Trade payables aging is a material ongoing CFO challenge — not a solved problem. Balance has been actively worked down from a peak through a structured weekly discipline integrated with the cashflow tracker. This section reports the reality, not the aspiration.</div>
 
-      <div class="card">
+      <!-- Operating vs Carried framing — the headline lens -->
+      <div class="card" id="ap-framing-card">
+        <h3>Operating AP vs Carried AP Debt</h3>
+        <p class="card-sub">The principle: aging buckets ≤ 60 days are routine operating costs (regular cost-of-doing-business). Aging buckets &gt; 60 days are debt the business is actually carrying. This split is the primary way to read AP aging on this page; the standard 30/60/90 buckets and the risk lens both sit underneath it. Loaded from <code style="color: var(--accent); font-size: 0.85em;">data/ap-aging-data.js</code>.</p>
+        <div class="ap-framing-grid" id="ap-framing-grid"></div>
+        <div id="ap-framing-meta" style="margin-top: var(--space-3); font-size: var(--fs-xs); color: var(--text-tertiary);"></div>
+      </div>
+
+      <div class="card" style="margin-top: var(--space-4);">
         <h3>AP Balance — Standard 30/60/90 Aging</h3>
-        <p class="card-sub">Reported balances at key reference dates. Sourced from QuickBooks A/P Aging Summary Reports at close. Loaded from <code style="color: var(--accent); font-size: 0.85em;">data/ap-aging-data.js</code> · refresh after each monthly close.</p>
+        <p class="card-sub">Reported balances at key reference dates. Sourced from QuickBooks A/P Aging Summary Reports at close. The 60-day boundary (between 31–60 and 61–90) is the line between operating AP and carried debt above. Loaded from <code style="color: var(--accent); font-size: 0.85em;">data/ap-aging-data.js</code> · refresh after each monthly close.</p>
         <table class="tbl" id="ap-trajectory-table">
           <thead>
             <tr>
@@ -466,7 +523,7 @@ span.debt-cat.working {
               <th class="num">Current</th>
               <th class="num">1–30 days</th>
               <th class="num">31–60 days</th>
-              <th class="num">61–90 days</th>
+              <th class="num operating-edge">61–90 days</th>
               <th class="num">91+ days</th>
             </tr>
           </thead>
@@ -561,6 +618,36 @@ function renderAPAging() {
     return;
   }
   const D = window.AP_AGING_DATA;
+
+  // ---- AP Framing: operating (<60d) vs carried (>60d) — headline lens ----
+  const fgrid = document.getElementById('ap-framing-grid');
+  if (fgrid && D.standard_aging && D.standard_aging.framing) {
+    const f = D.standard_aging.framing;
+    const sa = D.standard_aging;
+    const fmtPct = v => (v * 100).toFixed(1) + '%';
+    fgrid.innerHTML = `
+      <div class="ap-framing-cell operating">
+        <div class="cell-label">Operating AP · ≤ 60 days</div>
+        <div class="cell-value">${fmtUSD(f.operating_ap)}</div>
+        <div class="cell-meta">${fmtPct(f.operating_pct)} of total · routine cost-of-doing-business · current + 1-30 + 31-60 days buckets</div>
+      </div>
+      <div class="ap-framing-cell carried">
+        <div class="cell-label">Carried AP Debt · &gt; 60 days</div>
+        <div class="cell-value">${fmtUSD(f.carried_ap)}</div>
+        <div class="cell-meta">${fmtPct(f.carried_pct)} of total · debt being actively carried · 61-90 + 91+ days buckets</div>
+      </div>
+      <div class="ap-framing-cell total">
+        <div class="cell-label">Total AP · ${fmtDate(sa.as_of)}</div>
+        <div class="cell-value">${fmtUSD(sa.total)}</div>
+        <div class="cell-meta">${sa.vendor_count} vendors · ${sa.source}</div>
+      </div>
+    `;
+  }
+  const fmeta = document.getElementById('ap-framing-meta');
+  if (fmeta && D.standard_aging) {
+    const sa = D.standard_aging;
+    fmeta.innerHTML = `${sa.concentration_note ? '<strong style="color: var(--text-secondary);">' + sa.concentration_note + '</strong>' : ''}`;
+  }
 
   // ---- Trajectory + standard 30/60/90 (most recent close) ----
   const tbody = document.getElementById('ap-trajectory-body');
