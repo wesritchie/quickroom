@@ -132,8 +132,10 @@
 // ============================================================================
 function fmtUSDShort(v) {
   if (v == null || isNaN(v)) return '—';
-  if (Math.abs(v) >= 1e6) return '$' + (v / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M';
-  if (Math.abs(v) >= 1e3) return '$' + Math.round(v / 1e3) + 'K';
+  const a = Math.abs(v);
+  // Promote to "M" format above $950K so $999,818 displays as "$1.00M" not "$1000K"
+  if (a >= 950000) return '$' + (v / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M';
+  if (a >= 1000)   return '$' + Math.round(v / 1e3) + 'K';
   return '$' + Math.round(v).toLocaleString();
 }
 function fmtPct(v, decimals = 1) {

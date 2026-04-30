@@ -208,24 +208,24 @@ table.tbl th.operating-edge { border-left: 2px solid var(--accent); padding-left
     <section class="section" id="summary">
       <div class="kpi-row">
         <div class="kpi-card">
-          <div class="label">Total Debt Outstanding</div>
+          <div class="label">Term Debt</div>
           <div class="value">$693K</div>
           <div class="meta">5 facilities · 0% – 15% rate range</div>
         </div>
         <div class="kpi-card">
-          <div class="label">Total AP · QB Aging</div>
-          <div class="value" id="kpi-ap-value">—</div>
-          <div class="meta" id="kpi-ap-meta">—</div>
+          <div class="label">Carried AP Debt</div>
+          <div class="value" id="kpi-carried-ap-value">—</div>
+          <div class="meta" id="kpi-carried-ap-meta">—</div>
         </div>
         <div class="kpi-card">
-          <div class="label">Blended Cost of Capital</div>
-          <div class="value">2.85%</div>
-          <div class="meta">Term debt + AP at 0% effective</div>
+          <div class="label">Total Operational Debt</div>
+          <div class="value" id="kpi-op-debt-value">—</div>
+          <div class="meta" id="kpi-op-debt-meta">—</div>
         </div>
         <div class="kpi-card">
           <div class="label">DSCR (Strategic EBITDA)</div>
           <div class="value">4.15x</div>
-          <div class="meta positive">Term debt covered</div>
+          <div class="meta positive">Term debt service covered</div>
         </div>
         <div class="kpi-card">
           <div class="label">Net Deleveraging FY25</div>
@@ -740,30 +740,39 @@ function renderAPAging() {
 renderAPAging();
 
 // ============================================================================
-// AP KPI card at top of page — pulls from same data file
+// Top-of-page KPI cards driven by the AP data file:
+//   • Carried AP Debt    — standard_aging.framing.carried_ap (>60d, QB)
+//   • Total Operational  — Term debt + Carried AP Debt
+// Term Debt, DSCR, and Net Deleveraging are still hardcoded in markup since
+// they're stable values from summary-data.js (term debt schedule).
 // ============================================================================
-function renderAPKPI() {
-  if (!window.AP_AGING_DATA) return;
-  const D = window.AP_AGING_DATA;
-  // QB AP Aging is the source-of-truth for total AP per Wes's framing principle.
-  const apValue = D.standard_aging.total;
-  const apDate  = D.standard_aging.as_of;
-  // Compute change vs prior trajectory point
-  const trajectory = D.trajectory;
-  const prevValue  = trajectory.length > 1 ? trajectory[trajectory.length - 2].total_ap : null;
-  const change     = prevValue != null ? apValue - prevValue : null;
-  let metaText = `As of ${apDate} · ${D.standard_aging.source}`;
-  if (change != null && change < 0) {
-    metaText = `<span style="color: var(--positive);">▼ ${fmtUSD(Math.abs(change))} from prior</span> · ${apDate}`;
-  } else if (change != null && change > 0) {
-    metaText = `<span style="color: var(--negative);">▲ ${fmtUSD(change)} from prior</span> · ${apDate}`;
-  }
-  // Format value as $X.XM or $XXK
-  const valueStr = apValue >= 1e6 ? '$' + (apValue / 1e6).toFixed(2) + 'M' : '$' + (apValue / 1e3).toFixed(0) + 'K';
-  document.getElementById('kpi-ap-value').textContent = valueStr;
-  document.getElementById('kpi-ap-meta').innerHTML = metaText;
+function fmtKPI(v) {
+  if (v == null || isNaN(v)) return '—';
+  const a = Math.abs(v);
+  // Avoid the "$1000K" case — promote to M format for $950K+
+  if (a >= 950000) return '$' + (v / 1e6).toFixed(2) + 'M';
+  if (a >= 1000)   return '$' + Math.round(v / 1e3) + 'K';
+  return '$' + Math.round(v).toLocaleString();
 }
-renderAPKPI();
+function renderTopKPIs() {
+  if (!window.AP_AGING_DATA) return;
+  const D  = window.AP_AGING_DATA;
+  const sa = D.standard_aging;
+  const carriedAP = sa.framing.carried_ap;
+  const termDebt  = 693000;  // mirrors summary-data.js termDebt.totalOutstanding
+  const opDebt    = termDebt + carriedAP;
+
+  const carriedEl = document.getElementById('kpi-carried-ap-value');
+  if (carriedEl) carriedEl.textContent = fmtKPI(carriedAP);
+  const carriedMetaEl = document.getElementById('kpi-carried-ap-meta');
+  if (carriedMetaEl) carriedMetaEl.innerHTML = `&gt;60 days · QB ${sa.as_of}`;
+
+  const opEl = document.getElementById('kpi-op-debt-value');
+  if (opEl) opEl.textContent = fmtKPI(opDebt);
+  const opMetaEl = document.getElementById('kpi-op-debt-meta');
+  if (opMetaEl) opMetaEl.innerHTML = 'Term + Carried · what we&rsquo;re actually carrying';
+}
+renderTopKPIs();
 
 // ============================================================================
 // Blended Cost of Capital — pulls AP from the same data file
