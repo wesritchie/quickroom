@@ -1376,8 +1376,8 @@ const CITY_TREND_STORE = {
     const storeTotal = byStore[store];
     const overallTotal = total;
     // Use the month data ratios as a proxy
-    const ref = DATA.month.byStoreByState[store];
-    const refTotal = ref.MA + ref.NH + ref.OTHER;
+    const ref = DATA.month.byStoreByState[store] || {MA:0, NH:0, OTHER:0};
+    const refTotal = (ref.MA||0) + (ref.NH||0) + (ref.OTHER||0);
     if (refTotal > 0) {
       byStoreByState[store].MA = Math.round(storeTotal * ref.MA / refTotal);
       byStoreByState[store].NH = Math.round(storeTotal * ref.NH / refTotal);
