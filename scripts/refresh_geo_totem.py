@@ -386,30 +386,51 @@ def main():
     week_data = aggregate_period(week_records)
 
     # ── STEP 3: Fetch month-to-date data ──
-    print("[3/4] Fetching month-to-date data...")
-    month_dt_start = datetime.combine(month_start, datetime.min.time())
-    month_dt_end = datetime.combine(yesterday, datetime.max.time())
+    # Month-to-date is still computed (separately) so the trend projection
+    # for the in-progress month can be calculated. On the 1st of a new month
+    # this range is degenerate (start > end); we guard for that and treat MTD
+    # as zero for projection purposes.
+    print("[3a/4] Fetching month-to-date data (for trend projection)...")
+    if yesterday < month_start:
+        print(f"  Day 1 of {month_start.strftime('%B')} — MTD is empty, skipping fetch")
+        mtd_data = {"total": 0, "uniqueCities": 0, "byStore": {}, "byState": {}, "byStoreByState": {}, "topCities": {"dracut": [], "pepperell": [], "groton": []}}
+    else:
+        mtd_dt_start = datetime.combine(month_start, datetime.min.time())
+        mtd_dt_end = datetime.combine(yesterday, datetime.max.time())
+        mtd_records = veriscan_fetch(mtd_dt_start, mtd_dt_end)
+        mtd_data = aggregate_period(mtd_records)
+
+    # The "month" period in DATA represents the LAST COMPLETED MONTH
+    # (matches META.monthLabel and the "Last Completed Month" tab label).
+    # This also avoids a degenerate empty range on the 1st of a new month.
+    print("[3/4] Fetching last-completed-month data...")
+    last_month_end = month_start - timedelta(days=1)
+    last_month_start = last_month_end.replace(day=1)
+    month_dt_start = datetime.combine(last_month_start, datetime.min.time())
+    month_dt_end = datetime.combine(last_month_end, datetime.max.time())
+    print(f" Last completed month range: {last_month_start} to {last_month_end}")
     month_records = veriscan_fetch(month_dt_start, month_dt_end)
     month_data = aggregate_period(month_records)
 
     # ── STEP 4: Update TREND (monthly projection) ──
     print("[4/4] Computing monthly projection and updating TREND...")
-    days_elapsed = (yesterday - month_start).days + 1
-    # Project to 30-day month
-    factor = 30 / max(days_elapsed, 1)
+    # Days elapsed in the *current* (in-progress) month for projection.
+    # On the 1st this is 0, so we clamp to >=1 to avoid divide-by-zero.
+    days_elapsed = max((yesterday - month_start).days + 1, 0)
+    factor = 30 / max(days_elapsed, 1) if days_elapsed > 0 else 0
 
     trend_entry = {
         "label": f"{month_label} (proj)",
-        "total": round(month_data["total"] * factor),
+        "total": round(mtd_data["total"] * factor),
         "byState": {
-            "MA": round(month_data["byState"].get("MA", 0) * factor),
-            "NH": round(month_data["byState"].get("NH", 0) * factor),
-            "OTHER": round(month_data["byState"].get("OTHER", 0) * factor),
+            "MA": round(mtd_data["byState"].get("MA", 0) * factor),
+            "NH": round(mtd_data["byState"].get("NH", 0) * factor),
+            "OTHER": round(mtd_data["byState"].get("OTHER", 0) * factor),
         },
         "byStore": {
-            "dracut": round(month_data["byStore"].get("dracut", 0) * factor),
-            "pepperell": round(month_data["byStore"].get("pepperell", 0) * factor),
-            "groton": round(month_data["byStore"].get("groton", 0) * factor),
+            "dracut": round(mtd_data["byStore"].get("dracut", 0) * factor),
+            "pepperell": round(mtd_data["byStore"].get("pepperell", 0) * factor),
+            "groton": round(mtd_data["byStore"].get("groton", 0) * factor),
         },
     }
 
